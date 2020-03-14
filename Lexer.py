@@ -52,6 +52,8 @@ def t_ID(t):
     elif t.value in reserved:
         t.type = reserved[t.value]
         #t.value = (t.value,symbol_lookup(t.value)) Para devolver el valor a la tabla de signos
+    else:
+        t.type="ID"
         return t
 
 
@@ -63,8 +65,8 @@ def t_INT(t):
 
 # TODO buscar una forma de  crear ID ASSIGN ID ID ASSIGN ID preguntarle al profe
 #def t_DASSIGN(t):
-    #r'[a-zA-Z0-9@&_]*[,][a-zA-Z0-9_]*'
-   # return t
+ #   r'[a-zA-Z0-9@&_]*,[a-zA-Z0-9_]*'
+  #  return t
 
 def t_newline(t):
     r'\n+'
@@ -86,7 +88,7 @@ lexer = lex.lex()
 data1 = """for result 
         = (3+4*10+-20*2) True False @holaaaaaaa"""
 data2 = "a,b = 3,4"
-lexer.input(data1)
+lexer.input(data2)
 
 while 1:
     tok = lexer.token()
