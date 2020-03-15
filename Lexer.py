@@ -5,8 +5,29 @@ import os
 import sys
 
 #TODO pasasrlo posiblemente a orientado a objetos
+''' ID: Identificador
+    PLUS: Sumando
+    MINUS: Minuendo
+    TIMES: Multiplicacion
+    DIVIDE:Divicion
+    ASSIGN: Asignacion
+    COMMA: Coma
+    SEMICOLON: Punto y coma
+    LT: Menor que
+    GT: Mayor que
+    LTE: Menor igual
+    GTE: Mayor igual
+    LPARENT: Parentesis izquierdo
+    RPARENT: Parentesis derecho
+    DOT: Punto
+    INT: Entero
+    BOOKED:Palabra reservada(Caso especial para booleanos)
+    MOD: Modulo
+    DIVENT: Divicion entera
+    EXP: Exponente
+'''
 tokens = ['ID', 'NUMBER', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE', 'ASSIGN', 'COMMA', 'SEMMICOLOM',
-          'LT', 'GT', 'LTE', 'GTE', 'LPARENT', 'RPARENT', 'DOT', 'INT', 'DASSIGN', 'LENGHTERROR']
+          'LT', 'GT', 'LTE', 'GTE', 'LPARENT', 'RPARENT', 'DOT', 'INT','LENGHTERROR']
 
 reserved = {'if': 'IF',
             'else': 'ELSE',
