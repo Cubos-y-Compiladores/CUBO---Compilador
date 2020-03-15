@@ -1,3 +1,4 @@
-x,y = 7,2;
-var = 7;
-if x > y{}
+-- x,y = 7,2;
+varx,vary = 300,200;
+variable = 2;
+Var = 2;

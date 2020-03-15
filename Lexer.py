@@ -3,12 +3,50 @@ import re
 import codecs
 import os
 import sys
+from pip._vendor import colorama
+
+# LOGICA
+
+def printC(data,color):
+    if color == "r":
+        print(colorama.Fore.RED + data + colorama.Fore.RESET)
+    elif color == "b":
+        print(colorama.Fore.BLUE + data + colorama.Fore.RESET)
+    elif color == "g":
+        print(colorama.Fore.GREEN + data + colorama.Fore.RESET)
+    elif color == "bk":
+        print(colorama.Fore.BLACK + data + colorama.Fore.RESET)
+    elif color == "y":
+        print(colorama.Fore.YELLOW + data + colorama.Fore.RESET)
+    elif color == "m":
+        print(colorama.Fore.MAGENTA + data + colorama.Fore.RESET)
+    elif color == "c":
+        print(colorama.Fore.CYAN + data + colorama.Fore.RESET)
+    elif color == "lr":
+        print(colorama.Fore.LIGHTRED_EX + data + colorama.Fore.RESET)
+    elif color == "lb":
+        print(colorama.Fore.LIGHTBLUE_EX + data + colorama.Fore.RESET)
+    elif color == "lg":
+        print(colorama.Fore.LIGHTGREEN_EX + data + colorama.Fore.RESET)
+    elif color == "lbk":
+        print(colorama.Fore.LIGHTBLACK_EX + data + colorama.Fore.RESET)
+    elif color == "lc":
+        print(colorama.Fore.LIGHTCYAN_EX + data + colorama.Fore.RESET)
+    elif color == "lm":
+        print(colorama.Fore.LIGHTMAGENTA_EX + data + colorama.Fore.RESET)
+    elif color == "ly":
+        print(colorama.Fore.LIGHTYELLOW_EX + data + colorama.Fore.RESET)
+    elif color == "w":
+        print(colorama.Fore.WHITE + data + colorama.Fore.RESET)
+    elif color == "lw":
+        print(colorama.Fore.LIGHTWHITE_EX + data + colorama.Fore.RESET)
+
 
 # TODO pasasrlo posiblemente a orientado a objetos
 
 tokens = ['ID', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE','DIVENT','MOD','EXP', 'ASSIGN', 'COMMA', 'SEMMICOLOM',
-          'LT', 'GT', 'LTE', 'GTE', 'NE', 'LPARENT', 'RPARENT', 'DOT', 'INT', 'LENGHTERROR', 'BOOKED',
-          'PARENTCL', 'PARENTCR', 'LCORCH', 'RCORCH']
+          'LT', 'GT', 'LTE', 'GTE', 'NE', 'LPARENT', 'RPARENT', 'DOT', 'INT', 'LENGHTERROR','VARERROR', 'BOOKED',
+          'PARENTCL', 'PARENTCR', 'LCORCH', 'RCORCH', 'TP']
 
 reserved = {'if': 'IF',
             'else': 'ELSE',
@@ -19,11 +57,19 @@ reserved = {'if': 'IF',
             'type': 'TYPE',
             'True': 'TRUE',
             'False': 'FALSE',
-            'global': 'GLOBAL'}
+            'global': 'GLOBAL',
+            'range': 'RANGE',
+            'insert':'INSERT',
+            'del':'DELETE',
+            'len':'LEN',
+            'Neg':'NEG',
+            'T':'T',
+            'F':'F',
+            'Blink':'BLINK'}
 
 tokens = tokens + list(reserved.values())
 
-t_ignore = '\t ' # t_ignore es usado para ignorar todos los caracteres dentro de esta lista
+t_ignore = '\n\t ' # t_ignore es usado para ignorar todos los caracteres dentro de esta lista
 t_PLUS = r'\+'
 t_MINUS = r'\-'
 t_TIMES = r'\*'
@@ -43,15 +89,8 @@ t_PARENTCR = '\]'
 t_NE = '!='
 t_LCORCH = '\{'
 t_RCORCH = '\}'
+t_TP = '\:'
 
-# Prueba para doble asignacion
-# idd = r'[a-zA-Z@&_][a-zA-Z0-9_]*'
-# t_DASSIGN = idd + r',' + idd
-
-global errorFlag
-errorFlag = False
-
-# TODO debe tener un maximo de 10 posiciones
 # Reconoce variables y palabras reservadas
 def t_ID(t):
     r"""[a-z][a-zA-Z0-9_]*"""
@@ -65,23 +104,21 @@ def t_ID(t):
         t.type = "ID"
     return t
 
+# Reconoce booleanos
 def t_BOOKED(t):
     r"""[a-zA-Z][a-zA-Z0-9_]*"""
     if t.value in reserved:
         t.type = reserved[t.value]
+    else:
+        t.type = "VARERROR"
     return t
 
-# Reconoce Digitos
+# Reconoce numeros
 def t_INT(t):
     r"""\d+"""
     t.value = int(t.value)
     return t
-
-# TODO buscar una forma de  crear ID ASSIGN ID ID ASSIGN ID preguntarle al profe
-# def t_DASSIGN(t):
- #   r'[a-zA-Z0-9@&_]*,[a-zA-Z0-9_]*'
-  #  return t
-
+# Reconoce saltos de linea
 def t_newline(t):
     r"""\n+"""
     t.lexer.lineno += len(t.value)
@@ -89,16 +126,12 @@ def t_newline(t):
 # Reconoce que un string no está en el alfabeto
 def t_error(t):
     print("Illegal character '%s'" % t.value[0])
-    global errorFlag
-    errorFlag = not errorFlag
     t.lexer.skip(1)
 
 # Reconoce comentarios
 def t_COMMENT(t):
     r"""\--.*"""
     pass
-
-
 
 # Remplaza un caracter de un string en una posición especifica por otro valor
 def replaceC(data,i,value):
@@ -107,65 +140,101 @@ def replaceC(data,i,value):
     data = "".join(data)
     return data
 
-# TODO para que funcione no pueden haber espacios entre las comas 3, 3 => error => pensarlo
+# Verifica si la lista contiene un multiplo 3 de elementos
+def fun(d):
+    if "=" in d:
+        d = d.replace("=", " = ")
+        d = d.replace(" ", "@")
+        temp =d.split("@")
+        for i in range(temp.count("")):
+            temp.remove("")
+        if len(temp)%3 != 0:
+            return True
+    return False
 
+# Transforma la la oracion de sintaxis x,y=2,3; a x=2;y=3;
 def transformData(list1):
     cont = 0
-    while  cont != len(list1):
-        if "=" in list1[cont]:
-            temp = list(list1[cont].replace(" ", ""))
-            if len(list1)%2 !=0:
+    while cont != len(list1):
+        if "=" in list1[cont] and fun(list1[cont]): # TODO arreglar por las expresiones simples como x = 7;
+
+            list1[cont] = list1[cont].replace("="," = ")
+            list1[cont] = list1[cont].replace(" ","@")
+            temp = list1[cont].split("@")
+            for i in range(temp.count("")):
+                temp.remove("")
+
+            if len(temp)%2 !=0:
                 cont1 = 0
                 cont2 = -1
                 a = " " + temp[cont1] + "=" + temp[cont2-1] + ";"
                 b = " "+ temp[cont1+1] + "=" + temp[cont2] + ";"
                 c = a + " " + b
                 list1[cont] = c
-            else:
-                print("No se puede realizar asignaciones",list1[cont])
+        elif "=" in list1[cont]:
+            list1[cont] = list1[cont] + ";"
         cont+=1
     obj = "".join(list1)
     return obj
 
+# Elimina de una lista elementos como "" y " "
+def clean(inputlist):
+    for i in range(inputlist.count("")):
+        inputlist.remove("")
+    for j in range(inputlist.count(" ")):
+        inputlist.remove(" ")
+    return inputlist
 
 # Funcion que se aplica antes de analizar cualquier texto, para preparar las asignaciones multiples
-# TODO dejarlo de la forma [a,exp,a] si exp%2 = 0 es invalido , debe ser != 0 para ir haciendo las asignaciones con
-# TODO modo cont1=1 => +1 cont2=-1 => -1
 def findDassign(data):
     cont = 0
     flag = True
+    data = data.replace(";","; ")
     while cont != int(len(data)):
         if data[cont] == "," and flag:
             data = replaceC(data,cont," ")
-            data = replaceC(data,cont-2,",")
+            cont1 = cont-1
+            if data[cont1] == " ":
+                while data[cont1] == " ":
+                    cont1-=1
+            while 1:
+                if data[cont1] == " " or cont1 == 0:
+                    break
+                cont1-=1
+            if cont1 == 0:
+                data = replaceC(data,cont1,","+data[cont1])
+            else:
+                data = replaceC(data,cont1,",")
             flag = not flag
-        elif data[cont] == "," :
+        elif data[cont] == "," and flag == False:
             data = replaceC(data, cont, " ")
         elif data[cont] == ";":
             data = replaceC(data, cont , ",")
             flag = not flag
         cont += 1
-    return transformData(data.split(","))
+
+    temp = data.split(",")
+    temp = clean(temp)
+    return transformData(temp)
 
 
-# Atributos del objeto LexToken
-# .value .type .lexpos
+# ARCHIVOS
+
 
 path = "C:/Users/Usuario/Desktop/IS2020/CompiladoresLenguajes/Proyect/Tests/test1.pl0"
-#file = findFile(path)
-#file = input("Enter File Name: ")
+# file = findFile(path)
+# file = input("Enter File Name: ")
 test = path
 fp = codecs.open(test, "r" , "utf-8")
 text = fp.read()
 fp.close()
 
-# TODO falta corregir si las variables y los números son más largos (usar algun separador y luego usar dentro de la
-#  TODO funcion transform otro split con el separador utilizado en findassign)
-# foo = "hola x,var1 = 2,32; hola z,x = 5,6;"
-# print(findDassign(foo))
+# Prueba para remplazo de palabras de doble asignación
+# foo = "hola varx,vary=221,345; hola zvar,xvar = 512,625;"
+# foo = "-- xVAR      ,    yVAR=300    ,    200   ;"
+# printC("ORIGINAL"+ "\n" +foo, "r")
+# printC("CHANGED" + "\n" + findDassign(foo), "b")
 
-
-# TODO Verificar que siempre se usen parentesis en las operaciones
 lexer = lex.lex()
 data1 = """var = 5;"""
 data2 = "Var = 5;"
@@ -173,22 +242,19 @@ data3 = "a,b = 3,4"
 data4 = "type(a)"
 data5 = "global var = 1; global var2 = True"
 data6 = "var1 != var2"
-data7 = "list = [True,False]"
+data7 = "list = [True,False] lista[1:4] x = range(5,True)"
 data8 = "x,y = 3,41;"
-lex.input(text)
+data9 = " const Var = 1; l.insert(2,True)"
+data10 = "type(var)"
+lexer.input(data10)
+# print(findDassign(text))
 # lexer.input(findDassign(text)) # Arreglar funcion de doble asignación
 
 while 1:
-
     tok = lexer.token()
-    if errorFlag:
-        print("Error de entrada en el token", tok)
-        errorFlag = not errorFlag
     if not tok:
         break
     print(tok)
 
-
 # TODO crear funciones para manejo de archivos para luego incorporarlo al ide
-
 
