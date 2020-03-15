@@ -7,7 +7,8 @@ import sys
 # TODO pasasrlo posiblemente a orientado a objetos
 
 tokens = ['ID', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE','DIVENT','MOD','EXP', 'ASSIGN', 'COMMA', 'SEMMICOLOM',
-          'LT', 'GT', 'LTE', 'GTE', 'LPARENT', 'RPARENT', 'DOT', 'INT', 'LENGHTERROR','BOOKED']
+          'LT', 'GT', 'LTE', 'GTE', 'NE', 'LPARENT', 'RPARENT', 'DOT', 'INT', 'LENGHTERROR', 'BOOKED',
+          'PARENTCL', 'PARENTCR']
 
 reserved = {'if': 'IF',
             'else': 'ELSE',
@@ -37,6 +38,9 @@ t_RPARENT = r'\)'
 t_COMMA = r','
 t_SEMMICOLOM = r';'
 t_DOT = r'\.'
+t_PARENTCL = '\['
+t_PARENTCR = '\]'
+t_NE = '!='
 
 # Prueba para doble asignacion
 # idd = r'[a-zA-Z@&_][a-zA-Z0-9_]*'
@@ -48,7 +52,7 @@ errorFlag = False
 # TODO debe tener un maximo de 10 posiciones
 # Reconoce variables y palabras reservadas
 def t_ID(t):
-    r'[a-z][a-zA-Z0-9_]*'
+    r"""[a-z][a-zA-Z0-9_]*"""
     if len(t.value)>10:
         t.type = "LENGHTERROR"
 
@@ -58,14 +62,14 @@ def t_ID(t):
     return t
 
 def t_BOOKED(t):
-    r'[a-zA-Z][a-zA-Z0-9_]*'
+    r"""[a-zA-Z][a-zA-Z0-9_]*"""
     if t.value in reserved:
         t.type = reserved[t.value]
     return t
 
 # Reconoce Digitos
 def t_INT(t):
-    r'\d+'
+    r"""\d+"""
     t.value = int(t.value)
     return t
 
@@ -75,7 +79,7 @@ def t_INT(t):
   #  return t
 
 def t_newline(t):
-    r'\n+'
+    r"""\n+"""
     t.lexer.lineno += len(t.value)
 
 # Reconoce que un string no está en el alfabeto
@@ -91,6 +95,54 @@ def t_COMMENT(t):
     pass
 
 
+
+# Remplaza un caracter de un string en una posición especifica por otro valor
+def replaceC(data,i,value):
+    data = list(data)
+    data[i] = value
+    data = "".join(data)
+    return data
+
+# TODO para que funcione no pueden haber espacios entre las comas 3, 3 => error => pensarlo
+
+def transformData(list1):
+    cont = 0
+    while  cont != len(list1):
+        if "=" in list1[cont]:
+            temp = list(list1[cont].replace(" ", ""))
+            if len(list1)%2 !=0:
+                cont1 = 0
+                cont2 = -1
+                a = " " + temp[cont1] + "=" + temp[cont2-1] + ";"
+                b = " "+ temp[cont1+1] + "=" + temp[cont2] + ";"
+                c = a + " " + b
+                list1[cont] = c
+            else:
+                print("No se puede realizar asignaciones",list1[cont])
+        cont+=1
+    obj = "".join(list1)
+    return obj
+
+
+# Funcion que se aplica antes de analizar cualquier texto, para preparar las asignaciones multiples
+# TODO dejarlo de la forma [a,exp,a] si exp%2 = 0 es invalido , debe ser != 0 para ir haciendo las asignaciones con
+# TODO modo cont1=1 => +1 cont2=-1 => -1
+def findDassign(data):
+    cont = 0
+    flag = True
+    while cont != int(len(data)):
+        if data[cont] == "," and flag:
+            data = replaceC(data,cont," ")
+            data = replaceC(data,cont-2,",")
+            flag = not flag
+        elif data[cont] == "," :
+            data = replaceC(data, cont, " ")
+        elif data[cont] == ";":
+            data = replaceC(data, cont , ",")
+            flag = not flag
+        cont += 1
+    return transformData(data.split(","))
+
 # TODO Verificar que siempre se usen parentesis en las operaciones
 lexer = lex.lex()
 data1 = """var = 5;"""
@@ -98,7 +150,10 @@ data2 = "Var = 5;"
 data3 = "a,b = 3,4"
 data4 = "type(a)"
 data5 = "global var = 1; global var2 = True"
-lexer.input(data5)
+data6 = "var1 != var2"
+data7 = "list = [True,False]"
+data8 = "x,y = 3,4;"
+lexer.input(findDassign(data8))
 
 while 1:
 
@@ -113,32 +168,9 @@ while 1:
 # Atributos del objeto LexToken
 # .value .type .lexpos
 
-# Funcion que se aplica antes de analizar cualquier texto, para preparar las asignaciones multiples
 
-# TODO para que funcione no pueden haber espacios entre las comas 3, 3 => error
-def findDassign(data):
-    cont = 0
-    print("len",len(data))
-    temp1 = ""
-    temp2 = ""
-    while cont != int(len(data)):
-        if data[cont] == ",":
-            data = data[:cont] + " " + data[cont:]
-            temp1 = data[:cont-2] + "," + data[cont-2:]
-
-        elif data[cont] == "=":
-            temp2 = temp1[:cont+1] + "," + temp1[cont+1:]
-
-        cont+=1
-
-    return temp2.split(",")
-
-foo = "hola x,y = 2,3"
-foo.replace(4,"@")
-print(foo)
-#print(foo[:4] + " " + foo[4:])
-
-#print(findDassign(foo))
+foo = "hola x,y = 2,3; hola z,x=5,6;"
+print(findDassign(foo))
 
 
 
