@@ -22,16 +22,17 @@ def p_program(p):
     print("program")
 def p_block(p):
     '''block : assignmentList function'''
-    #print("block")
+    print("block")
 
 def p_assignmentList(p):
-    '''assignmentList : ID ASSIGN term SEMICOLON block
+    '''assignmentList : ID ASSIGN term SEMICOLON
+                      | assignmentList ID ASSIGN term SEMICOLON
     | empty'''
     print("Assignment")
 def p_function(p):
     '''function : type
                 | empty'''
-
+    print("Function")
 def p_term(p):
     '''term : factor
             | TRUE
@@ -42,11 +43,16 @@ def p_factor(p):
     """factor : INT
               | ID"""
 def p_type(p):
-    '''type : TYPE LPARENT ID RPARENT SEMICOLON'''
-    print("Caso TYPE")
-
+    '''type : TYPE LPARENT types RPARENT SEMICOLON'''
+    print("type")
+def p_types(p):
+    """types : ID
+             | TRUE
+             | FALSE
+             | INT"""
 def p_empty(p):
     'empty : '
+    print("Empty")
     pass
 
 def p_error(p):
@@ -60,6 +66,6 @@ test = '/home/dcamachog1501/Induced_Desktop/Test'
 fp = codecs.open(test, "r", "utf-8")
 chain = fp.read()
 parser = yacc.yacc('SLR')
-tv(chain)
+#tv(chain)
 result = parser.parse(chain)
 print(result)
