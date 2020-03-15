@@ -8,7 +8,7 @@ import sys
 
 tokens = ['ID', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE','DIVENT','MOD','EXP', 'ASSIGN', 'COMMA', 'SEMMICOLOM',
           'LT', 'GT', 'LTE', 'GTE', 'NE', 'LPARENT', 'RPARENT', 'DOT', 'INT', 'LENGHTERROR', 'BOOKED',
-          'PARENTCL', 'PARENTCR']
+          'PARENTCL', 'PARENTCR', 'LCORCH', 'RCORCH']
 
 reserved = {'if': 'IF',
             'else': 'ELSE',
@@ -41,6 +41,8 @@ t_DOT = r'\.'
 t_PARENTCL = '\['
 t_PARENTCR = '\]'
 t_NE = '!='
+t_LCORCH = '\{'
+t_RCORCH = '\}'
 
 # Prueba para doble asignacion
 # idd = r'[a-zA-Z@&_][a-zA-Z0-9_]*'
@@ -55,8 +57,10 @@ def t_ID(t):
     r"""[a-z][a-zA-Z0-9_]*"""
     if len(t.value)>10:
         t.type = "LENGHTERROR"
-
+    elif t.value in reserved:
+        t.type = reserved[t.value]
         # t.value = (t.value,symbol_lookup(t.value)) Para devolver el valor a la tabla de signos
+
     else:
         t.type = "ID"
     return t
@@ -143,6 +147,24 @@ def findDassign(data):
         cont += 1
     return transformData(data.split(","))
 
+
+# Atributos del objeto LexToken
+# .value .type .lexpos
+
+path = "C:/Users/Usuario/Desktop/IS2020/CompiladoresLenguajes/Proyect/Tests/test1.pl0"
+#file = findFile(path)
+#file = input("Enter File Name: ")
+test = path
+fp = codecs.open(test, "r" , "utf-8")
+text = fp.read()
+fp.close()
+
+# TODO falta corregir si las variables y los números son más largos (usar algun separador y luego usar dentro de la
+#  TODO funcion transform otro split con el separador utilizado en findassign)
+# foo = "hola x,var1 = 2,32; hola z,x = 5,6;"
+# print(findDassign(foo))
+
+
 # TODO Verificar que siempre se usen parentesis en las operaciones
 lexer = lex.lex()
 data1 = """var = 5;"""
@@ -152,8 +174,9 @@ data4 = "type(a)"
 data5 = "global var = 1; global var2 = True"
 data6 = "var1 != var2"
 data7 = "list = [True,False]"
-data8 = "x,y = 3,4;"
-lexer.input(findDassign(data8))
+data8 = "x,y = 3,41;"
+lex.input(text)
+# lexer.input(findDassign(text)) # Arreglar funcion de doble asignación
 
 while 1:
 
@@ -165,13 +188,7 @@ while 1:
         break
     print(tok)
 
-# Atributos del objeto LexToken
-# .value .type .lexpos
 
-
-foo = "hola x,y = 2,3; hola z,x=5,6;"
-print(findDassign(foo))
-
-
+# TODO crear funciones para manejo de archivos para luego incorporarlo al ide
 
 
