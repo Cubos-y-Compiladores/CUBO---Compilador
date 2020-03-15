@@ -1,0 +1,321 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    BOOKED
+    COMMA
+    CONST
+    DIVENT
+    DIVIDE
+    DOT
+    ELSE
+    EXP
+    FOR
+    GLOBAL
+    GT
+    GTE
+    IF
+    LENGHTERROR
+    LT
+    LTE
+    MINUS
+    MOD
+    NE
+    PLUS
+    PROCEDURE
+    TIMES
+    WHILE
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> block
+Rule 2     block -> assignmentList function
+Rule 3     assignmentList -> ID ASSIGN term SEMICOLON block
+Rule 4     assignmentList -> empty
+Rule 5     function -> type
+Rule 6     function -> empty
+Rule 7     term -> factor
+Rule 8     term -> TRUE
+Rule 9     term -> FALSE
+Rule 10    term -> empty
+Rule 11    factor -> INT
+Rule 12    factor -> ID
+Rule 13    type -> TYPE LPARENT ID RPARENT SEMICOLON
+Rule 14    empty -> <empty>
+
+Terminals, with rules where they appear
+
+ASSIGN               : 3
+BOOKED               : 
+COMMA                : 
+CONST                : 
+DIVENT               : 
+DIVIDE               : 
+DOT                  : 
+ELSE                 : 
+EXP                  : 
+FALSE                : 9
+FOR                  : 
+GLOBAL               : 
+GT                   : 
+GTE                  : 
+ID                   : 3 12 13
+IF                   : 
+INT                  : 11
+LENGHTERROR          : 
+LPARENT              : 13
+LT                   : 
+LTE                  : 
+MINUS                : 
+MOD                  : 
+NE                   : 
+PLUS                 : 
+PROCEDURE            : 
+RPARENT              : 13
+SEMICOLON            : 3 13
+TIMES                : 
+TRUE                 : 8
+TYPE                 : 13
+WHILE                : 
+error                : 
+
+Nonterminals, with rules where they appear
+
+assignmentList       : 2
+block                : 1 3
+empty                : 4 6 10
+factor               : 7
+function             : 2
+program              : 0
+term                 : 3
+type                 : 5
+
+Parsing method: SLR
+
+state 0
+
+    (0) S' -> . program
+    (1) program -> . block
+    (2) block -> . assignmentList function
+    (3) assignmentList -> . ID ASSIGN term SEMICOLON block
+    (4) assignmentList -> . empty
+    (14) empty -> .
+
+    ID              shift and go to state 4
+    TYPE            reduce using rule 14 (empty -> .)
+    $end            reduce using rule 14 (empty -> .)
+    SEMICOLON       reduce using rule 14 (empty -> .)
+
+    program                        shift and go to state 1
+    block                          shift and go to state 2
+    assignmentList                 shift and go to state 3
+    empty                          shift and go to state 5
+
+state 1
+
+    (0) S' -> program .
+
+
+
+state 2
+
+    (1) program -> block .
+
+    $end            reduce using rule 1 (program -> block .)
+
+
+state 3
+
+    (2) block -> assignmentList . function
+    (5) function -> . type
+    (6) function -> . empty
+    (13) type -> . TYPE LPARENT ID RPARENT SEMICOLON
+    (14) empty -> .
+
+  ! shift/reduce conflict for TYPE resolved as shift
+    TYPE            shift and go to state 9
+    $end            reduce using rule 14 (empty -> .)
+    SEMICOLON       reduce using rule 14 (empty -> .)
+
+  ! TYPE            [ reduce using rule 14 (empty -> .) ]
+
+    function                       shift and go to state 6
+    type                           shift and go to state 7
+    empty                          shift and go to state 8
+
+state 4
+
+    (3) assignmentList -> ID . ASSIGN term SEMICOLON block
+
+    ASSIGN          shift and go to state 10
+
+
+state 5
+
+    (4) assignmentList -> empty .
+
+    TYPE            reduce using rule 4 (assignmentList -> empty .)
+    $end            reduce using rule 4 (assignmentList -> empty .)
+
+
+state 6
+
+    (2) block -> assignmentList function .
+
+    $end            reduce using rule 2 (block -> assignmentList function .)
+    TYPE            reduce using rule 2 (block -> assignmentList function .)
+
+
+state 7
+
+    (5) function -> type .
+
+    $end            reduce using rule 5 (function -> type .)
+    TYPE            reduce using rule 5 (function -> type .)
+
+
+state 8
+
+    (6) function -> empty .
+
+    $end            reduce using rule 6 (function -> empty .)
+    TYPE            reduce using rule 6 (function -> empty .)
+
+
+state 9
+
+    (13) type -> TYPE . LPARENT ID RPARENT SEMICOLON
+
+    LPARENT         shift and go to state 11
+
+
+state 10
+
+    (3) assignmentList -> ID ASSIGN . term SEMICOLON block
+    (7) term -> . factor
+    (8) term -> . TRUE
+    (9) term -> . FALSE
+    (10) term -> . empty
+    (11) factor -> . INT
+    (12) factor -> . ID
+    (14) empty -> .
+
+    TRUE            shift and go to state 15
+    FALSE           shift and go to state 16
+    INT             shift and go to state 18
+    ID              shift and go to state 12
+    TYPE            reduce using rule 14 (empty -> .)
+    $end            reduce using rule 14 (empty -> .)
+    SEMICOLON       reduce using rule 14 (empty -> .)
+
+    term                           shift and go to state 13
+    factor                         shift and go to state 14
+    empty                          shift and go to state 17
+
+state 11
+
+    (13) type -> TYPE LPARENT . ID RPARENT SEMICOLON
+
+    ID              shift and go to state 19
+
+
+state 12
+
+    (12) factor -> ID .
+
+    SEMICOLON       reduce using rule 12 (factor -> ID .)
+
+
+state 13
+
+    (3) assignmentList -> ID ASSIGN term . SEMICOLON block
+
+    SEMICOLON       shift and go to state 20
+
+
+state 14
+
+    (7) term -> factor .
+
+    SEMICOLON       reduce using rule 7 (term -> factor .)
+
+
+state 15
+
+    (8) term -> TRUE .
+
+    SEMICOLON       reduce using rule 8 (term -> TRUE .)
+
+
+state 16
+
+    (9) term -> FALSE .
+
+    SEMICOLON       reduce using rule 9 (term -> FALSE .)
+
+
+state 17
+
+    (10) term -> empty .
+
+    SEMICOLON       reduce using rule 10 (term -> empty .)
+
+
+state 18
+
+    (11) factor -> INT .
+
+    SEMICOLON       reduce using rule 11 (factor -> INT .)
+
+
+state 19
+
+    (13) type -> TYPE LPARENT ID . RPARENT SEMICOLON
+
+    RPARENT         shift and go to state 21
+
+
+state 20
+
+    (3) assignmentList -> ID ASSIGN term SEMICOLON . block
+    (2) block -> . assignmentList function
+    (3) assignmentList -> . ID ASSIGN term SEMICOLON block
+    (4) assignmentList -> . empty
+    (14) empty -> .
+
+    ID              shift and go to state 4
+    TYPE            reduce using rule 14 (empty -> .)
+    $end            reduce using rule 14 (empty -> .)
+    SEMICOLON       reduce using rule 14 (empty -> .)
+
+    block                          shift and go to state 22
+    assignmentList                 shift and go to state 3
+    empty                          shift and go to state 5
+
+state 21
+
+    (13) type -> TYPE LPARENT ID RPARENT . SEMICOLON
+
+    SEMICOLON       shift and go to state 23
+
+
+state 22
+
+    (3) assignmentList -> ID ASSIGN term SEMICOLON block .
+
+    TYPE            reduce using rule 3 (assignmentList -> ID ASSIGN term SEMICOLON block .)
+    $end            reduce using rule 3 (assignmentList -> ID ASSIGN term SEMICOLON block .)
+
+
+state 23
+
+    (13) type -> TYPE LPARENT ID RPARENT SEMICOLON .
+
+    $end            reduce using rule 13 (type -> TYPE LPARENT ID RPARENT SEMICOLON .)
+    TYPE            reduce using rule 13 (type -> TYPE LPARENT ID RPARENT SEMICOLON .)
+
+WARNING: 
+WARNING: Conflicts:
+WARNING: 
+WARNING: shift/reduce conflict for TYPE in state 3 resolved as shift

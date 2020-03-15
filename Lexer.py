@@ -26,8 +26,8 @@ import sys
     DIVENT: Divicion entera
     EXP: Exponente
 '''
-tokens = ['ID', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE','DIVENT','MOD','EXP', 'ASSIGN', 'COMMA', 'SEMMICOLOM',
-          'LT', 'GT', 'LTE', 'GTE', 'LPARENT', 'RPARENT', 'DOT', 'INT', 'LENGHTERROR','BOOKED']
+tokens = ['ID', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE','DIVENT','MOD','EXP', 'ASSIGN', 'COMMA', 'SEMICOLON',
+          'LT', 'GT', 'LTE', 'GTE','NE', 'LPARENT', 'RPARENT', 'DOT', 'INT', 'LENGHTERROR','BOOKED']
 
 reserved = {'if': 'IF',
             'else': 'ELSE',
@@ -55,7 +55,7 @@ t_GTE = r'>='
 t_LPARENT = r'\('
 t_RPARENT = r'\)'
 t_COMMA = r','
-t_SEMMICOLOM = r';'
+t_SEMICOLON = r';'
 t_DOT = r'\.'
 
 # Prueba para doble asignacion
@@ -112,29 +112,22 @@ def t_COMMENT(t):
 
 
 # TODO Verificar que siempre se usen parentesis en las operaciones
+test = '/home/dcamachog1501/Induced_Desktop/Test'
+fp = codecs.open(test, "r", "utf-8")
+chain = fp.read()
 lexer = lex.lex()
-data1 = """var = 5;"""
-data2 = "Var = 5;"
-data3 = "a,b = 3,4"
-data4 = "type(a)"
-data5 = "global var = 1; global var2 = True"
-lexer.input(data5)
-
-while 1:
-
-    tok = lexer.token()
-    if errorFlag:
-        print("Error de entrada en el token", tok)
-        errorFlag = not errorFlag
-    if not tok:
-        break
-    print(tok)
 
 # Atributos del objeto LexToken
 # .value .type .lexpos
 
 # Funcion que se aplica antes de analizar cualquier texto, para preparar las asignaciones multiples
-
+def tokenViewer(chain):
+    lexer.input(chain)
+    while 1:
+        tok = lexer.token()
+        if not tok:
+            break
+        print(tok)
 # TODO para que funcione no pueden haber espacios entre las comas 3, 3 => error
 def findDassign(data):
     cont = 0
@@ -152,13 +145,6 @@ def findDassign(data):
         cont+=1
 
     return temp2.split(",")
-
-foo = "hola x,y = 2,3"
-foo.replace(4,"@")
-print(foo)
-#print(foo[:4] + " " + foo[4:])
-
-#print(findDassign(foo))
 
 
 

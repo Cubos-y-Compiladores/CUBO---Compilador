@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b9600c85-1740-47ca-81df-fb5b3a221277" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/Usuario.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/Usuario.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+    <list default="true" id="1e9e2b3f-ca34-4a14-9037-f009b17016ef" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Lexer.py" beforeDir="false" afterPath="$PROJECT_DIR$/Lexer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/Parser.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,15 +36,15 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="settings.editor.selected.configurable" value="Errors" />
+    <property name="last_opened_file_path" value="$USER_HOME$/Escritorio/Ejemplo/Compilador_PL0/analizador version 3/src/analizadorSintactico.py" />
+    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors.Color Scheme Font" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Usuario\Desktop\IS2020\CompiladoresLenguajes\Proyect" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.Parser">
     <configuration name="Lexer" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Proyect" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -67,6 +66,53 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="Parser" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="Proyect" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="/usr/bin/python3.6" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Parser.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="Unnamed" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="Proyect" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="/usr/bin/python3.6" />
+      <option name="WORKING_DIRECTORY" value="$USER_HOME$/Escritorio/Ejemplo/Compilador_PL0/analizador version 3/src" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$USER_HOME$/Escritorio/Ejemplo/Compilador_PL0/analizador version 3/src/analizadorSintactico.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.Parser" />
+      <item itemvalue="Python.Unnamed" />
+      <item itemvalue="Python.Lexer" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Python.Lexer" />
@@ -78,7 +124,7 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="b9600c85-1740-47ca-81df-fb5b3a221277" name="Default Changelist" comment="" />
+      <changelist id="1e9e2b3f-ca34-4a14-9037-f009b17016ef" name="Default Changelist" comment="" />
       <created>1583733677300</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -92,63 +138,116 @@
     </state>
     <state x="451" y="92" key="#Lexer/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1584226768237" />
     <state x="634" y="158" width="642" height="797" key="#Lexer/0.27.1920.1053@0.27.1920.1053" timestamp="1584222520794" />
+    <state x="836" y="211" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1584292106143">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="836" y="211" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.27.1920.1053@0.27.1920.1053" timestamp="1584292106143" />
     <state x="454" y="172" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1583733907820">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
     <state x="454" y="172" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1583733907820" />
-    <state x="556" y="139" key="FileChooserDialogImpl" timestamp="1584227221297">
-      <screen x="0" y="0" width="1366" height="738" />
+    <state x="781" y="225" width="424" height="491" key="FileChooserDialogImpl" timestamp="1584292086730">
+      <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="556" y="139" key="FileChooserDialogImpl/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1584227221297" />
-    <state width="1345" height="182" key="GridCell.Tab.0.bottom" timestamp="1584241447955">
-      <screen x="0" y="0" width="1366" height="738" />
+    <state x="781" y="225" width="424" height="491" key="FileChooserDialogImpl/0.27.1920.1053@0.27.1920.1053" timestamp="1584292086730" />
+    <state width="937" height="275" key="GridCell.Tab.0.bottom" timestamp="1584303691928">
+      <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state width="1899" height="182" key="GridCell.Tab.0.bottom/0.0.1366.738/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1584161971399" />
     <state width="1345" height="182" key="GridCell.Tab.0.bottom/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1584241447955" />
-    <state width="1897" height="275" key="GridCell.Tab.0.bottom/0.27.1920.1053@0.27.1920.1053" timestamp="1584225031056" />
-    <state width="1345" height="182" key="GridCell.Tab.0.center" timestamp="1584241447955">
-      <screen x="0" y="0" width="1366" height="738" />
+    <state width="937" height="275" key="GridCell.Tab.0.bottom/0.27.1920.1053@0.27.1920.1053" timestamp="1584303691928" />
+    <state width="937" height="275" key="GridCell.Tab.0.center" timestamp="1584303691926">
+      <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state width="1899" height="182" key="GridCell.Tab.0.center/0.0.1366.738/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1584161971399" />
     <state width="1345" height="182" key="GridCell.Tab.0.center/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1584241447955" />
-    <state width="1897" height="275" key="GridCell.Tab.0.center/0.27.1920.1053@0.27.1920.1053" timestamp="1584225031055" />
-    <state width="1345" height="182" key="GridCell.Tab.0.left" timestamp="1584241447954">
-      <screen x="0" y="0" width="1366" height="738" />
+    <state width="937" height="275" key="GridCell.Tab.0.center/0.27.1920.1053@0.27.1920.1053" timestamp="1584303691926" />
+    <state width="937" height="275" key="GridCell.Tab.0.left" timestamp="1584303691925">
+      <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state width="1899" height="182" key="GridCell.Tab.0.left/0.0.1366.738/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1584161971398" />
     <state width="1345" height="182" key="GridCell.Tab.0.left/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1584241447954" />
-    <state width="1897" height="275" key="GridCell.Tab.0.left/0.27.1920.1053@0.27.1920.1053" timestamp="1584225031054" />
-    <state width="1345" height="182" key="GridCell.Tab.0.right" timestamp="1584241447955">
-      <screen x="0" y="0" width="1366" height="738" />
+    <state width="937" height="275" key="GridCell.Tab.0.left/0.27.1920.1053@0.27.1920.1053" timestamp="1584303691925" />
+    <state width="937" height="275" key="GridCell.Tab.0.right" timestamp="1584303691927">
+      <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state width="1899" height="182" key="GridCell.Tab.0.right/0.0.1366.738/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1584161971399" />
     <state width="1345" height="182" key="GridCell.Tab.0.right/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1584241447955" />
-    <state width="1897" height="275" key="GridCell.Tab.0.right/0.27.1920.1053@0.27.1920.1053" timestamp="1584225031055" />
-    <state width="1345" height="227" key="GridCell.Tab.1.bottom" timestamp="1584231663804">
-      <screen x="0" y="0" width="1366" height="738" />
+    <state width="937" height="275" key="GridCell.Tab.0.right/0.27.1920.1053@0.27.1920.1053" timestamp="1584303691927" />
+    <state width="1897" height="340" key="GridCell.Tab.1.bottom" timestamp="1584296174710">
+      <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state width="1345" height="227" key="GridCell.Tab.1.bottom/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1584231663804" />
-    <state width="1345" height="227" key="GridCell.Tab.1.center" timestamp="1584231663804">
-      <screen x="0" y="0" width="1366" height="738" />
+    <state width="1897" height="340" key="GridCell.Tab.1.bottom/0.27.1920.1053@0.27.1920.1053" timestamp="1584296174710" />
+    <state width="1897" height="340" key="GridCell.Tab.1.center" timestamp="1584296174709">
+      <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state width="1345" height="227" key="GridCell.Tab.1.center/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1584231663804" />
-    <state width="1345" height="227" key="GridCell.Tab.1.left" timestamp="1584231663803">
-      <screen x="0" y="0" width="1366" height="738" />
+    <state width="1897" height="340" key="GridCell.Tab.1.center/0.27.1920.1053@0.27.1920.1053" timestamp="1584296174709" />
+    <state width="1897" height="340" key="GridCell.Tab.1.left" timestamp="1584296174709">
+      <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state width="1345" height="227" key="GridCell.Tab.1.left/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1584231663803" />
-    <state width="1345" height="227" key="GridCell.Tab.1.right" timestamp="1584231663804">
-      <screen x="0" y="0" width="1366" height="738" />
+    <state width="1897" height="340" key="GridCell.Tab.1.left/0.27.1920.1053@0.27.1920.1053" timestamp="1584296174709" />
+    <state width="1897" height="340" key="GridCell.Tab.1.right" timestamp="1584296174710">
+      <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state width="1345" height="227" key="GridCell.Tab.1.right/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1584231663804" />
-    <state x="319" y="30" width="916" height="708" key="SettingsEditor" timestamp="1584231555035">
-      <screen x="0" y="0" width="1366" height="738" />
+    <state width="1897" height="340" key="GridCell.Tab.1.right/0.27.1920.1053@0.27.1920.1053" timestamp="1584296174710" />
+    <state x="182" y="121" width="1536" height="879" key="MergeDialog" timestamp="1584242156117">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="182" y="121" width="1536" height="879" key="MergeDialog/0.27.1920.1053@0.27.1920.1053" timestamp="1584242156117" />
+    <state x="665" y="271" width="580" height="571" key="MultipleFileMergeDialog" timestamp="1584242158220">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="665" y="271" width="580" height="571" key="MultipleFileMergeDialog/0.27.1920.1053@0.27.1920.1053" timestamp="1584242158220" />
+    <state x="449" y="188" width="916" height="708" key="SettingsEditor" timestamp="1584249832864">
+      <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="319" y="30" width="916" height="708" key="SettingsEditor/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1584231555035" />
-    <state x="449" y="188" width="1022" height="737" key="SettingsEditor/0.27.1920.1053@0.27.1920.1053" timestamp="1584222763364" />
+    <state x="449" y="188" width="1022" height="737" key="SettingsEditor/0.27.1920.1053@0.27.1920.1053" timestamp="1584249832864" />
     <state x="540" y="302" key="com.intellij.ide.util.TipDialog" timestamp="1584222249757">
       <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="384" y="193" key="com.intellij.ide.util.TipDialog/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1583733733481" />
     <state x="540" y="302" key="com.intellij.ide.util.TipDialog/0.27.1920.1053@0.27.1920.1053" timestamp="1584222249757" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Parser.py</url>
+          <line>58</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Parser.py</url>
+          <line>21</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Parser.py</url>
+          <line>24</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Parser.py</url>
+          <line>29</line>
+          <option name="timeStamp" value="11" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Parser.py</url>
+          <line>42</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Parser.py</url>
+          <line>49</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
