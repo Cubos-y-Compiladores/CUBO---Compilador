@@ -4,11 +4,11 @@
 # pylint: disable=W,C,R
 _tabversion = '3.10'
 
-_lr_method = 'SLR'
+_lr_method = 'LALR'
 
-_lr_signature = 'rightIDrightASSIGNleftLTLTEGTGTEleftPLUSMINUSleftMODDIVENTTIMESDIVIDEleftEXPleftLPARENTRPARENTASSIGN BLINK BOOKED COMMA CONST DELETE DIVENT DIVIDE DOT ELSE EXP F FALSE FOR GLOBAL GT GTE ID IF INSERT INT LCORCH LEN LENGHTERROR LPARENT LT LTE MINUS MOD NE NEG PARENTCL PARENTCR PLUS PROCEDURE RANGE RCORCH RPARENT SEMICOLON T TIMES TP TRUE TYPE VARERROR WHILEprogram : blockblock : assignmentList functionassignmentList : ID ASSIGN term SEMICOLON\n                      | assignmentList ID ASSIGN term SEMICOLON\n    | emptyfunction : type\n                | emptyterm : factor\n            | TRUE\n            | FALSE\n            | emptyfactor : INT\n              | IDtype : TYPE LPARENT types RPARENT SEMICOLONtypes : ID\n             | TRUE\n             | FALSE\n             | INTempty : '
+_lr_signature = 'rightIDrightASSIGNleftLTLTEGTGTEleftPLUSMINUSleftMODDIVENTTIMESDIVIDEleftEXPleftLPARENTRPARENTASSIGN BLINK BOOKED COMMA CONST DELETE DIVENT DIVIDE DOT ELSE EXP F FALSE FOR GLOBAL GT GTE ID IF INSERT INT LCORCH LEN LENGHTERROR LPARENT LT LTE MINUS MOD NE NEG PARENTCL PARENTCR PLUS PROCEDURE RANGE RCORCH RPARENT SEMICOLON T TIMES TP TRUE TYPE VARERROR WHILEprogram : blockblock : simpleAssignment functionsimpleAssignment : simpleAssignment ID ASSIGN term SEMICOLONsimpleAssignment : ID ASSIGN term SEMICOLONsimpleAssignment : emptyfunction : typefunction : emptytype : TYPE LPARENT ID RPARENT SEMICOLONterm : TRUEterm : FALSEterm : factorfactor : IDfactor : INTempty : '
     
-_lr_action_items = {'ID':([0,3,5,11,12,13,27,28,],[4,7,-5,14,14,23,-3,-4,]),'TYPE':([0,3,5,11,12,27,28,],[-19,10,-5,-19,-19,-3,-4,]),'$end':([0,1,2,3,5,6,8,9,11,12,27,28,30,],[-19,0,-1,-19,-5,-2,-6,-7,-19,-19,-3,-4,-14,]),'SEMICOLON':([0,3,11,12,14,15,16,17,18,19,20,21,29,],[-19,-19,-19,-19,-13,27,-8,-9,-10,-11,-12,28,30,]),'ASSIGN':([4,7,],[11,12,]),'LPARENT':([10,],[13,]),'TRUE':([11,12,13,],[17,17,24,]),'FALSE':([11,12,13,],[18,18,25,]),'INT':([11,12,13,],[20,20,26,]),'RPARENT':([22,23,24,25,26,],[29,-15,-16,-17,-18,]),}
+_lr_action_items = {'ID':([0,3,5,11,12,13,22,23,],[4,7,-5,14,14,21,-4,-3,]),'TYPE':([0,3,5,22,23,],[-14,10,-5,-4,-3,]),'$end':([0,1,2,3,5,6,8,9,22,23,25,],[-14,0,-1,-14,-5,-2,-6,-7,-4,-3,-8,]),'ASSIGN':([4,7,],[11,12,]),'LPARENT':([10,],[13,]),'TRUE':([11,12,],[16,16,]),'FALSE':([11,12,],[17,17,]),'INT':([11,12,],[19,19,]),'SEMICOLON':([14,15,16,17,18,19,20,24,],[-12,22,-9,-10,-11,-13,23,25,]),'RPARENT':([21,],[24,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'program':([0,],[1,]),'block':([0,],[2,]),'assignmentList':([0,],[3,]),'empty':([0,3,11,12,],[5,9,19,19,]),'function':([3,],[6,]),'type':([3,],[8,]),'term':([11,12,],[15,21,]),'factor':([11,12,],[16,16,]),'types':([13,],[22,]),}
+_lr_goto_items = {'program':([0,],[1,]),'block':([0,],[2,]),'simpleAssignment':([0,],[3,]),'empty':([0,3,],[5,9,]),'function':([3,],[6,]),'type':([3,],[8,]),'term':([11,12,],[15,20,]),'factor':([11,12,],[18,18,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -28,22 +28,17 @@ del _lr_goto_items
 _lr_productions = [
   ("S' -> program","S'",1,None,None,None),
   ('program -> block','program',1,'p_program','Parser.py',21),
-  ('block -> assignmentList function','block',2,'p_block','Parser.py',24),
-  ('assignmentList -> ID ASSIGN term SEMICOLON','assignmentList',4,'p_assignmentList','Parser.py',28),
-  ('assignmentList -> assignmentList ID ASSIGN term SEMICOLON','assignmentList',5,'p_assignmentList','Parser.py',29),
-  ('assignmentList -> empty','assignmentList',1,'p_assignmentList','Parser.py',30),
-  ('function -> type','function',1,'p_function','Parser.py',33),
-  ('function -> empty','function',1,'p_function','Parser.py',34),
-  ('term -> factor','term',1,'p_term','Parser.py',37),
-  ('term -> TRUE','term',1,'p_term','Parser.py',38),
-  ('term -> FALSE','term',1,'p_term','Parser.py',39),
-  ('term -> empty','term',1,'p_term','Parser.py',40),
-  ('factor -> INT','factor',1,'p_factor','Parser.py',43),
-  ('factor -> ID','factor',1,'p_factor','Parser.py',44),
-  ('type -> TYPE LPARENT types RPARENT SEMICOLON','type',5,'p_type','Parser.py',46),
-  ('types -> ID','types',1,'p_types','Parser.py',49),
-  ('types -> TRUE','types',1,'p_types','Parser.py',50),
-  ('types -> FALSE','types',1,'p_types','Parser.py',51),
-  ('types -> INT','types',1,'p_types','Parser.py',52),
-  ('empty -> <empty>','empty',0,'p_empty','Parser.py',54),
+  ('block -> simpleAssignment function','block',2,'p_block','Parser.py',25),
+  ('simpleAssignment -> simpleAssignment ID ASSIGN term SEMICOLON','simpleAssignment',5,'p_simpleAssignment0','Parser.py',29),
+  ('simpleAssignment -> ID ASSIGN term SEMICOLON','simpleAssignment',4,'p_simpleAssignment1','Parser.py',33),
+  ('simpleAssignment -> empty','simpleAssignment',1,'p_simpleAssignmentEmp','Parser.py',40),
+  ('function -> type','function',1,'p_function0','Parser.py',43),
+  ('function -> empty','function',1,'p_functionEmp','Parser.py',50),
+  ('type -> TYPE LPARENT ID RPARENT SEMICOLON','type',5,'p_type','Parser.py',53),
+  ('term -> TRUE','term',1,'p_term0','Parser.py',57),
+  ('term -> FALSE','term',1,'p_term1','Parser.py',61),
+  ('term -> factor','term',1,'p_term2','Parser.py',65),
+  ('factor -> ID','factor',1,'p_factor0','Parser.py',69),
+  ('factor -> INT','factor',1,'p_factor1','Parser.py',73),
+  ('empty -> <empty>','empty',0,'p_empty','Parser.py',77),
 ]

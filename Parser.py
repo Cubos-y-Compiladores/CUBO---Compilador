@@ -10,7 +10,7 @@ from sys import stdin
 
 precedence = (
     ('right','ID'),
-    ('right', 'ASSIGN'),
+    ('right','ASSIGN'),
     ('left', 'LT', 'LTE', 'GT', 'GTE'),
     ('left', 'PLUS', 'MINUS'),
     ('left', 'MOD', 'DIVENT', 'TIMES', 'DIVIDE'),
@@ -20,36 +20,53 @@ precedence = (
 def p_program(p):
     '''program : block'''
     print("program")
+
 def p_block(p):
-    '''block : assignmentList function'''
+    '''block : simpleAssignment function'''
     print("block")
 
-def p_assignmentList(p):
-    '''assignmentList : ID ASSIGN term SEMICOLON
-                      | assignmentList ID ASSIGN term SEMICOLON
-    | empty'''
-    print("Assignment")
-def p_function(p):
-    '''function : type
-                | empty'''
-    print("Function")
-def p_term(p):
-    '''term : factor
-            | TRUE
-            | FALSE
-            | empty'''
-    print(p[1])
-def p_factor(p):
-    """factor : INT
-              | ID"""
+def p_simpleAssignment0(p):
+    '''simpleAssignment : simpleAssignment ID ASSIGN term SEMICOLON'''
+    print("simpleAssignment0")
+
+def p_simpleAssignment1(p):
+    '''simpleAssignment : ID ASSIGN term SEMICOLON'''
+    print("simpleAssignment1")z
+
+def p_simpleAssignmentEmp(p):
+    '''simpleAssignment : empty'''
+
+def p_function0(p):
+    '''function : type'''
+    print("function0")
+
+def p_functionEmp(p):
+    '''function : empty'''
+
 def p_type(p):
-    '''type : TYPE LPARENT types RPARENT SEMICOLON'''
+    '''type : TYPE LPARENT ID RPARENT SEMICOLON'''
     print("type")
-def p_types(p):
-    """types : ID
-             | TRUE
-             | FALSE
-             | INT"""
+
+def p_term0(p):
+    '''term : TRUE'''
+    print("term0")
+
+def p_term1(p):
+    '''term : FALSE'''
+    print("term1")
+
+def p_term2(p):
+    '''term : factor'''
+    print("term2")
+
+def p_factor0(p):
+    '''factor : ID'''
+    print("factor0")
+
+def p_factor1(p):
+    """factor : INT"""
+    print("factor1")
+
 def p_empty(p):
     'empty : '
     print("Empty")
@@ -65,7 +82,7 @@ def p_error(p):
 test = '/home/dcamachog1501/Induced_Desktop/Test'
 fp = codecs.open(test, "r", "utf-8")
 chain = fp.read()
-parser = yacc.yacc('SLR')
+parser = yacc.yacc()
 #tv(chain)
 result = parser.parse(chain)
 print(result)
