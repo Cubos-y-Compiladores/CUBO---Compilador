@@ -53,7 +53,7 @@ reserved = {'if': 'IF',
 
 tokens = tokens + list(reserved.values())
 
-t_ignore = '\n\t ' # t_ignore es usado para ignorar todos los caracteres dentro de esta lista
+t_ignore = '\t ' # t_ignore es usado para ignorar todos los caracteres dentro de esta lista
 t_PLUS = r'\+'
 t_MINUS = r'\-'
 t_TIMES = r'\*'
