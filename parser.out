@@ -4,7 +4,6 @@ Unused terminals:
 
     BLINK
     BOOKED
-    COMMA
     CONST
     DELETE
     DIVENT
@@ -44,25 +43,28 @@ Grammar
 
 Rule 0     S' -> program
 Rule 1     program -> statement
-Rule 2     statement -> simpleAssignment function
-Rule 3     simpleAssignment -> ID ASSIGN term SEMICOLON statement
-Rule 4     simpleAssignment -> empty
-Rule 5     function -> type statement
-Rule 6     function -> empty
-Rule 7     type -> TYPE LPARENT ID RPARENT SEMICOLON
-Rule 8     term -> FALSE
-Rule 9     term -> TRUE
-Rule 10    term -> factor
-Rule 11    factor -> ID
-Rule 12    factor -> INT
-Rule 13    empty -> <empty>
+Rule 2     statement -> assignment function
+Rule 3     assignment -> simpleAssignment doubleAssignment
+Rule 4     simpleAssignment -> ID ASSIGN term SEMICOLON statement
+Rule 5     simpleAssignment -> empty
+Rule 6     doubleAssignment -> ID COMMA ID ASSIGN term COMMA term SEMICOLON statement
+Rule 7     doubleAssignment -> empty
+Rule 8     function -> type
+Rule 9     function -> empty
+Rule 10    type -> TYPE LPARENT ID RPARENT SEMICOLON statement
+Rule 11    term -> FALSE
+Rule 12    term -> TRUE
+Rule 13    term -> factor
+Rule 14    factor -> ID
+Rule 15    factor -> INT
+Rule 16    empty -> <empty>
 
 Terminals, with rules where they appear
 
-ASSIGN               : 3
+ASSIGN               : 4 6
 BLINK                : 
 BOOKED               : 
-COMMA                : 
+COMMA                : 6 6
 CONST                : 
 DELETE               : 
 DIVENT               : 
@@ -71,19 +73,19 @@ DOT                  :
 ELSE                 : 
 EXP                  : 
 F                    : 
-FALSE                : 8
+FALSE                : 11
 FOR                  : 
 GLOBAL               : 
 GT                   : 
 GTE                  : 
-ID                   : 3 7 11
+ID                   : 4 6 6 10 14
 IF                   : 
 INSERT               : 
-INT                  : 12
+INT                  : 15
 LCORCH               : 
 LEN                  : 
 LENGHTERROR          : 
-LPARENT              : 7
+LPARENT              : 10
 LT                   : 
 LTE                  : 
 MINUS                : 
@@ -96,47 +98,54 @@ PLUS                 :
 PROCEDURE            : 
 RANGE                : 
 RCORCH               : 
-RPARENT              : 7
-SEMICOLON            : 3 7
+RPARENT              : 10
+SEMICOLON            : 4 6 10
 T                    : 
 TIMES                : 
 TP                   : 
-TRUE                 : 9
-TYPE                 : 7
+TRUE                 : 12
+TYPE                 : 10
 VARERROR             : 
 WHILE                : 
 error                : 
 
 Nonterminals, with rules where they appear
 
-empty                : 4 6
-factor               : 10
+assignment           : 2
+doubleAssignment     : 3
+empty                : 5 7 9
+factor               : 13
 function             : 2
 program              : 0
-simpleAssignment     : 2
-statement            : 1 3 5
-term                 : 3
-type                 : 5
+simpleAssignment     : 3
+statement            : 1 4 6 10
+term                 : 4 6 6
+type                 : 8
 
-Parsing method: LALR
+Parsing method: SLR
 
 state 0
 
     (0) S' -> . program
     (1) program -> . statement
-    (2) statement -> . simpleAssignment function
-    (3) simpleAssignment -> . ID ASSIGN term SEMICOLON statement
-    (4) simpleAssignment -> . empty
-    (13) empty -> .
+    (2) statement -> . assignment function
+    (3) assignment -> . simpleAssignment doubleAssignment
+    (4) simpleAssignment -> . ID ASSIGN term SEMICOLON statement
+    (5) simpleAssignment -> . empty
+    (16) empty -> .
 
-    ID              shift and go to state 4
-    TYPE            reduce using rule 13 (empty -> .)
-    $end            reduce using rule 13 (empty -> .)
+  ! shift/reduce conflict for ID resolved as shift
+    ID              shift and go to state 5
+    TYPE            reduce using rule 16 (empty -> .)
+    $end            reduce using rule 16 (empty -> .)
+
+  ! ID              [ reduce using rule 16 (empty -> .) ]
 
     program                        shift and go to state 1
     statement                      shift and go to state 2
-    simpleAssignment               shift and go to state 3
-    empty                          shift and go to state 5
+    assignment                     shift and go to state 3
+    simpleAssignment               shift and go to state 4
+    empty                          shift and go to state 6
 
 state 1
 
@@ -153,197 +162,357 @@ state 2
 
 state 3
 
-    (2) statement -> simpleAssignment . function
-    (5) function -> . type statement
-    (6) function -> . empty
-    (7) type -> . TYPE LPARENT ID RPARENT SEMICOLON
-    (13) empty -> .
+    (2) statement -> assignment . function
+    (8) function -> . type
+    (9) function -> . empty
+    (10) type -> . TYPE LPARENT ID RPARENT SEMICOLON statement
+    (16) empty -> .
 
   ! shift/reduce conflict for TYPE resolved as shift
-    TYPE            shift and go to state 9
-    $end            reduce using rule 13 (empty -> .)
+    TYPE            shift and go to state 10
+    ID              reduce using rule 16 (empty -> .)
+    $end            reduce using rule 16 (empty -> .)
 
-  ! TYPE            [ reduce using rule 13 (empty -> .) ]
+  ! TYPE            [ reduce using rule 16 (empty -> .) ]
 
-    function                       shift and go to state 6
-    type                           shift and go to state 7
-    empty                          shift and go to state 8
+    function                       shift and go to state 7
+    type                           shift and go to state 8
+    empty                          shift and go to state 9
 
 state 4
 
-    (3) simpleAssignment -> ID . ASSIGN term SEMICOLON statement
+    (3) assignment -> simpleAssignment . doubleAssignment
+    (6) doubleAssignment -> . ID COMMA ID ASSIGN term COMMA term SEMICOLON statement
+    (7) doubleAssignment -> . empty
+    (16) empty -> .
 
-    ASSIGN          shift and go to state 10
+  ! shift/reduce conflict for ID resolved as shift
+    ID              shift and go to state 12
+    TYPE            reduce using rule 16 (empty -> .)
+    $end            reduce using rule 16 (empty -> .)
 
+  ! ID              [ reduce using rule 16 (empty -> .) ]
+
+    doubleAssignment               shift and go to state 11
+    empty                          shift and go to state 13
 
 state 5
 
-    (4) simpleAssignment -> empty .
+    (4) simpleAssignment -> ID . ASSIGN term SEMICOLON statement
 
-    TYPE            reduce using rule 4 (simpleAssignment -> empty .)
-    $end            reduce using rule 4 (simpleAssignment -> empty .)
+    ASSIGN          shift and go to state 14
 
 
 state 6
 
-    (2) statement -> simpleAssignment function .
+    (5) simpleAssignment -> empty .
 
-    $end            reduce using rule 2 (statement -> simpleAssignment function .)
-    TYPE            reduce using rule 2 (statement -> simpleAssignment function .)
+    ID              reduce using rule 5 (simpleAssignment -> empty .)
+    TYPE            reduce using rule 5 (simpleAssignment -> empty .)
+    $end            reduce using rule 5 (simpleAssignment -> empty .)
 
 
 state 7
 
-    (5) function -> type . statement
-    (2) statement -> . simpleAssignment function
-    (3) simpleAssignment -> . ID ASSIGN term SEMICOLON statement
-    (4) simpleAssignment -> . empty
-    (13) empty -> .
+    (2) statement -> assignment function .
 
-    ID              shift and go to state 4
-    $end            reduce using rule 13 (empty -> .)
-    TYPE            reduce using rule 13 (empty -> .)
+    $end            reduce using rule 2 (statement -> assignment function .)
+    ID              reduce using rule 2 (statement -> assignment function .)
+    TYPE            reduce using rule 2 (statement -> assignment function .)
 
-    statement                      shift and go to state 11
-    simpleAssignment               shift and go to state 3
-    empty                          shift and go to state 5
 
 state 8
 
-    (6) function -> empty .
+    (8) function -> type .
 
-    $end            reduce using rule 6 (function -> empty .)
-    TYPE            reduce using rule 6 (function -> empty .)
+    $end            reduce using rule 8 (function -> type .)
+    ID              reduce using rule 8 (function -> type .)
+    TYPE            reduce using rule 8 (function -> type .)
 
 
 state 9
 
-    (7) type -> TYPE . LPARENT ID RPARENT SEMICOLON
+    (9) function -> empty .
 
-    LPARENT         shift and go to state 12
+    $end            reduce using rule 9 (function -> empty .)
+    ID              reduce using rule 9 (function -> empty .)
+    TYPE            reduce using rule 9 (function -> empty .)
 
 
 state 10
 
-    (3) simpleAssignment -> ID ASSIGN . term SEMICOLON statement
-    (8) term -> . FALSE
-    (9) term -> . TRUE
-    (10) term -> . factor
-    (11) factor -> . ID
-    (12) factor -> . INT
+    (10) type -> TYPE . LPARENT ID RPARENT SEMICOLON statement
 
-    FALSE           shift and go to state 15
-    TRUE            shift and go to state 16
-    ID              shift and go to state 13
-    INT             shift and go to state 18
+    LPARENT         shift and go to state 15
 
-    term                           shift and go to state 14
-    factor                         shift and go to state 17
 
 state 11
 
-    (5) function -> type statement .
+    (3) assignment -> simpleAssignment doubleAssignment .
 
-    $end            reduce using rule 5 (function -> type statement .)
-    TYPE            reduce using rule 5 (function -> type statement .)
+    TYPE            reduce using rule 3 (assignment -> simpleAssignment doubleAssignment .)
+    $end            reduce using rule 3 (assignment -> simpleAssignment doubleAssignment .)
+    ID              reduce using rule 3 (assignment -> simpleAssignment doubleAssignment .)
 
 
 state 12
 
-    (7) type -> TYPE LPARENT . ID RPARENT SEMICOLON
+    (6) doubleAssignment -> ID . COMMA ID ASSIGN term COMMA term SEMICOLON statement
 
-    ID              shift and go to state 19
+    COMMA           shift and go to state 16
 
 
 state 13
 
-    (11) factor -> ID .
+    (7) doubleAssignment -> empty .
 
-    SEMICOLON       reduce using rule 11 (factor -> ID .)
+    TYPE            reduce using rule 7 (doubleAssignment -> empty .)
+    $end            reduce using rule 7 (doubleAssignment -> empty .)
+    ID              reduce using rule 7 (doubleAssignment -> empty .)
 
 
 state 14
 
-    (3) simpleAssignment -> ID ASSIGN term . SEMICOLON statement
+    (4) simpleAssignment -> ID ASSIGN . term SEMICOLON statement
+    (11) term -> . FALSE
+    (12) term -> . TRUE
+    (13) term -> . factor
+    (14) factor -> . ID
+    (15) factor -> . INT
 
-    SEMICOLON       shift and go to state 20
+    FALSE           shift and go to state 19
+    TRUE            shift and go to state 20
+    ID              shift and go to state 17
+    INT             shift and go to state 22
 
+    term                           shift and go to state 18
+    factor                         shift and go to state 21
 
 state 15
 
-    (8) term -> FALSE .
+    (10) type -> TYPE LPARENT . ID RPARENT SEMICOLON statement
 
-    SEMICOLON       reduce using rule 8 (term -> FALSE .)
+    ID              shift and go to state 23
 
 
 state 16
 
-    (9) term -> TRUE .
+    (6) doubleAssignment -> ID COMMA . ID ASSIGN term COMMA term SEMICOLON statement
 
-    SEMICOLON       reduce using rule 9 (term -> TRUE .)
+    ID              shift and go to state 24
 
 
 state 17
 
-    (10) term -> factor .
+    (14) factor -> ID .
 
-    SEMICOLON       reduce using rule 10 (term -> factor .)
+    SEMICOLON       reduce using rule 14 (factor -> ID .)
+    COMMA           reduce using rule 14 (factor -> ID .)
 
 
 state 18
 
-    (12) factor -> INT .
+    (4) simpleAssignment -> ID ASSIGN term . SEMICOLON statement
 
-    SEMICOLON       reduce using rule 12 (factor -> INT .)
+    SEMICOLON       shift and go to state 25
 
 
 state 19
 
-    (7) type -> TYPE LPARENT ID . RPARENT SEMICOLON
+    (11) term -> FALSE .
 
-    RPARENT         shift and go to state 21
+    SEMICOLON       reduce using rule 11 (term -> FALSE .)
+    COMMA           reduce using rule 11 (term -> FALSE .)
 
 
 state 20
 
-    (3) simpleAssignment -> ID ASSIGN term SEMICOLON . statement
-    (2) statement -> . simpleAssignment function
-    (3) simpleAssignment -> . ID ASSIGN term SEMICOLON statement
-    (4) simpleAssignment -> . empty
-    (13) empty -> .
+    (12) term -> TRUE .
 
-    ID              shift and go to state 4
-    $end            reduce using rule 13 (empty -> .)
-    TYPE            reduce using rule 13 (empty -> .)
+    SEMICOLON       reduce using rule 12 (term -> TRUE .)
+    COMMA           reduce using rule 12 (term -> TRUE .)
 
-    statement                      shift and go to state 22
-    simpleAssignment               shift and go to state 3
-    empty                          shift and go to state 5
 
 state 21
 
-    (7) type -> TYPE LPARENT ID RPARENT . SEMICOLON
+    (13) term -> factor .
 
-    SEMICOLON       shift and go to state 23
+    SEMICOLON       reduce using rule 13 (term -> factor .)
+    COMMA           reduce using rule 13 (term -> factor .)
 
 
 state 22
 
-    (3) simpleAssignment -> ID ASSIGN term SEMICOLON statement .
+    (15) factor -> INT .
 
-    TYPE            reduce using rule 3 (simpleAssignment -> ID ASSIGN term SEMICOLON statement .)
-    $end            reduce using rule 3 (simpleAssignment -> ID ASSIGN term SEMICOLON statement .)
+    SEMICOLON       reduce using rule 15 (factor -> INT .)
+    COMMA           reduce using rule 15 (factor -> INT .)
 
 
 state 23
 
-    (7) type -> TYPE LPARENT ID RPARENT SEMICOLON .
+    (10) type -> TYPE LPARENT ID . RPARENT SEMICOLON statement
 
-    ID              reduce using rule 7 (type -> TYPE LPARENT ID RPARENT SEMICOLON .)
-    TYPE            reduce using rule 7 (type -> TYPE LPARENT ID RPARENT SEMICOLON .)
-    $end            reduce using rule 7 (type -> TYPE LPARENT ID RPARENT SEMICOLON .)
+    RPARENT         shift and go to state 26
+
+
+state 24
+
+    (6) doubleAssignment -> ID COMMA ID . ASSIGN term COMMA term SEMICOLON statement
+
+    ASSIGN          shift and go to state 27
+
+
+state 25
+
+    (4) simpleAssignment -> ID ASSIGN term SEMICOLON . statement
+    (2) statement -> . assignment function
+    (3) assignment -> . simpleAssignment doubleAssignment
+    (4) simpleAssignment -> . ID ASSIGN term SEMICOLON statement
+    (5) simpleAssignment -> . empty
+    (16) empty -> .
+
+  ! shift/reduce conflict for ID resolved as shift
+    ID              shift and go to state 5
+    TYPE            reduce using rule 16 (empty -> .)
+    $end            reduce using rule 16 (empty -> .)
+
+  ! ID              [ reduce using rule 16 (empty -> .) ]
+
+    statement                      shift and go to state 28
+    assignment                     shift and go to state 3
+    simpleAssignment               shift and go to state 4
+    empty                          shift and go to state 6
+
+state 26
+
+    (10) type -> TYPE LPARENT ID RPARENT . SEMICOLON statement
+
+    SEMICOLON       shift and go to state 29
+
+
+state 27
+
+    (6) doubleAssignment -> ID COMMA ID ASSIGN . term COMMA term SEMICOLON statement
+    (11) term -> . FALSE
+    (12) term -> . TRUE
+    (13) term -> . factor
+    (14) factor -> . ID
+    (15) factor -> . INT
+
+    FALSE           shift and go to state 19
+    TRUE            shift and go to state 20
+    ID              shift and go to state 17
+    INT             shift and go to state 22
+
+    term                           shift and go to state 30
+    factor                         shift and go to state 21
+
+state 28
+
+    (4) simpleAssignment -> ID ASSIGN term SEMICOLON statement .
+
+    ID              reduce using rule 4 (simpleAssignment -> ID ASSIGN term SEMICOLON statement .)
+    TYPE            reduce using rule 4 (simpleAssignment -> ID ASSIGN term SEMICOLON statement .)
+    $end            reduce using rule 4 (simpleAssignment -> ID ASSIGN term SEMICOLON statement .)
+
+
+state 29
+
+    (10) type -> TYPE LPARENT ID RPARENT SEMICOLON . statement
+    (2) statement -> . assignment function
+    (3) assignment -> . simpleAssignment doubleAssignment
+    (4) simpleAssignment -> . ID ASSIGN term SEMICOLON statement
+    (5) simpleAssignment -> . empty
+    (16) empty -> .
+
+  ! shift/reduce conflict for ID resolved as shift
+    ID              shift and go to state 5
+    TYPE            reduce using rule 16 (empty -> .)
+    $end            reduce using rule 16 (empty -> .)
+
+  ! ID              [ reduce using rule 16 (empty -> .) ]
+
+    statement                      shift and go to state 31
+    assignment                     shift and go to state 3
+    simpleAssignment               shift and go to state 4
+    empty                          shift and go to state 6
+
+state 30
+
+    (6) doubleAssignment -> ID COMMA ID ASSIGN term . COMMA term SEMICOLON statement
+
+    COMMA           shift and go to state 32
+
+
+state 31
+
+    (10) type -> TYPE LPARENT ID RPARENT SEMICOLON statement .
+
+    $end            reduce using rule 10 (type -> TYPE LPARENT ID RPARENT SEMICOLON statement .)
+    ID              reduce using rule 10 (type -> TYPE LPARENT ID RPARENT SEMICOLON statement .)
+    TYPE            reduce using rule 10 (type -> TYPE LPARENT ID RPARENT SEMICOLON statement .)
+
+
+state 32
+
+    (6) doubleAssignment -> ID COMMA ID ASSIGN term COMMA . term SEMICOLON statement
+    (11) term -> . FALSE
+    (12) term -> . TRUE
+    (13) term -> . factor
+    (14) factor -> . ID
+    (15) factor -> . INT
+
+    FALSE           shift and go to state 19
+    TRUE            shift and go to state 20
+    ID              shift and go to state 17
+    INT             shift and go to state 22
+
+    term                           shift and go to state 33
+    factor                         shift and go to state 21
+
+state 33
+
+    (6) doubleAssignment -> ID COMMA ID ASSIGN term COMMA term . SEMICOLON statement
+
+    SEMICOLON       shift and go to state 34
+
+
+state 34
+
+    (6) doubleAssignment -> ID COMMA ID ASSIGN term COMMA term SEMICOLON . statement
+    (2) statement -> . assignment function
+    (3) assignment -> . simpleAssignment doubleAssignment
+    (4) simpleAssignment -> . ID ASSIGN term SEMICOLON statement
+    (5) simpleAssignment -> . empty
+    (16) empty -> .
+
+  ! shift/reduce conflict for ID resolved as shift
+    ID              shift and go to state 5
+    TYPE            reduce using rule 16 (empty -> .)
+    $end            reduce using rule 16 (empty -> .)
+
+  ! ID              [ reduce using rule 16 (empty -> .) ]
+
+    statement                      shift and go to state 35
+    assignment                     shift and go to state 3
+    simpleAssignment               shift and go to state 4
+    empty                          shift and go to state 6
+
+state 35
+
+    (6) doubleAssignment -> ID COMMA ID ASSIGN term COMMA term SEMICOLON statement .
+
+    TYPE            reduce using rule 6 (doubleAssignment -> ID COMMA ID ASSIGN term COMMA term SEMICOLON statement .)
+    $end            reduce using rule 6 (doubleAssignment -> ID COMMA ID ASSIGN term COMMA term SEMICOLON statement .)
+    ID              reduce using rule 6 (doubleAssignment -> ID COMMA ID ASSIGN term COMMA term SEMICOLON statement .)
 
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
+WARNING: shift/reduce conflict for ID in state 0 resolved as shift
 WARNING: shift/reduce conflict for TYPE in state 3 resolved as shift
+WARNING: shift/reduce conflict for ID in state 4 resolved as shift
+WARNING: shift/reduce conflict for ID in state 25 resolved as shift
+WARNING: shift/reduce conflict for ID in state 29 resolved as shift
+WARNING: shift/reduce conflict for ID in state 34 resolved as shift

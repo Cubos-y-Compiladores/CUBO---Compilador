@@ -9,39 +9,51 @@ from Lexer import tokenViewer as tv
 from sys import stdin
 
 precedence = (
-    ('right','ID'),
+    ('right','ID','IF','WHILE','TYPE'),
     ('right','ASSIGN'),
     ('left', 'LT', 'LTE', 'GT', 'GTE'),
     ('left', 'PLUS', 'MINUS'),
     ('left', 'MOD', 'DIVENT', 'TIMES', 'DIVIDE'),
     ('left', 'EXP'),
-    ('left', 'LPARENT', 'RPARENT'),
+    ('left','LPARENT', 'RPARENT'),
 )
 def p_program(p):
     '''program : statement'''
     print("program")
 
 def p_statement(p):
-    ''' statement : simpleAssignment function'''
+    ''' statement : assignment function'''
     print("statement")
 
-def p_simpleAssignment0(p):
+def p_assignment(p):
+    '''assignment : simpleAssignment doubleAssignment '''
+    print("assignment")
+
+def p_simpleAssignment(p):
     '''simpleAssignment : ID ASSIGN term SEMICOLON statement'''
-    print("simpleAssignment0")
+    print("simpleAssignment")
 
 def p_simpleAssignmentEmp(p):
     '''simpleAssignment : empty'''
-    print("aEmpt")
+    print("saEmpt")
 
-def p_function0(p):
-    '''function : type statement'''
-    print("function0")
+def p_doubleAssignment(p):
+    '''doubleAssignment : ID COMMA ID ASSIGN term COMMA term SEMICOLON statement'''
+    print("doubleAssignment")
+
+def p_doubleAssignmentEmp(p):
+    '''doubleAssignment : empty'''
+    print("daEmpt")
+
+def p_function(p):
+    '''function : type'''
+    print("function")
 
 def p_functionEmp(p):
     '''function : empty'''
     print("fEmpt")
 def p_type(p):
-    '''type : TYPE LPARENT ID RPARENT SEMICOLON'''
+    '''type : TYPE LPARENT ID RPARENT SEMICOLON statement'''
     print("type")
 
 def p_term0(p):
@@ -78,7 +90,7 @@ def p_error(p):
 test = '/home/dcamachog1501/Induced_Desktop/Test'
 fp = codecs.open(test, "r", "utf-8")
 chain = fp.read()
-parser = yacc.yacc()
+parser = yacc.yacc('SLR')
 tv(chain)
 result = parser.parse(chain)
 print(result)
