@@ -25,25 +25,17 @@ def p_statement(p):
     ''' statement : assignment function'''
     print("statement")
 
-def p_assignment(p):
-    '''assignment : simpleAssignment doubleAssignment '''
-    print("assignment")
-
 def p_simpleAssignment(p):
-    '''simpleAssignment : ID ASSIGN term SEMICOLON statement'''
+    '''assignment : ID ASSIGN term SEMICOLON statement'''
     print("simpleAssignment")
 
-def p_simpleAssignmentEmp(p):
-    '''simpleAssignment : empty'''
-    print("saEmpt")
-
 def p_doubleAssignment(p):
-    '''doubleAssignment : ID COMMA ID ASSIGN term COMMA term SEMICOLON statement'''
+    '''assignment : ID COMMA ID ASSIGN term COMMA term SEMICOLON statement'''
     print("doubleAssignment")
 
-def p_doubleAssignmentEmp(p):
-    '''doubleAssignment : empty'''
-    print("daEmpt")
+def p_assignmentEmp(p):
+    '''assignment : empty'''
+    print("aEmpt")
 
 def p_function(p):
     '''function : type'''
@@ -90,7 +82,7 @@ def p_error(p):
 test = '/home/dcamachog1501/Induced_Desktop/Test'
 fp = codecs.open(test, "r", "utf-8")
 chain = fp.read()
-parser = yacc.yacc('SLR')
+parser = yacc.yacc()
 tv(chain)
 result = parser.parse(chain)
 print(result)
