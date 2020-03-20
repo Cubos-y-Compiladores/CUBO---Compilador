@@ -7,34 +7,25 @@ Unused terminals:
     CONST
     DELETE
     DIVENT
-    DIVIDE
     DOT
     ELSE
     EXP
     F
     FOR
     GLOBAL
-    GT
-    GTE
     IF
     INSERT
     LCORCH
     LEN
     LENGHTERROR
-    LT
-    LTE
-    MINUS
     MOD
-    NE
     NEG
     PARENTCL
     PARENTCR
-    PLUS
     PROCEDURE
     RANGE
     RCORCH
     T
-    TIMES
     TP
     VARERROR
     WHILE
@@ -42,100 +33,124 @@ Unused terminals:
 Grammar
 
 Rule 0     S' -> program
-Rule 1     program -> statement
-Rule 2     statement -> assignment function
-Rule 3     assignment -> ID ASSIGN term SEMICOLON statement
-Rule 4     assignment -> ID COMMA ID ASSIGN term COMMA term SEMICOLON statement
-Rule 5     assignment -> empty
-Rule 6     function -> type
-Rule 7     function -> empty
-Rule 8     type -> TYPE LPARENT ID RPARENT SEMICOLON statement
-Rule 9     term -> FALSE
-Rule 10    term -> TRUE
-Rule 11    term -> factor
-Rule 12    factor -> ID
-Rule 13    factor -> INT
-Rule 14    empty -> <empty>
+Rule 1     program -> block
+Rule 2     block -> assignment function
+Rule 3     assignment -> ID ASSIGN value SEMICOLON block
+Rule 4     assignment -> ID ASSIGN arithmetic SEMICOLON block
+Rule 5     assignment -> ID COMMA ID ASSIGN value COMMA value SEMICOLON block
+Rule 6     assignment -> empty
+Rule 7     function -> type
+Rule 8     function -> empty
+Rule 9     type -> TYPE LPARENT ID RPARENT SEMICOLON block
+Rule 10    arithmetic -> term
+Rule 11    arithmetic -> adding_operator term
+Rule 12    arithmetic -> arithmetic adding_operator term
+Rule 13    term -> factor
+Rule 14    term -> term multiplying_operator factor
+Rule 15    factor -> INT
+Rule 16    factor -> ID
+Rule 17    factor -> LPARENT arithmetic RPARENT
+Rule 18    adding_operator -> PLUS
+Rule 19    adding_operator -> MINUS
+Rule 20    multiplying_operator -> TIMES
+Rule 21    multiplying_operator -> DIVIDE
+Rule 22    value -> FALSE
+Rule 23    value -> TRUE
+Rule 24    value -> ID
+Rule 25    value -> INT
+Rule 26    relation -> ASSIGN
+Rule 27    relation -> NE
+Rule 28    relation -> LT
+Rule 29    relation -> GT
+Rule 30    relation -> LTE
+Rule 31    relation -> GTE
+Rule 32    empty -> <empty>
 
 Terminals, with rules where they appear
 
-ASSIGN               : 3 4
+ASSIGN               : 3 4 5 26
 BLINK                : 
 BOOKED               : 
-COMMA                : 4 4
+COMMA                : 5 5
 CONST                : 
 DELETE               : 
 DIVENT               : 
-DIVIDE               : 
+DIVIDE               : 21
 DOT                  : 
 ELSE                 : 
 EXP                  : 
 F                    : 
-FALSE                : 9
+FALSE                : 22
 FOR                  : 
 GLOBAL               : 
-GT                   : 
-GTE                  : 
-ID                   : 3 4 4 8 12
+GT                   : 29
+GTE                  : 31
+ID                   : 3 4 5 5 9 16 24
 IF                   : 
 INSERT               : 
-INT                  : 13
+INT                  : 15 25
 LCORCH               : 
 LEN                  : 
 LENGHTERROR          : 
-LPARENT              : 8
-LT                   : 
-LTE                  : 
-MINUS                : 
+LPARENT              : 9 17
+LT                   : 28
+LTE                  : 30
+MINUS                : 19
 MOD                  : 
-NE                   : 
+NE                   : 27
 NEG                  : 
 PARENTCL             : 
 PARENTCR             : 
-PLUS                 : 
+PLUS                 : 18
 PROCEDURE            : 
 RANGE                : 
 RCORCH               : 
-RPARENT              : 8
-SEMICOLON            : 3 4 8
+RPARENT              : 9 17
+SEMICOLON            : 3 4 5 9
 T                    : 
-TIMES                : 
+TIMES                : 20
 TP                   : 
-TRUE                 : 10
-TYPE                 : 8
+TRUE                 : 23
+TYPE                 : 9
 VARERROR             : 
 WHILE                : 
 error                : 
 
 Nonterminals, with rules where they appear
 
+adding_operator      : 11 12
+arithmetic           : 4 12 17
 assignment           : 2
-empty                : 5 7
-factor               : 11
+block                : 1 3 4 5 9
+empty                : 6 8
+factor               : 13 14
 function             : 2
+multiplying_operator : 14
 program              : 0
-statement            : 1 3 4 8
-term                 : 3 4 4
-type                 : 6
+relation             : 
+term                 : 10 11 12 14
+type                 : 7
+value                : 3 5 5
 
 Parsing method: LALR
 
 state 0
 
     (0) S' -> . program
-    (1) program -> . statement
-    (2) statement -> . assignment function
-    (3) assignment -> . ID ASSIGN term SEMICOLON statement
-    (4) assignment -> . ID COMMA ID ASSIGN term COMMA term SEMICOLON statement
-    (5) assignment -> . empty
-    (14) empty -> .
+    (1) program -> . block
+    (2) block -> . assignment function
+    (3) assignment -> . ID ASSIGN value SEMICOLON block
+    (4) assignment -> . ID ASSIGN arithmetic SEMICOLON block
+    (5) assignment -> . ID COMMA ID ASSIGN value COMMA value SEMICOLON block
+    (6) assignment -> . empty
+    (32) empty -> .
 
     ID              shift and go to state 4
-    TYPE            reduce using rule 14 (empty -> .)
-    $end            reduce using rule 14 (empty -> .)
+    TYPE            reduce using rule 32 (empty -> .)
+    $end            reduce using rule 32 (empty -> .)
 
     program                        shift and go to state 1
-    statement                      shift and go to state 2
+    block                          shift and go to state 2
     assignment                     shift and go to state 3
     empty                          shift and go to state 5
 
@@ -147,24 +162,24 @@ state 1
 
 state 2
 
-    (1) program -> statement .
+    (1) program -> block .
 
-    $end            reduce using rule 1 (program -> statement .)
+    $end            reduce using rule 1 (program -> block .)
 
 
 state 3
 
-    (2) statement -> assignment . function
-    (6) function -> . type
-    (7) function -> . empty
-    (8) type -> . TYPE LPARENT ID RPARENT SEMICOLON statement
-    (14) empty -> .
+    (2) block -> assignment . function
+    (7) function -> . type
+    (8) function -> . empty
+    (9) type -> . TYPE LPARENT ID RPARENT SEMICOLON block
+    (32) empty -> .
 
   ! shift/reduce conflict for TYPE resolved as shift
     TYPE            shift and go to state 9
-    $end            reduce using rule 14 (empty -> .)
+    $end            reduce using rule 32 (empty -> .)
 
-  ! TYPE            [ reduce using rule 14 (empty -> .) ]
+  ! TYPE            [ reduce using rule 32 (empty -> .) ]
 
     function                       shift and go to state 6
     type                           shift and go to state 7
@@ -172,8 +187,9 @@ state 3
 
 state 4
 
-    (3) assignment -> ID . ASSIGN term SEMICOLON statement
-    (4) assignment -> ID . COMMA ID ASSIGN term COMMA term SEMICOLON statement
+    (3) assignment -> ID . ASSIGN value SEMICOLON block
+    (4) assignment -> ID . ASSIGN arithmetic SEMICOLON block
+    (5) assignment -> ID . COMMA ID ASSIGN value COMMA value SEMICOLON block
 
     ASSIGN          shift and go to state 10
     COMMA           shift and go to state 11
@@ -181,265 +197,572 @@ state 4
 
 state 5
 
-    (5) assignment -> empty .
+    (6) assignment -> empty .
 
-    TYPE            reduce using rule 5 (assignment -> empty .)
-    $end            reduce using rule 5 (assignment -> empty .)
+    TYPE            reduce using rule 6 (assignment -> empty .)
+    $end            reduce using rule 6 (assignment -> empty .)
 
 
 state 6
 
-    (2) statement -> assignment function .
+    (2) block -> assignment function .
 
-    $end            reduce using rule 2 (statement -> assignment function .)
-    TYPE            reduce using rule 2 (statement -> assignment function .)
+    $end            reduce using rule 2 (block -> assignment function .)
+    TYPE            reduce using rule 2 (block -> assignment function .)
 
 
 state 7
 
-    (6) function -> type .
+    (7) function -> type .
 
-    $end            reduce using rule 6 (function -> type .)
-    TYPE            reduce using rule 6 (function -> type .)
+    $end            reduce using rule 7 (function -> type .)
+    TYPE            reduce using rule 7 (function -> type .)
 
 
 state 8
 
-    (7) function -> empty .
+    (8) function -> empty .
 
-    $end            reduce using rule 7 (function -> empty .)
-    TYPE            reduce using rule 7 (function -> empty .)
+    $end            reduce using rule 8 (function -> empty .)
+    TYPE            reduce using rule 8 (function -> empty .)
 
 
 state 9
 
-    (8) type -> TYPE . LPARENT ID RPARENT SEMICOLON statement
+    (9) type -> TYPE . LPARENT ID RPARENT SEMICOLON block
 
     LPARENT         shift and go to state 12
 
 
 state 10
 
-    (3) assignment -> ID ASSIGN . term SEMICOLON statement
-    (9) term -> . FALSE
-    (10) term -> . TRUE
-    (11) term -> . factor
-    (12) factor -> . ID
-    (13) factor -> . INT
+    (3) assignment -> ID ASSIGN . value SEMICOLON block
+    (4) assignment -> ID ASSIGN . arithmetic SEMICOLON block
+    (22) value -> . FALSE
+    (23) value -> . TRUE
+    (24) value -> . ID
+    (25) value -> . INT
+    (10) arithmetic -> . term
+    (11) arithmetic -> . adding_operator term
+    (12) arithmetic -> . arithmetic adding_operator term
+    (13) term -> . factor
+    (14) term -> . term multiplying_operator factor
+    (18) adding_operator -> . PLUS
+    (19) adding_operator -> . MINUS
+    (15) factor -> . INT
+    (16) factor -> . ID
+    (17) factor -> . LPARENT arithmetic RPARENT
 
-    FALSE           shift and go to state 15
-    TRUE            shift and go to state 16
+    FALSE           shift and go to state 16
+    TRUE            shift and go to state 17
     ID              shift and go to state 13
     INT             shift and go to state 18
+    PLUS            shift and go to state 22
+    MINUS           shift and go to state 23
+    LPARENT         shift and go to state 24
 
-    term                           shift and go to state 14
-    factor                         shift and go to state 17
+    value                          shift and go to state 14
+    arithmetic                     shift and go to state 15
+    term                           shift and go to state 19
+    adding_operator                shift and go to state 20
+    factor                         shift and go to state 21
 
 state 11
 
-    (4) assignment -> ID COMMA . ID ASSIGN term COMMA term SEMICOLON statement
+    (5) assignment -> ID COMMA . ID ASSIGN value COMMA value SEMICOLON block
 
-    ID              shift and go to state 19
+    ID              shift and go to state 25
 
 
 state 12
 
-    (8) type -> TYPE LPARENT . ID RPARENT SEMICOLON statement
+    (9) type -> TYPE LPARENT . ID RPARENT SEMICOLON block
 
-    ID              shift and go to state 20
+    ID              shift and go to state 26
 
 
 state 13
 
-    (12) factor -> ID .
+    (24) value -> ID .
+    (16) factor -> ID .
 
-    SEMICOLON       reduce using rule 12 (factor -> ID .)
-    COMMA           reduce using rule 12 (factor -> ID .)
+  ! reduce/reduce conflict for SEMICOLON resolved using rule 16 (factor -> ID .)
+    TIMES           reduce using rule 16 (factor -> ID .)
+    DIVIDE          reduce using rule 16 (factor -> ID .)
+    SEMICOLON       reduce using rule 16 (factor -> ID .)
+    PLUS            reduce using rule 16 (factor -> ID .)
+    MINUS           reduce using rule 16 (factor -> ID .)
+
+  ! SEMICOLON       [ reduce using rule 24 (value -> ID .) ]
 
 
 state 14
 
-    (3) assignment -> ID ASSIGN term . SEMICOLON statement
+    (3) assignment -> ID ASSIGN value . SEMICOLON block
 
-    SEMICOLON       shift and go to state 21
+    SEMICOLON       shift and go to state 27
 
 
 state 15
 
-    (9) term -> FALSE .
+    (4) assignment -> ID ASSIGN arithmetic . SEMICOLON block
+    (12) arithmetic -> arithmetic . adding_operator term
+    (18) adding_operator -> . PLUS
+    (19) adding_operator -> . MINUS
 
-    SEMICOLON       reduce using rule 9 (term -> FALSE .)
-    COMMA           reduce using rule 9 (term -> FALSE .)
+    SEMICOLON       shift and go to state 28
+    PLUS            shift and go to state 22
+    MINUS           shift and go to state 23
 
+    adding_operator                shift and go to state 29
 
 state 16
 
-    (10) term -> TRUE .
+    (22) value -> FALSE .
 
-    SEMICOLON       reduce using rule 10 (term -> TRUE .)
-    COMMA           reduce using rule 10 (term -> TRUE .)
+    SEMICOLON       reduce using rule 22 (value -> FALSE .)
+    COMMA           reduce using rule 22 (value -> FALSE .)
 
 
 state 17
 
-    (11) term -> factor .
+    (23) value -> TRUE .
 
-    SEMICOLON       reduce using rule 11 (term -> factor .)
-    COMMA           reduce using rule 11 (term -> factor .)
+    SEMICOLON       reduce using rule 23 (value -> TRUE .)
+    COMMA           reduce using rule 23 (value -> TRUE .)
 
 
 state 18
 
-    (13) factor -> INT .
+    (25) value -> INT .
+    (15) factor -> INT .
 
-    SEMICOLON       reduce using rule 13 (factor -> INT .)
-    COMMA           reduce using rule 13 (factor -> INT .)
+  ! reduce/reduce conflict for SEMICOLON resolved using rule 15 (factor -> INT .)
+    TIMES           reduce using rule 15 (factor -> INT .)
+    DIVIDE          reduce using rule 15 (factor -> INT .)
+    SEMICOLON       reduce using rule 15 (factor -> INT .)
+    PLUS            reduce using rule 15 (factor -> INT .)
+    MINUS           reduce using rule 15 (factor -> INT .)
+
+  ! SEMICOLON       [ reduce using rule 25 (value -> INT .) ]
 
 
 state 19
 
-    (4) assignment -> ID COMMA ID . ASSIGN term COMMA term SEMICOLON statement
+    (10) arithmetic -> term .
+    (14) term -> term . multiplying_operator factor
+    (20) multiplying_operator -> . TIMES
+    (21) multiplying_operator -> . DIVIDE
 
-    ASSIGN          shift and go to state 22
+    SEMICOLON       reduce using rule 10 (arithmetic -> term .)
+    PLUS            reduce using rule 10 (arithmetic -> term .)
+    MINUS           reduce using rule 10 (arithmetic -> term .)
+    RPARENT         reduce using rule 10 (arithmetic -> term .)
+    TIMES           shift and go to state 31
+    DIVIDE          shift and go to state 32
 
+    multiplying_operator           shift and go to state 30
 
 state 20
 
-    (8) type -> TYPE LPARENT ID . RPARENT SEMICOLON statement
+    (11) arithmetic -> adding_operator . term
+    (13) term -> . factor
+    (14) term -> . term multiplying_operator factor
+    (15) factor -> . INT
+    (16) factor -> . ID
+    (17) factor -> . LPARENT arithmetic RPARENT
 
-    RPARENT         shift and go to state 23
+    INT             shift and go to state 34
+    ID              shift and go to state 35
+    LPARENT         shift and go to state 24
 
+    term                           shift and go to state 33
+    factor                         shift and go to state 21
 
 state 21
 
-    (3) assignment -> ID ASSIGN term SEMICOLON . statement
-    (2) statement -> . assignment function
-    (3) assignment -> . ID ASSIGN term SEMICOLON statement
-    (4) assignment -> . ID COMMA ID ASSIGN term COMMA term SEMICOLON statement
-    (5) assignment -> . empty
-    (14) empty -> .
+    (13) term -> factor .
 
-    ID              shift and go to state 4
-    $end            reduce using rule 14 (empty -> .)
-    TYPE            reduce using rule 14 (empty -> .)
+    TIMES           reduce using rule 13 (term -> factor .)
+    DIVIDE          reduce using rule 13 (term -> factor .)
+    SEMICOLON       reduce using rule 13 (term -> factor .)
+    PLUS            reduce using rule 13 (term -> factor .)
+    MINUS           reduce using rule 13 (term -> factor .)
+    RPARENT         reduce using rule 13 (term -> factor .)
 
-    statement                      shift and go to state 24
-    assignment                     shift and go to state 3
-    empty                          shift and go to state 5
 
 state 22
 
-    (4) assignment -> ID COMMA ID ASSIGN . term COMMA term SEMICOLON statement
-    (9) term -> . FALSE
-    (10) term -> . TRUE
-    (11) term -> . factor
-    (12) factor -> . ID
-    (13) factor -> . INT
+    (18) adding_operator -> PLUS .
 
-    FALSE           shift and go to state 15
-    TRUE            shift and go to state 16
-    ID              shift and go to state 13
-    INT             shift and go to state 18
+    INT             reduce using rule 18 (adding_operator -> PLUS .)
+    ID              reduce using rule 18 (adding_operator -> PLUS .)
+    LPARENT         reduce using rule 18 (adding_operator -> PLUS .)
 
-    term                           shift and go to state 25
-    factor                         shift and go to state 17
 
 state 23
 
-    (8) type -> TYPE LPARENT ID RPARENT . SEMICOLON statement
+    (19) adding_operator -> MINUS .
 
-    SEMICOLON       shift and go to state 26
+    INT             reduce using rule 19 (adding_operator -> MINUS .)
+    ID              reduce using rule 19 (adding_operator -> MINUS .)
+    LPARENT         reduce using rule 19 (adding_operator -> MINUS .)
 
 
 state 24
 
-    (3) assignment -> ID ASSIGN term SEMICOLON statement .
+    (17) factor -> LPARENT . arithmetic RPARENT
+    (10) arithmetic -> . term
+    (11) arithmetic -> . adding_operator term
+    (12) arithmetic -> . arithmetic adding_operator term
+    (13) term -> . factor
+    (14) term -> . term multiplying_operator factor
+    (18) adding_operator -> . PLUS
+    (19) adding_operator -> . MINUS
+    (15) factor -> . INT
+    (16) factor -> . ID
+    (17) factor -> . LPARENT arithmetic RPARENT
 
-    TYPE            reduce using rule 3 (assignment -> ID ASSIGN term SEMICOLON statement .)
-    $end            reduce using rule 3 (assignment -> ID ASSIGN term SEMICOLON statement .)
+    PLUS            shift and go to state 22
+    MINUS           shift and go to state 23
+    INT             shift and go to state 34
+    ID              shift and go to state 35
+    LPARENT         shift and go to state 24
 
+    arithmetic                     shift and go to state 36
+    term                           shift and go to state 19
+    adding_operator                shift and go to state 20
+    factor                         shift and go to state 21
 
 state 25
 
-    (4) assignment -> ID COMMA ID ASSIGN term . COMMA term SEMICOLON statement
+    (5) assignment -> ID COMMA ID . ASSIGN value COMMA value SEMICOLON block
 
-    COMMA           shift and go to state 27
+    ASSIGN          shift and go to state 37
 
 
 state 26
 
-    (8) type -> TYPE LPARENT ID RPARENT SEMICOLON . statement
-    (2) statement -> . assignment function
-    (3) assignment -> . ID ASSIGN term SEMICOLON statement
-    (4) assignment -> . ID COMMA ID ASSIGN term COMMA term SEMICOLON statement
-    (5) assignment -> . empty
-    (14) empty -> .
+    (9) type -> TYPE LPARENT ID . RPARENT SEMICOLON block
 
-    ID              shift and go to state 4
-    $end            reduce using rule 14 (empty -> .)
-    TYPE            reduce using rule 14 (empty -> .)
+    RPARENT         shift and go to state 38
 
-    statement                      shift and go to state 28
-    assignment                     shift and go to state 3
-    empty                          shift and go to state 5
 
 state 27
 
-    (4) assignment -> ID COMMA ID ASSIGN term COMMA . term SEMICOLON statement
-    (9) term -> . FALSE
-    (10) term -> . TRUE
-    (11) term -> . factor
-    (12) factor -> . ID
-    (13) factor -> . INT
-
-    FALSE           shift and go to state 15
-    TRUE            shift and go to state 16
-    ID              shift and go to state 13
-    INT             shift and go to state 18
-
-    term                           shift and go to state 29
-    factor                         shift and go to state 17
-
-state 28
-
-    (8) type -> TYPE LPARENT ID RPARENT SEMICOLON statement .
-
-    $end            reduce using rule 8 (type -> TYPE LPARENT ID RPARENT SEMICOLON statement .)
-    TYPE            reduce using rule 8 (type -> TYPE LPARENT ID RPARENT SEMICOLON statement .)
-
-
-state 29
-
-    (4) assignment -> ID COMMA ID ASSIGN term COMMA term . SEMICOLON statement
-
-    SEMICOLON       shift and go to state 30
-
-
-state 30
-
-    (4) assignment -> ID COMMA ID ASSIGN term COMMA term SEMICOLON . statement
-    (2) statement -> . assignment function
-    (3) assignment -> . ID ASSIGN term SEMICOLON statement
-    (4) assignment -> . ID COMMA ID ASSIGN term COMMA term SEMICOLON statement
-    (5) assignment -> . empty
-    (14) empty -> .
+    (3) assignment -> ID ASSIGN value SEMICOLON . block
+    (2) block -> . assignment function
+    (3) assignment -> . ID ASSIGN value SEMICOLON block
+    (4) assignment -> . ID ASSIGN arithmetic SEMICOLON block
+    (5) assignment -> . ID COMMA ID ASSIGN value COMMA value SEMICOLON block
+    (6) assignment -> . empty
+    (32) empty -> .
 
     ID              shift and go to state 4
-    $end            reduce using rule 14 (empty -> .)
-    TYPE            reduce using rule 14 (empty -> .)
+    $end            reduce using rule 32 (empty -> .)
+    TYPE            reduce using rule 32 (empty -> .)
 
-    statement                      shift and go to state 31
+    block                          shift and go to state 39
     assignment                     shift and go to state 3
     empty                          shift and go to state 5
 
+state 28
+
+    (4) assignment -> ID ASSIGN arithmetic SEMICOLON . block
+    (2) block -> . assignment function
+    (3) assignment -> . ID ASSIGN value SEMICOLON block
+    (4) assignment -> . ID ASSIGN arithmetic SEMICOLON block
+    (5) assignment -> . ID COMMA ID ASSIGN value COMMA value SEMICOLON block
+    (6) assignment -> . empty
+    (32) empty -> .
+
+    ID              shift and go to state 4
+    $end            reduce using rule 32 (empty -> .)
+    TYPE            reduce using rule 32 (empty -> .)
+
+    block                          shift and go to state 40
+    assignment                     shift and go to state 3
+    empty                          shift and go to state 5
+
+state 29
+
+    (12) arithmetic -> arithmetic adding_operator . term
+    (13) term -> . factor
+    (14) term -> . term multiplying_operator factor
+    (15) factor -> . INT
+    (16) factor -> . ID
+    (17) factor -> . LPARENT arithmetic RPARENT
+
+    INT             shift and go to state 34
+    ID              shift and go to state 35
+    LPARENT         shift and go to state 24
+
+    term                           shift and go to state 41
+    factor                         shift and go to state 21
+
+state 30
+
+    (14) term -> term multiplying_operator . factor
+    (15) factor -> . INT
+    (16) factor -> . ID
+    (17) factor -> . LPARENT arithmetic RPARENT
+
+    INT             shift and go to state 34
+    ID              shift and go to state 35
+    LPARENT         shift and go to state 24
+
+    factor                         shift and go to state 42
+
 state 31
 
-    (4) assignment -> ID COMMA ID ASSIGN term COMMA term SEMICOLON statement .
+    (20) multiplying_operator -> TIMES .
 
-    TYPE            reduce using rule 4 (assignment -> ID COMMA ID ASSIGN term COMMA term SEMICOLON statement .)
-    $end            reduce using rule 4 (assignment -> ID COMMA ID ASSIGN term COMMA term SEMICOLON statement .)
+    INT             reduce using rule 20 (multiplying_operator -> TIMES .)
+    ID              reduce using rule 20 (multiplying_operator -> TIMES .)
+    LPARENT         reduce using rule 20 (multiplying_operator -> TIMES .)
+
+
+state 32
+
+    (21) multiplying_operator -> DIVIDE .
+
+    INT             reduce using rule 21 (multiplying_operator -> DIVIDE .)
+    ID              reduce using rule 21 (multiplying_operator -> DIVIDE .)
+    LPARENT         reduce using rule 21 (multiplying_operator -> DIVIDE .)
+
+
+state 33
+
+    (11) arithmetic -> adding_operator term .
+    (14) term -> term . multiplying_operator factor
+    (20) multiplying_operator -> . TIMES
+    (21) multiplying_operator -> . DIVIDE
+
+    SEMICOLON       reduce using rule 11 (arithmetic -> adding_operator term .)
+    PLUS            reduce using rule 11 (arithmetic -> adding_operator term .)
+    MINUS           reduce using rule 11 (arithmetic -> adding_operator term .)
+    RPARENT         reduce using rule 11 (arithmetic -> adding_operator term .)
+    TIMES           shift and go to state 31
+    DIVIDE          shift and go to state 32
+
+    multiplying_operator           shift and go to state 30
+
+state 34
+
+    (15) factor -> INT .
+
+    TIMES           reduce using rule 15 (factor -> INT .)
+    DIVIDE          reduce using rule 15 (factor -> INT .)
+    SEMICOLON       reduce using rule 15 (factor -> INT .)
+    PLUS            reduce using rule 15 (factor -> INT .)
+    MINUS           reduce using rule 15 (factor -> INT .)
+    RPARENT         reduce using rule 15 (factor -> INT .)
+
+
+state 35
+
+    (16) factor -> ID .
+
+    TIMES           reduce using rule 16 (factor -> ID .)
+    DIVIDE          reduce using rule 16 (factor -> ID .)
+    SEMICOLON       reduce using rule 16 (factor -> ID .)
+    PLUS            reduce using rule 16 (factor -> ID .)
+    MINUS           reduce using rule 16 (factor -> ID .)
+    RPARENT         reduce using rule 16 (factor -> ID .)
+
+
+state 36
+
+    (17) factor -> LPARENT arithmetic . RPARENT
+    (12) arithmetic -> arithmetic . adding_operator term
+    (18) adding_operator -> . PLUS
+    (19) adding_operator -> . MINUS
+
+    RPARENT         shift and go to state 43
+    PLUS            shift and go to state 22
+    MINUS           shift and go to state 23
+
+    adding_operator                shift and go to state 29
+
+state 37
+
+    (5) assignment -> ID COMMA ID ASSIGN . value COMMA value SEMICOLON block
+    (22) value -> . FALSE
+    (23) value -> . TRUE
+    (24) value -> . ID
+    (25) value -> . INT
+
+    FALSE           shift and go to state 16
+    TRUE            shift and go to state 17
+    ID              shift and go to state 44
+    INT             shift and go to state 46
+
+    value                          shift and go to state 45
+
+state 38
+
+    (9) type -> TYPE LPARENT ID RPARENT . SEMICOLON block
+
+    SEMICOLON       shift and go to state 47
+
+
+state 39
+
+    (3) assignment -> ID ASSIGN value SEMICOLON block .
+
+    TYPE            reduce using rule 3 (assignment -> ID ASSIGN value SEMICOLON block .)
+    $end            reduce using rule 3 (assignment -> ID ASSIGN value SEMICOLON block .)
+
+
+state 40
+
+    (4) assignment -> ID ASSIGN arithmetic SEMICOLON block .
+
+    TYPE            reduce using rule 4 (assignment -> ID ASSIGN arithmetic SEMICOLON block .)
+    $end            reduce using rule 4 (assignment -> ID ASSIGN arithmetic SEMICOLON block .)
+
+
+state 41
+
+    (12) arithmetic -> arithmetic adding_operator term .
+    (14) term -> term . multiplying_operator factor
+    (20) multiplying_operator -> . TIMES
+    (21) multiplying_operator -> . DIVIDE
+
+    SEMICOLON       reduce using rule 12 (arithmetic -> arithmetic adding_operator term .)
+    PLUS            reduce using rule 12 (arithmetic -> arithmetic adding_operator term .)
+    MINUS           reduce using rule 12 (arithmetic -> arithmetic adding_operator term .)
+    RPARENT         reduce using rule 12 (arithmetic -> arithmetic adding_operator term .)
+    TIMES           shift and go to state 31
+    DIVIDE          shift and go to state 32
+
+    multiplying_operator           shift and go to state 30
+
+state 42
+
+    (14) term -> term multiplying_operator factor .
+
+    TIMES           reduce using rule 14 (term -> term multiplying_operator factor .)
+    DIVIDE          reduce using rule 14 (term -> term multiplying_operator factor .)
+    SEMICOLON       reduce using rule 14 (term -> term multiplying_operator factor .)
+    PLUS            reduce using rule 14 (term -> term multiplying_operator factor .)
+    MINUS           reduce using rule 14 (term -> term multiplying_operator factor .)
+    RPARENT         reduce using rule 14 (term -> term multiplying_operator factor .)
+
+
+state 43
+
+    (17) factor -> LPARENT arithmetic RPARENT .
+
+    TIMES           reduce using rule 17 (factor -> LPARENT arithmetic RPARENT .)
+    DIVIDE          reduce using rule 17 (factor -> LPARENT arithmetic RPARENT .)
+    SEMICOLON       reduce using rule 17 (factor -> LPARENT arithmetic RPARENT .)
+    PLUS            reduce using rule 17 (factor -> LPARENT arithmetic RPARENT .)
+    MINUS           reduce using rule 17 (factor -> LPARENT arithmetic RPARENT .)
+    RPARENT         reduce using rule 17 (factor -> LPARENT arithmetic RPARENT .)
+
+
+state 44
+
+    (24) value -> ID .
+
+    COMMA           reduce using rule 24 (value -> ID .)
+    SEMICOLON       reduce using rule 24 (value -> ID .)
+
+
+state 45
+
+    (5) assignment -> ID COMMA ID ASSIGN value . COMMA value SEMICOLON block
+
+    COMMA           shift and go to state 48
+
+
+state 46
+
+    (25) value -> INT .
+
+    COMMA           reduce using rule 25 (value -> INT .)
+    SEMICOLON       reduce using rule 25 (value -> INT .)
+
+
+state 47
+
+    (9) type -> TYPE LPARENT ID RPARENT SEMICOLON . block
+    (2) block -> . assignment function
+    (3) assignment -> . ID ASSIGN value SEMICOLON block
+    (4) assignment -> . ID ASSIGN arithmetic SEMICOLON block
+    (5) assignment -> . ID COMMA ID ASSIGN value COMMA value SEMICOLON block
+    (6) assignment -> . empty
+    (32) empty -> .
+
+    ID              shift and go to state 4
+    $end            reduce using rule 32 (empty -> .)
+    TYPE            reduce using rule 32 (empty -> .)
+
+    block                          shift and go to state 49
+    assignment                     shift and go to state 3
+    empty                          shift and go to state 5
+
+state 48
+
+    (5) assignment -> ID COMMA ID ASSIGN value COMMA . value SEMICOLON block
+    (22) value -> . FALSE
+    (23) value -> . TRUE
+    (24) value -> . ID
+    (25) value -> . INT
+
+    FALSE           shift and go to state 16
+    TRUE            shift and go to state 17
+    ID              shift and go to state 44
+    INT             shift and go to state 46
+
+    value                          shift and go to state 50
+
+state 49
+
+    (9) type -> TYPE LPARENT ID RPARENT SEMICOLON block .
+
+    $end            reduce using rule 9 (type -> TYPE LPARENT ID RPARENT SEMICOLON block .)
+    TYPE            reduce using rule 9 (type -> TYPE LPARENT ID RPARENT SEMICOLON block .)
+
+
+state 50
+
+    (5) assignment -> ID COMMA ID ASSIGN value COMMA value . SEMICOLON block
+
+    SEMICOLON       shift and go to state 51
+
+
+state 51
+
+    (5) assignment -> ID COMMA ID ASSIGN value COMMA value SEMICOLON . block
+    (2) block -> . assignment function
+    (3) assignment -> . ID ASSIGN value SEMICOLON block
+    (4) assignment -> . ID ASSIGN arithmetic SEMICOLON block
+    (5) assignment -> . ID COMMA ID ASSIGN value COMMA value SEMICOLON block
+    (6) assignment -> . empty
+    (32) empty -> .
+
+    ID              shift and go to state 4
+    $end            reduce using rule 32 (empty -> .)
+    TYPE            reduce using rule 32 (empty -> .)
+
+    block                          shift and go to state 52
+    assignment                     shift and go to state 3
+    empty                          shift and go to state 5
+
+state 52
+
+    (5) assignment -> ID COMMA ID ASSIGN value COMMA value SEMICOLON block .
+
+    TYPE            reduce using rule 5 (assignment -> ID COMMA ID ASSIGN value COMMA value SEMICOLON block .)
+    $end            reduce using rule 5 (assignment -> ID COMMA ID ASSIGN value COMMA value SEMICOLON block .)
 
 WARNING: 
 WARNING: Conflicts:
 WARNING: 
 WARNING: shift/reduce conflict for TYPE in state 3 resolved as shift
+WARNING: reduce/reduce conflict in state 13 resolved using rule (factor -> ID)
+WARNING: rejected rule (value -> ID) in state 13
+WARNING: reduce/reduce conflict in state 18 resolved using rule (factor -> INT)
+WARNING: rejected rule (value -> INT) in state 18
