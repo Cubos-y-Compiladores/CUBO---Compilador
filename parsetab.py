@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'rightIDIFWHILETYPErightASSIGNleftLTLTEGTGTEleftPLUSMINUSleftMODDIVENTTIMESDIVIDEleftEXPleftLPARENTRPARENTASSIGN BLINK BOOKED CALL COMMA CONST DELAY DELETE DIVENT DIVIDE DOT ELSE EXP F FALSE FOR GLOBAL GT GTE ID IF IN INSERT INT LCORCH LEN LENGHTERROR LPARENT LT LTE MAIN MINUS MOD NE NEG PARENTCL PARENTCR PLUS PROCEDURE RANGE RCORCH RPARENT SEMICOLON SHAPEA SHAPEC SHAPEF STEP T TIMES TP TRUE TYPE VARERROR WHILEprogram : block block : assignment functionassignment : ID ASSIGN value SEMICOLON blockassignment : ID ASSIGN arithmetic SEMICOLON blockassignment : ID COMMA ID ASSIGN value COMMA value SEMICOLON blockassignment : emptyfunction : typefunction : emptytype : TYPE LPARENT ID RPARENT SEMICOLON block arithmetic : termarithmetic : adding_operator term arithmetic : arithmetic adding_operator termterm : factorterm : term multiplying_operator factorfactor : INTfactor : IDfactor : LPARENT arithmetic RPARENTadding_operator : PLUSadding_operator : MINUSmultiplying_operator : TIMESmultiplying_operator : EXPmultiplying_operator : DIVIDEmultiplying_operator : DIVENTmultiplying_operator : MODvalue : FALSEvalue : TRUEvalue : IDvalue : INTrelation : ASSIGNrelation : NErelation : LTrelation : GTrelation : LTErelation : GTEempty : '
+_lr_signature = 'rightIDIFWHILETYPErightASSIGNleftLTLTEGTGTEleftPLUSMINUSleftMODDIVENTTIMESDIVIDEleftEXPleftLPARENTRPARENTASSIGN BLINK BOOKED CALL COMMA CONST CUBO DELAY DELETE DIMCOLUMNAS DIMFILAS DIVENT DIVIDE DOT ELSE EXP F FALSE FOR GLOBAL GT GTE ID IF IN INSERT INT LCORCH LEN LENGHTERROR LPARENT LT LTE MAIN MIL MIN MINUS MOD NE NEG PARENTCL PARENTCR PLUS PROCEDURE QUOTES RANGE RANGOTIMER RCORCH RPARENT SEG SEMICOLON SHAPEA SHAPEC SHAPEF STEP T TIMER TIMES TP TRUE TYPE VARERROR WHILEprogram : const_blockconst_block : const const const const const block block : assignment functionassignment : ID ASSIGN value SEMICOLON blockassignment : ID ASSIGN arithmetic SEMICOLON blockassignment : ID COMMA ID ASSIGN value COMMA value SEMICOLON blockassignment : emptyfunction : typefunction : emptytype : TYPE LPARENT ID RPARENT SEMICOLON block arithmetic : termarithmetic : adding_operator term arithmetic : arithmetic adding_operator termterm : factorterm : term multiplying_operator factorfactor : INTfactor : IDfactor : LPARENT arithmetic RPARENTconst : TIMER ASSIGN INT SEMICOLONconst : RANGOTIMER ASSIGN QUOTES time_mes QUOTES SEMICOLONconst : dimension ASSIGN INT SEMICOLONconst : CUBO ASSIGN INT SEMICOLONdimension : DIMFILASdimension : DIMCOLUMNAStime_mes : MILtime_mes : MINtime_mes : SEGadding_operator : PLUSadding_operator : MINUSmultiplying_operator : TIMESmultiplying_operator : EXPmultiplying_operator : DIVIDEmultiplying_operator : DIVENTmultiplying_operator : MODvalue : FALSEvalue : TRUEvalue : IDvalue : INTrelation : ASSIGNrelation : NErelation : LTrelation : GTrelation : LTErelation : GTEempty : '
     
-_lr_action_items = {'ID':([0,10,11,12,20,22,23,24,27,28,29,30,31,32,33,34,35,40,50,51,54,],[4,13,25,26,38,-18,-19,38,4,4,38,38,-20,-21,-22,-23,-24,47,4,47,4,]),'TYPE':([0,3,5,6,7,8,27,28,42,43,50,52,54,55,],[-35,9,-6,-2,-7,-8,-35,-35,-3,-4,-35,-9,-35,-5,]),'$end':([0,1,2,3,5,6,7,8,27,28,42,43,50,52,54,55,],[-35,0,-1,-35,-6,-2,-7,-8,-35,-35,-3,-4,-35,-9,-35,-5,]),'ASSIGN':([4,25,],[10,40,]),'COMMA':([4,16,17,47,48,49,],[11,-25,-26,-27,51,-28,]),'LPARENT':([9,10,20,22,23,24,29,30,31,32,33,34,35,],[12,24,24,-18,-19,24,24,24,-20,-21,-22,-23,-24,]),'FALSE':([10,40,51,],[16,16,16,]),'TRUE':([10,40,51,],[17,17,17,]),'INT':([10,20,22,23,24,29,30,31,32,33,34,35,40,51,],[18,37,-18,-19,37,37,37,-20,-21,-22,-23,-24,49,49,]),'PLUS':([10,13,15,18,19,21,24,36,37,38,39,44,45,46,],[22,-16,22,-15,-10,-13,22,-11,-15,-16,22,-12,-14,-17,]),'MINUS':([10,13,15,18,19,21,24,36,37,38,39,44,45,46,],[23,-16,23,-15,-10,-13,23,-11,-15,-16,23,-12,-14,-17,]),'SEMICOLON':([13,14,15,16,17,18,19,21,36,37,38,41,44,45,46,47,49,53,],[-16,27,28,-25,-26,-15,-10,-13,-11,-15,-16,50,-12,-14,-17,-27,-28,54,]),'TIMES':([13,18,19,21,36,37,38,44,45,46,],[-16,-15,31,-13,31,-15,-16,31,-14,-17,]),'EXP':([13,18,19,21,36,37,38,44,45,46,],[-16,-15,32,-13,32,-15,-16,32,-14,-17,]),'DIVIDE':([13,18,19,21,36,37,38,44,45,46,],[-16,-15,33,-13,33,-15,-16,33,-14,-17,]),'DIVENT':([13,18,19,21,36,37,38,44,45,46,],[-16,-15,34,-13,34,-15,-16,34,-14,-17,]),'MOD':([13,18,19,21,36,37,38,44,45,46,],[-16,-15,35,-13,35,-15,-16,35,-14,-17,]),'RPARENT':([19,21,26,36,37,38,39,44,45,46,],[-10,-13,41,-11,-15,-16,46,-12,-14,-17,]),}
+_lr_action_items = {'TIMER':([0,3,10,15,20,21,26,27,34,],[4,4,4,4,4,-19,-21,-22,-20,]),'RANGOTIMER':([0,3,10,15,20,21,26,27,34,],[5,5,5,5,5,-19,-21,-22,-20,]),'CUBO':([0,3,10,15,20,21,26,27,34,],[7,7,7,7,7,-19,-21,-22,-20,]),'DIMFILAS':([0,3,10,15,20,21,26,27,34,],[8,8,8,8,8,-19,-21,-22,-20,]),'DIMCOLUMNAS':([0,3,10,15,20,21,26,27,34,],[9,9,9,9,9,-19,-21,-22,-20,]),'$end':([1,2,21,26,27,28,30,31,33,34,35,36,37,56,57,71,72,79,81,83,84,],[0,-1,-19,-21,-22,-45,-2,-45,-7,-20,-3,-8,-9,-45,-45,-4,-5,-45,-10,-45,-6,]),'ASSIGN':([4,5,6,7,8,9,32,54,],[11,12,13,14,-23,-24,39,69,]),'INT':([11,13,14,39,49,51,52,53,58,59,60,61,62,63,64,69,80,],[16,18,19,47,66,-28,-29,66,66,66,-30,-31,-32,-33,-34,78,78,]),'QUOTES':([12,22,23,24,25,],[17,29,-25,-26,-27,]),'SEMICOLON':([16,18,19,29,42,43,44,45,46,47,48,50,65,66,67,70,73,74,75,76,78,82,],[21,26,27,34,-17,56,57,-35,-36,-16,-11,-14,-12,-16,-17,79,-13,-15,-18,-37,-38,83,]),'MIL':([17,],[23,]),'MIN':([17,],[24,]),'SEG':([17,],[25,]),'ID':([21,26,27,28,34,39,40,41,49,51,52,53,56,57,58,59,60,61,62,63,64,69,79,80,83,],[-19,-21,-22,32,-20,42,54,55,67,-28,-29,67,32,32,67,67,-30,-31,-32,-33,-34,76,32,76,32,]),'TYPE':([21,26,27,28,31,33,34,35,36,37,56,57,71,72,79,81,83,84,],[-19,-21,-22,-45,38,-7,-20,-3,-8,-9,-45,-45,-4,-5,-45,-10,-45,-6,]),'COMMA':([32,45,46,76,77,78,],[40,-35,-36,-37,80,-38,]),'LPARENT':([38,39,49,51,52,53,58,59,60,61,62,63,64,],[41,53,53,-28,-29,53,53,53,-30,-31,-32,-33,-34,]),'FALSE':([39,69,80,],[45,45,45,]),'TRUE':([39,69,80,],[46,46,46,]),'PLUS':([39,42,44,47,48,50,53,65,66,67,68,73,74,75,],[51,-17,51,-16,-11,-14,51,-12,-16,-17,51,-13,-15,-18,]),'MINUS':([39,42,44,47,48,50,53,65,66,67,68,73,74,75,],[52,-17,52,-16,-11,-14,52,-12,-16,-17,52,-13,-15,-18,]),'TIMES':([42,47,48,50,65,66,67,73,74,75,],[-17,-16,60,-14,60,-16,-17,60,-15,-18,]),'EXP':([42,47,48,50,65,66,67,73,74,75,],[-17,-16,61,-14,61,-16,-17,61,-15,-18,]),'DIVIDE':([42,47,48,50,65,66,67,73,74,75,],[-17,-16,62,-14,62,-16,-17,62,-15,-18,]),'DIVENT':([42,47,48,50,65,66,67,73,74,75,],[-17,-16,63,-14,63,-16,-17,63,-15,-18,]),'MOD':([42,47,48,50,65,66,67,73,74,75,],[-17,-16,64,-14,64,-16,-17,64,-15,-18,]),'RPARENT':([48,50,55,65,66,67,68,73,74,75,],[-11,-14,70,-12,-16,-17,75,-13,-15,-18,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'program':([0,],[1,]),'block':([0,27,28,50,54,],[2,42,43,52,55,]),'assignment':([0,27,28,50,54,],[3,3,3,3,3,]),'empty':([0,3,27,28,50,54,],[5,8,5,5,5,5,]),'function':([3,],[6,]),'type':([3,],[7,]),'value':([10,40,51,],[14,48,53,]),'arithmetic':([10,24,],[15,39,]),'term':([10,20,24,29,],[19,36,19,44,]),'adding_operator':([10,15,24,39,],[20,29,20,29,]),'factor':([10,20,24,29,30,],[21,21,21,21,45,]),'multiplying_operator':([19,36,44,],[30,30,30,]),}
+_lr_goto_items = {'program':([0,],[1,]),'const_block':([0,],[2,]),'const':([0,3,10,15,20,],[3,10,15,20,28,]),'dimension':([0,3,10,15,20,],[6,6,6,6,6,]),'time_mes':([17,],[22,]),'block':([28,56,57,79,83,],[30,71,72,81,84,]),'assignment':([28,56,57,79,83,],[31,31,31,31,31,]),'empty':([28,31,56,57,79,83,],[33,37,33,33,33,33,]),'function':([31,],[35,]),'type':([31,],[36,]),'value':([39,69,80,],[43,77,82,]),'arithmetic':([39,53,],[44,68,]),'term':([39,49,53,58,],[48,65,48,73,]),'adding_operator':([39,44,53,68,],[49,58,49,58,]),'factor':([39,49,53,58,59,],[50,50,50,50,74,]),'multiplying_operator':([48,65,73,],[59,59,59,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,39 +27,49 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> program","S'",1,None,None,None),
-  ('program -> block','program',1,'p_program','Parser.py',21),
-  ('block -> assignment function','block',2,'p_block','Parser.py',25),
-  ('assignment -> ID ASSIGN value SEMICOLON block','assignment',5,'p_simpleAssignment0','Parser.py',29),
-  ('assignment -> ID ASSIGN arithmetic SEMICOLON block','assignment',5,'p_simpleAssignment1','Parser.py',33),
-  ('assignment -> ID COMMA ID ASSIGN value COMMA value SEMICOLON block','assignment',9,'p_doubleAssignment','Parser.py',37),
-  ('assignment -> empty','assignment',1,'p_assignmentEmp','Parser.py',41),
-  ('function -> type','function',1,'p_function','Parser.py',45),
-  ('function -> empty','function',1,'p_functionEmp','Parser.py',49),
-  ('type -> TYPE LPARENT ID RPARENT SEMICOLON block','type',6,'p_type','Parser.py',53),
-  ('arithmetic -> term','arithmetic',1,'p_arithmetic0','Parser.py',57),
-  ('arithmetic -> adding_operator term','arithmetic',2,'p_arithmetic1','Parser.py',60),
-  ('arithmetic -> arithmetic adding_operator term','arithmetic',3,'p_arithmetic2','Parser.py',64),
-  ('term -> factor','term',1,'p_term0','Parser.py',68),
-  ('term -> term multiplying_operator factor','term',3,'p_term1','Parser.py',72),
-  ('factor -> INT','factor',1,'p_factor0','Parser.py',76),
-  ('factor -> ID','factor',1,'p_factor1','Parser.py',80),
-  ('factor -> LPARENT arithmetic RPARENT','factor',3,'p_factor2','Parser.py',84),
-  ('adding_operator -> PLUS','adding_operator',1,'p_addingOp0','Parser.py',93),
-  ('adding_operator -> MINUS','adding_operator',1,'p_addingOp1','Parser.py',97),
-  ('multiplying_operator -> TIMES','multiplying_operator',1,'p_multiplyingOp0','Parser.py',101),
-  ('multiplying_operator -> EXP','multiplying_operator',1,'p_multiplyingOp1','Parser.py',104),
-  ('multiplying_operator -> DIVIDE','multiplying_operator',1,'p_multiplyingOp2','Parser.py',108),
-  ('multiplying_operator -> DIVENT','multiplying_operator',1,'p_multiplyingOp3','Parser.py',112),
-  ('multiplying_operator -> MOD','multiplying_operator',1,'p_multiplyingOp4','Parser.py',116),
-  ('value -> FALSE','value',1,'p_value0','Parser.py',120),
-  ('value -> TRUE','value',1,'p_value1','Parser.py',124),
-  ('value -> ID','value',1,'p_value2','Parser.py',128),
-  ('value -> INT','value',1,'p_value3','Parser.py',132),
-  ('relation -> ASSIGN','relation',1,'p_relation0','Parser.py',136),
-  ('relation -> NE','relation',1,'p_relation1','Parser.py',140),
-  ('relation -> LT','relation',1,'p_relation2','Parser.py',144),
-  ('relation -> GT','relation',1,'p_relation3','Parser.py',148),
-  ('relation -> LTE','relation',1,'p_relation4','Parser.py',152),
-  ('relation -> GTE','relation',1,'p_relation5','Parser.py',156),
-  ('empty -> <empty>','empty',0,'p_empty','Parser.py',160),
+  ('program -> const_block','program',1,'p_program','Parser.py',21),
+  ('const_block -> const const const const const block','const_block',6,'p_constB','Parser.py',25),
+  ('block -> assignment function','block',2,'p_block','Parser.py',29),
+  ('assignment -> ID ASSIGN value SEMICOLON block','assignment',5,'p_simpleAssignment0','Parser.py',33),
+  ('assignment -> ID ASSIGN arithmetic SEMICOLON block','assignment',5,'p_simpleAssignment1','Parser.py',37),
+  ('assignment -> ID COMMA ID ASSIGN value COMMA value SEMICOLON block','assignment',9,'p_doubleAssignment','Parser.py',41),
+  ('assignment -> empty','assignment',1,'p_assignmentEmp','Parser.py',45),
+  ('function -> type','function',1,'p_function','Parser.py',49),
+  ('function -> empty','function',1,'p_functionEmp','Parser.py',53),
+  ('type -> TYPE LPARENT ID RPARENT SEMICOLON block','type',6,'p_type','Parser.py',57),
+  ('arithmetic -> term','arithmetic',1,'p_arithmetic0','Parser.py',61),
+  ('arithmetic -> adding_operator term','arithmetic',2,'p_arithmetic1','Parser.py',64),
+  ('arithmetic -> arithmetic adding_operator term','arithmetic',3,'p_arithmetic2','Parser.py',68),
+  ('term -> factor','term',1,'p_term0','Parser.py',72),
+  ('term -> term multiplying_operator factor','term',3,'p_term1','Parser.py',76),
+  ('factor -> INT','factor',1,'p_factor0','Parser.py',80),
+  ('factor -> ID','factor',1,'p_factor1','Parser.py',84),
+  ('factor -> LPARENT arithmetic RPARENT','factor',3,'p_factor2','Parser.py',88),
+  ('const -> TIMER ASSIGN INT SEMICOLON','const',4,'p_const0','Parser.py',92),
+  ('const -> RANGOTIMER ASSIGN QUOTES time_mes QUOTES SEMICOLON','const',6,'p_const1','Parser.py',96),
+  ('const -> dimension ASSIGN INT SEMICOLON','const',4,'p_const2','Parser.py',100),
+  ('const -> CUBO ASSIGN INT SEMICOLON','const',4,'p_const3','Parser.py',104),
+  ('dimension -> DIMFILAS','dimension',1,'p_dim0','Parser.py',111),
+  ('dimension -> DIMCOLUMNAS','dimension',1,'p_dim1','Parser.py',115),
+  ('time_mes -> MIL','time_mes',1,'p_timeM0','Parser.py',119),
+  ('time_mes -> MIN','time_mes',1,'p_timeM1','Parser.py',123),
+  ('time_mes -> SEG','time_mes',1,'p_timeM2','Parser.py',127),
+  ('adding_operator -> PLUS','adding_operator',1,'p_addingOp0','Parser.py',131),
+  ('adding_operator -> MINUS','adding_operator',1,'p_addingOp1','Parser.py',135),
+  ('multiplying_operator -> TIMES','multiplying_operator',1,'p_multiplyingOp0','Parser.py',139),
+  ('multiplying_operator -> EXP','multiplying_operator',1,'p_multiplyingOp1','Parser.py',142),
+  ('multiplying_operator -> DIVIDE','multiplying_operator',1,'p_multiplyingOp2','Parser.py',146),
+  ('multiplying_operator -> DIVENT','multiplying_operator',1,'p_multiplyingOp3','Parser.py',150),
+  ('multiplying_operator -> MOD','multiplying_operator',1,'p_multiplyingOp4','Parser.py',154),
+  ('value -> FALSE','value',1,'p_value0','Parser.py',158),
+  ('value -> TRUE','value',1,'p_value1','Parser.py',162),
+  ('value -> ID','value',1,'p_value2','Parser.py',166),
+  ('value -> INT','value',1,'p_value3','Parser.py',170),
+  ('relation -> ASSIGN','relation',1,'p_relation0','Parser.py',174),
+  ('relation -> NE','relation',1,'p_relation1','Parser.py',178),
+  ('relation -> LT','relation',1,'p_relation2','Parser.py',182),
+  ('relation -> GT','relation',1,'p_relation3','Parser.py',186),
+  ('relation -> LTE','relation',1,'p_relation4','Parser.py',190),
+  ('relation -> GTE','relation',1,'p_relation5','Parser.py',194),
+  ('empty -> <empty>','empty',0,'p_empty','Parser.py',198),
 ]

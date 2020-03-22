@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="2bdb93ff-1c09-4d45-900c-c563d709b598" name="Default Changelist" comment="">
+    <list default="true" id="28e1d7ee-b5f4-4b12-832a-3d26432cc0d8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Lexer.py" beforeDir="false" afterPath="$PROJECT_DIR$/Lexer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/Parser.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Tests/test1.pl0" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/test1.pl0" afterDir="false" />
@@ -38,7 +37,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Parser.py" />
     <property name="settings.editor.selected.configurable" value="Errors" />
   </component>
   <component name="RecentsManager">
@@ -46,7 +45,7 @@
       <recent name="C:\Users\Usuario\Desktop\IS2020\CompiladoresLenguajes\Proyect" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.Lexer">
+  <component name="RunManager" selected="Python.Parser">
     <configuration name="GUI" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Proyect" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -89,7 +88,29 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="Parser" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+      <module name="Proyect" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="/usr/bin/python3.6" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Parser.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <list>
+      <item itemvalue="Python.Parser" />
       <item itemvalue="Python.GUI" />
       <item itemvalue="Python.Lexer" />
     </list>
@@ -119,38 +140,43 @@
     </state>
     <state x="451" y="92" key="#Lexer/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1584226768237" />
     <state x="634" y="158" width="642" height="797" key="#Lexer/0.27.1920.1053@0.27.1920.1053" timestamp="1584222520794" />
+    <state x="836" y="211" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1584851858197">
+      <screen x="0" y="27" width="1920" height="1053" />
+    </state>
+    <state x="836" y="211" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.27.1920.1053@0.27.1920.1053" timestamp="1584851858197" />
     <state x="454" y="172" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1584253029813">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
     <state x="454" y="172" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1584253029813" />
-    <state x="556" y="139" key="FileChooserDialogImpl" timestamp="1584227221297">
-      <screen x="0" y="0" width="1366" height="738" />
+    <state x="781" y="225" width="424" height="491" key="FileChooserDialogImpl" timestamp="1584851855914">
+      <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state x="556" y="139" key="FileChooserDialogImpl/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1584227221297" />
-    <state width="1345" height="277" key="GridCell.Tab.0.bottom" timestamp="1584849695399">
-      <screen x="0" y="0" width="1366" height="738" />
+    <state x="781" y="225" width="424" height="491" key="FileChooserDialogImpl/0.27.1920.1053@0.27.1920.1053" timestamp="1584851855914" />
+    <state width="937" height="484" key="GridCell.Tab.0.bottom" timestamp="1584852065541">
+      <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state width="1899" height="91" key="GridCell.Tab.0.bottom/0.0.1366.738/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1584652804157" />
-    <state width="1345" height="277" key="GridCell.Tab.0.bottom/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1584849695399" />
-    <state width="1897" height="275" key="GridCell.Tab.0.bottom/0.27.1920.1053@0.27.1920.1053" timestamp="1584225031056" />
-    <state width="1345" height="277" key="GridCell.Tab.0.center" timestamp="1584849695399">
-      <screen x="0" y="0" width="1366" height="738" />
+    <state width="1345" height="272" key="GridCell.Tab.0.bottom/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1584850569442" />
+    <state width="937" height="484" key="GridCell.Tab.0.bottom/0.27.1920.1053@0.27.1920.1053" timestamp="1584852065541" />
+    <state width="937" height="484" key="GridCell.Tab.0.center" timestamp="1584852065540">
+      <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state width="1899" height="91" key="GridCell.Tab.0.center/0.0.1366.738/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1584652804157" />
-    <state width="1345" height="277" key="GridCell.Tab.0.center/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1584849695399" />
-    <state width="1897" height="275" key="GridCell.Tab.0.center/0.27.1920.1053@0.27.1920.1053" timestamp="1584225031055" />
-    <state width="1345" height="277" key="GridCell.Tab.0.left" timestamp="1584849695399">
-      <screen x="0" y="0" width="1366" height="738" />
+    <state width="1345" height="272" key="GridCell.Tab.0.center/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1584850569442" />
+    <state width="937" height="484" key="GridCell.Tab.0.center/0.27.1920.1053@0.27.1920.1053" timestamp="1584852065540" />
+    <state width="937" height="484" key="GridCell.Tab.0.left" timestamp="1584852065539">
+      <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state width="1899" height="91" key="GridCell.Tab.0.left/0.0.1366.738/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1584652804157" />
-    <state width="1345" height="277" key="GridCell.Tab.0.left/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1584849695399" />
-    <state width="1897" height="275" key="GridCell.Tab.0.left/0.27.1920.1053@0.27.1920.1053" timestamp="1584225031054" />
-    <state width="1345" height="277" key="GridCell.Tab.0.right" timestamp="1584849695399">
-      <screen x="0" y="0" width="1366" height="738" />
+    <state width="1345" height="272" key="GridCell.Tab.0.left/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1584850569442" />
+    <state width="937" height="484" key="GridCell.Tab.0.left/0.27.1920.1053@0.27.1920.1053" timestamp="1584852065539" />
+    <state width="937" height="484" key="GridCell.Tab.0.right" timestamp="1584852065540">
+      <screen x="0" y="27" width="1920" height="1053" />
     </state>
     <state width="1899" height="91" key="GridCell.Tab.0.right/0.0.1366.738/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1584652804157" />
-    <state width="1345" height="277" key="GridCell.Tab.0.right/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1584849695399" />
-    <state width="1897" height="275" key="GridCell.Tab.0.right/0.27.1920.1053@0.27.1920.1053" timestamp="1584225031055" />
+    <state width="1345" height="272" key="GridCell.Tab.0.right/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1584850569442" />
+    <state width="937" height="484" key="GridCell.Tab.0.right/0.27.1920.1053@0.27.1920.1053" timestamp="1584852065540" />
     <state width="1345" height="227" key="GridCell.Tab.1.bottom" timestamp="1584600112903">
       <screen x="0" y="0" width="1366" height="738" />
     </state>

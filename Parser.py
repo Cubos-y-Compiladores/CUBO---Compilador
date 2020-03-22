@@ -89,10 +89,43 @@ def p_factor2(p):
     print("factor2")
 
 def p_const0(p):
-    '''const : '''
+    '''const : TIMER ASSIGN INT SEMICOLON'''
+    print("timer_const")
+
+def p_const1(p):
+    '''const : RANGOTIMER ASSIGN QUOTES time_mes QUOTES SEMICOLON'''
+    print("rng_const")
+
+def p_const2(p):
+    '''const : dimension ASSIGN INT SEMICOLON'''
+    print("dim_const")
+
+def p_const3(p):
+    '''const : CUBO ASSIGN INT SEMICOLON'''
+    print("cube_const")
 
 
 
+
+def p_dim0(p):
+    '''dimension : DIMFILAS'''
+    print("dim_filas")
+
+def p_dim1(p):
+    '''dimension : DIMCOLUMNAS'''
+    print("dim_columnas")
+
+def p_timeM0(p):
+    '''time_mes : MIL'''
+    print("timeM0")
+
+def p_timeM1(p):
+    '''time_mes : MIN'''
+    print("timeM1")
+
+def p_timeM2(p):
+    '''time_mes : SEG'''
+    print("timeM2")
 
 def p_addingOp0(p):
     '''adding_operator : PLUS'''

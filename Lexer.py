@@ -60,10 +60,17 @@ reserved = {'if': 'IF',
             'CALL':'CALL',
             'Timer':'TIMER',
             'Rango_Timer':'RANGOTIMER',
-            'Dim_Fila':'DIMFILAS',
-            'Dim_Columna':'DIMCOLUMNA',
+            'Dim_Filas':'DIMFILAS',
+            'Dim_Columnas':'DIMCOLUMNAS',
             'Cubo':'CUBO',
+            'Mil': 'MIL',
+            'Seg': 'SEG',
+            'Min': 'MIN'
             }
+
+timeConst = {
+
+}
 
 tokens = tokens + list(reserved.values())
 
@@ -98,6 +105,7 @@ def t_ID(t):
     r"""[a-z][a-zA-Z0-9_@&]*"""
     if len(t.value)>10:
         t.type = "LENGHTERROR"
+
     elif t.value in reserved:
         t.type = reserved[t.value]
         # t.value = (t.value,symbol_lookup(t.value)) Para devolver el valor a la tabla de signos
