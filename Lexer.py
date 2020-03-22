@@ -68,10 +68,6 @@ reserved = {'if': 'IF',
             'Min': 'MIN'
             }
 
-timeConst = {
-
-}
-
 tokens = tokens + list(reserved.values())
 
 t_ignore = '\t\r ' # t_ignore es usado para ignorar todos los caracteres dentro de esta lista

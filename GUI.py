@@ -85,21 +85,7 @@ class MyApp(wx.Frame):
         self.Bind(wx.EVT_MENU, partial(self.insertMatriz2,7), self.sub7x7)
         self.Bind(wx.EVT_MENU, partial(self.insertMatriz2,8), self.sub8x8)
 
-        # Eventos Submenus de matrices 2D
-
-        self.Bind(wx.EVT_MENU, partial(self.insertMatriz3,1), self.sub1x1x1)
-        self.Bind(wx.EVT_MENU, partial(self.insertMatriz3,2), self.sub2x2x2)
-        self.Bind(wx.EVT_MENU, partial(self.insertMatriz3,3), self.sub3x3x3)
-        self.Bind(wx.EVT_MENU, partial(self.insertMatriz3,4), self.sub4x4x4)
-        self.Bind(wx.EVT_MENU, partial(self.insertMatriz3,5), self.sub5x5x5)
-        self.Bind(wx.EVT_MENU, partial(self.insertMatriz3,6), self.sub6x6x6)
-        self.Bind(wx.EVT_MENU, partial(self.insertMatriz3,7), self.sub7x7x7)
-        self.Bind(wx.EVT_MENU, partial(self.insertMatriz3,8), self.sub8x8x8)
-
-
-
-
-
+        # Eventos Submenus de matrices 3D
 
         # Botones
         btn1 = wx.Button(self,-1,u"B",pos=(0,4),size=(20,20))
@@ -147,25 +133,21 @@ class MyApp(wx.Frame):
         self.textMain.AppendText("list" + str(self.contList) +"= [];\n")
         self.contList += 1
     def insertMatriz2(self,number,event):
-        print(number)
+
         text = "["
         for i in range(number-1):
-            text += "\n[],"*number
-        text += "\n[]"*number
-        text += "];"
+            text += "[],"*number
+            text += "\n "
+        text += "[]"*number
+        text+="\n ];"
+
         print(text)
         # self.textMain.AppendText("matriz2D" + str(self.contMatriz2) +"= [[],[]];\n")
         # self.contMatriz2 += 1
-    def insertMatriz3(self,number,event):
+    def insertMatriz3(self,num,event):
         # self.textMain.AppendText("matriz3D" + str(self.contMatriz3) +"= [[[],[]],[[],[]]];\n")
         # self.contMatriz3 += 1
-        text = "["
-        for i in range(number-1):
-            text += "\n[],"*number
-        text += "\n[]"*number
-        text += "];"
-        print(text)
-        print(number)
+        print(num)
     def subExitWindow(self,event):
         self.Close(1)
     def openFileCBC(self,event):
