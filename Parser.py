@@ -18,8 +18,12 @@ precedence = (
     ('left','LPARENT', 'RPARENT'),
 )
 def p_program(p):
-    '''program : block'''
+    '''program : const_block'''
     print("program")
+
+def p_constB(p):
+    '''const_block : const const const const const block'''
+    print("const_block")
 
 def p_block(p):
     ''' block : assignment function'''
@@ -84,7 +88,8 @@ def p_factor2(p):
     '''factor : LPARENT arithmetic RPARENT'''
     print("factor2")
 
-
+def p_const0(p):
+    '''const : '''
 
 
 

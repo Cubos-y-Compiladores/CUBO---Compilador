@@ -1,5 +1,5 @@
 import wx
-
+from functools import partial
 
 class MyApp(wx.Frame):
     def __init__(self,parent,title):
@@ -36,24 +36,24 @@ class MyApp(wx.Frame):
 
 
         self.subInsertL = self.subMenuInsert.Append(-1,"List\tCtrl-Q")
-        self.subMenuMat2D.Append(1, "1x1")
-        self.subMenuMat2D.Append(2, "2x2")
-        self.subMenuMat2D.Append(3, "3x3")
-        self.subMenuMat2D.Append(4, "4x4")
-        self.subMenuMat2D.Append(5, "5x5")
-        self.subMenuMat2D.Append(6, "6x6")
-        self.subMenuMat2D.Append(7, "7x7")
-        self.subMenuMat2D.Append(8, "8x8")
+        self.sub1x1 = self.subMenuMat2D.Append(1, "1x1")
+        self.sub2x2 = self.subMenuMat2D.Append(2, "2x2")
+        self.sub3x3 = self.subMenuMat2D.Append(3, "3x3")
+        self.sub4x4 = self.subMenuMat2D.Append(4, "4x4")
+        self.sub5x5 = self.subMenuMat2D.Append(5, "5x5")
+        self.sub6x6 = self.subMenuMat2D.Append(6, "6x6")
+        self.sub7x7 = self.subMenuMat2D.Append(7, "7x7")
+        self.sub8x8 = self.subMenuMat2D.Append(8, "8x8")
         self.subInsertM2 = self.subMenuInsert.AppendSubMenu(self.subMenuMat2D,"Matriz2D")
 
-        self.subMenuMat3D.Append(1, "1x1x1")
-        self.subMenuMat3D.Append(2, "2x2x2")
-        self.subMenuMat3D.Append(3, "3x3x3")
-        self.subMenuMat3D.Append(4, "4x4x4")
-        self.subMenuMat3D.Append(5, "5x5x5")
-        self.subMenuMat3D.Append(6, "6x6x6")
-        self.subMenuMat3D.Append(7, "7x7x7")
-        self.subMenuMat3D.Append(8, "8x8x8")
+        self.sub1x1x1 = self.subMenuMat3D.Append(1, "1x1x1")
+        self.sub2x2x2 = self.subMenuMat3D.Append(2, "2x2x2")
+        self.sub3x3x3 = self.subMenuMat3D.Append(3, "3x3x3")
+        self.sub4x4x4 = self.subMenuMat3D.Append(4, "4x4x4")
+        self.sub5x5x5 = self.subMenuMat3D.Append(5, "5x5x5")
+        self.sub6x6x6 = self.subMenuMat3D.Append(6, "6x6x6")
+        self.sub7x7x7 = self.subMenuMat3D.Append(7, "7x7x7")
+        self.sub8x8x8 = self.subMenuMat3D.Append(8, "8x8x8")
         self.subInsertM3 = self.subMenuInsert.AppendSubMenu(self.subMenuMat3D,"Matriz3D")
 
         self.subRun = self.subMenuRun.Append(-1,"Run This\tCtrl-F5")
@@ -74,7 +74,27 @@ class MyApp(wx.Frame):
         self.Bind(wx.EVT_MENU, self.newFile, self.subNew)
         self.Bind(wx.EVT_MENU, self.runFile, self.subRun)
 
-        # Eventos Submenus de matrices
+        # Eventos Submenus de matrices 2D
+
+        self.Bind(wx.EVT_MENU, partial(self.insertMatriz2,1), self.sub1x1)
+        self.Bind(wx.EVT_MENU, partial(self.insertMatriz2,2), self.sub2x2)
+        self.Bind(wx.EVT_MENU, partial(self.insertMatriz2,3), self.sub3x3)
+        self.Bind(wx.EVT_MENU, partial(self.insertMatriz2,4), self.sub4x4)
+        self.Bind(wx.EVT_MENU, partial(self.insertMatriz2,5), self.sub5x5)
+        self.Bind(wx.EVT_MENU, partial(self.insertMatriz2,6), self.sub6x6)
+        self.Bind(wx.EVT_MENU, partial(self.insertMatriz2,7), self.sub7x7)
+        self.Bind(wx.EVT_MENU, partial(self.insertMatriz2,8), self.sub8x8)
+
+        # Eventos Submenus de matrices 2D
+
+        self.Bind(wx.EVT_MENU, partial(self.insertMatriz3,1), self.sub1x1x1)
+        self.Bind(wx.EVT_MENU, partial(self.insertMatriz3,2), self.sub2x2x2)
+        self.Bind(wx.EVT_MENU, partial(self.insertMatriz3,3), self.sub3x3x3)
+        self.Bind(wx.EVT_MENU, partial(self.insertMatriz3,4), self.sub4x4x4)
+        self.Bind(wx.EVT_MENU, partial(self.insertMatriz3,5), self.sub5x5x5)
+        self.Bind(wx.EVT_MENU, partial(self.insertMatriz3,6), self.sub6x6x6)
+        self.Bind(wx.EVT_MENU, partial(self.insertMatriz3,7), self.sub7x7x7)
+        self.Bind(wx.EVT_MENU, partial(self.insertMatriz3,8), self.sub8x8x8)
 
 
 
@@ -126,15 +146,26 @@ class MyApp(wx.Frame):
     def insertList(self,event):
         self.textMain.AppendText("list" + str(self.contList) +"= [];\n")
         self.contList += 1
-    def insertMatriz2(self,event):
-        obj = event.GetEventObject()
-        print(obj.GetLabelText())
-
-        self.textMain.AppendText("matriz2D" + str(self.contMatriz2) +"= [[],[]];\n")
-        self.contMatriz2 += 1
-    def insertMatriz3(self,event):
-        self.textMain.AppendText("matriz3D" + str(self.contMatriz3) +"= [[[],[]],[[],[]]];\n")
-        self.contMatriz3 += 1
+    def insertMatriz2(self,number,event):
+        print(number)
+        text = "["
+        for i in range(number-1):
+            text += "\n[],"*number
+        text += "\n[]"*number
+        text += "];"
+        print(text)
+        # self.textMain.AppendText("matriz2D" + str(self.contMatriz2) +"= [[],[]];\n")
+        # self.contMatriz2 += 1
+    def insertMatriz3(self,number,event):
+        # self.textMain.AppendText("matriz3D" + str(self.contMatriz3) +"= [[[],[]],[[],[]]];\n")
+        # self.contMatriz3 += 1
+        text = "["
+        for i in range(number-1):
+            text += "\n[],"*number
+        text += "\n[]"*number
+        text += "];"
+        print(text)
+        print(number)
     def subExitWindow(self,event):
         self.Close(1)
     def openFileCBC(self,event):

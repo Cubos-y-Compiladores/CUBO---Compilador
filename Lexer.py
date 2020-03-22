@@ -30,7 +30,7 @@ import sys
 
 tokens = ['ID', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE','DIVENT','MOD','EXP', 'ASSIGN', 'COMMA', 'SEMICOLON',
           'LT', 'GT', 'LTE', 'GTE', 'NE', 'LPARENT', 'RPARENT', 'DOT', 'INT', 'LENGHTERROR','VARERROR', 'BOOKED',
-          'PARENTCL', 'PARENTCR', 'LCORCH', 'RCORCH', 'TP']
+          'PARENTCL', 'PARENTCR', 'LCORCH', 'RCORCH', 'TP','QUOTES']
 
 reserved = {'if': 'IF',
             'else': 'ELSE',
@@ -57,7 +57,13 @@ reserved = {'if': 'IF',
             'shapeF':'SHAPEF',
             'shapeA':'SHAPEA',
             'Main':'MAIN',
-            'CALL':'CALL'}
+            'CALL':'CALL',
+            'Timer':'TIMER',
+            'Rango_Timer':'RANGOTIMER',
+            'Dim_Fila':'DIMFILAS',
+            'Dim_Columna':'DIMCOLUMNA',
+            'Cubo':'CUBO',
+            }
 
 tokens = tokens + list(reserved.values())
 
@@ -83,6 +89,7 @@ t_LCORCH = '\{'
 t_RCORCH = '\}'
 t_TP = '\:'
 t_MOD = '%'
+t_QUOTES = '"'
 
 
 
