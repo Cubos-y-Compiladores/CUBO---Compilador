@@ -112,6 +112,10 @@ def p_multiplyingOp3(p):
     '''multiplying_operator : DIVENT'''
     print("Divent")
 
+def p_multiplyingOp4(p):
+    '''multiplying_operator : MOD'''
+    print("Module")
+
 def p_value0(p):
     '''value : FALSE'''
     print("value0")

@@ -37,7 +37,7 @@ reserved = {'if': 'IF',
             'while': 'WHILE',
             'for': 'FOR',
             'const': 'CONST',
-            'procedure': 'PROCEDURE',
+            'Procedure': 'PROCEDURE',
             'type': 'TYPE',
             'True': 'TRUE',
             'False': 'FALSE',
@@ -49,11 +49,19 @@ reserved = {'if': 'IF',
             'Neg':'NEG',
             'T':'T',
             'F':'F',
-            'Blink':'BLINK'}
+            'Blink':'BLINK',
+            'Delay':'DELAY',
+            'in':'IN',
+            'Step':'STEP',
+            'shapeC':'SHAPEC',
+            'shapeF':'SHAPEF',
+            'shapeA':'SHAPEA',
+            'Main':'MAIN',
+            'CALL':'CALL'}
 
 tokens = tokens + list(reserved.values())
 
-t_ignore = '\t ' # t_ignore es usado para ignorar todos los caracteres dentro de esta lista
+t_ignore = '\t\r ' # t_ignore es usado para ignorar todos los caracteres dentro de esta lista
 t_PLUS = r'\+'
 t_MINUS = r'\-'
 t_TIMES = r'\*'
@@ -74,10 +82,13 @@ t_NE = '!='
 t_LCORCH = '\{'
 t_RCORCH = '\}'
 t_TP = '\:'
+t_MOD = '%'
+
+
 
 # Reconoce variables y palabras reservadas
 def t_ID(t):
-    r"""[a-z][a-zA-Z0-9_]*"""
+    r"""[a-z][a-zA-Z0-9_@&]*"""
     if len(t.value)>10:
         t.type = "LENGHTERROR"
     elif t.value in reserved:
@@ -115,6 +126,13 @@ def t_error(t):
 def t_COMMENT(t):
     r"""\--.*"""
     pass
+
+def t_EXP(t):
+    r'[*][*]'
+    return t
+def t_DIVENT(t):
+    r'[/][/]'
+    return t
 
 # Remplaza un caracter de un string en una posición especifica por otro valor
 def replaceC(data,i,value):
