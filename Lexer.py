@@ -76,17 +76,13 @@ reserved = {'if': 'IF',
             'CALL':'CALL',
             'Timer':'TIMER',
             'Rango_Timer':'RANGOTIMER',
-            'Dim_Fila':'DIMFILAS',
-            'Dim_Columna':'DIMCOLUMNA',
+            'Dim_Filas':'DIMFILAS',
+            'Dim_Columnas':'DIMCOLUMNAS',
             'Cubo':'CUBO',
             'Mil': 'MIL',
             'Seg': 'SEG',
             'Min': 'MIN'
             }
-
-timeConst = {
-
-}
 
 tokens = tokens + list(reserved.values())
 
