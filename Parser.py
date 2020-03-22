@@ -112,6 +112,18 @@ def p_cont1(p):
     '''content : arithmetic'''
     print("content1")
 
+def p_cont2(p):
+    '''content : PARENTCL list_term PARENTCR'''
+    print("content2")
+
+def p_listT0(p):
+    '''list_term : value COMMA list_term'''
+    print("list_term0")
+
+def p_listT1(p):
+    '''list_term : value'''
+    print("list_term1")
+
 def p_dim0(p):
     '''dimension : DIMFILAS'''
     print("dim_filas")
@@ -119,6 +131,15 @@ def p_dim0(p):
 def p_dim1(p):
     '''dimension : DIMCOLUMNAS'''
     print("dim_columnas")
+
+
+
+
+
+
+
+
+
 
 def p_timeM0(p):
     '''time_mes : MIL'''
