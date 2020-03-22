@@ -9,42 +9,42 @@ from pip._vendor import colorama
 
 def printC(data,color):
     if color == "r":
-        print(colorama.Fore.RED + data + colorama.Fore.RESET)
+        print(colorama.Fore.RED + str(data) + colorama.Fore.RESET)
     elif color == "b":
-        print(colorama.Fore.BLUE + data + colorama.Fore.RESET)
+        print(colorama.Fore.BLUE + str(data) + colorama.Fore.RESET)
     elif color == "g":
-        print(colorama.Fore.GREEN + data + colorama.Fore.RESET)
+        print(colorama.Fore.GREEN + str(data) + colorama.Fore.RESET)
     elif color == "bk":
-        print(colorama.Fore.BLACK + data + colorama.Fore.RESET)
+        print(colorama.Fore.BLACK + str(data) + colorama.Fore.RESET)
     elif color == "y":
-        print(colorama.Fore.YELLOW + data + colorama.Fore.RESET)
+        print(colorama.Fore.YELLOW + str(data) + colorama.Fore.RESET)
     elif color == "m":
-        print(colorama.Fore.MAGENTA + data + colorama.Fore.RESET)
+        print(colorama.Fore.MAGENTA + str(data) + colorama.Fore.RESET)
     elif color == "c":
-        print(colorama.Fore.CYAN + data + colorama.Fore.RESET)
+        print(colorama.Fore.CYAN + str(data) + colorama.Fore.RESET)
     elif color == "lr":
-        print(colorama.Fore.LIGHTRED_EX + data + colorama.Fore.RESET)
+        print(colorama.Fore.LIGHTRED_EX + str(data) + colorama.Fore.RESET)
     elif color == "lb":
-        print(colorama.Fore.LIGHTBLUE_EX + data + colorama.Fore.RESET)
+        print(colorama.Fore.LIGHTBLUE_EX + str(data) + colorama.Fore.RESET)
     elif color == "lg":
-        print(colorama.Fore.LIGHTGREEN_EX + data + colorama.Fore.RESET)
+        print(colorama.Fore.LIGHTGREEN_EX + str(data) + colorama.Fore.RESET)
     elif color == "lbk":
-        print(colorama.Fore.LIGHTBLACK_EX + data + colorama.Fore.RESET)
+        print(colorama.Fore.LIGHTBLACK_EX + str(data) + colorama.Fore.RESET)
     elif color == "lc":
-        print(colorama.Fore.LIGHTCYAN_EX + data + colorama.Fore.RESET)
+        print(colorama.Fore.LIGHTCYAN_EX + str(data) + colorama.Fore.RESET)
     elif color == "lm":
-        print(colorama.Fore.LIGHTMAGENTA_EX + data + colorama.Fore.RESET)
+        print(colorama.Fore.LIGHTMAGENTA_EX + str(data) + colorama.Fore.RESET)
     elif color == "ly":
-        print(colorama.Fore.LIGHTYELLOW_EX + data + colorama.Fore.RESET)
+        print(colorama.Fore.LIGHTYELLOW_EX + str(data) + colorama.Fore.RESET)
     elif color == "w":
-        print(colorama.Fore.WHITE + data + colorama.Fore.RESET)
+        print(colorama.Fore.WHITE + str(data) + colorama.Fore.RESET)
     elif color == "lw":
-        print(colorama.Fore.LIGHTWHITE_EX + data + colorama.Fore.RESET)
+        print(colorama.Fore.LIGHTWHITE_EX + str(data) + colorama.Fore.RESET)
 
 
 # TODO pasasrlo posiblemente a orientado a objetos
 
-tokens = ['ID', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE','DIVENT','MOD','EXP', 'ASSIGN', 'COMMA', 'SEMMICOLOM',
+tokens = ['ID', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE','DIVENT','MOD','EXP', 'ASSIGN', 'COMMA', 'SEMICOLON',
           'LT', 'GT', 'LTE', 'GTE', 'NE', 'LPARENT', 'RPARENT', 'DOT', 'INT', 'LENGHTERROR','VARERROR', 'BOOKED',
           'PARENTCL', 'PARENTCR', 'LCORCH', 'RCORCH', 'TP']
 
@@ -53,7 +53,7 @@ reserved = {'if': 'IF',
             'while': 'WHILE',
             'for': 'FOR',
             'const': 'CONST',
-            'procedure': 'PROCEDURE',
+            'Procedure': 'PROCEDURE',
             'type': 'TYPE',
             'True': 'TRUE',
             'False': 'FALSE',
@@ -65,11 +65,19 @@ reserved = {'if': 'IF',
             'Neg':'NEG',
             'T':'T',
             'F':'F',
-            'Blink':'BLINK'}
+            'Blink':'BLINK',
+            'Delay':'DELAY',
+            'in':'IN',
+            'Step':'STEP',
+            'shapeC':'SHAPEC',
+            'shapeF':'SHAPEF',
+            'shapeA':'SHAPEA',
+            'Main':'MAIN',
+            'CALL':'CALL'}
 
 tokens = tokens + list(reserved.values())
 
-t_ignore = '\n\t ' # t_ignore es usado para ignorar todos los caracteres dentro de esta lista
+t_ignore = '\t\r ' # t_ignore es usado para ignorar todos los caracteres dentro de esta lista
 t_PLUS = r'\+'
 t_MINUS = r'\-'
 t_TIMES = r'\*'
@@ -82,7 +90,7 @@ t_GTE = r'>='
 t_LPARENT = r'\('
 t_RPARENT = r'\)'
 t_COMMA = r','
-t_SEMMICOLOM = r';'
+t_SEMICOLON = r';'
 t_DOT = r'\.'
 t_PARENTCL = '\['
 t_PARENTCR = '\]'
@@ -90,10 +98,13 @@ t_NE = '!='
 t_LCORCH = '\{'
 t_RCORCH = '\}'
 t_TP = '\:'
+t_MOD = '%'
+
+
 
 # Reconoce variables y palabras reservadas
 def t_ID(t):
-    r"""[a-z][a-zA-Z0-9_]*"""
+    r"""[a-z][a-zA-Z0-9_@&]*"""
     if len(t.value)>10:
         t.type = "LENGHTERROR"
     elif t.value in reserved:
@@ -123,6 +134,7 @@ def t_newline(t):
     r"""\n+"""
     t.lexer.lineno += len(t.value)
 
+
 # Reconoce que un string no está en el alfabeto
 def t_error(t):
     print("Illegal character '%s'" % t.value[0])
@@ -132,6 +144,16 @@ def t_error(t):
 def t_COMMENT(t):
     r"""\--.*"""
     pass
+
+def t_EXP(t):
+    r'[*][*]'
+    return t
+def t_DIVENT(t):
+    r'[/][/]'
+    return t
+
+
+
 
 # Remplaza un caracter de un string en una posición especifica por otro valor
 def replaceC(data,i,value):
@@ -236,7 +258,8 @@ fp.close()
 # printC("CHANGED" + "\n" + findDassign(foo), "b")
 
 lexer = lex.lex()
-data1 = """var = 5;"""
+data1 = """var = 5; 
+y= 2;"""
 data2 = "Var = 5;"
 data3 = "a,b = 3,4"
 data4 = "type(a)"
@@ -245,8 +268,8 @@ data6 = "var1 != var2"
 data7 = "list = [True,False] lista[1:4] x = range(5,True)"
 data8 = "x,y = 3,41;"
 data9 = " const Var = 1; l.insert(2,True)"
-data10 = "type(var)"
-lexer.input(data10)
+data10 = "type(var).Blink.T.F.Neg Type"
+lexer.input(text)
 # print(findDassign(text))
 # lexer.input(findDassign(text)) # Arreglar funcion de doble asignación
 
@@ -257,4 +280,71 @@ while 1:
     print(tok)
 
 # TODO crear funciones para manejo de archivos para luego incorporarlo al ide
+
+# TODO crear estructura de tabla de signos , posiblemente un objeto variable y una lista
+
+class Var:
+    def __init__(self,n,v,t = "null", isG = 0 , r = 1):
+        self.name = n
+        self.value = v
+        self.type = t
+        self.isGlobal = isG
+        if isinstance(v,list):
+            self.range = len(v)
+            self.type = "list"
+        else:
+            self.range = r
+            if isinstance(v,int):
+                self.type = "int"
+            if isinstance(v,bool):
+                self.type = "bool"
+                
+    def getName(self):
+        return self.name
+    def getValue(self):
+        return self.value
+    def getType(self):
+        return self.type
+    def getIsGlobal(self):
+        return self.isGlobal
+    def getRange(self):
+        return self.range
+    def getInfo(self):
+        return self.name,self.value,self.type,self.isGlobal,self.range
+
+class SymbolTable:
+    def __init__(self):
+        self.array = []
+    def getLen(self):
+        return len(self.array)
+    def getList(self):
+        return self.array
+    def insertVar(self,var):
+# TODO preguntar al profe que pasa si uno define una variable normal y luego la vuelve global (se puede ? )
+        self.array += [var]
+    def findVar(self,nameVar):
+        for i in self.array:
+            if i.getName() == nameVar:
+                return i.getInfo()
+    def showAllSymbols(self):
+        result = []
+        for i in self.array:
+            result += [("VAR = " + str(i.getName()), "VAL = "+str(i.getValue()))]
+        printC(result,"g")
+
+symboltable = SymbolTable()
+printC(str(symboltable.getLen()),"r")
+var1 = Var("var1",560)
+symboltable.insertVar(var1)
+printC(symboltable.findVar("var1"),"b")
+
+var2 = Var("var2",1)
+print(var2.getRange(),var2.getType())
+symboltable.insertVar(var2)
+var3 = Var("var3",True)
+symboltable.insertVar(var3)
+
+printC(symboltable.findVar("var3"),"b")
+symboltable.showAllSymbols()
+
 
