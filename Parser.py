@@ -30,11 +30,11 @@ def p_block(p):
     print("block")
 
 def p_simpleAssignment0(p):
-    '''assignment : ID ASSIGN value SEMICOLON block'''
+    '''assignment :  ID ASSIGN content SEMICOLON block'''
     print("simpleAssignment0")
 
 def p_simpleAssignment1(p):
-    '''assignment : ID ASSIGN arithmetic SEMICOLON block'''
+    '''assignment :  GLOBAL ID ASSIGN content SEMICOLON block'''
     print("simpleAssignment1")
 
 def p_doubleAssignment(p):
@@ -104,8 +104,13 @@ def p_const3(p):
     '''const : CUBO ASSIGN INT SEMICOLON'''
     print("cube_const")
 
+def p_cont0(p):
+    '''content : value'''
+    print("content0")
 
-
+def p_cont1(p):
+    '''content : arithmetic'''
+    print("content1")
 
 def p_dim0(p):
     '''dimension : DIMFILAS'''
@@ -162,14 +167,6 @@ def p_value1(p):
     '''value : TRUE'''
     print("value1")
 
-def p_value2(p):
-    '''value : ID'''
-    print("value2")
-
-def p_value3(p):
-    '''value : INT'''
-    print("value3")
-    
 def p_relation0(p):
 	'''relation : ASSIGN'''
 	print ("relation 0")
