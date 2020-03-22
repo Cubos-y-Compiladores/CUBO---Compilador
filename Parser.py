@@ -100,10 +100,17 @@ def p_addingOp1(p):
 def p_multiplyingOp0(p):
     '''multiplying_operator : TIMES'''
     print("Times")
-
 def p_multiplyingOp1(p):
+    '''multiplying_operator : EXP'''
+    print("Exponencial")
+
+def p_multiplyingOp2(p):
     '''multiplying_operator : DIVIDE'''
     print("Divide")
+
+def p_multiplyingOp3(p):
+    '''multiplying_operator : DIVENT'''
+    print("Divent")
 
 def p_value0(p):
     '''value : FALSE'''
@@ -160,6 +167,6 @@ test = '/home/dcamachog1501/Induced_Desktop/Test'
 fp = codecs.open(test, "r", "utf-8")
 chain = fp.read()
 parser = yacc.yacc()
-#tv(chain)
+tv(chain)
 result = parser.parse(chain)
 print(result)

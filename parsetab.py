@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'rightIDIFWHILETYPErightASSIGNleftLTLTEGTGTEleftPLUSMINUSleftMODDIVENTTIMESDIVIDEleftEXPleftLPARENTRPARENTASSIGN BLINK BOOKED COMMA CONST DELETE DIVENT DIVIDE DOT ELSE EXP F FALSE FOR GLOBAL GT GTE ID IF INSERT INT LCORCH LEN LENGHTERROR LPARENT LT LTE MINUS MOD NE NEG PARENTCL PARENTCR PLUS PROCEDURE RANGE RCORCH RPARENT SEMICOLON T TIMES TP TRUE TYPE VARERROR WHILEprogram : block block : assignment functionassignment : ID ASSIGN value SEMICOLON blockassignment : ID ASSIGN arithmetic SEMICOLON blockassignment : ID COMMA ID ASSIGN value COMMA value SEMICOLON blockassignment : emptyfunction : typefunction : emptytype : TYPE LPARENT ID RPARENT SEMICOLON block arithmetic : termarithmetic : adding_operator term arithmetic : arithmetic adding_operator termterm : factorterm : term multiplying_operator factorfactor : INTfactor : IDfactor : LPARENT arithmetic RPARENTadding_operator : PLUSadding_operator : MINUSmultiplying_operator : TIMESmultiplying_operator : DIVIDEvalue : FALSEvalue : TRUEvalue : IDvalue : INTrelation : ASSIGNrelation : NErelation : LTrelation : GTrelation : LTErelation : GTEempty : '
+_lr_signature = 'rightIDIFWHILETYPErightASSIGNleftLTLTEGTGTEleftPLUSMINUSleftMODDIVENTTIMESDIVIDEleftEXPleftLPARENTRPARENTASSIGN BLINK BOOKED COMMA CONST DELETE DIVENT DIVIDE DOT ELSE EXP F FALSE FOR GLOBAL GT GTE ID IF INSERT INT LCORCH LEN LENGHTERROR LPARENT LT LTE MINUS MOD NE NEG PARENTCL PARENTCR PLUS PROCEDURE RANGE RCORCH RPARENT SEMICOLON T TIMES TP TRUE TYPE VARERROR WHILEprogram : block block : assignment functionassignment : ID ASSIGN value SEMICOLON blockassignment : ID ASSIGN arithmetic SEMICOLON blockassignment : ID COMMA ID ASSIGN value COMMA value SEMICOLON blockassignment : emptyfunction : typefunction : emptytype : TYPE LPARENT ID RPARENT SEMICOLON block arithmetic : termarithmetic : adding_operator term arithmetic : arithmetic adding_operator termterm : factorterm : term multiplying_operator factorfactor : INTfactor : IDfactor : LPARENT arithmetic RPARENTadding_operator : PLUSadding_operator : MINUSmultiplying_operator : TIMESmultiplying_operator : EXPmultiplying_operator : DIVIDEmultiplying_operator : DIVENTvalue : FALSEvalue : TRUEvalue : IDvalue : INTrelation : ASSIGNrelation : NErelation : LTrelation : GTrelation : LTErelation : GTEempty : '
     
-_lr_action_items = {'ID':([0,10,11,12,20,22,23,24,27,28,29,30,31,32,37,47,48,51,],[4,13,25,26,35,-18,-19,35,4,4,35,35,-20,-21,44,4,44,4,]),'TYPE':([0,3,5,6,7,8,27,28,39,40,47,49,51,52,],[-32,9,-6,-2,-7,-8,-32,-32,-3,-4,-32,-9,-32,-5,]),'$end':([0,1,2,3,5,6,7,8,27,28,39,40,47,49,51,52,],[-32,0,-1,-32,-6,-2,-7,-8,-32,-32,-3,-4,-32,-9,-32,-5,]),'ASSIGN':([4,25,],[10,37,]),'COMMA':([4,16,17,44,45,46,],[11,-22,-23,-24,48,-25,]),'LPARENT':([9,10,20,22,23,24,29,30,31,32,],[12,24,24,-18,-19,24,24,24,-20,-21,]),'FALSE':([10,37,48,],[16,16,16,]),'TRUE':([10,37,48,],[17,17,17,]),'INT':([10,20,22,23,24,29,30,31,32,37,48,],[18,34,-18,-19,34,34,34,-20,-21,46,46,]),'PLUS':([10,13,15,18,19,21,24,33,34,35,36,41,42,43,],[22,-16,22,-15,-10,-13,22,-11,-15,-16,22,-12,-14,-17,]),'MINUS':([10,13,15,18,19,21,24,33,34,35,36,41,42,43,],[23,-16,23,-15,-10,-13,23,-11,-15,-16,23,-12,-14,-17,]),'SEMICOLON':([13,14,15,16,17,18,19,21,33,34,35,38,41,42,43,44,46,50,],[-16,27,28,-22,-23,-15,-10,-13,-11,-15,-16,47,-12,-14,-17,-24,-25,51,]),'TIMES':([13,18,19,21,33,34,35,41,42,43,],[-16,-15,31,-13,31,-15,-16,31,-14,-17,]),'DIVIDE':([13,18,19,21,33,34,35,41,42,43,],[-16,-15,32,-13,32,-15,-16,32,-14,-17,]),'RPARENT':([19,21,26,33,34,35,36,41,42,43,],[-10,-13,38,-11,-15,-16,43,-12,-14,-17,]),}
+_lr_action_items = {'ID':([0,10,11,12,20,22,23,24,27,28,29,30,31,32,33,34,39,49,50,53,],[4,13,25,26,37,-18,-19,37,4,4,37,37,-20,-21,-22,-23,46,4,46,4,]),'TYPE':([0,3,5,6,7,8,27,28,41,42,49,51,53,54,],[-34,9,-6,-2,-7,-8,-34,-34,-3,-4,-34,-9,-34,-5,]),'$end':([0,1,2,3,5,6,7,8,27,28,41,42,49,51,53,54,],[-34,0,-1,-34,-6,-2,-7,-8,-34,-34,-3,-4,-34,-9,-34,-5,]),'ASSIGN':([4,25,],[10,39,]),'COMMA':([4,16,17,46,47,48,],[11,-24,-25,-26,50,-27,]),'LPARENT':([9,10,20,22,23,24,29,30,31,32,33,34,],[12,24,24,-18,-19,24,24,24,-20,-21,-22,-23,]),'FALSE':([10,39,50,],[16,16,16,]),'TRUE':([10,39,50,],[17,17,17,]),'INT':([10,20,22,23,24,29,30,31,32,33,34,39,50,],[18,36,-18,-19,36,36,36,-20,-21,-22,-23,48,48,]),'PLUS':([10,13,15,18,19,21,24,35,36,37,38,43,44,45,],[22,-16,22,-15,-10,-13,22,-11,-15,-16,22,-12,-14,-17,]),'MINUS':([10,13,15,18,19,21,24,35,36,37,38,43,44,45,],[23,-16,23,-15,-10,-13,23,-11,-15,-16,23,-12,-14,-17,]),'SEMICOLON':([13,14,15,16,17,18,19,21,35,36,37,40,43,44,45,46,48,52,],[-16,27,28,-24,-25,-15,-10,-13,-11,-15,-16,49,-12,-14,-17,-26,-27,53,]),'TIMES':([13,18,19,21,35,36,37,43,44,45,],[-16,-15,31,-13,31,-15,-16,31,-14,-17,]),'EXP':([13,18,19,21,35,36,37,43,44,45,],[-16,-15,32,-13,32,-15,-16,32,-14,-17,]),'DIVIDE':([13,18,19,21,35,36,37,43,44,45,],[-16,-15,33,-13,33,-15,-16,33,-14,-17,]),'DIVENT':([13,18,19,21,35,36,37,43,44,45,],[-16,-15,34,-13,34,-15,-16,34,-14,-17,]),'RPARENT':([19,21,26,35,36,37,38,43,44,45,],[-10,-13,40,-11,-15,-16,45,-12,-14,-17,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'program':([0,],[1,]),'block':([0,27,28,47,51,],[2,39,40,49,52,]),'assignment':([0,27,28,47,51,],[3,3,3,3,3,]),'empty':([0,3,27,28,47,51,],[5,8,5,5,5,5,]),'function':([3,],[6,]),'type':([3,],[7,]),'value':([10,37,48,],[14,45,50,]),'arithmetic':([10,24,],[15,36,]),'term':([10,20,24,29,],[19,33,19,41,]),'adding_operator':([10,15,24,36,],[20,29,20,29,]),'factor':([10,20,24,29,30,],[21,21,21,21,42,]),'multiplying_operator':([19,33,41,],[30,30,30,]),}
+_lr_goto_items = {'program':([0,],[1,]),'block':([0,27,28,49,53,],[2,41,42,51,54,]),'assignment':([0,27,28,49,53,],[3,3,3,3,3,]),'empty':([0,3,27,28,49,53,],[5,8,5,5,5,5,]),'function':([3,],[6,]),'type':([3,],[7,]),'value':([10,39,50,],[14,47,52,]),'arithmetic':([10,24,],[15,38,]),'term':([10,20,24,29,],[19,35,19,43,]),'adding_operator':([10,15,24,38,],[20,29,20,29,]),'factor':([10,20,24,29,30,],[21,21,21,21,44,]),'multiplying_operator':([19,35,43,],[30,30,30,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -47,16 +47,18 @@ _lr_productions = [
   ('adding_operator -> PLUS','adding_operator',1,'p_addingOp0','Parser.py',93),
   ('adding_operator -> MINUS','adding_operator',1,'p_addingOp1','Parser.py',97),
   ('multiplying_operator -> TIMES','multiplying_operator',1,'p_multiplyingOp0','Parser.py',101),
-  ('multiplying_operator -> DIVIDE','multiplying_operator',1,'p_multiplyingOp1','Parser.py',105),
-  ('value -> FALSE','value',1,'p_value0','Parser.py',109),
-  ('value -> TRUE','value',1,'p_value1','Parser.py',113),
-  ('value -> ID','value',1,'p_value2','Parser.py',117),
-  ('value -> INT','value',1,'p_value3','Parser.py',121),
-  ('relation -> ASSIGN','relation',1,'p_relation0','Parser.py',125),
-  ('relation -> NE','relation',1,'p_relation1','Parser.py',129),
-  ('relation -> LT','relation',1,'p_relation2','Parser.py',133),
-  ('relation -> GT','relation',1,'p_relation3','Parser.py',137),
-  ('relation -> LTE','relation',1,'p_relation4','Parser.py',141),
-  ('relation -> GTE','relation',1,'p_relation5','Parser.py',145),
-  ('empty -> <empty>','empty',0,'p_empty','Parser.py',149),
+  ('multiplying_operator -> EXP','multiplying_operator',1,'p_multiplyingOp1','Parser.py',104),
+  ('multiplying_operator -> DIVIDE','multiplying_operator',1,'p_multiplyingOp2','Parser.py',108),
+  ('multiplying_operator -> DIVENT','multiplying_operator',1,'p_multiplyingOp3','Parser.py',112),
+  ('value -> FALSE','value',1,'p_value0','Parser.py',116),
+  ('value -> TRUE','value',1,'p_value1','Parser.py',120),
+  ('value -> ID','value',1,'p_value2','Parser.py',124),
+  ('value -> INT','value',1,'p_value3','Parser.py',128),
+  ('relation -> ASSIGN','relation',1,'p_relation0','Parser.py',132),
+  ('relation -> NE','relation',1,'p_relation1','Parser.py',136),
+  ('relation -> LT','relation',1,'p_relation2','Parser.py',140),
+  ('relation -> GT','relation',1,'p_relation3','Parser.py',144),
+  ('relation -> LTE','relation',1,'p_relation4','Parser.py',148),
+  ('relation -> GTE','relation',1,'p_relation5','Parser.py',152),
+  ('empty -> <empty>','empty',0,'p_empty','Parser.py',156),
 ]
