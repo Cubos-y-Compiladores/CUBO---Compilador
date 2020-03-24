@@ -63,9 +63,21 @@ def p_assignmentEmp(p):
 
 
 ##########---FUNCIONES---##########
-def p_function(p):
+def p_function0(p):
     '''function : type '''
-    print("function")
+    print("function0")
+
+def p_function1(p):
+    '''function : insert'''
+    print("function1")
+
+def p_function2(p):
+    '''function : del'''
+    print("function2")
+
+def p_function3(p):
+    '''function : len'''
+    print("function3")
 
 def p_type(p):
     '''type : TYPE LPARENT ID RPARENT SEMICOLON block'''
@@ -74,6 +86,18 @@ def p_type(p):
 def p_range(p):
     '''content : RANGE LPARENT INT COMMA value RPARENT'''
     print("range")
+
+def p_insert(p):
+    '''insert : ID DOT INSERT LPARENT INT COMMA value RPARENT SEMICOLON block'''
+    print("insert")
+
+def p_del(p):
+    ''' del : ID DOT DELETE LPARENT INT RPARENT SEMICOLON block'''
+    print("delete")
+
+def p_len(p):
+    ''' len : LEN LPARENT ID RPARENT SEMICOLON block'''
+    print("len")
 
 
 
