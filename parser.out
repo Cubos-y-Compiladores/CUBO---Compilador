@@ -87,7 +87,8 @@ Rule 51    relation -> LTE
 Rule 52    relation -> GTE
 Rule 53    complex_id -> ID
 Rule 54    complex_id -> ID PARENTCL INT PARENTCR
-Rule 55    empty -> <empty>
+Rule 55    complex_id -> ID PARENTCL INT TP INT PARENTCR
+Rule 56    empty -> <empty>
 
 Terminals, with rules where they appear
 
@@ -113,11 +114,11 @@ FOR                  :
 GLOBAL               : 7
 GT                   : 50
 GTE                  : 52
-ID                   : 7 8 8 11 19 31 32 53 54
+ID                   : 7 8 8 11 19 31 32 53 54 55
 IF                   : 
 IN                   : 
 INSERT               : 
-INT                  : 12 18 21 23 24 31 32 32 54
+INT                  : 12 18 21 23 24 31 32 32 54 55 55
 LCORCH               : 
 LEN                  : 
 LENGHTERROR          : 
@@ -131,8 +132,8 @@ MINUS                : 39
 MOD                  : 44
 NE                   : 48
 NEG                  : 
-PARENTCL             : 27 31 32 54
-PARENTCR             : 27 31 32 54
+PARENTCL             : 27 31 32 54 55
+PARENTCR             : 27 31 32 54 55
 PLUS                 : 38
 PROCEDURE            : 
 QUOTES               : 22 22
@@ -149,7 +150,7 @@ STEP                 :
 T                    : 
 TIMER                : 21
 TIMES                : 40
-TP                   : 32
+TP                   : 32 55
 TRUE                 : 46
 TYPE                 : 11
 VARERROR             : 
@@ -486,12 +487,13 @@ state 28
     (32) consult -> . ID PARENTCL INT TP INT PARENTCR SEMICOLON block
     (53) complex_id -> . ID
     (54) complex_id -> . ID PARENTCL INT PARENTCR
-    (55) empty -> .
+    (55) complex_id -> . ID PARENTCL INT TP INT PARENTCR
+    (56) empty -> .
     (11) type -> . TYPE LPARENT ID RPARENT SEMICOLON block
 
     GLOBAL          shift and go to state 35
     ID              shift and go to state 36
-    $end            reduce using rule 55 (empty -> .)
+    $end            reduce using rule 56 (empty -> .)
     TYPE            shift and go to state 39
 
     block                          shift and go to state 30
@@ -558,6 +560,7 @@ state 36
     (32) consult -> ID . PARENTCL INT TP INT PARENTCR SEMICOLON block
     (53) complex_id -> ID .
     (54) complex_id -> ID . PARENTCL INT PARENTCR
+    (55) complex_id -> ID . PARENTCL INT TP INT PARENTCR
 
     COMMA           shift and go to state 43
     PARENTCL        shift and go to state 44
@@ -656,6 +659,7 @@ state 44
     (31) consult -> ID PARENTCL . INT PARENTCR SEMICOLON block
     (32) consult -> ID PARENTCL . INT TP INT PARENTCR SEMICOLON block
     (54) complex_id -> ID PARENTCL . INT PARENTCR
+    (55) complex_id -> ID PARENTCL . INT TP INT PARENTCR
 
     INT             shift and go to state 63
 
@@ -912,6 +916,7 @@ state 63
     (31) consult -> ID PARENTCL INT . PARENTCR SEMICOLON block
     (32) consult -> ID PARENTCL INT . TP INT PARENTCR SEMICOLON block
     (54) complex_id -> ID PARENTCL INT . PARENTCR
+    (55) complex_id -> ID PARENTCL INT . TP INT PARENTCR
 
     PARENTCR        shift and go to state 80
     TP              shift and go to state 81
@@ -939,12 +944,13 @@ state 65
     (32) consult -> . ID PARENTCL INT TP INT PARENTCR SEMICOLON block
     (53) complex_id -> . ID
     (54) complex_id -> . ID PARENTCL INT PARENTCR
-    (55) empty -> .
+    (55) complex_id -> . ID PARENTCL INT TP INT PARENTCR
+    (56) empty -> .
     (11) type -> . TYPE LPARENT ID RPARENT SEMICOLON block
 
     GLOBAL          shift and go to state 35
     ID              shift and go to state 36
-    $end            reduce using rule 55 (empty -> .)
+    $end            reduce using rule 56 (empty -> .)
     TYPE            shift and go to state 39
 
     complex_id                     shift and go to state 34
@@ -1117,6 +1123,7 @@ state 80
 state 81
 
     (32) consult -> ID PARENTCL INT TP . INT PARENTCR SEMICOLON block
+    (55) complex_id -> ID PARENTCL INT TP . INT PARENTCR
 
     INT             shift and go to state 93
 
@@ -1232,12 +1239,13 @@ state 90
     (32) consult -> . ID PARENTCL INT TP INT PARENTCR SEMICOLON block
     (53) complex_id -> . ID
     (54) complex_id -> . ID PARENTCL INT PARENTCR
-    (55) empty -> .
+    (55) complex_id -> . ID PARENTCL INT TP INT PARENTCR
+    (56) empty -> .
     (11) type -> . TYPE LPARENT ID RPARENT SEMICOLON block
 
     GLOBAL          shift and go to state 35
     ID              shift and go to state 36
-    $end            reduce using rule 55 (empty -> .)
+    $end            reduce using rule 56 (empty -> .)
     TYPE            shift and go to state 39
 
     block                          shift and go to state 97
@@ -1270,12 +1278,13 @@ state 92
     (32) consult -> . ID PARENTCL INT TP INT PARENTCR SEMICOLON block
     (53) complex_id -> . ID
     (54) complex_id -> . ID PARENTCL INT PARENTCR
-    (55) empty -> .
+    (55) complex_id -> . ID PARENTCL INT TP INT PARENTCR
+    (56) empty -> .
     (11) type -> . TYPE LPARENT ID RPARENT SEMICOLON block
 
     GLOBAL          shift and go to state 35
     ID              shift and go to state 36
-    $end            reduce using rule 55 (empty -> .)
+    $end            reduce using rule 56 (empty -> .)
     TYPE            shift and go to state 39
 
     block                          shift and go to state 99
@@ -1289,6 +1298,7 @@ state 92
 state 93
 
     (32) consult -> ID PARENTCL INT TP INT . PARENTCR SEMICOLON block
+    (55) complex_id -> ID PARENTCL INT TP INT . PARENTCR
 
     PARENTCR        shift and go to state 100
 
@@ -1308,12 +1318,13 @@ state 94
     (32) consult -> . ID PARENTCL INT TP INT PARENTCR SEMICOLON block
     (53) complex_id -> . ID
     (54) complex_id -> . ID PARENTCL INT PARENTCR
-    (55) empty -> .
+    (55) complex_id -> . ID PARENTCL INT TP INT PARENTCR
+    (56) empty -> .
     (11) type -> . TYPE LPARENT ID RPARENT SEMICOLON block
 
     GLOBAL          shift and go to state 35
     ID              shift and go to state 36
-    $end            reduce using rule 55 (empty -> .)
+    $end            reduce using rule 56 (empty -> .)
     TYPE            shift and go to state 39
 
     block                          shift and go to state 101
@@ -1370,8 +1381,10 @@ state 99
 state 100
 
     (32) consult -> ID PARENTCL INT TP INT PARENTCR . SEMICOLON block
+    (55) complex_id -> ID PARENTCL INT TP INT PARENTCR .
 
     SEMICOLON       shift and go to state 104
+    ASSIGN          reduce using rule 55 (complex_id -> ID PARENTCL INT TP INT PARENTCR .)
 
 
 state 101
@@ -1410,12 +1423,13 @@ state 104
     (32) consult -> . ID PARENTCL INT TP INT PARENTCR SEMICOLON block
     (53) complex_id -> . ID
     (54) complex_id -> . ID PARENTCL INT PARENTCR
-    (55) empty -> .
+    (55) complex_id -> . ID PARENTCL INT TP INT PARENTCR
+    (56) empty -> .
     (11) type -> . TYPE LPARENT ID RPARENT SEMICOLON block
 
     GLOBAL          shift and go to state 35
     ID              shift and go to state 36
-    $end            reduce using rule 55 (empty -> .)
+    $end            reduce using rule 56 (empty -> .)
     TYPE            shift and go to state 39
 
     block                          shift and go to state 107
@@ -1448,12 +1462,13 @@ state 106
     (32) consult -> . ID PARENTCL INT TP INT PARENTCR SEMICOLON block
     (53) complex_id -> . ID
     (54) complex_id -> . ID PARENTCL INT PARENTCR
-    (55) empty -> .
+    (55) complex_id -> . ID PARENTCL INT TP INT PARENTCR
+    (56) empty -> .
     (11) type -> . TYPE LPARENT ID RPARENT SEMICOLON block
 
     GLOBAL          shift and go to state 35
     ID              shift and go to state 36
-    $end            reduce using rule 55 (empty -> .)
+    $end            reduce using rule 56 (empty -> .)
     TYPE            shift and go to state 39
 
     block                          shift and go to state 108

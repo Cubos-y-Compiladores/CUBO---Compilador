@@ -298,6 +298,10 @@ def p_cmplxId1(p):
     '''complex_id : ID PARENTCL INT PARENTCR'''
     print("cmplxId1")
 
+def p_cmplxId2(p):
+    '''complex_id : ID PARENTCL INT TP INT PARENTCR'''
+    print("cmplxId2")
+
 def p_empty(p):
     'empty : '
     pass
