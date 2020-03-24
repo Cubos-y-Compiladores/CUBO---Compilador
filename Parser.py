@@ -43,7 +43,7 @@ def p_block2(p):
 
 ##########---ASIGNACIONES---##########
 def p_simpleAssignment0(p):
-    '''assignment :  complex_id ASSIGN content SEMICOLON block'''
+    '''assignment :  identifier ASSIGN content SEMICOLON block'''
     print("simpleAssignment0")
 
 def p_simpleAssignment1(p):
@@ -79,6 +79,18 @@ def p_function3(p):
     '''function : len'''
     print("function3")
 
+def p_function4(p):
+    '''function : neg'''
+    print("function4")
+
+def p_function5(p):
+    '''function : t'''
+    print("fucntion5")
+
+def p_function6(p):
+    '''function : f'''
+    print("fucntion6")
+
 def p_type(p):
     '''type : TYPE LPARENT ID RPARENT SEMICOLON block'''
     print("type")
@@ -99,7 +111,17 @@ def p_len(p):
     ''' len : LEN LPARENT ID RPARENT SEMICOLON block'''
     print("len")
 
+def p_neg(p):
+    ''' neg : complex_id DOT NEG SEMICOLON block'''
+    print("neg")
 
+def p_t(p):
+    '''t : complex_id DOT T SEMICOLON block'''
+    print("t")
+
+def p_f(p):
+    '''f : complex_id DOT F SEMICOLON block'''
+    print("f")
 
 
 
@@ -313,19 +335,28 @@ def p_relation5(p):
 
 
 
-##########---VARIOS---##########
-def p_cmplxId0(p):
-    '''complex_id : ID'''
-    print("cmplxId0")
+##########---IDENTIFICADORES---##########
+def p_identifier0(p):
+    '''identifier : ID'''
+    print("identifier0")
 
-def p_cmplxId1(p):
+def p_identifier1(p):
+    '''identifier : complex_id'''
+    print("identifier1")
+
+def p_cmplxId0(p):
     '''complex_id : ID PARENTCL INT PARENTCR'''
     print("cmplxId1")
 
-def p_cmplxId2(p):
+def p_cmplxId1(p):
     '''complex_id : ID PARENTCL INT TP INT PARENTCR'''
     print("cmplxId2")
 
+
+
+
+
+##########---VARIOS---##########
 def p_empty(p):
     'empty : '
     pass
