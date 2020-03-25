@@ -37,7 +37,7 @@ def p_block1(p):
 
 
 def p_block2(p):
-    ''' block : consult'''
+    ''' block : consult SEMICOLON block'''
     print("block2")
 
 def p_block3(p):
@@ -91,19 +91,19 @@ def p_function4(p):
     print("function4")
 
 def p_function5(p):
-    '''function : t'''
+    '''function : t_f'''
     print("function5")
 
 def p_function6(p):
-    '''function : f'''
+    '''function : blink'''
     print("function6")
 
 def p_function7(p):
-    '''function : blink'''
+    '''function : delay'''
     print("function7")
 
 def p_function8(p):
-    '''function : delay'''
+    '''function : shape'''
     print("function8")
 
 def p_type(p):
@@ -127,16 +127,12 @@ def p_len(p):
     print("len")
 
 def p_neg(p):
-    ''' neg : complex_id DOT NEG SEMICOLON block'''
+    ''' neg : consult DOT NEG SEMICOLON block'''
     print("neg")
 
-def p_t(p):
-    '''t : complex_id DOT T SEMICOLON block'''
-    print("t")
-
-def p_f(p):
-    '''f : complex_id DOT F SEMICOLON block'''
-    print("f")
+def p_tf(p):
+    '''t_f : consult DOT tf SEMICOLON block'''
+    print("tf_function")
 
 def p_blink(p):
     ''' blink : BLINK LPARENT b_content RPARENT SEMICOLON block'''
@@ -146,6 +142,17 @@ def p_delay(p):
     '''delay : DELAY LPARENT d_content RPARENT SEMICOLON block'''
     print("delay")
 
+def p_shapeArg0(p):
+    '''shape_arg : SHAPEF'''
+    print("shapeArg0")
+
+def p_shapeArg1(p):
+    '''shape_arg : SHAPEC'''
+    print("shapeArg1")
+
+def p_shape(p):
+    '''shape : ID DOT shape_arg SEMICOLON block'''
+    print("shape")
 
 
 
@@ -248,7 +255,7 @@ def p_Acont1(p):
     print("a_content1")
 
 def p_Acont2(p):
-    '''a_content : PARENTCL list_term PARENTCR'''
+    '''a_content : list'''
     print("a_content2")
 
 
@@ -273,33 +280,71 @@ def p_Fcont3(p):
     '''d_content : INT COMMA time_mes'''
     print("delay_content0")
 
+def p_Fcont4(p):
+    '''tf : T'''
+    print("t_content")
 
+def p_Fcont5(p):
+    '''tf : F'''
+    print("f_content")
 
 
 
 
 
 ##########---LISTAS---##########
+def p_list(p):
+    '''list : PARENTCL list_term PARENTCR'''
+    print("list")
+
+def p_listEmp(p):
+    '''list : PARENTCL empty PARENTCR'''
+    print("lEmpt")
+
 def p_listT0(p):
-    '''list_term : value COMMA list_term'''
+    '''list_term : list_value COMMA list_term'''
     print("list_term0")
 
 def p_listT1(p):
-    '''list_term : value'''
+    '''list_term : list_value'''
     print("list_term1")
 
-def p_listTEmp(p):
-    '''list_term : '''
-    print("lEmpt")
+def p_listV0(p):
+    '''list_value : value'''
+    print("list_value0")
 
+def p_listV1(p):
+    '''list_value : list'''
+    print("list_value0")
 
 def p_consult0(p):
-    '''consult : ID PARENTCL INT PARENTCR SEMICOLON block'''
-    print("simple_conslt")
-
+    '''consult : list_consult '''
+    print("consult0")
 def p_consult1(p):
-    '''consult : ID PARENTCL INT TP INT PARENTCR SEMICOLON block '''
-    print("rng_conslt")
+    '''consult : mat_consult '''
+    print("consult1")
+
+def p_Lstconsult(p):
+    '''list_consult : complex_id '''
+    print("listConslt")
+
+def p_Matconsult0(p):
+    '''mat_consult : ID PARENTCL indice COMMA indice PARENTCR '''
+    print("matConslt0")
+
+def p_Matconsult1(p):
+    '''mat_consult : ID PARENTCL TP COMMA indice PARENTCR '''
+    print("matConslt1")
+
+def p_indice0(p):
+    '''indice : INT'''
+    print("indice0")
+
+def p_indice1(p):
+    '''indice : ID'''
+    print("indice1")
+
+
 
 
 
@@ -417,16 +462,13 @@ def p_identifier1(p):
     print("identifier1")
 
 def p_cmplxId0(p):
-    '''complex_id : ID PARENTCL INT PARENTCR'''
+    '''complex_id : ID PARENTCL indice PARENTCR'''
     print("cmplxId0")
 
 def p_cmplxId1(p):
-    '''complex_id : ID PARENTCL INT TP INT PARENTCR'''
+    '''complex_id : ID PARENTCL indice TP indice PARENTCR'''
     print("cmplxId1")
 
-def p_cmplxId2(p):
-    '''complex_id : ID PARENTCL ID PARENTCR'''
-    print("cmplxId2")
 
 
 
