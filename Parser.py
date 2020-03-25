@@ -43,11 +43,11 @@ def p_block2(p):
 
 ##########---ASIGNACIONES---##########
 def p_simpleAssignment0(p):
-    '''assignment :  identifier ASSIGN content SEMICOLON block'''
+    '''assignment :  identifier ASSIGN a_content SEMICOLON block'''
     print("simpleAssignment0")
 
 def p_simpleAssignment1(p):
-    '''assignment :  GLOBAL ID ASSIGN content SEMICOLON block'''
+    '''assignment :  GLOBAL ID ASSIGN a_content SEMICOLON block'''
     print("simpleAssignment1")
 
 def p_doubleAssignment(p):
@@ -85,18 +85,26 @@ def p_function4(p):
 
 def p_function5(p):
     '''function : t'''
-    print("fucntion5")
+    print("function5")
 
 def p_function6(p):
     '''function : f'''
-    print("fucntion6")
+    print("function6")
+
+def p_function7(p):
+    '''function : blink'''
+    print("function7")
+
+def p_function8(p):
+    '''function : delay'''
+    print("function8")
 
 def p_type(p):
     '''type : TYPE LPARENT ID RPARENT SEMICOLON block'''
     print("type")
 
 def p_range(p):
-    '''content : RANGE LPARENT INT COMMA value RPARENT'''
+    '''a_content : RANGE LPARENT INT COMMA value RPARENT'''
     print("range")
 
 def p_insert(p):
@@ -122,6 +130,15 @@ def p_t(p):
 def p_f(p):
     '''f : complex_id DOT F SEMICOLON block'''
     print("f")
+
+def p_blink(p):
+    ''' blink : BLINK LPARENT b_content RPARENT SEMICOLON block'''
+    print("blink")
+
+def p_delay(p):
+    '''delay : DELAY LPARENT d_content RPARENT SEMICOLON block'''
+    print("delay")
+
 
 
 
@@ -177,7 +194,7 @@ def p_const0(p):
     print("timer_const")
 
 def p_const1(p):
-    '''const : RANGOTIMER ASSIGN QUOTES time_mes QUOTES SEMICOLON'''
+    '''const : RANGOTIMER ASSIGN time_mes SEMICOLON'''
     print("rng_const")
 
 def p_const2(p):
@@ -193,17 +210,43 @@ def p_const3(p):
 
 
 ##########---CONTENIDO DE ASIGNACIONES---##########
-def p_cont0(p):
-    '''content : value'''
-    print("content0")
+def p_Acont0(p):
+    '''a_content : value'''
+    print("a_content0")
 
-def p_cont1(p):
-    '''content : arithmetic'''
-    print("content1")
+def p_Acont1(p):
+    '''a_content : arithmetic'''
+    print("a_content1")
 
-def p_cont2(p):
-    '''content : PARENTCL list_term PARENTCR'''
-    print("content2")
+def p_Acont2(p):
+    '''a_content : PARENTCL list_term PARENTCR'''
+    print("a_content2")
+
+
+
+
+
+
+##########---CONTENIDO DE FUNCIONES---##########
+def p_Fcont0(p):
+    '''b_content : complex_id COMMA INT COMMA time_mes COMMA value'''
+    print("blink_content0")
+
+def p_Fcont1(p):
+    '''b_content : complex_id COMMA value'''
+    print("blink_content1")
+
+def p_Fcont2(p):
+    '''d_content : empty'''
+    print("delayEmp")
+
+def p_Fcont3(p):
+    '''d_content : INT COMMA time_mes'''
+    print("delay_content0")
+
+
+
+
 
 
 
@@ -246,15 +289,15 @@ def p_dim1(p):
 
 ##########---MEDIDAS DE TIEMPO---##########
 def p_timeM0(p):
-    '''time_mes : MIL'''
+    '''time_mes : QUOTES MIL QUOTES'''
     print("timeM0")
 
 def p_timeM1(p):
-    '''time_mes : MIN'''
+    '''time_mes : QUOTES MIN QUOTES'''
     print("timeM1")
 
 def p_timeM2(p):
-    '''time_mes : SEG'''
+    '''time_mes : QUOTES SEG QUOTES'''
     print("timeM2")
 
 
@@ -346,11 +389,11 @@ def p_identifier1(p):
 
 def p_cmplxId0(p):
     '''complex_id : ID PARENTCL INT PARENTCR'''
-    print("cmplxId1")
+    print("cmplxId0")
 
 def p_cmplxId1(p):
     '''complex_id : ID PARENTCL INT TP INT PARENTCR'''
-    print("cmplxId2")
+    print("cmplxId1")
 
 
 
