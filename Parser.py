@@ -40,6 +40,13 @@ def p_block2(p):
     ''' block : consult'''
     print("block2")
 
+def p_block3(p):
+    '''block : cycle'''
+    print("block3")
+
+
+
+
 
 ##########---ASIGNACIONES---##########
 def p_simpleAssignment0(p):
@@ -138,6 +145,28 @@ def p_blink(p):
 def p_delay(p):
     '''delay : DELAY LPARENT d_content RPARENT SEMICOLON block'''
     print("delay")
+
+
+
+
+
+##########---CICLOS---##########
+def p_cycle0(p):
+    '''cycle : for'''
+    print("cycle0")
+
+def p_for0(p):
+    '''for : FOR ID IN iterable step LCORCH block RCORCH SEMICOLON block'''
+    print("for")
+
+def p_step0(p):
+    '''step : STEP INT'''
+    print("step0")
+
+def p_stepEmp(p):
+    '''step : empty'''
+    print("stepEmpt")
+
 
 
 
@@ -394,6 +423,22 @@ def p_cmplxId0(p):
 def p_cmplxId1(p):
     '''complex_id : ID PARENTCL INT TP INT PARENTCR'''
     print("cmplxId1")
+
+def p_cmplxId2(p):
+    '''complex_id : ID PARENTCL ID PARENTCR'''
+    print("cmplxId2")
+
+
+
+
+##########---ITERABLES---##########
+def p_iterable0(p):
+    '''iterable : identifier'''
+    print("iterable0")
+
+def p_iterable1(p):
+    '''iterable : INT'''
+    print("iterable1")
 
 
 
