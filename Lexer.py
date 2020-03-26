@@ -284,6 +284,7 @@ lexer.input(text)
 # print(findDassign(text))
 # lexer.input(findDassign(text)) # Arreglar funcion de doble asignación
 
+
 while 1:
     tok = lexer.token()
     if not tok:

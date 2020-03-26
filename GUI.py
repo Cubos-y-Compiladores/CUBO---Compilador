@@ -1,12 +1,160 @@
 import wx
+import os
 from functools import partial
+import ply.lex as lex
+import re
+import sys
+import threading
+import wx.lib.agw.multidirdialog as MDD
+import time
+
+wildcard = "*.cbc"
+tokens = ['ID', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE','DIVENT','MOD','EXP', 'ASSIGN', 'COMMA', 'SEMICOLON',
+          'LT', 'GT', 'LTE', 'GTE', 'NE', 'LPARENT', 'RPARENT', 'DOT', 'INT', 'LENGHTERROR','VARERROR', 'BOOKED',
+          'PARENTCL', 'PARENTCR', 'LCORCH', 'RCORCH', 'TP','QUOTES',"newline","SPACE","TAB","COMMENT"]
+
+reserved = {'if': 'IF',
+            'else': 'ELSE',
+            'while': 'WHILE',
+            'for': 'FOR',
+            'const': 'CONST',
+            'Procedure': 'PROCEDURE',
+            'type': 'TYPE',
+            'True': 'TRUE',
+            'False': 'FALSE',
+            'global': 'GLOBAL',
+            'range': 'RANGE',
+            'insert':'INSERT',
+            'del':'DELETE',
+            'len':'LEN',
+            'Neg':'NEG',
+            'T':'T',
+            'F':'F',
+            'Blink':'BLINK',
+            'Delay':'DELAY',
+            'in':'IN',
+            'Step':'STEP',
+            'shapeC':'SHAPEC',
+            'shapeF':'SHAPEF',
+            'shapeA':'SHAPEA',
+            'Main':'MAIN',
+            'CALL':'CALL',
+            'Timer':'TIMER',
+            'Rango_Timer':'RANGOTIMER',
+            'Dim_Filas':'DIMFILAS',
+            'Dim_Columnas':'DIMCOLUMNAS',
+            'Cubo':'CUBO',
+            'Mil': 'MIL',
+            'Seg': 'SEG',
+            'Min': 'MIN'
+            }
+
+tokens = tokens + list(reserved.values())
+
+t_ignore = '\r' # t_ignore es usado para ignorar todos los caracteres dentro de esta lista
+t_PLUS = r'\+'
+t_MINUS = r'\-'
+t_TIMES = r'\*'
+t_DIVIDE = r'/'
+t_ASSIGN = r'='
+t_LT = r'<'
+t_GT = r'>'
+t_LTE = r'<='
+t_GTE = r'>='
+t_LPARENT = r'\('
+t_RPARENT = r'\)'
+t_COMMA = r','
+t_SEMICOLON = r';'
+t_DOT = r'\.'
+t_PARENTCL = '\['
+t_PARENTCR = '\]'
+t_NE = '!='
+t_LCORCH = '\{'
+t_RCORCH = '\}'
+t_TP = '\:'
+t_MOD = '%'
+t_QUOTES = '"'
+t_SPACE = r'\s'
+t_TAB = r"\t"
+
+
+# Reconoce variables y palabras reservadas
+def t_ID(t):
+    r"""[a-z][a-zA-Z0-9_@&]*"""
+    if len(t.value)>10:
+        t.type = "LENGHTERROR"
+
+    elif t.value in reserved:
+        t.type = reserved[t.value]
+        # t.value = (t.value,symbol_lookup(t.value)) Para devolver el valor a la tabla de signos
+
+    else:
+        t.type = "ID"
+    return t
+
+# Reconoce booleanos
+def t_BOOKED(t):
+    r"""[a-zA-Z][a-zA-Z0-9_]*"""
+    if t.value in reserved:
+        t.type = reserved[t.value]
+    else:
+        t.type = "VARERROR"
+    return t
+
+# Reconoce numeros
+def t_INT(t):
+    r"""\d+"""
+    t.value = int(t.value)
+    return t
+# Reconoce saltos de linea
+def t_newline(t):
+    r"""\n+"""
+    return t
+    #t.lexer.lineno += len(t.value)
+
+
+# Reconoce que un string no está en el alfabeto
+def t_error(t):
+    print("Illegal character '%s'" % t.value[0])
+    t.lexer.skip(1)
+
+# Reconoce comentarios
+def t_COMMENT(t):
+    r"""\--.*"""
+    return t
+
+def t_EXP(t):
+    r'[*][*]'
+    return t
+def t_DIVENT(t):
+    r'[/][/]'
+    return t
+
+
 
 class MyApp(wx.Frame):
     def __init__(self,parent,title):
         wx.Frame.__init__(self,parent = parent , title = title, size = (1200,750))
         # TODO arreglar por qué siempre cubre toda la pantalla
-        self.textMain = wx.TextCtrl(self,style=wx.TE_MULTILINE,pos=(0,0),size=(1,1))
-        self.textConsole = wx.TextCtrl(self, style=wx.TE_MULTILINE, pos=(0, 0), size=(1, 1))
+        self.textMain = wx.TextCtrl(self,style=wx.TE_MULTILINE|wx.TE_RICH,pos=(0,0),size=(1,1))
+        self.textConsole = wx.TextCtrl(self, style=wx.TE_MULTILINE|wx.TE_RICH, pos=(0, 0), size=(1, 1))
+
+        self.currentDirectory = os.getcwd()
+        self.currentFile = ""
+        # Reserved words
+        self.reservedWords1 = ["WHILE","FOR","IF","ELSE","CONST","GLOBAL","IN"]
+        self.reservedWords2 = ["PROCEDURE","MAIN","TIMER","DIMFILAS","DIMCOLUMNAS","RANGOTIMER","CUBO"]
+        self.reservedWords3 = ["RANGE","TYPE","BLINK","DELAY","LEN","STEP","CALL","T","F","DEL","DELETE","SHAPEF","SHAPEC","SHAPEA","NEG"]
+        self.symbols = ['COMMA', 'LCORCH', 'RCORCH', 'QUOTES', 'ASSIGN'] # 'SEMICOLON',
+        self.comment = "COMMENT"
+        self.rTrue = "TRUE"
+        self.rFalse = ["FALSE"]
+        self.parentscorchs = ["PARENTCL","PARENTCR","RPARENT","LPARENT","MIL","SEG","MIN"]
+
+        self.currenttext = ""
+
+        # Main File
+        self.mainFile = "Files/test.txt"
         # VariablesContadores
         self.contList = 0
         self.contMatriz2 = 0
@@ -16,7 +164,6 @@ class MyApp(wx.Frame):
         self.mainMenu = wx.MenuBar()
 
         # SubMenus
-        self.subMenuOpen = wx.Menu()
         self.subMenuFile = wx.Menu()
         self.subMenuInsert = wx.Menu()
         self.subMenuRun = wx.Menu()
@@ -24,14 +171,12 @@ class MyApp(wx.Frame):
         self.subMenuMat2D = wx.Menu()
         self.subMenuMat3D = wx.Menu()
         # Agregando a los submenus
-        self.subOpenCBC = self.subMenuOpen.Append(-1,"File.cbc\tCtrl-C")
-        self.subOpenTXT = self.subMenuOpen.Append(-1, "File.txt\tCtrl-T")
-        self.subMenuFile.AppendSubMenu(self.subMenuOpen,"Open")
 
 
-
+        self.subOpen = self.subMenuFile.Append(-1, "Open\tCtrl-O")
         self.subNew = self.subMenuFile.Append(-1,"New\tCtrl-N")
         self.subSave = self.subMenuFile.Append(-1, "Save\tCtrl-S")
+        self.subSaveAs = self.subMenuFile.Append(-1, "Save As\tCtrl-G")
         self.subExit = self.subMenuFile.Append(-1,"Exit\tCtrl-X")
 
 
@@ -66,9 +211,9 @@ class MyApp(wx.Frame):
         # Eventos menu
         self.Bind(wx.EVT_MENU, self.insertList, self.subInsertL)
         self.Bind(wx.EVT_MENU, self.subExitWindow, self.subExit)
-        self.Bind(wx.EVT_MENU, self.openFileCBC , self.subOpenCBC)
-        self.Bind(wx.EVT_MENU, self.openFileTXT, self.subOpenTXT)
+        self.Bind(wx.EVT_MENU, self.openFileTXT, self.subOpen)
         self.Bind(wx.EVT_MENU, self.saveFile, self.subSave)
+        self.Bind(wx.EVT_MENU, self.saveFileAs, self.subSaveAs)
         self.Bind(wx.EVT_MENU, self.newFile, self.subNew)
         self.Bind(wx.EVT_MENU, self.runFile, self.subRun)
 
@@ -103,51 +248,67 @@ class MyApp(wx.Frame):
         # Funcion boton
         self.Bind(wx.EVT_BUTTON,self.click1)
 
+        # Labels
+        self.lblFileName = wx.StaticText(self,-1,"",(0,0))
+        self.upDateFileName("")
+
+        #Sliders
+        self.slideFont = wx.Slider(self,-1,12,12,28,(1000,0),(150,20))
+        self.Bind(wx.EVT_SLIDER,self.onSlider)
 
         # Fuentes de Texto
-        font = self.textMain.GetFont()
-        font.SetPointSize(12)
-        self.textMain.SetFont(font)
-        self.textConsole.SetFont(font)
+        self.setFontSize(12)
+
+        self.textMain.SetOwnBackgroundColour((54,72,101))
+        self.textConsole.SetBackgroundColour((54, 72, 101))
+        self.textMain.SetForegroundColour((255,255,255))
+        self.textConsole.SetForegroundColour((255, 255, 255))
 
 
-        # Probando los estilos de texto (color)
-        self.textMain.SetOwnBackgroundColour((73,73,73))
-        # self.textMain.SetStyle(0,20,wx.TextAttr(wx.WHITE))
-        self.textMain.SetDefaultStyle(wx.TextAttr(wx.WHITE))
-
-        self.textMain.SetDefaultStyle(wx.TextAttr(wx.WHITE))
-        # a = textMain.XYToPosition(2,2)
-        # print(a)
-        self.textConsole.SetBackgroundColour((73,73,73))
-        # textConsole.SetDefaultStyle(wx.TextAttr(wx.BLUE))
-
-
-        # Funciona para que cuando se inicie el idle ya tenga las constantes de configuración
-        # Se podria generar un error en caso de que no exisan esas palabras
-        # textMain.AppendText("Hello World")
 
         # Sizer , Proporciona tamaño a los controles
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(self.textMain,2,wx.EXPAND|wx.LEFT,20)
+        sizer.Add(self.textMain,2,wx.EXPAND|wx.LEFT|wx.UP,20)
         sizer.Add(self.textConsole, 1, wx.EXPAND|wx.LEFT|wx.UP,10)
         self.SetSizer(sizer)
+        self.lblFileName = wx.StaticText()
+
+        #self.initFILE()
+
+        # self.onOpenFile()
+
         self.Centre(1)
         self.SetBackgroundColour(self.textMain.GetBackgroundColour())
+
         self.Show()
+        # TODO: investigar como unir el thread para que siempre se esté actuaizando el texto
+        self.t = threading.Thread(target = self.loop, args=())
+        self.initThread()
+
+
 
     # Funcion para boton1, imprime lo que esté escrito en las entradas de texto
+    def initThread(self):
+        self.t.start()
+
+    def loop(self):
+        while 1:
+            self.changeReservedWords()
+            # time.sleep(1)
+
     def click1(self,event):
-        print("Input1: " + str(self.textMain.GetValue()))
-        print("Input2: " + str(self.textConsole.GetValue()))
+        # print("Input1: " + str(self.textMain.GetValue()))
+        # print("Input2: " + str(self.textConsole.GetValue()))
+        # self.changeReservedWords()
+        self.textMain.SetStyle(0,3,wx.TextAttr(wx.GREEN))
     def insertList(self,event):
         self.textMain.AppendText("list" + str(self.contList) +"= [];\n")
         self.contList += 1
     def insertMatriz2D(self,number,event):
 
-        text = "["
+        text = " ["
         for i in range(number-1):
-            text+="[],\n\t     "
+            text+="[],\n\t\t"
 
         text += "[]];\n"
 
@@ -164,24 +325,20 @@ class MyApp(wx.Frame):
         self.contMatriz2 += 1
     def insertMatriz3D(self,number,event):
         number = number%10
-        textFinal = "["
+        textFinal = " ["
 
         for i in range(number-1):
             text = "["
 
             for j in range(number - 1):
                 text += "[],"
-
-
             text += "[]"
             text += "]"
-            textFinal += text+",\n\t     "
+            textFinal += text+",\n\t\t"
 
         text = "["
         for k in range(number - 1):
             text += "[],"
-
-
         text += "[]"
         text += "]"
         textFinal += text+"];\n"
@@ -190,22 +347,129 @@ class MyApp(wx.Frame):
         self.textMain.AppendText("matriz3D" + str(self.contMatriz3) +"= "+ textFinal)
         self.contMatriz3 += 1
 
-
     def subExitWindow(self,event):
         self.Close(1)
-    def openFileCBC(self,event):
-        print("Opened cbc")
-    def openFileTXT(self):
-        print("Opened txt")
-    def newFile(self,event):
-        print("New file")
+    def initFILE(self):
+        f = open(self.mainFile, "r")
+        txt = f.read()
+        f.close()
+        self.textMain.SetValue(txt)
+    def openFileTXT(self,event):
+        self.onOpenFile()
+
+
+    def onOpenFile(self):
+
+        dlg = wx.FileDialog(
+            self, message="Choose a file",
+            defaultDir=self.currentDirectory,
+            defaultFile="",
+            wildcard=wildcard,
+            style=wx.FD_OPEN | wx.FD_MULTIPLE | wx.FD_CHANGE_DIR
+        )
+        if dlg.ShowModal() == wx.ID_OK:
+            paths = dlg.GetPaths()
+            self.currentFile = paths[0]
+            f = open(paths[0],"r")
+            txt = f.read()
+            f.close()
+
+            self.upDateFileName(paths[0].split("\\")[-1])
+            self.textMain.SetValue(txt)
+
+        dlg.Destroy()
+
     def saveFile(self,event):
-        print("Saved")
+        f = open(self.currentFile,"w")
+        f.write(self.textMain.GetValue())
+        f.close()
+
+    def saveFileAs(self,event):
+        self.onSaveFile()
+
+    def onSaveFile(self):
+
+        dlg = wx.FileDialog(
+            self, message="Save file as ...",
+            defaultDir=self.currentDirectory,
+            defaultFile="New", wildcard=wildcard, style=wx.FD_SAVE
+        )
+        if dlg.ShowModal() == wx.ID_OK:
+            path = dlg.GetPath()
+            f = open(path,"w")
+            f.write(self.textMain.GetValue())
+            f.close()
+            self.upDateFileName(path.split("\\")[-1])
+        dlg.Destroy()
+
+    def newFile(self,event):
+        if self.currentFile != "":
+            f = open(self.currentFile, "w")
+            f.write(self.textMain.GetValue())
+            f.close()
+            self.textMain.Clear()
+        self.upDateFileName("New")
 
     def runFile(self,event):
         print("Running")
 
+    def upDateFileName(self,name):
+        self.lblFileName = wx.StaticText(self,-1,"File-> "+name,(35,0))
+        self.lblFileName.SetForegroundColour((38,216,205))
+    def setFontSize(self,size):
+        font = self.textMain.GetFont()
+        font.SetPointSize(size)
+        self.textMain.SetFont(font)
+        self.textConsole.SetFont(font)
+
+    def onSlider(self,event):
+        self.setFontSize(self.slideFont.GetValue())
+
+    def writeColor(self,text,t):
+        self.textMain.SetDefaultStyle(wx.TextAttr(t))
+        self.textMain.WriteText(text)
+        self.textMain.SetDefaultStyle(wx.TextAttr(wx.WHITE))
+    # TODO: crear funcion de busqueda
+    def changeReservedWords(self):
+
+
+        if self.textMain.GetValue() != self.currenttext:
+            print("again")
+            text = self.textMain.GetValue()
+
+            lexer = lex.lex()
+            lexer.input(text)
+            self.textMain.Clear()
+            self.currenttext = text
+            while 1:
+                tok = lexer.token()
+                if not tok:
+                    break
+                else:
+                    if tok != None:
+                        if tok.type in self.reservedWords1:
+
+                            self.writeColor(str(tok.value),(224, 71, 158))
+                            print(tok.lexpos,tok.lexpos + len(tok.value))
+                        elif tok.type in self.reservedWords2:
+                            self.writeColor(str(tok.value), (79, 200, 218))
+                        elif tok.type == self.comment:
+                            self.writeColor(str(tok.value), (165, 197, 195))
+                        elif tok.type in self.symbols:
+                            self.writeColor(str(tok.value), (251, 139, 36))
+                        elif tok.type in self.reservedWords3:
+                            self.writeColor(str(tok.value), (252, 163, 17))
+                        elif tok.type == self.rTrue:
+                            self.writeColor(str(tok.value), (0, 179, 131))
+                        elif tok.type in self.rFalse:
+                            self.writeColor(str(tok.value), (254, 74, 38))
+                        elif tok.type in self.parentscorchs:
+                            self.writeColor(str(tok.value), (166, 162, 162))
+                        else:
+                            self.writeColor(str(tok.value), (255, 255, 255))
+
+
 if __name__ == '__main__':
     app = wx.App()
-    frame = MyApp(None,"Test")
+    frame = MyApp(None,"IDLE")
     app.MainLoop()
