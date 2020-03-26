@@ -4,30 +4,6 @@ import codecs
 import os
 import sys
 
-#TODO pasasrlo posiblemente a orientado a objetos
-''' ID: Identificador
-    PLUS: Sumando
-    MINUS: Minuendo
-    TIMES: Multiplicacion
-    DIVIDE:Divicion
-    ASSIGN: Asignacion
-    COMMA: Coma
-    SEMICOLON: Punto y coma
-    LT: Menor que
-    GT: Mayor que
-    LTE: Menor igual
-    GTE: Mayor igual
-    LPARENT: Parentesis izquierdo
-    RPARENT: Parentesis derecho
-    DOT: Punto
-    INT: Entero
-    BOOKED:Palabra reservada(Caso especial para booleanos)
-    MOD: Modulo
-    DIVENT: Divicion entera
-    EXP: Exponente
-'''
-# TODO pasasrlo posiblemente a orientado a objetos
-
 tokens = ['ID', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE','DIVENT','MOD','EXP', 'ASSIGN', 'COMMA', 'SEMICOLON',
           'LT', 'GT', 'LTE', 'GTE', 'NE', 'LPARENT', 'RPARENT', 'DOT', 'INT', 'LENGHTERROR','VARERROR', 'BOOKED',
           'PARENTCL', 'PARENTCR', 'LCORCH', 'RCORCH', 'TP','QUOTES',"COMPARE"]
