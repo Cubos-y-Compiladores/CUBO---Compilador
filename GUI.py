@@ -495,7 +495,7 @@ class MyApp(wx.Frame):
                             self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), (166, 162, 162))
                         elif tok.type == "ID":
                             self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), (255, 255, 255))
-
+                        # TODO HOLA
                         # else:
                             # self.writeColor(str(tok.value), (255, 255, 255))
                             #if tok.type == "INT":

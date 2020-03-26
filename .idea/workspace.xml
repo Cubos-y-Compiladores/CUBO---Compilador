@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="28e1d7ee-b5f4-4b12-832a-3d26432cc0d8" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Files/PruebaChangeColor.cbc" beforeDir="false" afterPath="$PROJECT_DIR$/Files/PruebaChangeColor.cbc" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/GUI.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Lexer.py" beforeDir="false" afterPath="$PROJECT_DIR$/Lexer.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -112,9 +109,9 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.changecolor" />
       <item itemvalue="Python.GUI" />
       <item itemvalue="Python.Lexer" />
+      <item itemvalue="Python.changecolor" />
     </list>
     <recent_temporary>
       <list>
