@@ -1,0 +1,30 @@
+Timer = 15;
+Rango_Timer = "Mil";
+-- comentario
+Dim_Filas = 5;
+Dim_Columnas = 6;
+Cubo=9;
+
+
+Procedure = {
+		for var in lista Step 2{
+			var.Neg; 
+		};
+	};
+
+
+a = type(lista);
+range(lista);
+x=[[[True,False,True,True],[False,False,True,False],[True,True,False,False],[False,True,True,True]]
+,[[True,True,True,True],[False,True,False,False],[True,False,True,False],[False,False,False,True]],
+[[True,True,False,False],[False,True,True,False],[True,False,True,True],[False,False,False,False]]
+,[[True,False,True,True],[False,False,True,True],[True,True,True,True],[False,True,False,True]]];
+
+ hola = " "
+for fila in filas
+{
+ for columna in columnas
+ {
+ 	matriz[fila, columna].Neg;
+ };
+};

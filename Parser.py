@@ -563,7 +563,9 @@ def p_relation5(p):
 	'''relation : GTE'''
 	print ("relation 5")
 
-
+def p_relation6(p):
+	'''relation : COMPARE'''
+	print ("relation 6")
 
 
 
@@ -614,6 +616,6 @@ test = '/home/dcamachog1501/Induced_Desktop/Test'
 fp = codecs.open(test, "r", "utf-8")
 chain = fp.read()
 parser = yacc.yacc()
-#tv(chain)
+tv(chain)
 result = parser.parse(chain)
 print(result)

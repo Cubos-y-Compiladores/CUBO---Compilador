@@ -30,7 +30,7 @@ import sys
 
 tokens = ['ID', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE','DIVENT','MOD','EXP', 'ASSIGN', 'COMMA', 'SEMICOLON',
           'LT', 'GT', 'LTE', 'GTE', 'NE', 'LPARENT', 'RPARENT', 'DOT', 'INT', 'LENGHTERROR','VARERROR', 'BOOKED',
-          'PARENTCL', 'PARENTCR', 'LCORCH', 'RCORCH', 'TP','QUOTES']
+          'PARENTCL', 'PARENTCR', 'LCORCH', 'RCORCH', 'TP','QUOTES',"COMPARE"]
 
 reserved = {'if': 'IF',
             'else': 'ELSE',
@@ -45,7 +45,6 @@ reserved = {'if': 'IF',
             'range': 'RANGE',
             'insert':'INSERT',
             'del':'DEL',
-            'delete' : 'DELETE',
             'len':'LEN',
             'Neg':'NEG',
             'T':'T',
@@ -66,7 +65,8 @@ reserved = {'if': 'IF',
             'Cubo':'CUBO',
             'Mil': 'MIL',
             'Seg': 'SEG',
-            'Min': 'MIN'
+            'Min': 'MIN',
+            "delete":"DELETE",
             }
 
 tokens = tokens + list(reserved.values())
@@ -94,6 +94,8 @@ t_RCORCH = '\}'
 t_TP = '\:'
 t_MOD = '%'
 t_QUOTES = '"'
+t_COMPARE = r'=='
+
 
 
 
@@ -231,19 +233,9 @@ def findDassign(data):
     return transformData(temp)
 
 
-# ARCHIVOS
 
+lexer=lex.lex()
 
-# TODO Verificar que siempre se usen parentesis en las operaciones
-test = '/home/dcamachog1501/Induced_Desktop/Test'
-fp = codecs.open(test, "r", "utf-8")
-chain = fp.read()
-lexer = lex.lex()
-
-# Atributos del objeto LexToken
-# .value .type .lexpos
-
-# Funcion que se aplica antes de analizar cualquier texto, para preparar las asignaciones multiples
 def tokenViewer(chain):
     lexer.input(chain)
     while 1:
