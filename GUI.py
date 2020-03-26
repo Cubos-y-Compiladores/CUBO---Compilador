@@ -80,7 +80,7 @@ t_TAB = r"\t"
 
 # Reconoce variables y palabras reservadas
 def t_ID(t):
-    r"""[a-z][a-zA-Z0-9_@&]*"""
+    r"""[a-zA-Z][a-zA-Z0-9_@&]*"""
     if len(t.value)>10:
         t.type = "LENGHTERROR"
 
@@ -294,7 +294,7 @@ class MyApp(wx.Frame):
     def loop(self):
         while 1:
             self.changeReservedWords()
-            # time.sleep(1)
+            time.sleep(1)
 
     def click1(self,event):
         # print("Input1: " + str(self.textMain.GetValue()))
@@ -429,17 +429,27 @@ class MyApp(wx.Frame):
         self.textMain.SetDefaultStyle(wx.TextAttr(t))
         self.textMain.WriteText(text)
         self.textMain.SetDefaultStyle(wx.TextAttr(wx.WHITE))
+
+    def setStyleText(self,start,end,color):
+        self.textMain.SetStyle(start, end, wx.TextAttr(color))
+        self.textMain.SetDefaultStyle(wx.TextAttr((255,255,255)))
+
+    def getLenNumber(self,number):
+        cont = 0
+        while number != 0:
+            number = number%10
+            cont+=1
+        return cont
     # TODO: crear funcion de busqueda
     def changeReservedWords(self):
 
-
-        if self.textMain.GetValue() != self.currenttext:
-            print("again")
+        if self.textMain.GetValue() != self.currenttext or len(self.textMain.GetValue()) != len(self.currenttext):
+        
             text = self.textMain.GetValue()
 
             lexer = lex.lex()
             lexer.input(text)
-            self.textMain.Clear()
+            #self.textMain.Clear()
             self.currenttext = text
             while 1:
                 tok = lexer.token()
@@ -449,24 +459,49 @@ class MyApp(wx.Frame):
                     if tok != None:
                         if tok.type in self.reservedWords1:
 
-                            self.writeColor(str(tok.value),(224, 71, 158))
-                            print(tok.lexpos,tok.lexpos + len(tok.value))
+                            # self.writeColor(str(tok.value),(224, 71, 158))
+
+                            # self.textMain.SetStyle(tok.lexpos,tok.lexpos + len(tok.value),wx.TextAttr((224, 71, 158)))
+                            self.setStyleText(tok.lexpos,tok.lexpos + len(tok.value),(224,71,158))
+
+
                         elif tok.type in self.reservedWords2:
-                            self.writeColor(str(tok.value), (79, 200, 218))
+                            # self.writeColor(str(tok.value), (79, 200, 218))
+                            # self.textMain.SetStyle(tok.lexpos, tok.lexpos + len(tok.value), wx.TextAttr((79, 200, 218)))
+                            self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), (79, 200, 218))
                         elif tok.type == self.comment:
-                            self.writeColor(str(tok.value), (165, 197, 195))
+                            # self.writeColor(str(tok.value), (165, 197, 195))
+                            # self.textMain.SetStyle(tok.lexpos, tok.lexpos + len(tok.value), wx.TextAttr((165, 197, 195)))
+                            self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), (165, 197, 195))
                         elif tok.type in self.symbols:
-                            self.writeColor(str(tok.value), (251, 139, 36))
+                            # self.writeColor(str(tok.value), (251, 139, 36))
+                            # self.textMain.SetStyle(tok.lexpos, tok.lexpos + len(tok.value), wx.TextAttr((251, 139, 36)))
+                            self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), (251, 139, 36))
                         elif tok.type in self.reservedWords3:
-                            self.writeColor(str(tok.value), (252, 163, 17))
+                            # self.writeColor(str(tok.value), (252, 163, 17))
+                            # self.textMain.SetStyle(tok.lexpos, tok.lexpos + len(tok.value), wx.TextAttr((252, 163, 17)))
+                            self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), (252, 163, 17))
                         elif tok.type == self.rTrue:
-                            self.writeColor(str(tok.value), (0, 179, 131))
+                            # self.writeColor(str(tok.value), (0, 179, 131))
+                            # self.textMain.SetStyle(tok.lexpos, tok.lexpos + len(tok.value), wx.TextAttr((0, 179, 131)))
+                            self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), (0, 179, 131))
                         elif tok.type in self.rFalse:
-                            self.writeColor(str(tok.value), (254, 74, 38))
+                            # self.writeColor(str(tok.value), (254, 74, 38))
+                            # self.textMain.SetStyle(tok.lexpos, tok.lexpos + len(tok.value), wx.TextAttr((254, 74, 38)))
+                            self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), (254, 74, 38))
                         elif tok.type in self.parentscorchs:
-                            self.writeColor(str(tok.value), (166, 162, 162))
-                        else:
-                            self.writeColor(str(tok.value), (255, 255, 255))
+                            # self.writeColor(str(tok.value), (166, 162, 162))
+                            # self.textMain.SetStyle(tok.lexpos, tok.lexpos + len(tok.value), wx.TextAttr((166, 162, 162)))
+                            self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), (166, 162, 162))
+                        elif tok.type == "ID":
+                            self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), (255, 255, 255))
+
+                        # else:
+                            # self.writeColor(str(tok.value), (255, 255, 255))
+                            #if tok.type == "INT":
+                                #self.textMain.SetStyle(tok.lexpos, tok.lexpos + self.getLenNumber(tok.value), wx.TextAttr((255, 255, 255)))
+                            #else:
+                                #self.textMain.SetStyle(tok.lexpos, tok.lexpos + len(tok.value),wx.TextAttr((255, 255, 255)))
 
 
 if __name__ == '__main__':

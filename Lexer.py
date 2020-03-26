@@ -46,7 +46,7 @@ def printC(data,color):
 
 tokens = ['ID', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE','DIVENT','MOD','EXP', 'ASSIGN', 'COMMA', 'SEMICOLON',
           'LT', 'GT', 'LTE', 'GTE', 'NE', 'LPARENT', 'RPARENT', 'DOT', 'INT', 'LENGHTERROR','VARERROR', 'BOOKED',
-          'PARENTCL', 'PARENTCR', 'LCORCH', 'RCORCH', 'TP','QUOTES']
+          'PARENTCL', 'PARENTCR', 'LCORCH', 'RCORCH', 'TP','QUOTES',"COMPARE"]
 
 reserved = {'if': 'IF',
             'else': 'ELSE',
@@ -60,7 +60,7 @@ reserved = {'if': 'IF',
             'global': 'GLOBAL',
             'range': 'RANGE',
             'insert':'INSERT',
-            'del':'DELETE',
+            'del':'DEL',
             'len':'LEN',
             'Neg':'NEG',
             'T':'T',
@@ -81,7 +81,8 @@ reserved = {'if': 'IF',
             'Cubo':'CUBO',
             'Mil': 'MIL',
             'Seg': 'SEG',
-            'Min': 'MIN'
+            'Min': 'MIN',
+            "delete":"DELETE",
             }
 
 tokens = tokens + list(reserved.values())
@@ -109,6 +110,8 @@ t_RCORCH = '\}'
 t_TP = '\:'
 t_MOD = '%'
 t_QUOTES = '"'
+t_COMPARE = r'=='
+
 
 
 
@@ -254,7 +257,7 @@ def findDassign(data):
 # ARCHIVOS
 
 
-path = "C:/Users/Usuario/Desktop/IS2020/CompiladoresLenguajes/Proyect/Tests/test1.pl0"
+path = "C:/Users/Usuario/Desktop/IS2020/CompiladoresLenguajes/Proyect/Files/PruebaChangeColor.cbc"
 # file = findFile(path)
 # file = input("Enter File Name: ")
 test = path
