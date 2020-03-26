@@ -154,6 +154,10 @@ def p_shapeArg1(p):
     '''shape_arg : SHAPEC'''
     print("shapeArg1")
 
+def p_shapeArg2(p):
+    '''shape_arg : SHAPEA'''
+    print("shapeArg2")
+
 def p_shape(p):
     '''shape : ID DOT shape_arg SEMICOLON block'''
     print("shape")
@@ -273,11 +277,11 @@ def p_Acont3(p):
 
 ##########---CONTENIDO DE FUNCIONES---##########
 def p_Fcont0(p):
-    '''b_content : complex_id COMMA INT COMMA time_mes COMMA value'''
+    '''b_content : list_consult COMMA INT COMMA time_mes COMMA value'''
     print("blink_content0")
 
 def p_Fcont1(p):
-    '''b_content : complex_id COMMA value'''
+    '''b_content : list_consult COMMA value'''
     print("blink_content1")
 
 def p_Fcont2(p):
@@ -333,13 +337,22 @@ def p_listV1(p):
 def p_consult0(p):
     '''consult : list_consult '''
     print("consult0")
+
 def p_consult1(p):
     '''consult : mat_consult '''
     print("consult1")
 
-def p_Lstconsult(p):
-    '''list_consult : complex_id '''
-    print("listConslt")
+def p_consult2(p):
+    '''consult : 3dmat_consult'''
+    print("consult2")
+
+def p_Lstconsult0(p):
+    '''list_consult : ID PARENTCL indice PARENTCR '''
+    print("listConslt0")
+
+def p_Lstconsult1(p):
+    '''list_consult : ID PARENTCL indice TP indice PARENTCR '''
+    print("listConslt1")
 
 def p_Matconsult0(p):
     '''mat_consult : ID PARENTCL indice COMMA indice PARENTCR '''
@@ -348,6 +361,10 @@ def p_Matconsult0(p):
 def p_Matconsult1(p):
     '''mat_consult : ID PARENTCL TP COMMA indice PARENTCR '''
     print("matConslt1")
+
+def p_3dMatconsult0(p):
+    '''3dmat_consult : ID PARENTCL indice COMMA indice COMMA indice PARENTCR'''
+    print("3dmatConslt0")
 
 
 
@@ -485,14 +502,6 @@ def p_identifier1(p):
     '''identifier : consult'''
     print("identifier1")
 
-def p_cmplxId0(p):
-    '''complex_id : ID PARENTCL indice PARENTCR'''
-    print("cmplxId0")
-
-def p_cmplxId1(p):
-    '''complex_id : ID PARENTCL indice TP indice PARENTCR'''
-    print("cmplxId1")
-
 
 
 
@@ -531,6 +540,6 @@ test = '/home/dcamachog1501/Induced_Desktop/Test'
 fp = codecs.open(test, "r", "utf-8")
 chain = fp.read()
 parser = yacc.yacc()
-tv(chain)
+#tv(chain)
 result = parser.parse(chain)
 print(result)
