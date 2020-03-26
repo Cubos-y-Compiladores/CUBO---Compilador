@@ -9,7 +9,7 @@ from Lexer import tokenViewer as tv
 from sys import stdin
 
 precedence = (
-    ('right','ID','IF','WHILE','TYPE'),
+    ('left','ID','IF','WHILE','TYPE','LEN','BLINK','DELAY','FOR'),
     ('right','ASSIGN'),
     ('left', 'LT', 'LTE', 'GT', 'GTE'),
     ('left', 'PLUS', 'MINUS'),
@@ -19,7 +19,7 @@ precedence = (
 )
 ##########---BLOQUES BASICOS---#########
 def p_program(p):
-    '''program : const_block'''
+    '''program : const_block main_proc'''
     print("program")
 
 def p_constB(p):
@@ -27,45 +27,58 @@ def p_constB(p):
     print("const_block")
 
 def p_block0(p):
-    ''' block : assignment'''
+    '''block : instruction block'''
     print("block0")
 
-
 def p_block1(p):
-    ''' block : function'''
+    '''block : procedure block'''
     print("block1")
 
-
 def p_block2(p):
-    ''' block : consult SEMICOLON block'''
+    '''block : assignment block'''
     print("block2")
 
-def p_block3(p):
-    '''block : cycle'''
-    print("block3")
+def p_blockEmp(p):
+    '''block : empty'''
+    print("blockEmp")
 
-def p_block4(p):
-    '''block : statement'''
-    print("block4")
+
+
+
+
+##########---INSTRUCCIONES---##########
+def p_instruction0(p):
+    ''' instruction : function '''
+    print("instruction1")
+
+def p_instruction1(p):
+    ''' instruction : consult SEMICOLON '''
+    print("instruction2")
+
+def p_instruction4(p):
+    '''instruction : cycle '''
+    print("instruction3")
+
+def p_instruction5(p):
+    '''instruction : statement '''
+    print("instruction4")
+
+
 
 
 
 ##########---ASIGNACIONES---##########
 def p_simpleAssignment0(p):
-    '''assignment :  identifier ASSIGN a_content SEMICOLON block'''
+    '''assignment :  GLOBAL identifier ASSIGN a_content SEMICOLON '''
     print("simpleAssignment0")
 
 def p_simpleAssignment1(p):
-    '''assignment :  GLOBAL ID ASSIGN a_content SEMICOLON block'''
+    '''assignment : identifier ASSIGN a_content SEMICOLON '''
     print("simpleAssignment1")
 
 def p_doubleAssignment(p):
-    '''assignment : ID COMMA ID ASSIGN value COMMA value SEMICOLON block'''
+    '''assignment : identifier COMMA identifier ASSIGN value COMMA value SEMICOLON '''
     print("doubleAssignment")
-
-def p_assignmentEmp(p):
-    '''assignment : empty'''
-    print("aEmpt")
 
 
 
@@ -113,7 +126,7 @@ def p_function9(p):
     print("function9")
 
 def p_type(p):
-    '''type : TYPE LPARENT ID RPARENT SEMICOLON block'''
+    '''type : TYPE LPARENT ID RPARENT SEMICOLON '''
     print("type")
 
 def p_range(p):
@@ -121,31 +134,31 @@ def p_range(p):
     print("range")
 
 def p_insert(p):
-    '''insert : ID DOT INSERT LPARENT i_content RPARENT SEMICOLON block'''
+    '''insert : ID DOT INSERT LPARENT i_content RPARENT SEMICOLON '''
     print("insert")
 
 def p_del(p):
-    ''' del : ID DOT DEL LPARENT INT RPARENT SEMICOLON block'''
+    ''' del : ID DOT DEL LPARENT INT RPARENT SEMICOLON '''
     print("delete_list")
 
 def p_len(p):
-    ''' len : LEN LPARENT ID RPARENT SEMICOLON block'''
+    ''' len : LEN LPARENT ID RPARENT SEMICOLON '''
     print("len")
 
 def p_neg(p):
-    ''' neg : consult DOT NEG SEMICOLON block'''
+    ''' neg : consult DOT NEG SEMICOLON '''
     print("neg")
 
 def p_tf(p):
-    '''t_f : consult DOT tf SEMICOLON block'''
+    '''t_f : consult DOT tf SEMICOLON '''
     print("tf_function")
 
 def p_blink(p):
-    ''' blink : BLINK LPARENT b_content RPARENT SEMICOLON block'''
+    ''' blink : BLINK LPARENT b_content RPARENT SEMICOLON '''
     print("blink")
 
 def p_delay(p):
-    '''delay : DELAY LPARENT d_content RPARENT SEMICOLON block'''
+    '''delay : DELAY LPARENT d_content RPARENT SEMICOLON '''
     print("delay")
 
 def p_shapeArg0(p):
@@ -161,11 +174,11 @@ def p_shapeArg2(p):
     print("shapeArg2")
 
 def p_shape(p):
-    '''shape : ID DOT shape_arg SEMICOLON block'''
+    '''shape : ID DOT shape_arg SEMICOLON '''
     print("shape")
 
 def p_delete(p):
-    '''delete : ID DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON block'''
+    '''delete : ID DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON '''
     print("delete_mat")
 
 
@@ -178,7 +191,7 @@ def p_cycle0(p):
     print("cycle0")
 
 def p_for(p):
-    '''for : FOR ID IN iterable step LCORCH block RCORCH SEMICOLON block'''
+    '''for : FOR ID IN iterable step LCORCH instruction RCORCH SEMICOLON '''
     print("for")
 
 def p_step0(p):
@@ -195,16 +208,92 @@ def p_stepEmp(p):
 
 ##########---BIFURCACIONES---##########
 def p_statement(p):
-    '''statement : IF LPARENT iterable relation bif_value RPARENT LCORCH block RCORCH SEMICOLON opt_statement block'''
+    '''statement : IF LPARENT iterable relation bif_value RPARENT LCORCH instruction RCORCH SEMICOLON opt_statement '''
     print("statement")
 
 def p_optStatment0(p):
-    '''opt_statement : ELSE LCORCH block RCORCH SEMICOLON '''
+    '''opt_statement : ELSE LCORCH instruction RCORCH SEMICOLON '''
     print("optStatement0")
 
 def p_optStatment1(p):
     '''opt_statement : empty '''
     print("optStatementEmp")
+
+
+
+
+
+##########---PROCEDIMIENTOS---##########
+def p_procedure(p):
+    '''procedure : PROCEDURE proc_dec LCORCH body RCORCH SEMICOLON '''
+    print("procedure")
+def p_procDec(p):
+    '''proc_dec : proc_name LPARENT parameter RPARENT'''
+    print("proc_dec")
+
+def p_procName(p):
+    '''proc_name : ID'''
+    print("proc_name")
+
+def p_parameter0(p):
+    '''parameter : proc_param'''
+    print("parameter0")
+
+def p_parameter1(p):
+    '''parameter : proc_param COMMA parameter'''
+    print("parameter1")
+
+def p_emptyParameter(p):
+    '''parameter : empty'''
+    print("emptyParameter")
+
+def p_procParam0(p):
+    '''proc_param : ID'''
+    print("proc_param0")
+
+def p_body(p):
+    '''body : BEGIN proc_block END SEMICOLON '''
+    print("proc_body")
+
+def p_procBlock0(p):
+    '''proc_block : instruction proc_block'''
+    print("proc_block0")
+
+def p_procBlock1(p):
+    '''proc_block : assignment proc_block'''
+    print("proc_block1")
+
+def p_procBlock2(p):
+    '''proc_block : call proc_block'''
+    print("proc_block2")
+
+def p_mainProcedure(p):
+    '''main_proc : MAIN LPARENT RPARENT LCORCH main_body RCORCH SEMICOLON block'''
+    print("mainProcedure")
+
+def p_mainBody(p):
+    '''main_body : BEGIN main_block END SEMICOLON'''
+    print("main_body")
+
+def p_mainBlock0(p):
+    '''main_block : instruction main_block'''
+    print("main_block0")
+
+def p_mainBlock1(p):
+    '''main_block : call main_block'''
+    print("main_block1")
+
+def p_call(p):
+    '''call : CALL proc_dec SEMICOLON'''
+    print("call")
+
+def p_emptyProcblk(p):
+    '''proc_block : empty'''
+    print("emptyProcblk")
+
+def p_emptyMainblk(p):
+    '''main_block : empty'''
+    print("emptyMainblk")
 
 
 

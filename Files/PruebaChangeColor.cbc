@@ -1,4 +1,6 @@
 x == y
+begin
+end
 -- comentario
 for i in range(2){
 	i = 2;

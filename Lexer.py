@@ -67,7 +67,10 @@ reserved = {'if': 'IF',
             'Seg': 'SEG',
             'Min': 'MIN',
             "delete":"DELETE",
+            "begin":"BEGIN",
+            "end":"END"
             }
+
 
 tokens = tokens + list(reserved.values())
 
