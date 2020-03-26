@@ -106,6 +106,10 @@ def p_function8(p):
     '''function : shape'''
     print("function8")
 
+def p_function9(p):
+    '''function : delete'''
+    print("function9")
+
 def p_type(p):
     '''type : TYPE LPARENT ID RPARENT SEMICOLON block'''
     print("type")
@@ -115,12 +119,12 @@ def p_range(p):
     print("range")
 
 def p_insert(p):
-    '''insert : ID DOT INSERT LPARENT INT COMMA value RPARENT SEMICOLON block'''
+    '''insert : ID DOT INSERT LPARENT i_content RPARENT SEMICOLON block'''
     print("insert")
 
 def p_del(p):
-    ''' del : ID DOT DELETE LPARENT INT RPARENT SEMICOLON block'''
-    print("delete")
+    ''' del : ID DOT DEL LPARENT INT RPARENT SEMICOLON block'''
+    print("delete_list")
 
 def p_len(p):
     ''' len : LEN LPARENT ID RPARENT SEMICOLON block'''
@@ -154,7 +158,9 @@ def p_shape(p):
     '''shape : ID DOT shape_arg SEMICOLON block'''
     print("shape")
 
-
+def p_delete(p):
+    '''delete : ID DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON block'''
+    print("delete_mat")
 
 
 ##########---CICLOS---##########
@@ -288,7 +294,12 @@ def p_Fcont5(p):
     '''tf : F'''
     print("f_content")
 
+def p_Fcont6(p):
+    '''i_content : INT COMMA value'''
+    print("i_content0")
 
+def p_Fcont7(p):
+    '''i_content : list COMMA INT i_ind'''
 
 
 
@@ -336,6 +347,11 @@ def p_Matconsult1(p):
     '''mat_consult : ID PARENTCL TP COMMA indice PARENTCR '''
     print("matConslt1")
 
+
+
+
+
+##########---INDICES---##########
 def p_indice0(p):
     '''indice : INT'''
     print("indice0")
@@ -344,7 +360,13 @@ def p_indice1(p):
     '''indice : ID'''
     print("indice1")
 
+def p_Insind0(p):
+    '''i_ind : COMMA INT'''
+    print("insInd0")
 
+def p_InsindEmp(p):
+    '''i_ind : empty'''
+    print("insIndEmp")
 
 
 
@@ -507,6 +529,6 @@ test = '/home/dcamachog1501/Induced_Desktop/Test'
 fp = codecs.open(test, "r", "utf-8")
 chain = fp.read()
 parser = yacc.yacc()
-tv(chain)
+#tv(chain)
 result = parser.parse(chain)
 print(result)
