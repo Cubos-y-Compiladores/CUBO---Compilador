@@ -44,7 +44,9 @@ def p_block3(p):
     '''block : cycle'''
     print("block3")
 
-
+def p_block4(p):
+    '''block : statement'''
+    print("block4")
 
 
 
@@ -167,6 +169,9 @@ def p_delete(p):
     print("delete_mat")
 
 
+
+
+
 ##########---CICLOS---##########
 def p_cycle0(p):
     '''cycle : for'''
@@ -183,6 +188,23 @@ def p_step0(p):
 def p_stepEmp(p):
     '''step : empty'''
     print("stepEmpt")
+
+
+
+
+
+##########---BIFURCACIONES---##########
+def p_statement(p):
+    '''statement : IF LPARENT iterable relation bif_value RPARENT LCORCH block RCORCH SEMICOLON opt_statement block'''
+    print("statement")
+
+def p_optStatment0(p):
+    '''opt_statement : ELSE LCORCH block RCORCH SEMICOLON '''
+    print("optStatement0")
+
+def p_optStatment1(p):
+    '''opt_statement : empty '''
+    print("optStatementEmp")
 
 
 
@@ -403,6 +425,11 @@ def p_Matconsult2(p):
     '''mat_consult : ID PARENTCL TP PARENTCR PARENTCL indice PARENTCR '''
     print("matConslt2")
 
+def p_Matconsult3(p):
+    '''mat_consult : ID PARENTCL indice PARENTCR PARENTCL indice PARENTCR'''
+    print("matConslt3")
+
+
 def p_3dMatconsult0(p):
     '''3dmat_consult : ID PARENTCL indice COMMA indice COMMA indice PARENTCR'''
     print("3dmatConslt0")
@@ -503,9 +530,13 @@ def p_value1(p):
     '''value : TRUE'''
     print("value1")
 
+def p_Bifvalue0(p):
+    '''bif_value : value'''
+    print("bif_Value0")
 
-
-
+def p_Bifvalue1(p):
+    '''bif_value : arithmetic'''
+    print("bif_Value1")
 
 ##########---RELACIONES---##########
 def p_relation0(p):
