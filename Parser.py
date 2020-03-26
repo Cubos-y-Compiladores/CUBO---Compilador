@@ -269,8 +269,16 @@ def p_Acont2(p):
     print("a_content2")
 
 def p_Acont3(p):
-    '''a_content : consult'''
+    '''a_content : mat'''
     print("a_content3")
+
+def p_Acont4(p):
+    '''a_content : 3dmat'''
+    print("a_content4")
+
+def p_Acont5(p):
+    '''a_content : consult'''
+    print("a_content5")
 
 
 
@@ -306,10 +314,11 @@ def p_Fcont6(p):
 
 def p_Fcont7(p):
     '''i_content : list COMMA INT i_ind'''
+    print("i_content1")
 
 
 
-##########---LISTAS---##########
+##########---LISTAS Y MATRICES---##########
 def p_list(p):
     '''list : PARENTCL list_term PARENTCR'''
     print("list")
@@ -330,9 +339,37 @@ def p_listV0(p):
     '''list_value : value'''
     print("list_value0")
 
-def p_listV1(p):
-    '''list_value : list'''
-    print("list_value0")
+def p_mat(p):
+    '''mat : PARENTCL mat_term PARENTCR'''
+    print("mat")
+
+def p_matT0(p):
+    '''mat_term : mat_value COMMA mat_term'''
+    print("mat_term0")
+
+def p_matT1(p):
+    '''mat_term : mat_value'''
+    print("mat_term1")
+
+def p_matV0(p):
+    '''mat_value : list'''
+    print("mat_value0")
+
+def p_3dmat(p):
+    '''3dmat : PARENTCL 3dmat_term PARENTCR'''
+    print("3dmat")
+
+def p_3dmatT0(p):
+    '''3dmat_term : 3dmat_value COMMA 3dmat_term'''
+    print("3dmat_term0")
+
+def p_3dmatT1(p):
+    '''3dmat_term : 3dmat_value'''
+    print("3dmat_term1")
+
+def p_3dmatV0(p):
+    '''3dmat_value : mat'''
+    print("3dmat_value0")
 
 def p_consult0(p):
     '''consult : list_consult '''
@@ -362,11 +399,17 @@ def p_Matconsult1(p):
     '''mat_consult : ID PARENTCL TP COMMA indice PARENTCR '''
     print("matConslt1")
 
+def p_Matconsult2(p):
+    '''mat_consult : ID PARENTCL TP PARENTCR PARENTCL indice PARENTCR '''
+    print("matConslt2")
+
 def p_3dMatconsult0(p):
     '''3dmat_consult : ID PARENTCL indice COMMA indice COMMA indice PARENTCR'''
     print("3dmatConslt0")
 
-
+def p_3dMatconsult1(p):
+    '''3dmat_consult : ID PARENTCL indice PARENTCR PARENTCL indice PARENTCR PARENTCL indice PARENTCR'''
+    print("3dmatConslt1")
 
 
 

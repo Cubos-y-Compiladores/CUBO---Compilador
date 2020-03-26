@@ -69,122 +69,133 @@ Rule 50    const -> CUBO ASSIGN INT SEMICOLON
 Rule 51    a_content -> value
 Rule 52    a_content -> arithmetic
 Rule 53    a_content -> list
-Rule 54    a_content -> consult
-Rule 55    b_content -> list_consult COMMA INT COMMA time_mes COMMA value
-Rule 56    b_content -> list_consult COMMA value
-Rule 57    d_content -> empty
-Rule 58    d_content -> INT COMMA time_mes
-Rule 59    tf -> T
-Rule 60    tf -> F
-Rule 61    i_content -> INT COMMA value
-Rule 62    i_content -> list COMMA INT i_ind
-Rule 63    list -> PARENTCL list_term PARENTCR
-Rule 64    list -> PARENTCL empty PARENTCR
-Rule 65    list_term -> list_value COMMA list_term
-Rule 66    list_term -> list_value
-Rule 67    list_value -> value
-Rule 68    list_value -> list
-Rule 69    consult -> list_consult
-Rule 70    consult -> mat_consult
-Rule 71    consult -> 3dmat_consult
-Rule 72    list_consult -> ID PARENTCL indice PARENTCR
-Rule 73    list_consult -> ID PARENTCL indice TP indice PARENTCR
-Rule 74    mat_consult -> ID PARENTCL indice COMMA indice PARENTCR
-Rule 75    mat_consult -> ID PARENTCL TP COMMA indice PARENTCR
-Rule 76    3dmat_consult -> ID PARENTCL indice COMMA indice COMMA indice PARENTCR
-Rule 77    indice -> INT
-Rule 78    indice -> ID
-Rule 79    i_ind -> COMMA INT
-Rule 80    i_ind -> empty
-Rule 81    dimension -> DIMFILAS
-Rule 82    dimension -> DIMCOLUMNAS
-Rule 83    time_mes -> QUOTES MIL QUOTES
-Rule 84    time_mes -> QUOTES MIN QUOTES
-Rule 85    time_mes -> QUOTES SEG QUOTES
-Rule 86    adding_operator -> PLUS
-Rule 87    adding_operator -> MINUS
-Rule 88    multiplying_operator -> TIMES
-Rule 89    multiplying_operator -> EXP
-Rule 90    multiplying_operator -> DIVIDE
-Rule 91    multiplying_operator -> DIVENT
-Rule 92    multiplying_operator -> MOD
-Rule 93    value -> FALSE
-Rule 94    value -> TRUE
-Rule 95    relation -> ASSIGN
-Rule 96    relation -> NE
-Rule 97    relation -> LT
-Rule 98    relation -> GT
-Rule 99    relation -> LTE
-Rule 100   relation -> GTE
-Rule 101   identifier -> ID
-Rule 102   identifier -> consult
-Rule 103   iterable -> identifier
-Rule 104   iterable -> INT
-Rule 105   empty -> <empty>
+Rule 54    a_content -> mat
+Rule 55    a_content -> 3dmat
+Rule 56    a_content -> consult
+Rule 57    b_content -> list_consult COMMA INT COMMA time_mes COMMA value
+Rule 58    b_content -> list_consult COMMA value
+Rule 59    d_content -> empty
+Rule 60    d_content -> INT COMMA time_mes
+Rule 61    tf -> T
+Rule 62    tf -> F
+Rule 63    i_content -> INT COMMA value
+Rule 64    i_content -> list COMMA INT i_ind
+Rule 65    list -> PARENTCL list_term PARENTCR
+Rule 66    list -> PARENTCL empty PARENTCR
+Rule 67    list_term -> list_value COMMA list_term
+Rule 68    list_term -> list_value
+Rule 69    list_value -> value
+Rule 70    mat -> PARENTCL mat_term PARENTCR
+Rule 71    mat_term -> mat_value COMMA mat_term
+Rule 72    mat_term -> mat_value
+Rule 73    mat_value -> list
+Rule 74    3dmat -> PARENTCL 3dmat_term PARENTCR
+Rule 75    3dmat_term -> 3dmat_value COMMA 3dmat_term
+Rule 76    3dmat_term -> 3dmat_value
+Rule 77    3dmat_value -> mat
+Rule 78    consult -> list_consult
+Rule 79    consult -> mat_consult
+Rule 80    consult -> 3dmat_consult
+Rule 81    list_consult -> ID PARENTCL indice PARENTCR
+Rule 82    list_consult -> ID PARENTCL indice TP indice PARENTCR
+Rule 83    mat_consult -> ID PARENTCL indice COMMA indice PARENTCR
+Rule 84    mat_consult -> ID PARENTCL TP COMMA indice PARENTCR
+Rule 85    mat_consult -> ID PARENTCL TP PARENTCR PARENTCL indice PARENTCR
+Rule 86    3dmat_consult -> ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+Rule 87    3dmat_consult -> ID PARENTCL indice PARENTCR PARENTCL indice PARENTCR PARENTCL indice PARENTCR
+Rule 88    indice -> INT
+Rule 89    indice -> ID
+Rule 90    i_ind -> COMMA INT
+Rule 91    i_ind -> empty
+Rule 92    dimension -> DIMFILAS
+Rule 93    dimension -> DIMCOLUMNAS
+Rule 94    time_mes -> QUOTES MIL QUOTES
+Rule 95    time_mes -> QUOTES MIN QUOTES
+Rule 96    time_mes -> QUOTES SEG QUOTES
+Rule 97    adding_operator -> PLUS
+Rule 98    adding_operator -> MINUS
+Rule 99    multiplying_operator -> TIMES
+Rule 100   multiplying_operator -> EXP
+Rule 101   multiplying_operator -> DIVIDE
+Rule 102   multiplying_operator -> DIVENT
+Rule 103   multiplying_operator -> MOD
+Rule 104   value -> FALSE
+Rule 105   value -> TRUE
+Rule 106   relation -> ASSIGN
+Rule 107   relation -> NE
+Rule 108   relation -> LT
+Rule 109   relation -> GT
+Rule 110   relation -> LTE
+Rule 111   relation -> GTE
+Rule 112   identifier -> ID
+Rule 113   identifier -> consult
+Rule 114   iterable -> identifier
+Rule 115   iterable -> INT
+Rule 116   empty -> <empty>
 
 Terminals, with rules where they appear
 
-ASSIGN               : 7 8 9 47 48 49 50 95
+ASSIGN               : 7 8 9 47 48 49 50 106
 BLINK                : 28
 BOOKED               : 
 CALL                 : 
-COMMA                : 9 9 22 34 55 55 55 56 58 61 62 65 74 75 76 76 79
+COMMA                : 9 9 22 34 57 57 57 58 60 63 64 67 71 75 83 84 86 86 90
 CONST                : 
 CUBO                 : 50
 DEL                  : 24
 DELAY                : 29
 DELETE               : 34
-DIMCOLUMNAS          : 82
-DIMFILAS             : 81
-DIVENT               : 91
-DIVIDE               : 90
+DIMCOLUMNAS          : 93
+DIMFILAS             : 92
+DIVENT               : 102
+DIVIDE               : 101
 DOT                  : 23 24 26 27 33 34
 ELSE                 : 
-EXP                  : 89
-F                    : 60
-FALSE                : 93
+EXP                  : 100
+F                    : 62
+FALSE                : 104
 FOR                  : 36
 GLOBAL               : 8
-GT                   : 98
-GTE                  : 100
-ID                   : 8 9 9 21 23 24 25 33 34 36 45 72 73 74 75 76 78 101
+GT                   : 109
+GTE                  : 111
+ID                   : 8 9 9 21 23 24 25 33 34 36 45 81 82 83 84 85 86 87 89 112
 IF                   : 
 IN                   : 36
 INSERT               : 23
-INT                  : 22 24 34 37 44 47 49 50 55 58 61 62 77 79 104
+INT                  : 22 24 34 37 44 47 49 50 57 60 63 64 88 90 115
 LCORCH               : 36
 LEN                  : 25
 LENGHTERROR          : 
 LPARENT              : 21 22 23 24 25 28 29 34 46
-LT                   : 97
-LTE                  : 99
+LT                   : 108
+LTE                  : 110
 MAIN                 : 
-MIL                  : 83
-MIN                  : 84
-MINUS                : 87
-MOD                  : 92
-NE                   : 96
+MIL                  : 94
+MIN                  : 95
+MINUS                : 98
+MOD                  : 103
+NE                   : 107
 NEG                  : 26
-PARENTCL             : 63 64 72 73 74 75 76
-PARENTCR             : 63 64 72 73 74 75 76
-PLUS                 : 86
+PARENTCL             : 65 66 70 74 81 82 83 84 85 85 86 87 87 87
+PARENTCR             : 65 66 70 74 81 82 83 84 85 85 86 87 87 87
+PLUS                 : 97
 PROCEDURE            : 
-QUOTES               : 83 83 84 84 85 85
+QUOTES               : 94 94 95 95 96 96
 RANGE                : 22
 RANGOTIMER           : 48
 RCORCH               : 36
 RPARENT              : 21 22 23 24 25 28 29 34 46
-SEG                  : 85
+SEG                  : 96
 SEMICOLON            : 5 7 8 9 21 23 24 25 26 27 28 29 33 34 36 47 48 49 50
 SHAPEA               : 32
 SHAPEC               : 31
 SHAPEF               : 30
 STEP                 : 37
-T                    : 59
+T                    : 61
 TIMER                : 47
-TIMES                : 88
-TP                   : 73 75
-TRUE                 : 94
+TIMES                : 99
+TP                   : 82 84 85
+TRUE                 : 105
 TYPE                 : 21
 VARERROR             : 
 WHILE                : 
@@ -192,7 +203,10 @@ error                :
 
 Nonterminals, with rules where they appear
 
-3dmat_consult        : 71
+3dmat                : 55
+3dmat_consult        : 80
+3dmat_term           : 74 75
+3dmat_value          : 75 76
 a_content            : 7 8
 adding_operator      : 40 41
 arithmetic           : 41 46 52
@@ -202,29 +216,32 @@ blink                : 17
 block                : 2 5 7 8 9 21 23 24 25 26 27 28 29 33 34 36 36
 const                : 2 2 2 2 2
 const_block          : 1
-consult              : 5 26 27 54 102
+consult              : 5 26 27 56 113
 cycle                : 6
 d_content            : 29
 del                  : 13
 delay                : 18
 delete               : 20
 dimension            : 49
-empty                : 10 38 57 64 80
+empty                : 10 38 59 66 91
 factor               : 42 43
 for                  : 35
 function             : 4
 i_content            : 23
-i_ind                : 62
-identifier           : 7 103
-indice               : 34 72 73 73 74 74 75 76 76 76
+i_ind                : 64
+identifier           : 7 114
+indice               : 34 81 82 82 83 83 84 85 86 86 86 87 87 87
 insert               : 12
 iterable             : 36
 len                  : 14
-list                 : 53 62 68
-list_consult         : 55 56 69
-list_term            : 63 65
-list_value           : 65 66
-mat_consult          : 70
+list                 : 53 64 73
+list_consult         : 57 58 78
+list_term            : 65 67
+list_value           : 67 68
+mat                  : 54 77
+mat_consult          : 79
+mat_term             : 70 71
+mat_value            : 71 72
 multiplying_operator : 43
 neg                  : 15
 program              : 0
@@ -235,9 +252,9 @@ step                 : 36
 t_f                  : 16
 term                 : 39 40 41 43
 tf                   : 27
-time_mes             : 48 55 58
+time_mes             : 48 57 60
 type                 : 11
-value                : 9 9 22 51 55 56 61 67
+value                : 9 9 22 51 57 58 63 69
 
 Parsing method: LALR
 
@@ -250,8 +267,8 @@ state 0
     (48) const -> . RANGOTIMER ASSIGN time_mes SEMICOLON
     (49) const -> . dimension ASSIGN INT SEMICOLON
     (50) const -> . CUBO ASSIGN INT SEMICOLON
-    (81) dimension -> . DIMFILAS
-    (82) dimension -> . DIMCOLUMNAS
+    (92) dimension -> . DIMFILAS
+    (93) dimension -> . DIMCOLUMNAS
 
     TIMER           shift and go to state 4
     RANGOTIMER      shift and go to state 5
@@ -284,8 +301,8 @@ state 3
     (48) const -> . RANGOTIMER ASSIGN time_mes SEMICOLON
     (49) const -> . dimension ASSIGN INT SEMICOLON
     (50) const -> . CUBO ASSIGN INT SEMICOLON
-    (81) dimension -> . DIMFILAS
-    (82) dimension -> . DIMCOLUMNAS
+    (92) dimension -> . DIMFILAS
+    (93) dimension -> . DIMCOLUMNAS
 
     TIMER           shift and go to state 4
     RANGOTIMER      shift and go to state 5
@@ -326,16 +343,16 @@ state 7
 
 state 8
 
-    (81) dimension -> DIMFILAS .
+    (92) dimension -> DIMFILAS .
 
-    ASSIGN          reduce using rule 81 (dimension -> DIMFILAS .)
+    ASSIGN          reduce using rule 92 (dimension -> DIMFILAS .)
 
 
 state 9
 
-    (82) dimension -> DIMCOLUMNAS .
+    (93) dimension -> DIMCOLUMNAS .
 
-    ASSIGN          reduce using rule 82 (dimension -> DIMCOLUMNAS .)
+    ASSIGN          reduce using rule 93 (dimension -> DIMCOLUMNAS .)
 
 
 state 10
@@ -345,8 +362,8 @@ state 10
     (48) const -> . RANGOTIMER ASSIGN time_mes SEMICOLON
     (49) const -> . dimension ASSIGN INT SEMICOLON
     (50) const -> . CUBO ASSIGN INT SEMICOLON
-    (81) dimension -> . DIMFILAS
-    (82) dimension -> . DIMCOLUMNAS
+    (92) dimension -> . DIMFILAS
+    (93) dimension -> . DIMCOLUMNAS
 
     TIMER           shift and go to state 4
     RANGOTIMER      shift and go to state 5
@@ -367,9 +384,9 @@ state 11
 state 12
 
     (48) const -> RANGOTIMER ASSIGN . time_mes SEMICOLON
-    (83) time_mes -> . QUOTES MIL QUOTES
-    (84) time_mes -> . QUOTES MIN QUOTES
-    (85) time_mes -> . QUOTES SEG QUOTES
+    (94) time_mes -> . QUOTES MIL QUOTES
+    (95) time_mes -> . QUOTES MIN QUOTES
+    (96) time_mes -> . QUOTES SEG QUOTES
 
     QUOTES          shift and go to state 18
 
@@ -396,8 +413,8 @@ state 15
     (48) const -> . RANGOTIMER ASSIGN time_mes SEMICOLON
     (49) const -> . dimension ASSIGN INT SEMICOLON
     (50) const -> . CUBO ASSIGN INT SEMICOLON
-    (81) dimension -> . DIMFILAS
-    (82) dimension -> . DIMCOLUMNAS
+    (92) dimension -> . DIMFILAS
+    (93) dimension -> . DIMCOLUMNAS
 
     TIMER           shift and go to state 4
     RANGOTIMER      shift and go to state 5
@@ -424,9 +441,9 @@ state 17
 
 state 18
 
-    (83) time_mes -> QUOTES . MIL QUOTES
-    (84) time_mes -> QUOTES . MIN QUOTES
-    (85) time_mes -> QUOTES . SEG QUOTES
+    (94) time_mes -> QUOTES . MIL QUOTES
+    (95) time_mes -> QUOTES . MIN QUOTES
+    (96) time_mes -> QUOTES . SEG QUOTES
 
     MIL             shift and go to state 24
     MIN             shift and go to state 25
@@ -454,8 +471,8 @@ state 21
     (48) const -> . RANGOTIMER ASSIGN time_mes SEMICOLON
     (49) const -> . dimension ASSIGN INT SEMICOLON
     (50) const -> . CUBO ASSIGN INT SEMICOLON
-    (81) dimension -> . DIMFILAS
-    (82) dimension -> . DIMCOLUMNAS
+    (92) dimension -> . DIMFILAS
+    (93) dimension -> . DIMCOLUMNAS
 
     TIMER           shift and go to state 4
     RANGOTIMER      shift and go to state 5
@@ -506,21 +523,21 @@ state 23
 
 state 24
 
-    (83) time_mes -> QUOTES MIL . QUOTES
+    (94) time_mes -> QUOTES MIL . QUOTES
 
     QUOTES          shift and go to state 30
 
 
 state 25
 
-    (84) time_mes -> QUOTES MIN . QUOTES
+    (95) time_mes -> QUOTES MIN . QUOTES
 
     QUOTES          shift and go to state 31
 
 
 state 26
 
-    (85) time_mes -> QUOTES SEG . QUOTES
+    (96) time_mes -> QUOTES SEG . QUOTES
 
     QUOTES          shift and go to state 32
 
@@ -584,13 +601,13 @@ state 29
     (18) function -> . delay
     (19) function -> . shape
     (20) function -> . delete
-    (69) consult -> . list_consult
-    (70) consult -> . mat_consult
-    (71) consult -> . 3dmat_consult
+    (78) consult -> . list_consult
+    (79) consult -> . mat_consult
+    (80) consult -> . 3dmat_consult
     (35) cycle -> . for
-    (101) identifier -> . ID
-    (102) identifier -> . consult
-    (105) empty -> .
+    (112) identifier -> . ID
+    (113) identifier -> . consult
+    (116) empty -> .
     (21) type -> . TYPE LPARENT ID RPARENT SEMICOLON block
     (23) insert -> . ID DOT INSERT LPARENT i_content RPARENT SEMICOLON block
     (24) del -> . ID DOT DEL LPARENT INT RPARENT SEMICOLON block
@@ -601,16 +618,18 @@ state 29
     (29) delay -> . DELAY LPARENT d_content RPARENT SEMICOLON block
     (33) shape -> . ID DOT shape_arg SEMICOLON block
     (34) delete -> . ID DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON block
-    (72) list_consult -> . ID PARENTCL indice PARENTCR
-    (73) list_consult -> . ID PARENTCL indice TP indice PARENTCR
-    (74) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
-    (75) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
-    (76) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (81) list_consult -> . ID PARENTCL indice PARENTCR
+    (82) list_consult -> . ID PARENTCL indice TP indice PARENTCR
+    (83) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
+    (84) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
+    (85) mat_consult -> . ID PARENTCL TP PARENTCR PARENTCL indice PARENTCR
+    (86) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (87) 3dmat_consult -> . ID PARENTCL indice PARENTCR PARENTCL indice PARENTCR PARENTCL indice PARENTCR
     (36) for -> . FOR ID IN iterable step LCORCH block RCORCH SEMICOLON block
 
     GLOBAL          shift and go to state 39
     ID              shift and go to state 40
-    $end            reduce using rule 105 (empty -> .)
+    $end            reduce using rule 116 (empty -> .)
     TYPE            shift and go to state 56
     LEN             shift and go to state 57
     BLINK           shift and go to state 58
@@ -641,29 +660,29 @@ state 29
 
 state 30
 
-    (83) time_mes -> QUOTES MIL QUOTES .
+    (94) time_mes -> QUOTES MIL QUOTES .
 
-    SEMICOLON       reduce using rule 83 (time_mes -> QUOTES MIL QUOTES .)
-    RPARENT         reduce using rule 83 (time_mes -> QUOTES MIL QUOTES .)
-    COMMA           reduce using rule 83 (time_mes -> QUOTES MIL QUOTES .)
+    SEMICOLON       reduce using rule 94 (time_mes -> QUOTES MIL QUOTES .)
+    RPARENT         reduce using rule 94 (time_mes -> QUOTES MIL QUOTES .)
+    COMMA           reduce using rule 94 (time_mes -> QUOTES MIL QUOTES .)
 
 
 state 31
 
-    (84) time_mes -> QUOTES MIN QUOTES .
+    (95) time_mes -> QUOTES MIN QUOTES .
 
-    SEMICOLON       reduce using rule 84 (time_mes -> QUOTES MIN QUOTES .)
-    RPARENT         reduce using rule 84 (time_mes -> QUOTES MIN QUOTES .)
-    COMMA           reduce using rule 84 (time_mes -> QUOTES MIN QUOTES .)
+    SEMICOLON       reduce using rule 95 (time_mes -> QUOTES MIN QUOTES .)
+    RPARENT         reduce using rule 95 (time_mes -> QUOTES MIN QUOTES .)
+    COMMA           reduce using rule 95 (time_mes -> QUOTES MIN QUOTES .)
 
 
 state 32
 
-    (85) time_mes -> QUOTES SEG QUOTES .
+    (96) time_mes -> QUOTES SEG QUOTES .
 
-    SEMICOLON       reduce using rule 85 (time_mes -> QUOTES SEG QUOTES .)
-    RPARENT         reduce using rule 85 (time_mes -> QUOTES SEG QUOTES .)
-    COMMA           reduce using rule 85 (time_mes -> QUOTES SEG QUOTES .)
+    SEMICOLON       reduce using rule 96 (time_mes -> QUOTES SEG QUOTES .)
+    RPARENT         reduce using rule 96 (time_mes -> QUOTES SEG QUOTES .)
+    COMMA           reduce using rule 96 (time_mes -> QUOTES SEG QUOTES .)
 
 
 state 33
@@ -692,12 +711,12 @@ state 35
 state 36
 
     (5) block -> consult . SEMICOLON block
-    (102) identifier -> consult .
+    (113) identifier -> consult .
     (26) neg -> consult . DOT NEG SEMICOLON block
     (27) t_f -> consult . DOT tf SEMICOLON block
 
     SEMICOLON       shift and go to state 61
-    ASSIGN          reduce using rule 102 (identifier -> consult .)
+    ASSIGN          reduce using rule 113 (identifier -> consult .)
     DOT             shift and go to state 62
 
 
@@ -726,19 +745,21 @@ state 39
 state 40
 
     (9) assignment -> ID . COMMA ID ASSIGN value COMMA value SEMICOLON block
-    (101) identifier -> ID .
+    (112) identifier -> ID .
     (23) insert -> ID . DOT INSERT LPARENT i_content RPARENT SEMICOLON block
     (24) del -> ID . DOT DEL LPARENT INT RPARENT SEMICOLON block
     (33) shape -> ID . DOT shape_arg SEMICOLON block
     (34) delete -> ID . DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON block
-    (72) list_consult -> ID . PARENTCL indice PARENTCR
-    (73) list_consult -> ID . PARENTCL indice TP indice PARENTCR
-    (74) mat_consult -> ID . PARENTCL indice COMMA indice PARENTCR
-    (75) mat_consult -> ID . PARENTCL TP COMMA indice PARENTCR
-    (76) 3dmat_consult -> ID . PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (81) list_consult -> ID . PARENTCL indice PARENTCR
+    (82) list_consult -> ID . PARENTCL indice TP indice PARENTCR
+    (83) mat_consult -> ID . PARENTCL indice COMMA indice PARENTCR
+    (84) mat_consult -> ID . PARENTCL TP COMMA indice PARENTCR
+    (85) mat_consult -> ID . PARENTCL TP PARENTCR PARENTCL indice PARENTCR
+    (86) 3dmat_consult -> ID . PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (87) 3dmat_consult -> ID . PARENTCL indice PARENTCR PARENTCL indice PARENTCR PARENTCL indice PARENTCR
 
     COMMA           shift and go to state 65
-    ASSIGN          reduce using rule 101 (identifier -> ID .)
+    ASSIGN          reduce using rule 112 (identifier -> ID .)
     DOT             shift and go to state 66
     PARENTCL        shift and go to state 67
 
@@ -833,35 +854,35 @@ state 51
 
 state 52
 
-    (69) consult -> list_consult .
+    (78) consult -> list_consult .
 
-    SEMICOLON       reduce using rule 69 (consult -> list_consult .)
-    DOT             reduce using rule 69 (consult -> list_consult .)
-    ASSIGN          reduce using rule 69 (consult -> list_consult .)
-    STEP            reduce using rule 69 (consult -> list_consult .)
-    LCORCH          reduce using rule 69 (consult -> list_consult .)
+    SEMICOLON       reduce using rule 78 (consult -> list_consult .)
+    DOT             reduce using rule 78 (consult -> list_consult .)
+    ASSIGN          reduce using rule 78 (consult -> list_consult .)
+    STEP            reduce using rule 78 (consult -> list_consult .)
+    LCORCH          reduce using rule 78 (consult -> list_consult .)
 
 
 state 53
 
-    (70) consult -> mat_consult .
+    (79) consult -> mat_consult .
 
-    SEMICOLON       reduce using rule 70 (consult -> mat_consult .)
-    DOT             reduce using rule 70 (consult -> mat_consult .)
-    ASSIGN          reduce using rule 70 (consult -> mat_consult .)
-    STEP            reduce using rule 70 (consult -> mat_consult .)
-    LCORCH          reduce using rule 70 (consult -> mat_consult .)
+    SEMICOLON       reduce using rule 79 (consult -> mat_consult .)
+    DOT             reduce using rule 79 (consult -> mat_consult .)
+    ASSIGN          reduce using rule 79 (consult -> mat_consult .)
+    STEP            reduce using rule 79 (consult -> mat_consult .)
+    LCORCH          reduce using rule 79 (consult -> mat_consult .)
 
 
 state 54
 
-    (71) consult -> 3dmat_consult .
+    (80) consult -> 3dmat_consult .
 
-    SEMICOLON       reduce using rule 71 (consult -> 3dmat_consult .)
-    DOT             reduce using rule 71 (consult -> 3dmat_consult .)
-    ASSIGN          reduce using rule 71 (consult -> 3dmat_consult .)
-    STEP            reduce using rule 71 (consult -> 3dmat_consult .)
-    LCORCH          reduce using rule 71 (consult -> 3dmat_consult .)
+    SEMICOLON       reduce using rule 80 (consult -> 3dmat_consult .)
+    DOT             reduce using rule 80 (consult -> 3dmat_consult .)
+    ASSIGN          reduce using rule 80 (consult -> 3dmat_consult .)
+    STEP            reduce using rule 80 (consult -> 3dmat_consult .)
+    LCORCH          reduce using rule 80 (consult -> 3dmat_consult .)
 
 
 state 55
@@ -928,13 +949,13 @@ state 61
     (18) function -> . delay
     (19) function -> . shape
     (20) function -> . delete
-    (69) consult -> . list_consult
-    (70) consult -> . mat_consult
-    (71) consult -> . 3dmat_consult
+    (78) consult -> . list_consult
+    (79) consult -> . mat_consult
+    (80) consult -> . 3dmat_consult
     (35) cycle -> . for
-    (101) identifier -> . ID
-    (102) identifier -> . consult
-    (105) empty -> .
+    (112) identifier -> . ID
+    (113) identifier -> . consult
+    (116) empty -> .
     (21) type -> . TYPE LPARENT ID RPARENT SEMICOLON block
     (23) insert -> . ID DOT INSERT LPARENT i_content RPARENT SEMICOLON block
     (24) del -> . ID DOT DEL LPARENT INT RPARENT SEMICOLON block
@@ -945,17 +966,19 @@ state 61
     (29) delay -> . DELAY LPARENT d_content RPARENT SEMICOLON block
     (33) shape -> . ID DOT shape_arg SEMICOLON block
     (34) delete -> . ID DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON block
-    (72) list_consult -> . ID PARENTCL indice PARENTCR
-    (73) list_consult -> . ID PARENTCL indice TP indice PARENTCR
-    (74) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
-    (75) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
-    (76) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (81) list_consult -> . ID PARENTCL indice PARENTCR
+    (82) list_consult -> . ID PARENTCL indice TP indice PARENTCR
+    (83) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
+    (84) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
+    (85) mat_consult -> . ID PARENTCL TP PARENTCR PARENTCL indice PARENTCR
+    (86) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (87) 3dmat_consult -> . ID PARENTCL indice PARENTCR PARENTCL indice PARENTCR PARENTCL indice PARENTCR
     (36) for -> . FOR ID IN iterable step LCORCH block RCORCH SEMICOLON block
 
     GLOBAL          shift and go to state 39
     ID              shift and go to state 40
-    $end            reduce using rule 105 (empty -> .)
-    RCORCH          reduce using rule 105 (empty -> .)
+    $end            reduce using rule 116 (empty -> .)
+    RCORCH          reduce using rule 116 (empty -> .)
     TYPE            shift and go to state 56
     LEN             shift and go to state 57
     BLINK           shift and go to state 58
@@ -988,8 +1011,8 @@ state 62
 
     (26) neg -> consult DOT . NEG SEMICOLON block
     (27) t_f -> consult DOT . tf SEMICOLON block
-    (59) tf -> . T
-    (60) tf -> . F
+    (61) tf -> . T
+    (62) tf -> . F
 
     NEG             shift and go to state 74
     T               shift and go to state 76
@@ -1004,37 +1027,43 @@ state 63
     (51) a_content -> . value
     (52) a_content -> . arithmetic
     (53) a_content -> . list
-    (54) a_content -> . consult
-    (93) value -> . FALSE
-    (94) value -> . TRUE
+    (54) a_content -> . mat
+    (55) a_content -> . 3dmat
+    (56) a_content -> . consult
+    (104) value -> . FALSE
+    (105) value -> . TRUE
     (39) arithmetic -> . term
     (40) arithmetic -> . adding_operator term
     (41) arithmetic -> . arithmetic adding_operator term
-    (63) list -> . PARENTCL list_term PARENTCR
-    (64) list -> . PARENTCL empty PARENTCR
-    (69) consult -> . list_consult
-    (70) consult -> . mat_consult
-    (71) consult -> . 3dmat_consult
+    (65) list -> . PARENTCL list_term PARENTCR
+    (66) list -> . PARENTCL empty PARENTCR
+    (70) mat -> . PARENTCL mat_term PARENTCR
+    (74) 3dmat -> . PARENTCL 3dmat_term PARENTCR
+    (78) consult -> . list_consult
+    (79) consult -> . mat_consult
+    (80) consult -> . 3dmat_consult
     (42) term -> . factor
     (43) term -> . term multiplying_operator factor
-    (86) adding_operator -> . PLUS
-    (87) adding_operator -> . MINUS
-    (72) list_consult -> . ID PARENTCL indice PARENTCR
-    (73) list_consult -> . ID PARENTCL indice TP indice PARENTCR
-    (74) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
-    (75) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
-    (76) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (97) adding_operator -> . PLUS
+    (98) adding_operator -> . MINUS
+    (81) list_consult -> . ID PARENTCL indice PARENTCR
+    (82) list_consult -> . ID PARENTCL indice TP indice PARENTCR
+    (83) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
+    (84) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
+    (85) mat_consult -> . ID PARENTCL TP PARENTCR PARENTCL indice PARENTCR
+    (86) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (87) 3dmat_consult -> . ID PARENTCL indice PARENTCR PARENTCL indice PARENTCR PARENTCL indice PARENTCR
     (44) factor -> . INT
     (45) factor -> . ID
     (46) factor -> . LPARENT arithmetic RPARENT
 
     RANGE           shift and go to state 79
-    FALSE           shift and go to state 86
-    TRUE            shift and go to state 87
-    PARENTCL        shift and go to state 90
-    PLUS            shift and go to state 92
-    MINUS           shift and go to state 93
-    ID              shift and go to state 94
+    FALSE           shift and go to state 88
+    TRUE            shift and go to state 89
+    PARENTCL        shift and go to state 92
+    PLUS            shift and go to state 94
+    MINUS           shift and go to state 95
+    ID              shift and go to state 96
     INT             shift and go to state 81
     LPARENT         shift and go to state 80
 
@@ -1042,26 +1071,28 @@ state 63
     value                          shift and go to state 82
     arithmetic                     shift and go to state 83
     list                           shift and go to state 84
-    consult                        shift and go to state 85
-    term                           shift and go to state 88
-    adding_operator                shift and go to state 89
+    mat                            shift and go to state 85
+    3dmat                          shift and go to state 86
+    consult                        shift and go to state 87
+    term                           shift and go to state 90
+    adding_operator                shift and go to state 91
     list_consult                   shift and go to state 52
     mat_consult                    shift and go to state 53
     3dmat_consult                  shift and go to state 54
-    factor                         shift and go to state 91
+    factor                         shift and go to state 93
 
 state 64
 
     (8) assignment -> GLOBAL ID . ASSIGN a_content SEMICOLON block
 
-    ASSIGN          shift and go to state 95
+    ASSIGN          shift and go to state 97
 
 
 state 65
 
     (9) assignment -> ID COMMA . ID ASSIGN value COMMA value SEMICOLON block
 
-    ID              shift and go to state 96
+    ID              shift and go to state 98
 
 
 state 66
@@ -1074,76 +1105,78 @@ state 66
     (31) shape_arg -> . SHAPEC
     (32) shape_arg -> . SHAPEA
 
-    INSERT          shift and go to state 97
-    DEL             shift and go to state 98
-    DELETE          shift and go to state 100
-    SHAPEF          shift and go to state 101
-    SHAPEC          shift and go to state 102
-    SHAPEA          shift and go to state 103
+    INSERT          shift and go to state 99
+    DEL             shift and go to state 100
+    DELETE          shift and go to state 102
+    SHAPEF          shift and go to state 103
+    SHAPEC          shift and go to state 104
+    SHAPEA          shift and go to state 105
 
-    shape_arg                      shift and go to state 99
+    shape_arg                      shift and go to state 101
 
 state 67
 
-    (72) list_consult -> ID PARENTCL . indice PARENTCR
-    (73) list_consult -> ID PARENTCL . indice TP indice PARENTCR
-    (74) mat_consult -> ID PARENTCL . indice COMMA indice PARENTCR
-    (75) mat_consult -> ID PARENTCL . TP COMMA indice PARENTCR
-    (76) 3dmat_consult -> ID PARENTCL . indice COMMA indice COMMA indice PARENTCR
-    (77) indice -> . INT
-    (78) indice -> . ID
+    (81) list_consult -> ID PARENTCL . indice PARENTCR
+    (82) list_consult -> ID PARENTCL . indice TP indice PARENTCR
+    (83) mat_consult -> ID PARENTCL . indice COMMA indice PARENTCR
+    (84) mat_consult -> ID PARENTCL . TP COMMA indice PARENTCR
+    (85) mat_consult -> ID PARENTCL . TP PARENTCR PARENTCL indice PARENTCR
+    (86) 3dmat_consult -> ID PARENTCL . indice COMMA indice COMMA indice PARENTCR
+    (87) 3dmat_consult -> ID PARENTCL . indice PARENTCR PARENTCL indice PARENTCR PARENTCL indice PARENTCR
+    (88) indice -> . INT
+    (89) indice -> . ID
 
-    TP              shift and go to state 106
-    INT             shift and go to state 107
-    ID              shift and go to state 104
+    TP              shift and go to state 108
+    INT             shift and go to state 109
+    ID              shift and go to state 106
 
-    indice                         shift and go to state 105
+    indice                         shift and go to state 107
 
 state 68
 
     (21) type -> TYPE LPARENT . ID RPARENT SEMICOLON block
 
-    ID              shift and go to state 108
+    ID              shift and go to state 110
 
 
 state 69
 
     (25) len -> LEN LPARENT . ID RPARENT SEMICOLON block
 
-    ID              shift and go to state 109
+    ID              shift and go to state 111
 
 
 state 70
 
     (28) blink -> BLINK LPARENT . b_content RPARENT SEMICOLON block
-    (55) b_content -> . list_consult COMMA INT COMMA time_mes COMMA value
-    (56) b_content -> . list_consult COMMA value
-    (72) list_consult -> . ID PARENTCL indice PARENTCR
-    (73) list_consult -> . ID PARENTCL indice TP indice PARENTCR
+    (57) b_content -> . list_consult COMMA INT COMMA time_mes COMMA value
+    (58) b_content -> . list_consult COMMA value
+    (81) list_consult -> . ID PARENTCL indice PARENTCR
+    (82) list_consult -> . ID PARENTCL indice TP indice PARENTCR
 
-    ID              shift and go to state 112
+    ID              shift and go to state 114
 
-    b_content                      shift and go to state 110
-    list_consult                   shift and go to state 111
+    b_content                      shift and go to state 112
+    list_consult                   shift and go to state 113
 
 state 71
 
     (29) delay -> DELAY LPARENT . d_content RPARENT SEMICOLON block
-    (57) d_content -> . empty
-    (58) d_content -> . INT COMMA time_mes
-    (105) empty -> .
+    (59) d_content -> . empty
+    (60) d_content -> . INT COMMA time_mes
+    (116) empty -> .
 
-    INT             shift and go to state 115
-    RPARENT         reduce using rule 105 (empty -> .)
+    INT             shift and go to state 117
+    RPARENT         reduce using rule 116 (empty -> .)
 
-    d_content                      shift and go to state 113
-    empty                          shift and go to state 114
+    d_content                      shift and go to state 115
+    empty                          shift and go to state 116
 
 state 72
 
     (36) for -> FOR ID . IN iterable step LCORCH block RCORCH SEMICOLON block
 
-    IN              shift and go to state 116
+    IN              shift and go to state 118
 
 
 state 73
@@ -1158,42 +1191,42 @@ state 74
 
     (26) neg -> consult DOT NEG . SEMICOLON block
 
-    SEMICOLON       shift and go to state 117
+    SEMICOLON       shift and go to state 119
 
 
 state 75
 
     (27) t_f -> consult DOT tf . SEMICOLON block
 
-    SEMICOLON       shift and go to state 118
+    SEMICOLON       shift and go to state 120
 
 
 state 76
 
-    (59) tf -> T .
+    (61) tf -> T .
 
-    SEMICOLON       reduce using rule 59 (tf -> T .)
+    SEMICOLON       reduce using rule 61 (tf -> T .)
 
 
 state 77
 
-    (60) tf -> F .
+    (62) tf -> F .
 
-    SEMICOLON       reduce using rule 60 (tf -> F .)
+    SEMICOLON       reduce using rule 62 (tf -> F .)
 
 
 state 78
 
     (7) assignment -> identifier ASSIGN a_content . SEMICOLON block
 
-    SEMICOLON       shift and go to state 119
+    SEMICOLON       shift and go to state 121
 
 
 state 79
 
     (22) a_content -> RANGE . LPARENT INT COMMA value RPARENT
 
-    LPARENT         shift and go to state 120
+    LPARENT         shift and go to state 122
 
 
 state 80
@@ -1204,22 +1237,22 @@ state 80
     (41) arithmetic -> . arithmetic adding_operator term
     (42) term -> . factor
     (43) term -> . term multiplying_operator factor
-    (86) adding_operator -> . PLUS
-    (87) adding_operator -> . MINUS
+    (97) adding_operator -> . PLUS
+    (98) adding_operator -> . MINUS
     (44) factor -> . INT
     (45) factor -> . ID
     (46) factor -> . LPARENT arithmetic RPARENT
 
-    PLUS            shift and go to state 92
-    MINUS           shift and go to state 93
+    PLUS            shift and go to state 94
+    MINUS           shift and go to state 95
     INT             shift and go to state 81
-    ID              shift and go to state 122
+    ID              shift and go to state 124
     LPARENT         shift and go to state 80
 
-    arithmetic                     shift and go to state 121
-    term                           shift and go to state 88
-    adding_operator                shift and go to state 89
-    factor                         shift and go to state 91
+    arithmetic                     shift and go to state 123
+    term                           shift and go to state 90
+    adding_operator                shift and go to state 91
+    factor                         shift and go to state 93
 
 state 81
 
@@ -1247,14 +1280,14 @@ state 83
 
     (52) a_content -> arithmetic .
     (41) arithmetic -> arithmetic . adding_operator term
-    (86) adding_operator -> . PLUS
-    (87) adding_operator -> . MINUS
+    (97) adding_operator -> . PLUS
+    (98) adding_operator -> . MINUS
 
     SEMICOLON       reduce using rule 52 (a_content -> arithmetic .)
-    PLUS            shift and go to state 92
-    MINUS           shift and go to state 93
+    PLUS            shift and go to state 94
+    MINUS           shift and go to state 95
 
-    adding_operator                shift and go to state 123
+    adding_operator                shift and go to state 125
 
 state 84
 
@@ -1265,54 +1298,68 @@ state 84
 
 state 85
 
-    (54) a_content -> consult .
+    (54) a_content -> mat .
 
-    SEMICOLON       reduce using rule 54 (a_content -> consult .)
+    SEMICOLON       reduce using rule 54 (a_content -> mat .)
 
 
 state 86
 
-    (93) value -> FALSE .
+    (55) a_content -> 3dmat .
 
-    SEMICOLON       reduce using rule 93 (value -> FALSE .)
-    COMMA           reduce using rule 93 (value -> FALSE .)
-    PARENTCR        reduce using rule 93 (value -> FALSE .)
-    RPARENT         reduce using rule 93 (value -> FALSE .)
+    SEMICOLON       reduce using rule 55 (a_content -> 3dmat .)
 
 
 state 87
 
-    (94) value -> TRUE .
+    (56) a_content -> consult .
 
-    SEMICOLON       reduce using rule 94 (value -> TRUE .)
-    COMMA           reduce using rule 94 (value -> TRUE .)
-    PARENTCR        reduce using rule 94 (value -> TRUE .)
-    RPARENT         reduce using rule 94 (value -> TRUE .)
+    SEMICOLON       reduce using rule 56 (a_content -> consult .)
 
 
 state 88
 
+    (104) value -> FALSE .
+
+    SEMICOLON       reduce using rule 104 (value -> FALSE .)
+    COMMA           reduce using rule 104 (value -> FALSE .)
+    PARENTCR        reduce using rule 104 (value -> FALSE .)
+    RPARENT         reduce using rule 104 (value -> FALSE .)
+
+
+state 89
+
+    (105) value -> TRUE .
+
+    SEMICOLON       reduce using rule 105 (value -> TRUE .)
+    COMMA           reduce using rule 105 (value -> TRUE .)
+    PARENTCR        reduce using rule 105 (value -> TRUE .)
+    RPARENT         reduce using rule 105 (value -> TRUE .)
+
+
+state 90
+
     (39) arithmetic -> term .
     (43) term -> term . multiplying_operator factor
-    (88) multiplying_operator -> . TIMES
-    (89) multiplying_operator -> . EXP
-    (90) multiplying_operator -> . DIVIDE
-    (91) multiplying_operator -> . DIVENT
-    (92) multiplying_operator -> . MOD
+    (99) multiplying_operator -> . TIMES
+    (100) multiplying_operator -> . EXP
+    (101) multiplying_operator -> . DIVIDE
+    (102) multiplying_operator -> . DIVENT
+    (103) multiplying_operator -> . MOD
 
     PLUS            reduce using rule 39 (arithmetic -> term .)
     MINUS           reduce using rule 39 (arithmetic -> term .)
     SEMICOLON       reduce using rule 39 (arithmetic -> term .)
     RPARENT         reduce using rule 39 (arithmetic -> term .)
-    TIMES           shift and go to state 125
-    EXP             shift and go to state 126
-    DIVIDE          shift and go to state 127
-    DIVENT          shift and go to state 128
-    MOD             shift and go to state 129
+    TIMES           shift and go to state 127
+    EXP             shift and go to state 128
+    DIVIDE          shift and go to state 129
+    DIVENT          shift and go to state 130
+    MOD             shift and go to state 131
 
-    multiplying_operator           shift and go to state 124
+    multiplying_operator           shift and go to state 126
 
-state 89
+state 91
 
     (40) arithmetic -> adding_operator . term
     (42) term -> . factor
@@ -1322,38 +1369,51 @@ state 89
     (46) factor -> . LPARENT arithmetic RPARENT
 
     INT             shift and go to state 81
-    ID              shift and go to state 122
+    ID              shift and go to state 124
     LPARENT         shift and go to state 80
 
-    term                           shift and go to state 130
-    factor                         shift and go to state 91
+    term                           shift and go to state 132
+    factor                         shift and go to state 93
 
-state 90
+state 92
 
-    (63) list -> PARENTCL . list_term PARENTCR
-    (64) list -> PARENTCL . empty PARENTCR
-    (65) list_term -> . list_value COMMA list_term
-    (66) list_term -> . list_value
-    (105) empty -> .
-    (67) list_value -> . value
-    (68) list_value -> . list
-    (93) value -> . FALSE
-    (94) value -> . TRUE
-    (63) list -> . PARENTCL list_term PARENTCR
-    (64) list -> . PARENTCL empty PARENTCR
+    (65) list -> PARENTCL . list_term PARENTCR
+    (66) list -> PARENTCL . empty PARENTCR
+    (70) mat -> PARENTCL . mat_term PARENTCR
+    (74) 3dmat -> PARENTCL . 3dmat_term PARENTCR
+    (67) list_term -> . list_value COMMA list_term
+    (68) list_term -> . list_value
+    (116) empty -> .
+    (71) mat_term -> . mat_value COMMA mat_term
+    (72) mat_term -> . mat_value
+    (75) 3dmat_term -> . 3dmat_value COMMA 3dmat_term
+    (76) 3dmat_term -> . 3dmat_value
+    (69) list_value -> . value
+    (73) mat_value -> . list
+    (77) 3dmat_value -> . mat
+    (104) value -> . FALSE
+    (105) value -> . TRUE
+    (65) list -> . PARENTCL list_term PARENTCR
+    (66) list -> . PARENTCL empty PARENTCR
+    (70) mat -> . PARENTCL mat_term PARENTCR
 
-    PARENTCR        reduce using rule 105 (empty -> .)
-    FALSE           shift and go to state 86
-    TRUE            shift and go to state 87
-    PARENTCL        shift and go to state 90
+    PARENTCR        reduce using rule 116 (empty -> .)
+    FALSE           shift and go to state 88
+    TRUE            shift and go to state 89
+    PARENTCL        shift and go to state 133
 
-    list_term                      shift and go to state 131
-    empty                          shift and go to state 132
-    list_value                     shift and go to state 133
-    value                          shift and go to state 134
-    list                           shift and go to state 135
+    list_term                      shift and go to state 134
+    empty                          shift and go to state 135
+    mat_term                       shift and go to state 136
+    3dmat_term                     shift and go to state 137
+    list_value                     shift and go to state 138
+    mat_value                      shift and go to state 139
+    3dmat_value                    shift and go to state 140
+    value                          shift and go to state 141
+    list                           shift and go to state 142
+    mat                            shift and go to state 143
 
-state 91
+state 93
 
     (42) term -> factor .
 
@@ -1368,31 +1428,33 @@ state 91
     RPARENT         reduce using rule 42 (term -> factor .)
 
 
-state 92
-
-    (86) adding_operator -> PLUS .
-
-    INT             reduce using rule 86 (adding_operator -> PLUS .)
-    ID              reduce using rule 86 (adding_operator -> PLUS .)
-    LPARENT         reduce using rule 86 (adding_operator -> PLUS .)
-
-
-state 93
-
-    (87) adding_operator -> MINUS .
-
-    INT             reduce using rule 87 (adding_operator -> MINUS .)
-    ID              reduce using rule 87 (adding_operator -> MINUS .)
-    LPARENT         reduce using rule 87 (adding_operator -> MINUS .)
-
-
 state 94
 
-    (72) list_consult -> ID . PARENTCL indice PARENTCR
-    (73) list_consult -> ID . PARENTCL indice TP indice PARENTCR
-    (74) mat_consult -> ID . PARENTCL indice COMMA indice PARENTCR
-    (75) mat_consult -> ID . PARENTCL TP COMMA indice PARENTCR
-    (76) 3dmat_consult -> ID . PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (97) adding_operator -> PLUS .
+
+    INT             reduce using rule 97 (adding_operator -> PLUS .)
+    ID              reduce using rule 97 (adding_operator -> PLUS .)
+    LPARENT         reduce using rule 97 (adding_operator -> PLUS .)
+
+
+state 95
+
+    (98) adding_operator -> MINUS .
+
+    INT             reduce using rule 98 (adding_operator -> MINUS .)
+    ID              reduce using rule 98 (adding_operator -> MINUS .)
+    LPARENT         reduce using rule 98 (adding_operator -> MINUS .)
+
+
+state 96
+
+    (81) list_consult -> ID . PARENTCL indice PARENTCR
+    (82) list_consult -> ID . PARENTCL indice TP indice PARENTCR
+    (83) mat_consult -> ID . PARENTCL indice COMMA indice PARENTCR
+    (84) mat_consult -> ID . PARENTCL TP COMMA indice PARENTCR
+    (85) mat_consult -> ID . PARENTCL TP PARENTCR PARENTCL indice PARENTCR
+    (86) 3dmat_consult -> ID . PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (87) 3dmat_consult -> ID . PARENTCL indice PARENTCR PARENTCL indice PARENTCR PARENTCL indice PARENTCR
     (45) factor -> ID .
 
     PARENTCL        shift and go to state 67
@@ -1406,237 +1468,250 @@ state 94
     SEMICOLON       reduce using rule 45 (factor -> ID .)
 
 
-state 95
+state 97
 
     (8) assignment -> GLOBAL ID ASSIGN . a_content SEMICOLON block
     (22) a_content -> . RANGE LPARENT INT COMMA value RPARENT
     (51) a_content -> . value
     (52) a_content -> . arithmetic
     (53) a_content -> . list
-    (54) a_content -> . consult
-    (93) value -> . FALSE
-    (94) value -> . TRUE
+    (54) a_content -> . mat
+    (55) a_content -> . 3dmat
+    (56) a_content -> . consult
+    (104) value -> . FALSE
+    (105) value -> . TRUE
     (39) arithmetic -> . term
     (40) arithmetic -> . adding_operator term
     (41) arithmetic -> . arithmetic adding_operator term
-    (63) list -> . PARENTCL list_term PARENTCR
-    (64) list -> . PARENTCL empty PARENTCR
-    (69) consult -> . list_consult
-    (70) consult -> . mat_consult
-    (71) consult -> . 3dmat_consult
+    (65) list -> . PARENTCL list_term PARENTCR
+    (66) list -> . PARENTCL empty PARENTCR
+    (70) mat -> . PARENTCL mat_term PARENTCR
+    (74) 3dmat -> . PARENTCL 3dmat_term PARENTCR
+    (78) consult -> . list_consult
+    (79) consult -> . mat_consult
+    (80) consult -> . 3dmat_consult
     (42) term -> . factor
     (43) term -> . term multiplying_operator factor
-    (86) adding_operator -> . PLUS
-    (87) adding_operator -> . MINUS
-    (72) list_consult -> . ID PARENTCL indice PARENTCR
-    (73) list_consult -> . ID PARENTCL indice TP indice PARENTCR
-    (74) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
-    (75) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
-    (76) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (97) adding_operator -> . PLUS
+    (98) adding_operator -> . MINUS
+    (81) list_consult -> . ID PARENTCL indice PARENTCR
+    (82) list_consult -> . ID PARENTCL indice TP indice PARENTCR
+    (83) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
+    (84) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
+    (85) mat_consult -> . ID PARENTCL TP PARENTCR PARENTCL indice PARENTCR
+    (86) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (87) 3dmat_consult -> . ID PARENTCL indice PARENTCR PARENTCL indice PARENTCR PARENTCL indice PARENTCR
     (44) factor -> . INT
     (45) factor -> . ID
     (46) factor -> . LPARENT arithmetic RPARENT
 
     RANGE           shift and go to state 79
-    FALSE           shift and go to state 86
-    TRUE            shift and go to state 87
-    PARENTCL        shift and go to state 90
-    PLUS            shift and go to state 92
-    MINUS           shift and go to state 93
-    ID              shift and go to state 94
+    FALSE           shift and go to state 88
+    TRUE            shift and go to state 89
+    PARENTCL        shift and go to state 92
+    PLUS            shift and go to state 94
+    MINUS           shift and go to state 95
+    ID              shift and go to state 96
     INT             shift and go to state 81
     LPARENT         shift and go to state 80
 
-    a_content                      shift and go to state 136
+    a_content                      shift and go to state 144
     value                          shift and go to state 82
     arithmetic                     shift and go to state 83
     list                           shift and go to state 84
-    consult                        shift and go to state 85
-    term                           shift and go to state 88
-    adding_operator                shift and go to state 89
+    mat                            shift and go to state 85
+    3dmat                          shift and go to state 86
+    consult                        shift and go to state 87
+    term                           shift and go to state 90
+    adding_operator                shift and go to state 91
     list_consult                   shift and go to state 52
     mat_consult                    shift and go to state 53
     3dmat_consult                  shift and go to state 54
-    factor                         shift and go to state 91
-
-state 96
-
-    (9) assignment -> ID COMMA ID . ASSIGN value COMMA value SEMICOLON block
-
-    ASSIGN          shift and go to state 137
-
-
-state 97
-
-    (23) insert -> ID DOT INSERT . LPARENT i_content RPARENT SEMICOLON block
-
-    LPARENT         shift and go to state 138
-
+    factor                         shift and go to state 93
 
 state 98
 
-    (24) del -> ID DOT DEL . LPARENT INT RPARENT SEMICOLON block
+    (9) assignment -> ID COMMA ID . ASSIGN value COMMA value SEMICOLON block
 
-    LPARENT         shift and go to state 139
+    ASSIGN          shift and go to state 145
 
 
 state 99
 
-    (33) shape -> ID DOT shape_arg . SEMICOLON block
+    (23) insert -> ID DOT INSERT . LPARENT i_content RPARENT SEMICOLON block
 
-    SEMICOLON       shift and go to state 140
+    LPARENT         shift and go to state 146
 
 
 state 100
 
-    (34) delete -> ID DOT DELETE . LPARENT indice COMMA INT RPARENT SEMICOLON block
+    (24) del -> ID DOT DEL . LPARENT INT RPARENT SEMICOLON block
 
-    LPARENT         shift and go to state 141
+    LPARENT         shift and go to state 147
 
 
 state 101
+
+    (33) shape -> ID DOT shape_arg . SEMICOLON block
+
+    SEMICOLON       shift and go to state 148
+
+
+state 102
+
+    (34) delete -> ID DOT DELETE . LPARENT indice COMMA INT RPARENT SEMICOLON block
+
+    LPARENT         shift and go to state 149
+
+
+state 103
 
     (30) shape_arg -> SHAPEF .
 
     SEMICOLON       reduce using rule 30 (shape_arg -> SHAPEF .)
 
 
-state 102
+state 104
 
     (31) shape_arg -> SHAPEC .
 
     SEMICOLON       reduce using rule 31 (shape_arg -> SHAPEC .)
 
 
-state 103
+state 105
 
     (32) shape_arg -> SHAPEA .
 
     SEMICOLON       reduce using rule 32 (shape_arg -> SHAPEA .)
 
 
-state 104
-
-    (78) indice -> ID .
-
-    PARENTCR        reduce using rule 78 (indice -> ID .)
-    TP              reduce using rule 78 (indice -> ID .)
-    COMMA           reduce using rule 78 (indice -> ID .)
-
-
-state 105
-
-    (72) list_consult -> ID PARENTCL indice . PARENTCR
-    (73) list_consult -> ID PARENTCL indice . TP indice PARENTCR
-    (74) mat_consult -> ID PARENTCL indice . COMMA indice PARENTCR
-    (76) 3dmat_consult -> ID PARENTCL indice . COMMA indice COMMA indice PARENTCR
-
-    PARENTCR        shift and go to state 142
-    TP              shift and go to state 143
-    COMMA           shift and go to state 144
-
-
 state 106
 
-    (75) mat_consult -> ID PARENTCL TP . COMMA indice PARENTCR
+    (89) indice -> ID .
 
-    COMMA           shift and go to state 145
+    PARENTCR        reduce using rule 89 (indice -> ID .)
+    TP              reduce using rule 89 (indice -> ID .)
+    COMMA           reduce using rule 89 (indice -> ID .)
 
 
 state 107
 
-    (77) indice -> INT .
+    (81) list_consult -> ID PARENTCL indice . PARENTCR
+    (82) list_consult -> ID PARENTCL indice . TP indice PARENTCR
+    (83) mat_consult -> ID PARENTCL indice . COMMA indice PARENTCR
+    (86) 3dmat_consult -> ID PARENTCL indice . COMMA indice COMMA indice PARENTCR
+    (87) 3dmat_consult -> ID PARENTCL indice . PARENTCR PARENTCL indice PARENTCR PARENTCL indice PARENTCR
 
-    PARENTCR        reduce using rule 77 (indice -> INT .)
-    TP              reduce using rule 77 (indice -> INT .)
-    COMMA           reduce using rule 77 (indice -> INT .)
+    PARENTCR        shift and go to state 150
+    TP              shift and go to state 151
+    COMMA           shift and go to state 152
 
 
 state 108
 
-    (21) type -> TYPE LPARENT ID . RPARENT SEMICOLON block
+    (84) mat_consult -> ID PARENTCL TP . COMMA indice PARENTCR
+    (85) mat_consult -> ID PARENTCL TP . PARENTCR PARENTCL indice PARENTCR
 
-    RPARENT         shift and go to state 146
+    COMMA           shift and go to state 153
+    PARENTCR        shift and go to state 154
 
 
 state 109
 
-    (25) len -> LEN LPARENT ID . RPARENT SEMICOLON block
+    (88) indice -> INT .
 
-    RPARENT         shift and go to state 147
+    PARENTCR        reduce using rule 88 (indice -> INT .)
+    TP              reduce using rule 88 (indice -> INT .)
+    COMMA           reduce using rule 88 (indice -> INT .)
 
 
 state 110
 
-    (28) blink -> BLINK LPARENT b_content . RPARENT SEMICOLON block
+    (21) type -> TYPE LPARENT ID . RPARENT SEMICOLON block
 
-    RPARENT         shift and go to state 148
+    RPARENT         shift and go to state 155
 
 
 state 111
 
-    (55) b_content -> list_consult . COMMA INT COMMA time_mes COMMA value
-    (56) b_content -> list_consult . COMMA value
+    (25) len -> LEN LPARENT ID . RPARENT SEMICOLON block
 
-    COMMA           shift and go to state 149
+    RPARENT         shift and go to state 156
 
 
 state 112
 
-    (72) list_consult -> ID . PARENTCL indice PARENTCR
-    (73) list_consult -> ID . PARENTCL indice TP indice PARENTCR
+    (28) blink -> BLINK LPARENT b_content . RPARENT SEMICOLON block
 
-    PARENTCL        shift and go to state 150
+    RPARENT         shift and go to state 157
 
 
 state 113
 
-    (29) delay -> DELAY LPARENT d_content . RPARENT SEMICOLON block
+    (57) b_content -> list_consult . COMMA INT COMMA time_mes COMMA value
+    (58) b_content -> list_consult . COMMA value
 
-    RPARENT         shift and go to state 151
+    COMMA           shift and go to state 158
 
 
 state 114
 
-    (57) d_content -> empty .
+    (81) list_consult -> ID . PARENTCL indice PARENTCR
+    (82) list_consult -> ID . PARENTCL indice TP indice PARENTCR
 
-    RPARENT         reduce using rule 57 (d_content -> empty .)
+    PARENTCL        shift and go to state 159
 
 
 state 115
 
-    (58) d_content -> INT . COMMA time_mes
+    (29) delay -> DELAY LPARENT d_content . RPARENT SEMICOLON block
 
-    COMMA           shift and go to state 152
+    RPARENT         shift and go to state 160
 
 
 state 116
 
+    (59) d_content -> empty .
+
+    RPARENT         reduce using rule 59 (d_content -> empty .)
+
+
+state 117
+
+    (60) d_content -> INT . COMMA time_mes
+
+    COMMA           shift and go to state 161
+
+
+state 118
+
     (36) for -> FOR ID IN . iterable step LCORCH block RCORCH SEMICOLON block
-    (103) iterable -> . identifier
-    (104) iterable -> . INT
-    (101) identifier -> . ID
-    (102) identifier -> . consult
-    (69) consult -> . list_consult
-    (70) consult -> . mat_consult
-    (71) consult -> . 3dmat_consult
-    (72) list_consult -> . ID PARENTCL indice PARENTCR
-    (73) list_consult -> . ID PARENTCL indice TP indice PARENTCR
-    (74) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
-    (75) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
-    (76) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (114) iterable -> . identifier
+    (115) iterable -> . INT
+    (112) identifier -> . ID
+    (113) identifier -> . consult
+    (78) consult -> . list_consult
+    (79) consult -> . mat_consult
+    (80) consult -> . 3dmat_consult
+    (81) list_consult -> . ID PARENTCL indice PARENTCR
+    (82) list_consult -> . ID PARENTCL indice TP indice PARENTCR
+    (83) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
+    (84) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
+    (85) mat_consult -> . ID PARENTCL TP PARENTCR PARENTCL indice PARENTCR
+    (86) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (87) 3dmat_consult -> . ID PARENTCL indice PARENTCR PARENTCL indice PARENTCR PARENTCL indice PARENTCR
 
-    INT             shift and go to state 156
-    ID              shift and go to state 153
+    INT             shift and go to state 165
+    ID              shift and go to state 162
 
-    iterable                       shift and go to state 154
-    identifier                     shift and go to state 155
-    consult                        shift and go to state 157
+    iterable                       shift and go to state 163
+    identifier                     shift and go to state 164
+    consult                        shift and go to state 166
     list_consult                   shift and go to state 52
     mat_consult                    shift and go to state 53
     3dmat_consult                  shift and go to state 54
 
-state 117
+state 119
 
     (26) neg -> consult DOT NEG SEMICOLON . block
     (3) block -> . assignment
@@ -1657,13 +1732,13 @@ state 117
     (18) function -> . delay
     (19) function -> . shape
     (20) function -> . delete
-    (69) consult -> . list_consult
-    (70) consult -> . mat_consult
-    (71) consult -> . 3dmat_consult
+    (78) consult -> . list_consult
+    (79) consult -> . mat_consult
+    (80) consult -> . 3dmat_consult
     (35) cycle -> . for
-    (101) identifier -> . ID
-    (102) identifier -> . consult
-    (105) empty -> .
+    (112) identifier -> . ID
+    (113) identifier -> . consult
+    (116) empty -> .
     (21) type -> . TYPE LPARENT ID RPARENT SEMICOLON block
     (23) insert -> . ID DOT INSERT LPARENT i_content RPARENT SEMICOLON block
     (24) del -> . ID DOT DEL LPARENT INT RPARENT SEMICOLON block
@@ -1674,17 +1749,19 @@ state 117
     (29) delay -> . DELAY LPARENT d_content RPARENT SEMICOLON block
     (33) shape -> . ID DOT shape_arg SEMICOLON block
     (34) delete -> . ID DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON block
-    (72) list_consult -> . ID PARENTCL indice PARENTCR
-    (73) list_consult -> . ID PARENTCL indice TP indice PARENTCR
-    (74) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
-    (75) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
-    (76) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (81) list_consult -> . ID PARENTCL indice PARENTCR
+    (82) list_consult -> . ID PARENTCL indice TP indice PARENTCR
+    (83) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
+    (84) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
+    (85) mat_consult -> . ID PARENTCL TP PARENTCR PARENTCL indice PARENTCR
+    (86) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (87) 3dmat_consult -> . ID PARENTCL indice PARENTCR PARENTCL indice PARENTCR PARENTCL indice PARENTCR
     (36) for -> . FOR ID IN iterable step LCORCH block RCORCH SEMICOLON block
 
     GLOBAL          shift and go to state 39
     ID              shift and go to state 40
-    $end            reduce using rule 105 (empty -> .)
-    RCORCH          reduce using rule 105 (empty -> .)
+    $end            reduce using rule 116 (empty -> .)
+    RCORCH          reduce using rule 116 (empty -> .)
     TYPE            shift and go to state 56
     LEN             shift and go to state 57
     BLINK           shift and go to state 58
@@ -1692,7 +1769,7 @@ state 117
     FOR             shift and go to state 60
 
     consult                        shift and go to state 36
-    block                          shift and go to state 158
+    block                          shift and go to state 167
     assignment                     shift and go to state 34
     function                       shift and go to state 35
     cycle                          shift and go to state 37
@@ -1713,7 +1790,7 @@ state 117
     3dmat_consult                  shift and go to state 54
     for                            shift and go to state 55
 
-state 118
+state 120
 
     (27) t_f -> consult DOT tf SEMICOLON . block
     (3) block -> . assignment
@@ -1734,13 +1811,13 @@ state 118
     (18) function -> . delay
     (19) function -> . shape
     (20) function -> . delete
-    (69) consult -> . list_consult
-    (70) consult -> . mat_consult
-    (71) consult -> . 3dmat_consult
+    (78) consult -> . list_consult
+    (79) consult -> . mat_consult
+    (80) consult -> . 3dmat_consult
     (35) cycle -> . for
-    (101) identifier -> . ID
-    (102) identifier -> . consult
-    (105) empty -> .
+    (112) identifier -> . ID
+    (113) identifier -> . consult
+    (116) empty -> .
     (21) type -> . TYPE LPARENT ID RPARENT SEMICOLON block
     (23) insert -> . ID DOT INSERT LPARENT i_content RPARENT SEMICOLON block
     (24) del -> . ID DOT DEL LPARENT INT RPARENT SEMICOLON block
@@ -1751,17 +1828,19 @@ state 118
     (29) delay -> . DELAY LPARENT d_content RPARENT SEMICOLON block
     (33) shape -> . ID DOT shape_arg SEMICOLON block
     (34) delete -> . ID DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON block
-    (72) list_consult -> . ID PARENTCL indice PARENTCR
-    (73) list_consult -> . ID PARENTCL indice TP indice PARENTCR
-    (74) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
-    (75) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
-    (76) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (81) list_consult -> . ID PARENTCL indice PARENTCR
+    (82) list_consult -> . ID PARENTCL indice TP indice PARENTCR
+    (83) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
+    (84) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
+    (85) mat_consult -> . ID PARENTCL TP PARENTCR PARENTCL indice PARENTCR
+    (86) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (87) 3dmat_consult -> . ID PARENTCL indice PARENTCR PARENTCL indice PARENTCR PARENTCL indice PARENTCR
     (36) for -> . FOR ID IN iterable step LCORCH block RCORCH SEMICOLON block
 
     GLOBAL          shift and go to state 39
     ID              shift and go to state 40
-    $end            reduce using rule 105 (empty -> .)
-    RCORCH          reduce using rule 105 (empty -> .)
+    $end            reduce using rule 116 (empty -> .)
+    RCORCH          reduce using rule 116 (empty -> .)
     TYPE            shift and go to state 56
     LEN             shift and go to state 57
     BLINK           shift and go to state 58
@@ -1769,7 +1848,7 @@ state 118
     FOR             shift and go to state 60
 
     consult                        shift and go to state 36
-    block                          shift and go to state 159
+    block                          shift and go to state 168
     assignment                     shift and go to state 34
     function                       shift and go to state 35
     cycle                          shift and go to state 37
@@ -1790,7 +1869,7 @@ state 118
     3dmat_consult                  shift and go to state 54
     for                            shift and go to state 55
 
-state 119
+state 121
 
     (7) assignment -> identifier ASSIGN a_content SEMICOLON . block
     (3) block -> . assignment
@@ -1811,13 +1890,13 @@ state 119
     (18) function -> . delay
     (19) function -> . shape
     (20) function -> . delete
-    (69) consult -> . list_consult
-    (70) consult -> . mat_consult
-    (71) consult -> . 3dmat_consult
+    (78) consult -> . list_consult
+    (79) consult -> . mat_consult
+    (80) consult -> . 3dmat_consult
     (35) cycle -> . for
-    (101) identifier -> . ID
-    (102) identifier -> . consult
-    (105) empty -> .
+    (112) identifier -> . ID
+    (113) identifier -> . consult
+    (116) empty -> .
     (21) type -> . TYPE LPARENT ID RPARENT SEMICOLON block
     (23) insert -> . ID DOT INSERT LPARENT i_content RPARENT SEMICOLON block
     (24) del -> . ID DOT DEL LPARENT INT RPARENT SEMICOLON block
@@ -1828,17 +1907,19 @@ state 119
     (29) delay -> . DELAY LPARENT d_content RPARENT SEMICOLON block
     (33) shape -> . ID DOT shape_arg SEMICOLON block
     (34) delete -> . ID DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON block
-    (72) list_consult -> . ID PARENTCL indice PARENTCR
-    (73) list_consult -> . ID PARENTCL indice TP indice PARENTCR
-    (74) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
-    (75) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
-    (76) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (81) list_consult -> . ID PARENTCL indice PARENTCR
+    (82) list_consult -> . ID PARENTCL indice TP indice PARENTCR
+    (83) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
+    (84) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
+    (85) mat_consult -> . ID PARENTCL TP PARENTCR PARENTCL indice PARENTCR
+    (86) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (87) 3dmat_consult -> . ID PARENTCL indice PARENTCR PARENTCL indice PARENTCR PARENTCL indice PARENTCR
     (36) for -> . FOR ID IN iterable step LCORCH block RCORCH SEMICOLON block
 
     GLOBAL          shift and go to state 39
     ID              shift and go to state 40
-    $end            reduce using rule 105 (empty -> .)
-    RCORCH          reduce using rule 105 (empty -> .)
+    $end            reduce using rule 116 (empty -> .)
+    RCORCH          reduce using rule 116 (empty -> .)
     TYPE            shift and go to state 56
     LEN             shift and go to state 57
     BLINK           shift and go to state 58
@@ -1846,7 +1927,7 @@ state 119
     FOR             shift and go to state 60
 
     identifier                     shift and go to state 38
-    block                          shift and go to state 160
+    block                          shift and go to state 169
     assignment                     shift and go to state 34
     function                       shift and go to state 35
     consult                        shift and go to state 36
@@ -1867,27 +1948,27 @@ state 119
     3dmat_consult                  shift and go to state 54
     for                            shift and go to state 55
 
-state 120
+state 122
 
     (22) a_content -> RANGE LPARENT . INT COMMA value RPARENT
 
-    INT             shift and go to state 161
+    INT             shift and go to state 170
 
 
-state 121
+state 123
 
     (46) factor -> LPARENT arithmetic . RPARENT
     (41) arithmetic -> arithmetic . adding_operator term
-    (86) adding_operator -> . PLUS
-    (87) adding_operator -> . MINUS
+    (97) adding_operator -> . PLUS
+    (98) adding_operator -> . MINUS
 
-    RPARENT         shift and go to state 162
-    PLUS            shift and go to state 92
-    MINUS           shift and go to state 93
+    RPARENT         shift and go to state 171
+    PLUS            shift and go to state 94
+    MINUS           shift and go to state 95
 
-    adding_operator                shift and go to state 123
+    adding_operator                shift and go to state 125
 
-state 122
+state 124
 
     (45) factor -> ID .
 
@@ -1902,7 +1983,7 @@ state 122
     SEMICOLON       reduce using rule 45 (factor -> ID .)
 
 
-state 123
+state 125
 
     (41) arithmetic -> arithmetic adding_operator . term
     (42) term -> . factor
@@ -1912,13 +1993,13 @@ state 123
     (46) factor -> . LPARENT arithmetic RPARENT
 
     INT             shift and go to state 81
-    ID              shift and go to state 122
+    ID              shift and go to state 124
     LPARENT         shift and go to state 80
 
-    term                           shift and go to state 163
-    factor                         shift and go to state 91
+    term                           shift and go to state 172
+    factor                         shift and go to state 93
 
-state 124
+state 126
 
     (43) term -> term multiplying_operator . factor
     (44) factor -> . INT
@@ -1926,157 +2007,227 @@ state 124
     (46) factor -> . LPARENT arithmetic RPARENT
 
     INT             shift and go to state 81
-    ID              shift and go to state 122
+    ID              shift and go to state 124
     LPARENT         shift and go to state 80
 
-    factor                         shift and go to state 164
-
-state 125
-
-    (88) multiplying_operator -> TIMES .
-
-    INT             reduce using rule 88 (multiplying_operator -> TIMES .)
-    ID              reduce using rule 88 (multiplying_operator -> TIMES .)
-    LPARENT         reduce using rule 88 (multiplying_operator -> TIMES .)
-
-
-state 126
-
-    (89) multiplying_operator -> EXP .
-
-    INT             reduce using rule 89 (multiplying_operator -> EXP .)
-    ID              reduce using rule 89 (multiplying_operator -> EXP .)
-    LPARENT         reduce using rule 89 (multiplying_operator -> EXP .)
-
+    factor                         shift and go to state 173
 
 state 127
 
-    (90) multiplying_operator -> DIVIDE .
+    (99) multiplying_operator -> TIMES .
 
-    INT             reduce using rule 90 (multiplying_operator -> DIVIDE .)
-    ID              reduce using rule 90 (multiplying_operator -> DIVIDE .)
-    LPARENT         reduce using rule 90 (multiplying_operator -> DIVIDE .)
+    INT             reduce using rule 99 (multiplying_operator -> TIMES .)
+    ID              reduce using rule 99 (multiplying_operator -> TIMES .)
+    LPARENT         reduce using rule 99 (multiplying_operator -> TIMES .)
 
 
 state 128
 
-    (91) multiplying_operator -> DIVENT .
+    (100) multiplying_operator -> EXP .
 
-    INT             reduce using rule 91 (multiplying_operator -> DIVENT .)
-    ID              reduce using rule 91 (multiplying_operator -> DIVENT .)
-    LPARENT         reduce using rule 91 (multiplying_operator -> DIVENT .)
+    INT             reduce using rule 100 (multiplying_operator -> EXP .)
+    ID              reduce using rule 100 (multiplying_operator -> EXP .)
+    LPARENT         reduce using rule 100 (multiplying_operator -> EXP .)
 
 
 state 129
 
-    (92) multiplying_operator -> MOD .
+    (101) multiplying_operator -> DIVIDE .
 
-    INT             reduce using rule 92 (multiplying_operator -> MOD .)
-    ID              reduce using rule 92 (multiplying_operator -> MOD .)
-    LPARENT         reduce using rule 92 (multiplying_operator -> MOD .)
+    INT             reduce using rule 101 (multiplying_operator -> DIVIDE .)
+    ID              reduce using rule 101 (multiplying_operator -> DIVIDE .)
+    LPARENT         reduce using rule 101 (multiplying_operator -> DIVIDE .)
 
 
 state 130
 
+    (102) multiplying_operator -> DIVENT .
+
+    INT             reduce using rule 102 (multiplying_operator -> DIVENT .)
+    ID              reduce using rule 102 (multiplying_operator -> DIVENT .)
+    LPARENT         reduce using rule 102 (multiplying_operator -> DIVENT .)
+
+
+state 131
+
+    (103) multiplying_operator -> MOD .
+
+    INT             reduce using rule 103 (multiplying_operator -> MOD .)
+    ID              reduce using rule 103 (multiplying_operator -> MOD .)
+    LPARENT         reduce using rule 103 (multiplying_operator -> MOD .)
+
+
+state 132
+
     (40) arithmetic -> adding_operator term .
     (43) term -> term . multiplying_operator factor
-    (88) multiplying_operator -> . TIMES
-    (89) multiplying_operator -> . EXP
-    (90) multiplying_operator -> . DIVIDE
-    (91) multiplying_operator -> . DIVENT
-    (92) multiplying_operator -> . MOD
+    (99) multiplying_operator -> . TIMES
+    (100) multiplying_operator -> . EXP
+    (101) multiplying_operator -> . DIVIDE
+    (102) multiplying_operator -> . DIVENT
+    (103) multiplying_operator -> . MOD
 
     PLUS            reduce using rule 40 (arithmetic -> adding_operator term .)
     MINUS           reduce using rule 40 (arithmetic -> adding_operator term .)
     SEMICOLON       reduce using rule 40 (arithmetic -> adding_operator term .)
     RPARENT         reduce using rule 40 (arithmetic -> adding_operator term .)
-    TIMES           shift and go to state 125
-    EXP             shift and go to state 126
-    DIVIDE          shift and go to state 127
-    DIVENT          shift and go to state 128
-    MOD             shift and go to state 129
+    TIMES           shift and go to state 127
+    EXP             shift and go to state 128
+    DIVIDE          shift and go to state 129
+    DIVENT          shift and go to state 130
+    MOD             shift and go to state 131
 
-    multiplying_operator           shift and go to state 124
-
-state 131
-
-    (63) list -> PARENTCL list_term . PARENTCR
-
-    PARENTCR        shift and go to state 165
-
-
-state 132
-
-    (64) list -> PARENTCL empty . PARENTCR
-
-    PARENTCR        shift and go to state 166
-
+    multiplying_operator           shift and go to state 126
 
 state 133
 
-    (65) list_term -> list_value . COMMA list_term
-    (66) list_term -> list_value .
+    (65) list -> PARENTCL . list_term PARENTCR
+    (66) list -> PARENTCL . empty PARENTCR
+    (70) mat -> PARENTCL . mat_term PARENTCR
+    (67) list_term -> . list_value COMMA list_term
+    (68) list_term -> . list_value
+    (116) empty -> .
+    (71) mat_term -> . mat_value COMMA mat_term
+    (72) mat_term -> . mat_value
+    (69) list_value -> . value
+    (73) mat_value -> . list
+    (104) value -> . FALSE
+    (105) value -> . TRUE
+    (65) list -> . PARENTCL list_term PARENTCR
+    (66) list -> . PARENTCL empty PARENTCR
 
-    COMMA           shift and go to state 167
-    PARENTCR        reduce using rule 66 (list_term -> list_value .)
+    PARENTCR        reduce using rule 116 (empty -> .)
+    FALSE           shift and go to state 88
+    TRUE            shift and go to state 89
+    PARENTCL        shift and go to state 174
 
+    list_term                      shift and go to state 134
+    empty                          shift and go to state 135
+    mat_term                       shift and go to state 136
+    list_value                     shift and go to state 138
+    mat_value                      shift and go to state 139
+    value                          shift and go to state 141
+    list                           shift and go to state 142
 
 state 134
 
-    (67) list_value -> value .
+    (65) list -> PARENTCL list_term . PARENTCR
 
-    COMMA           reduce using rule 67 (list_value -> value .)
-    PARENTCR        reduce using rule 67 (list_value -> value .)
+    PARENTCR        shift and go to state 175
 
 
 state 135
 
-    (68) list_value -> list .
+    (66) list -> PARENTCL empty . PARENTCR
 
-    COMMA           reduce using rule 68 (list_value -> list .)
-    PARENTCR        reduce using rule 68 (list_value -> list .)
+    PARENTCR        shift and go to state 176
 
 
 state 136
 
-    (8) assignment -> GLOBAL ID ASSIGN a_content . SEMICOLON block
+    (70) mat -> PARENTCL mat_term . PARENTCR
 
-    SEMICOLON       shift and go to state 168
+    PARENTCR        shift and go to state 177
 
 
 state 137
 
-    (9) assignment -> ID COMMA ID ASSIGN . value COMMA value SEMICOLON block
-    (93) value -> . FALSE
-    (94) value -> . TRUE
+    (74) 3dmat -> PARENTCL 3dmat_term . PARENTCR
 
-    FALSE           shift and go to state 86
-    TRUE            shift and go to state 87
+    PARENTCR        shift and go to state 178
 
-    value                          shift and go to state 169
 
 state 138
 
-    (23) insert -> ID DOT INSERT LPARENT . i_content RPARENT SEMICOLON block
-    (61) i_content -> . INT COMMA value
-    (62) i_content -> . list COMMA INT i_ind
-    (63) list -> . PARENTCL list_term PARENTCR
-    (64) list -> . PARENTCL empty PARENTCR
+    (67) list_term -> list_value . COMMA list_term
+    (68) list_term -> list_value .
 
-    INT             shift and go to state 171
-    PARENTCL        shift and go to state 90
+    COMMA           shift and go to state 179
+    PARENTCR        reduce using rule 68 (list_term -> list_value .)
 
-    i_content                      shift and go to state 170
-    list                           shift and go to state 172
 
 state 139
 
-    (24) del -> ID DOT DEL LPARENT . INT RPARENT SEMICOLON block
+    (71) mat_term -> mat_value . COMMA mat_term
+    (72) mat_term -> mat_value .
 
-    INT             shift and go to state 173
+    COMMA           shift and go to state 180
+    PARENTCR        reduce using rule 72 (mat_term -> mat_value .)
 
 
 state 140
+
+    (75) 3dmat_term -> 3dmat_value . COMMA 3dmat_term
+    (76) 3dmat_term -> 3dmat_value .
+
+    COMMA           shift and go to state 181
+    PARENTCR        reduce using rule 76 (3dmat_term -> 3dmat_value .)
+
+
+state 141
+
+    (69) list_value -> value .
+
+    COMMA           reduce using rule 69 (list_value -> value .)
+    PARENTCR        reduce using rule 69 (list_value -> value .)
+
+
+state 142
+
+    (73) mat_value -> list .
+
+    COMMA           reduce using rule 73 (mat_value -> list .)
+    PARENTCR        reduce using rule 73 (mat_value -> list .)
+
+
+state 143
+
+    (77) 3dmat_value -> mat .
+
+    COMMA           reduce using rule 77 (3dmat_value -> mat .)
+    PARENTCR        reduce using rule 77 (3dmat_value -> mat .)
+
+
+state 144
+
+    (8) assignment -> GLOBAL ID ASSIGN a_content . SEMICOLON block
+
+    SEMICOLON       shift and go to state 182
+
+
+state 145
+
+    (9) assignment -> ID COMMA ID ASSIGN . value COMMA value SEMICOLON block
+    (104) value -> . FALSE
+    (105) value -> . TRUE
+
+    FALSE           shift and go to state 88
+    TRUE            shift and go to state 89
+
+    value                          shift and go to state 183
+
+state 146
+
+    (23) insert -> ID DOT INSERT LPARENT . i_content RPARENT SEMICOLON block
+    (63) i_content -> . INT COMMA value
+    (64) i_content -> . list COMMA INT i_ind
+    (65) list -> . PARENTCL list_term PARENTCR
+    (66) list -> . PARENTCL empty PARENTCR
+
+    INT             shift and go to state 185
+    PARENTCL        shift and go to state 174
+
+    i_content                      shift and go to state 184
+    list                           shift and go to state 186
+
+state 147
+
+    (24) del -> ID DOT DEL LPARENT . INT RPARENT SEMICOLON block
+
+    INT             shift and go to state 187
+
+
+state 148
 
     (33) shape -> ID DOT shape_arg SEMICOLON . block
     (3) block -> . assignment
@@ -2097,13 +2248,13 @@ state 140
     (18) function -> . delay
     (19) function -> . shape
     (20) function -> . delete
-    (69) consult -> . list_consult
-    (70) consult -> . mat_consult
-    (71) consult -> . 3dmat_consult
+    (78) consult -> . list_consult
+    (79) consult -> . mat_consult
+    (80) consult -> . 3dmat_consult
     (35) cycle -> . for
-    (101) identifier -> . ID
-    (102) identifier -> . consult
-    (105) empty -> .
+    (112) identifier -> . ID
+    (113) identifier -> . consult
+    (116) empty -> .
     (21) type -> . TYPE LPARENT ID RPARENT SEMICOLON block
     (23) insert -> . ID DOT INSERT LPARENT i_content RPARENT SEMICOLON block
     (24) del -> . ID DOT DEL LPARENT INT RPARENT SEMICOLON block
@@ -2114,24 +2265,26 @@ state 140
     (29) delay -> . DELAY LPARENT d_content RPARENT SEMICOLON block
     (33) shape -> . ID DOT shape_arg SEMICOLON block
     (34) delete -> . ID DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON block
-    (72) list_consult -> . ID PARENTCL indice PARENTCR
-    (73) list_consult -> . ID PARENTCL indice TP indice PARENTCR
-    (74) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
-    (75) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
-    (76) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (81) list_consult -> . ID PARENTCL indice PARENTCR
+    (82) list_consult -> . ID PARENTCL indice TP indice PARENTCR
+    (83) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
+    (84) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
+    (85) mat_consult -> . ID PARENTCL TP PARENTCR PARENTCL indice PARENTCR
+    (86) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (87) 3dmat_consult -> . ID PARENTCL indice PARENTCR PARENTCL indice PARENTCR PARENTCL indice PARENTCR
     (36) for -> . FOR ID IN iterable step LCORCH block RCORCH SEMICOLON block
 
     GLOBAL          shift and go to state 39
     ID              shift and go to state 40
-    $end            reduce using rule 105 (empty -> .)
-    RCORCH          reduce using rule 105 (empty -> .)
+    $end            reduce using rule 116 (empty -> .)
+    RCORCH          reduce using rule 116 (empty -> .)
     TYPE            shift and go to state 56
     LEN             shift and go to state 57
     BLINK           shift and go to state 58
     DELAY           shift and go to state 59
     FOR             shift and go to state 60
 
-    block                          shift and go to state 174
+    block                          shift and go to state 188
     assignment                     shift and go to state 34
     function                       shift and go to state 35
     consult                        shift and go to state 36
@@ -2153,179 +2306,189 @@ state 140
     3dmat_consult                  shift and go to state 54
     for                            shift and go to state 55
 
-state 141
-
-    (34) delete -> ID DOT DELETE LPARENT . indice COMMA INT RPARENT SEMICOLON block
-    (77) indice -> . INT
-    (78) indice -> . ID
-
-    INT             shift and go to state 107
-    ID              shift and go to state 104
-
-    indice                         shift and go to state 175
-
-state 142
-
-    (72) list_consult -> ID PARENTCL indice PARENTCR .
-
-    SEMICOLON       reduce using rule 72 (list_consult -> ID PARENTCL indice PARENTCR .)
-    DOT             reduce using rule 72 (list_consult -> ID PARENTCL indice PARENTCR .)
-    ASSIGN          reduce using rule 72 (list_consult -> ID PARENTCL indice PARENTCR .)
-    COMMA           reduce using rule 72 (list_consult -> ID PARENTCL indice PARENTCR .)
-    STEP            reduce using rule 72 (list_consult -> ID PARENTCL indice PARENTCR .)
-    LCORCH          reduce using rule 72 (list_consult -> ID PARENTCL indice PARENTCR .)
-
-
-state 143
-
-    (73) list_consult -> ID PARENTCL indice TP . indice PARENTCR
-    (77) indice -> . INT
-    (78) indice -> . ID
-
-    INT             shift and go to state 107
-    ID              shift and go to state 104
-
-    indice                         shift and go to state 176
-
-state 144
-
-    (74) mat_consult -> ID PARENTCL indice COMMA . indice PARENTCR
-    (76) 3dmat_consult -> ID PARENTCL indice COMMA . indice COMMA indice PARENTCR
-    (77) indice -> . INT
-    (78) indice -> . ID
-
-    INT             shift and go to state 107
-    ID              shift and go to state 104
-
-    indice                         shift and go to state 177
-
-state 145
-
-    (75) mat_consult -> ID PARENTCL TP COMMA . indice PARENTCR
-    (77) indice -> . INT
-    (78) indice -> . ID
-
-    INT             shift and go to state 107
-    ID              shift and go to state 104
-
-    indice                         shift and go to state 178
-
-state 146
-
-    (21) type -> TYPE LPARENT ID RPARENT . SEMICOLON block
-
-    SEMICOLON       shift and go to state 179
-
-
-state 147
-
-    (25) len -> LEN LPARENT ID RPARENT . SEMICOLON block
-
-    SEMICOLON       shift and go to state 180
-
-
-state 148
-
-    (28) blink -> BLINK LPARENT b_content RPARENT . SEMICOLON block
-
-    SEMICOLON       shift and go to state 181
-
-
 state 149
 
-    (55) b_content -> list_consult COMMA . INT COMMA time_mes COMMA value
-    (56) b_content -> list_consult COMMA . value
-    (93) value -> . FALSE
-    (94) value -> . TRUE
+    (34) delete -> ID DOT DELETE LPARENT . indice COMMA INT RPARENT SEMICOLON block
+    (88) indice -> . INT
+    (89) indice -> . ID
 
-    INT             shift and go to state 182
-    FALSE           shift and go to state 86
-    TRUE            shift and go to state 87
+    INT             shift and go to state 109
+    ID              shift and go to state 106
 
-    value                          shift and go to state 183
+    indice                         shift and go to state 189
 
 state 150
 
-    (72) list_consult -> ID PARENTCL . indice PARENTCR
-    (73) list_consult -> ID PARENTCL . indice TP indice PARENTCR
-    (77) indice -> . INT
-    (78) indice -> . ID
+    (81) list_consult -> ID PARENTCL indice PARENTCR .
+    (87) 3dmat_consult -> ID PARENTCL indice PARENTCR . PARENTCL indice PARENTCR PARENTCL indice PARENTCR
 
-    INT             shift and go to state 107
-    ID              shift and go to state 104
+    SEMICOLON       reduce using rule 81 (list_consult -> ID PARENTCL indice PARENTCR .)
+    DOT             reduce using rule 81 (list_consult -> ID PARENTCL indice PARENTCR .)
+    ASSIGN          reduce using rule 81 (list_consult -> ID PARENTCL indice PARENTCR .)
+    STEP            reduce using rule 81 (list_consult -> ID PARENTCL indice PARENTCR .)
+    LCORCH          reduce using rule 81 (list_consult -> ID PARENTCL indice PARENTCR .)
+    PARENTCL        shift and go to state 190
 
-    indice                         shift and go to state 184
 
 state 151
 
-    (29) delay -> DELAY LPARENT d_content RPARENT . SEMICOLON block
+    (82) list_consult -> ID PARENTCL indice TP . indice PARENTCR
+    (88) indice -> . INT
+    (89) indice -> . ID
 
-    SEMICOLON       shift and go to state 185
+    INT             shift and go to state 109
+    ID              shift and go to state 106
 
+    indice                         shift and go to state 191
 
 state 152
 
-    (58) d_content -> INT COMMA . time_mes
-    (83) time_mes -> . QUOTES MIL QUOTES
-    (84) time_mes -> . QUOTES MIN QUOTES
-    (85) time_mes -> . QUOTES SEG QUOTES
+    (83) mat_consult -> ID PARENTCL indice COMMA . indice PARENTCR
+    (86) 3dmat_consult -> ID PARENTCL indice COMMA . indice COMMA indice PARENTCR
+    (88) indice -> . INT
+    (89) indice -> . ID
 
-    QUOTES          shift and go to state 18
+    INT             shift and go to state 109
+    ID              shift and go to state 106
 
-    time_mes                       shift and go to state 186
+    indice                         shift and go to state 192
 
 state 153
 
-    (101) identifier -> ID .
-    (72) list_consult -> ID . PARENTCL indice PARENTCR
-    (73) list_consult -> ID . PARENTCL indice TP indice PARENTCR
-    (74) mat_consult -> ID . PARENTCL indice COMMA indice PARENTCR
-    (75) mat_consult -> ID . PARENTCL TP COMMA indice PARENTCR
-    (76) 3dmat_consult -> ID . PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (84) mat_consult -> ID PARENTCL TP COMMA . indice PARENTCR
+    (88) indice -> . INT
+    (89) indice -> . ID
 
-    STEP            reduce using rule 101 (identifier -> ID .)
-    LCORCH          reduce using rule 101 (identifier -> ID .)
-    PARENTCL        shift and go to state 67
+    INT             shift and go to state 109
+    ID              shift and go to state 106
 
+    indice                         shift and go to state 193
 
 state 154
 
-    (36) for -> FOR ID IN iterable . step LCORCH block RCORCH SEMICOLON block
-    (37) step -> . STEP INT
-    (38) step -> . empty
-    (105) empty -> .
+    (85) mat_consult -> ID PARENTCL TP PARENTCR . PARENTCL indice PARENTCR
 
-    STEP            shift and go to state 188
-    LCORCH          reduce using rule 105 (empty -> .)
+    PARENTCL        shift and go to state 194
 
-    step                           shift and go to state 187
-    empty                          shift and go to state 189
 
 state 155
 
-    (103) iterable -> identifier .
+    (21) type -> TYPE LPARENT ID RPARENT . SEMICOLON block
 
-    STEP            reduce using rule 103 (iterable -> identifier .)
-    LCORCH          reduce using rule 103 (iterable -> identifier .)
+    SEMICOLON       shift and go to state 195
 
 
 state 156
 
-    (104) iterable -> INT .
+    (25) len -> LEN LPARENT ID RPARENT . SEMICOLON block
 
-    STEP            reduce using rule 104 (iterable -> INT .)
-    LCORCH          reduce using rule 104 (iterable -> INT .)
+    SEMICOLON       shift and go to state 196
 
 
 state 157
 
-    (102) identifier -> consult .
+    (28) blink -> BLINK LPARENT b_content RPARENT . SEMICOLON block
 
-    STEP            reduce using rule 102 (identifier -> consult .)
-    LCORCH          reduce using rule 102 (identifier -> consult .)
+    SEMICOLON       shift and go to state 197
 
 
 state 158
+
+    (57) b_content -> list_consult COMMA . INT COMMA time_mes COMMA value
+    (58) b_content -> list_consult COMMA . value
+    (104) value -> . FALSE
+    (105) value -> . TRUE
+
+    INT             shift and go to state 198
+    FALSE           shift and go to state 88
+    TRUE            shift and go to state 89
+
+    value                          shift and go to state 199
+
+state 159
+
+    (81) list_consult -> ID PARENTCL . indice PARENTCR
+    (82) list_consult -> ID PARENTCL . indice TP indice PARENTCR
+    (88) indice -> . INT
+    (89) indice -> . ID
+
+    INT             shift and go to state 109
+    ID              shift and go to state 106
+
+    indice                         shift and go to state 200
+
+state 160
+
+    (29) delay -> DELAY LPARENT d_content RPARENT . SEMICOLON block
+
+    SEMICOLON       shift and go to state 201
+
+
+state 161
+
+    (60) d_content -> INT COMMA . time_mes
+    (94) time_mes -> . QUOTES MIL QUOTES
+    (95) time_mes -> . QUOTES MIN QUOTES
+    (96) time_mes -> . QUOTES SEG QUOTES
+
+    QUOTES          shift and go to state 18
+
+    time_mes                       shift and go to state 202
+
+state 162
+
+    (112) identifier -> ID .
+    (81) list_consult -> ID . PARENTCL indice PARENTCR
+    (82) list_consult -> ID . PARENTCL indice TP indice PARENTCR
+    (83) mat_consult -> ID . PARENTCL indice COMMA indice PARENTCR
+    (84) mat_consult -> ID . PARENTCL TP COMMA indice PARENTCR
+    (85) mat_consult -> ID . PARENTCL TP PARENTCR PARENTCL indice PARENTCR
+    (86) 3dmat_consult -> ID . PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (87) 3dmat_consult -> ID . PARENTCL indice PARENTCR PARENTCL indice PARENTCR PARENTCL indice PARENTCR
+
+    STEP            reduce using rule 112 (identifier -> ID .)
+    LCORCH          reduce using rule 112 (identifier -> ID .)
+    PARENTCL        shift and go to state 67
+
+
+state 163
+
+    (36) for -> FOR ID IN iterable . step LCORCH block RCORCH SEMICOLON block
+    (37) step -> . STEP INT
+    (38) step -> . empty
+    (116) empty -> .
+
+    STEP            shift and go to state 204
+    LCORCH          reduce using rule 116 (empty -> .)
+
+    step                           shift and go to state 203
+    empty                          shift and go to state 205
+
+state 164
+
+    (114) iterable -> identifier .
+
+    STEP            reduce using rule 114 (iterable -> identifier .)
+    LCORCH          reduce using rule 114 (iterable -> identifier .)
+
+
+state 165
+
+    (115) iterable -> INT .
+
+    STEP            reduce using rule 115 (iterable -> INT .)
+    LCORCH          reduce using rule 115 (iterable -> INT .)
+
+
+state 166
+
+    (113) identifier -> consult .
+
+    STEP            reduce using rule 113 (identifier -> consult .)
+    LCORCH          reduce using rule 113 (identifier -> consult .)
+
+
+state 167
 
     (26) neg -> consult DOT NEG SEMICOLON block .
 
@@ -2333,7 +2496,7 @@ state 158
     RCORCH          reduce using rule 26 (neg -> consult DOT NEG SEMICOLON block .)
 
 
-state 159
+state 168
 
     (27) t_f -> consult DOT tf SEMICOLON block .
 
@@ -2341,7 +2504,7 @@ state 159
     RCORCH          reduce using rule 27 (t_f -> consult DOT tf SEMICOLON block .)
 
 
-state 160
+state 169
 
     (7) assignment -> identifier ASSIGN a_content SEMICOLON block .
 
@@ -2349,14 +2512,14 @@ state 160
     RCORCH          reduce using rule 7 (assignment -> identifier ASSIGN a_content SEMICOLON block .)
 
 
-state 161
+state 170
 
     (22) a_content -> RANGE LPARENT INT . COMMA value RPARENT
 
-    COMMA           shift and go to state 190
+    COMMA           shift and go to state 206
 
 
-state 162
+state 171
 
     (46) factor -> LPARENT arithmetic RPARENT .
 
@@ -2371,29 +2534,29 @@ state 162
     RPARENT         reduce using rule 46 (factor -> LPARENT arithmetic RPARENT .)
 
 
-state 163
+state 172
 
     (41) arithmetic -> arithmetic adding_operator term .
     (43) term -> term . multiplying_operator factor
-    (88) multiplying_operator -> . TIMES
-    (89) multiplying_operator -> . EXP
-    (90) multiplying_operator -> . DIVIDE
-    (91) multiplying_operator -> . DIVENT
-    (92) multiplying_operator -> . MOD
+    (99) multiplying_operator -> . TIMES
+    (100) multiplying_operator -> . EXP
+    (101) multiplying_operator -> . DIVIDE
+    (102) multiplying_operator -> . DIVENT
+    (103) multiplying_operator -> . MOD
 
     PLUS            reduce using rule 41 (arithmetic -> arithmetic adding_operator term .)
     MINUS           reduce using rule 41 (arithmetic -> arithmetic adding_operator term .)
     SEMICOLON       reduce using rule 41 (arithmetic -> arithmetic adding_operator term .)
     RPARENT         reduce using rule 41 (arithmetic -> arithmetic adding_operator term .)
-    TIMES           shift and go to state 125
-    EXP             shift and go to state 126
-    DIVIDE          shift and go to state 127
-    DIVENT          shift and go to state 128
-    MOD             shift and go to state 129
+    TIMES           shift and go to state 127
+    EXP             shift and go to state 128
+    DIVIDE          shift and go to state 129
+    DIVENT          shift and go to state 130
+    MOD             shift and go to state 131
 
-    multiplying_operator           shift and go to state 124
+    multiplying_operator           shift and go to state 126
 
-state 164
+state 173
 
     (43) term -> term multiplying_operator factor .
 
@@ -2408,46 +2571,106 @@ state 164
     RPARENT         reduce using rule 43 (term -> term multiplying_operator factor .)
 
 
-state 165
+state 174
 
-    (63) list -> PARENTCL list_term PARENTCR .
+    (65) list -> PARENTCL . list_term PARENTCR
+    (66) list -> PARENTCL . empty PARENTCR
+    (67) list_term -> . list_value COMMA list_term
+    (68) list_term -> . list_value
+    (116) empty -> .
+    (69) list_value -> . value
+    (104) value -> . FALSE
+    (105) value -> . TRUE
 
-    SEMICOLON       reduce using rule 63 (list -> PARENTCL list_term PARENTCR .)
-    COMMA           reduce using rule 63 (list -> PARENTCL list_term PARENTCR .)
-    PARENTCR        reduce using rule 63 (list -> PARENTCL list_term PARENTCR .)
+    PARENTCR        reduce using rule 116 (empty -> .)
+    FALSE           shift and go to state 88
+    TRUE            shift and go to state 89
+
+    list_term                      shift and go to state 134
+    empty                          shift and go to state 135
+    list_value                     shift and go to state 138
+    value                          shift and go to state 141
+
+state 175
+
+    (65) list -> PARENTCL list_term PARENTCR .
+
+    SEMICOLON       reduce using rule 65 (list -> PARENTCL list_term PARENTCR .)
+    COMMA           reduce using rule 65 (list -> PARENTCL list_term PARENTCR .)
+    PARENTCR        reduce using rule 65 (list -> PARENTCL list_term PARENTCR .)
 
 
-state 166
+state 176
 
-    (64) list -> PARENTCL empty PARENTCR .
+    (66) list -> PARENTCL empty PARENTCR .
 
-    SEMICOLON       reduce using rule 64 (list -> PARENTCL empty PARENTCR .)
-    COMMA           reduce using rule 64 (list -> PARENTCL empty PARENTCR .)
-    PARENTCR        reduce using rule 64 (list -> PARENTCL empty PARENTCR .)
+    SEMICOLON       reduce using rule 66 (list -> PARENTCL empty PARENTCR .)
+    COMMA           reduce using rule 66 (list -> PARENTCL empty PARENTCR .)
+    PARENTCR        reduce using rule 66 (list -> PARENTCL empty PARENTCR .)
 
 
-state 167
+state 177
 
-    (65) list_term -> list_value COMMA . list_term
-    (65) list_term -> . list_value COMMA list_term
-    (66) list_term -> . list_value
-    (67) list_value -> . value
-    (68) list_value -> . list
-    (93) value -> . FALSE
-    (94) value -> . TRUE
-    (63) list -> . PARENTCL list_term PARENTCR
-    (64) list -> . PARENTCL empty PARENTCR
+    (70) mat -> PARENTCL mat_term PARENTCR .
 
-    FALSE           shift and go to state 86
-    TRUE            shift and go to state 87
-    PARENTCL        shift and go to state 90
+    SEMICOLON       reduce using rule 70 (mat -> PARENTCL mat_term PARENTCR .)
+    COMMA           reduce using rule 70 (mat -> PARENTCL mat_term PARENTCR .)
+    PARENTCR        reduce using rule 70 (mat -> PARENTCL mat_term PARENTCR .)
 
-    list_value                     shift and go to state 133
-    list_term                      shift and go to state 191
-    value                          shift and go to state 134
-    list                           shift and go to state 135
 
-state 168
+state 178
+
+    (74) 3dmat -> PARENTCL 3dmat_term PARENTCR .
+
+    SEMICOLON       reduce using rule 74 (3dmat -> PARENTCL 3dmat_term PARENTCR .)
+
+
+state 179
+
+    (67) list_term -> list_value COMMA . list_term
+    (67) list_term -> . list_value COMMA list_term
+    (68) list_term -> . list_value
+    (69) list_value -> . value
+    (104) value -> . FALSE
+    (105) value -> . TRUE
+
+    FALSE           shift and go to state 88
+    TRUE            shift and go to state 89
+
+    list_value                     shift and go to state 138
+    list_term                      shift and go to state 207
+    value                          shift and go to state 141
+
+state 180
+
+    (71) mat_term -> mat_value COMMA . mat_term
+    (71) mat_term -> . mat_value COMMA mat_term
+    (72) mat_term -> . mat_value
+    (73) mat_value -> . list
+    (65) list -> . PARENTCL list_term PARENTCR
+    (66) list -> . PARENTCL empty PARENTCR
+
+    PARENTCL        shift and go to state 174
+
+    mat_value                      shift and go to state 139
+    mat_term                       shift and go to state 208
+    list                           shift and go to state 142
+
+state 181
+
+    (75) 3dmat_term -> 3dmat_value COMMA . 3dmat_term
+    (75) 3dmat_term -> . 3dmat_value COMMA 3dmat_term
+    (76) 3dmat_term -> . 3dmat_value
+    (77) 3dmat_value -> . mat
+    (70) mat -> . PARENTCL mat_term PARENTCR
+
+    PARENTCL        shift and go to state 210
+
+    3dmat_value                    shift and go to state 140
+    3dmat_term                     shift and go to state 209
+    mat                            shift and go to state 143
+
+state 182
 
     (8) assignment -> GLOBAL ID ASSIGN a_content SEMICOLON . block
     (3) block -> . assignment
@@ -2468,13 +2691,13 @@ state 168
     (18) function -> . delay
     (19) function -> . shape
     (20) function -> . delete
-    (69) consult -> . list_consult
-    (70) consult -> . mat_consult
-    (71) consult -> . 3dmat_consult
+    (78) consult -> . list_consult
+    (79) consult -> . mat_consult
+    (80) consult -> . 3dmat_consult
     (35) cycle -> . for
-    (101) identifier -> . ID
-    (102) identifier -> . consult
-    (105) empty -> .
+    (112) identifier -> . ID
+    (113) identifier -> . consult
+    (116) empty -> .
     (21) type -> . TYPE LPARENT ID RPARENT SEMICOLON block
     (23) insert -> . ID DOT INSERT LPARENT i_content RPARENT SEMICOLON block
     (24) del -> . ID DOT DEL LPARENT INT RPARENT SEMICOLON block
@@ -2485,24 +2708,26 @@ state 168
     (29) delay -> . DELAY LPARENT d_content RPARENT SEMICOLON block
     (33) shape -> . ID DOT shape_arg SEMICOLON block
     (34) delete -> . ID DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON block
-    (72) list_consult -> . ID PARENTCL indice PARENTCR
-    (73) list_consult -> . ID PARENTCL indice TP indice PARENTCR
-    (74) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
-    (75) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
-    (76) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (81) list_consult -> . ID PARENTCL indice PARENTCR
+    (82) list_consult -> . ID PARENTCL indice TP indice PARENTCR
+    (83) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
+    (84) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
+    (85) mat_consult -> . ID PARENTCL TP PARENTCR PARENTCL indice PARENTCR
+    (86) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (87) 3dmat_consult -> . ID PARENTCL indice PARENTCR PARENTCL indice PARENTCR PARENTCL indice PARENTCR
     (36) for -> . FOR ID IN iterable step LCORCH block RCORCH SEMICOLON block
 
     GLOBAL          shift and go to state 39
     ID              shift and go to state 40
-    $end            reduce using rule 105 (empty -> .)
-    RCORCH          reduce using rule 105 (empty -> .)
+    $end            reduce using rule 116 (empty -> .)
+    RCORCH          reduce using rule 116 (empty -> .)
     TYPE            shift and go to state 56
     LEN             shift and go to state 57
     BLINK           shift and go to state 58
     DELAY           shift and go to state 59
     FOR             shift and go to state 60
 
-    block                          shift and go to state 192
+    block                          shift and go to state 211
     assignment                     shift and go to state 34
     function                       shift and go to state 35
     consult                        shift and go to state 36
@@ -2524,42 +2749,42 @@ state 168
     3dmat_consult                  shift and go to state 54
     for                            shift and go to state 55
 
-state 169
+state 183
 
     (9) assignment -> ID COMMA ID ASSIGN value . COMMA value SEMICOLON block
 
-    COMMA           shift and go to state 193
+    COMMA           shift and go to state 212
 
 
-state 170
+state 184
 
     (23) insert -> ID DOT INSERT LPARENT i_content . RPARENT SEMICOLON block
 
-    RPARENT         shift and go to state 194
+    RPARENT         shift and go to state 213
 
 
-state 171
+state 185
 
-    (61) i_content -> INT . COMMA value
+    (63) i_content -> INT . COMMA value
 
-    COMMA           shift and go to state 195
-
-
-state 172
-
-    (62) i_content -> list . COMMA INT i_ind
-
-    COMMA           shift and go to state 196
+    COMMA           shift and go to state 214
 
 
-state 173
+state 186
+
+    (64) i_content -> list . COMMA INT i_ind
+
+    COMMA           shift and go to state 215
+
+
+state 187
 
     (24) del -> ID DOT DEL LPARENT INT . RPARENT SEMICOLON block
 
-    RPARENT         shift and go to state 197
+    RPARENT         shift and go to state 216
 
 
-state 174
+state 188
 
     (33) shape -> ID DOT shape_arg SEMICOLON block .
 
@@ -2567,37 +2792,59 @@ state 174
     RCORCH          reduce using rule 33 (shape -> ID DOT shape_arg SEMICOLON block .)
 
 
-state 175
+state 189
 
     (34) delete -> ID DOT DELETE LPARENT indice . COMMA INT RPARENT SEMICOLON block
 
-    COMMA           shift and go to state 198
+    COMMA           shift and go to state 217
 
 
-state 176
+state 190
 
-    (73) list_consult -> ID PARENTCL indice TP indice . PARENTCR
+    (87) 3dmat_consult -> ID PARENTCL indice PARENTCR PARENTCL . indice PARENTCR PARENTCL indice PARENTCR
+    (88) indice -> . INT
+    (89) indice -> . ID
 
-    PARENTCR        shift and go to state 199
+    INT             shift and go to state 109
+    ID              shift and go to state 106
 
+    indice                         shift and go to state 218
 
-state 177
+state 191
 
-    (74) mat_consult -> ID PARENTCL indice COMMA indice . PARENTCR
-    (76) 3dmat_consult -> ID PARENTCL indice COMMA indice . COMMA indice PARENTCR
+    (82) list_consult -> ID PARENTCL indice TP indice . PARENTCR
 
-    PARENTCR        shift and go to state 201
-    COMMA           shift and go to state 200
-
-
-state 178
-
-    (75) mat_consult -> ID PARENTCL TP COMMA indice . PARENTCR
-
-    PARENTCR        shift and go to state 202
+    PARENTCR        shift and go to state 219
 
 
-state 179
+state 192
+
+    (83) mat_consult -> ID PARENTCL indice COMMA indice . PARENTCR
+    (86) 3dmat_consult -> ID PARENTCL indice COMMA indice . COMMA indice PARENTCR
+
+    PARENTCR        shift and go to state 221
+    COMMA           shift and go to state 220
+
+
+state 193
+
+    (84) mat_consult -> ID PARENTCL TP COMMA indice . PARENTCR
+
+    PARENTCR        shift and go to state 222
+
+
+state 194
+
+    (85) mat_consult -> ID PARENTCL TP PARENTCR PARENTCL . indice PARENTCR
+    (88) indice -> . INT
+    (89) indice -> . ID
+
+    INT             shift and go to state 109
+    ID              shift and go to state 106
+
+    indice                         shift and go to state 223
+
+state 195
 
     (21) type -> TYPE LPARENT ID RPARENT SEMICOLON . block
     (3) block -> . assignment
@@ -2618,13 +2865,13 @@ state 179
     (18) function -> . delay
     (19) function -> . shape
     (20) function -> . delete
-    (69) consult -> . list_consult
-    (70) consult -> . mat_consult
-    (71) consult -> . 3dmat_consult
+    (78) consult -> . list_consult
+    (79) consult -> . mat_consult
+    (80) consult -> . 3dmat_consult
     (35) cycle -> . for
-    (101) identifier -> . ID
-    (102) identifier -> . consult
-    (105) empty -> .
+    (112) identifier -> . ID
+    (113) identifier -> . consult
+    (116) empty -> .
     (21) type -> . TYPE LPARENT ID RPARENT SEMICOLON block
     (23) insert -> . ID DOT INSERT LPARENT i_content RPARENT SEMICOLON block
     (24) del -> . ID DOT DEL LPARENT INT RPARENT SEMICOLON block
@@ -2635,24 +2882,26 @@ state 179
     (29) delay -> . DELAY LPARENT d_content RPARENT SEMICOLON block
     (33) shape -> . ID DOT shape_arg SEMICOLON block
     (34) delete -> . ID DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON block
-    (72) list_consult -> . ID PARENTCL indice PARENTCR
-    (73) list_consult -> . ID PARENTCL indice TP indice PARENTCR
-    (74) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
-    (75) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
-    (76) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (81) list_consult -> . ID PARENTCL indice PARENTCR
+    (82) list_consult -> . ID PARENTCL indice TP indice PARENTCR
+    (83) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
+    (84) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
+    (85) mat_consult -> . ID PARENTCL TP PARENTCR PARENTCL indice PARENTCR
+    (86) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (87) 3dmat_consult -> . ID PARENTCL indice PARENTCR PARENTCL indice PARENTCR PARENTCL indice PARENTCR
     (36) for -> . FOR ID IN iterable step LCORCH block RCORCH SEMICOLON block
 
     GLOBAL          shift and go to state 39
     ID              shift and go to state 40
-    $end            reduce using rule 105 (empty -> .)
-    RCORCH          reduce using rule 105 (empty -> .)
+    $end            reduce using rule 116 (empty -> .)
+    RCORCH          reduce using rule 116 (empty -> .)
     TYPE            shift and go to state 56
     LEN             shift and go to state 57
     BLINK           shift and go to state 58
     DELAY           shift and go to state 59
     FOR             shift and go to state 60
 
-    block                          shift and go to state 203
+    block                          shift and go to state 224
     assignment                     shift and go to state 34
     function                       shift and go to state 35
     consult                        shift and go to state 36
@@ -2674,7 +2923,7 @@ state 179
     3dmat_consult                  shift and go to state 54
     for                            shift and go to state 55
 
-state 180
+state 196
 
     (25) len -> LEN LPARENT ID RPARENT SEMICOLON . block
     (3) block -> . assignment
@@ -2695,13 +2944,13 @@ state 180
     (18) function -> . delay
     (19) function -> . shape
     (20) function -> . delete
-    (69) consult -> . list_consult
-    (70) consult -> . mat_consult
-    (71) consult -> . 3dmat_consult
+    (78) consult -> . list_consult
+    (79) consult -> . mat_consult
+    (80) consult -> . 3dmat_consult
     (35) cycle -> . for
-    (101) identifier -> . ID
-    (102) identifier -> . consult
-    (105) empty -> .
+    (112) identifier -> . ID
+    (113) identifier -> . consult
+    (116) empty -> .
     (21) type -> . TYPE LPARENT ID RPARENT SEMICOLON block
     (23) insert -> . ID DOT INSERT LPARENT i_content RPARENT SEMICOLON block
     (24) del -> . ID DOT DEL LPARENT INT RPARENT SEMICOLON block
@@ -2712,24 +2961,26 @@ state 180
     (29) delay -> . DELAY LPARENT d_content RPARENT SEMICOLON block
     (33) shape -> . ID DOT shape_arg SEMICOLON block
     (34) delete -> . ID DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON block
-    (72) list_consult -> . ID PARENTCL indice PARENTCR
-    (73) list_consult -> . ID PARENTCL indice TP indice PARENTCR
-    (74) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
-    (75) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
-    (76) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (81) list_consult -> . ID PARENTCL indice PARENTCR
+    (82) list_consult -> . ID PARENTCL indice TP indice PARENTCR
+    (83) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
+    (84) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
+    (85) mat_consult -> . ID PARENTCL TP PARENTCR PARENTCL indice PARENTCR
+    (86) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (87) 3dmat_consult -> . ID PARENTCL indice PARENTCR PARENTCL indice PARENTCR PARENTCL indice PARENTCR
     (36) for -> . FOR ID IN iterable step LCORCH block RCORCH SEMICOLON block
 
     GLOBAL          shift and go to state 39
     ID              shift and go to state 40
-    $end            reduce using rule 105 (empty -> .)
-    RCORCH          reduce using rule 105 (empty -> .)
+    $end            reduce using rule 116 (empty -> .)
+    RCORCH          reduce using rule 116 (empty -> .)
     TYPE            shift and go to state 56
     LEN             shift and go to state 57
     BLINK           shift and go to state 58
     DELAY           shift and go to state 59
     FOR             shift and go to state 60
 
-    block                          shift and go to state 204
+    block                          shift and go to state 225
     assignment                     shift and go to state 34
     function                       shift and go to state 35
     consult                        shift and go to state 36
@@ -2751,7 +3002,7 @@ state 180
     3dmat_consult                  shift and go to state 54
     for                            shift and go to state 55
 
-state 181
+state 197
 
     (28) blink -> BLINK LPARENT b_content RPARENT SEMICOLON . block
     (3) block -> . assignment
@@ -2772,13 +3023,13 @@ state 181
     (18) function -> . delay
     (19) function -> . shape
     (20) function -> . delete
-    (69) consult -> . list_consult
-    (70) consult -> . mat_consult
-    (71) consult -> . 3dmat_consult
+    (78) consult -> . list_consult
+    (79) consult -> . mat_consult
+    (80) consult -> . 3dmat_consult
     (35) cycle -> . for
-    (101) identifier -> . ID
-    (102) identifier -> . consult
-    (105) empty -> .
+    (112) identifier -> . ID
+    (113) identifier -> . consult
+    (116) empty -> .
     (21) type -> . TYPE LPARENT ID RPARENT SEMICOLON block
     (23) insert -> . ID DOT INSERT LPARENT i_content RPARENT SEMICOLON block
     (24) del -> . ID DOT DEL LPARENT INT RPARENT SEMICOLON block
@@ -2789,580 +3040,19 @@ state 181
     (29) delay -> . DELAY LPARENT d_content RPARENT SEMICOLON block
     (33) shape -> . ID DOT shape_arg SEMICOLON block
     (34) delete -> . ID DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON block
-    (72) list_consult -> . ID PARENTCL indice PARENTCR
-    (73) list_consult -> . ID PARENTCL indice TP indice PARENTCR
-    (74) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
-    (75) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
-    (76) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (81) list_consult -> . ID PARENTCL indice PARENTCR
+    (82) list_consult -> . ID PARENTCL indice TP indice PARENTCR
+    (83) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
+    (84) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
+    (85) mat_consult -> . ID PARENTCL TP PARENTCR PARENTCL indice PARENTCR
+    (86) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (87) 3dmat_consult -> . ID PARENTCL indice PARENTCR PARENTCL indice PARENTCR PARENTCL indice PARENTCR
     (36) for -> . FOR ID IN iterable step LCORCH block RCORCH SEMICOLON block
 
     GLOBAL          shift and go to state 39
     ID              shift and go to state 40
-    $end            reduce using rule 105 (empty -> .)
-    RCORCH          reduce using rule 105 (empty -> .)
-    TYPE            shift and go to state 56
-    LEN             shift and go to state 57
-    BLINK           shift and go to state 58
-    DELAY           shift and go to state 59
-    FOR             shift and go to state 60
-
-    block                          shift and go to state 205
-    assignment                     shift and go to state 34
-    function                       shift and go to state 35
-    consult                        shift and go to state 36
-    cycle                          shift and go to state 37
-    identifier                     shift and go to state 38
-    empty                          shift and go to state 41
-    type                           shift and go to state 42
-    insert                         shift and go to state 43
-    del                            shift and go to state 44
-    len                            shift and go to state 45
-    neg                            shift and go to state 46
-    t_f                            shift and go to state 47
-    blink                          shift and go to state 48
-    delay                          shift and go to state 49
-    shape                          shift and go to state 50
-    delete                         shift and go to state 51
-    list_consult                   shift and go to state 52
-    mat_consult                    shift and go to state 53
-    3dmat_consult                  shift and go to state 54
-    for                            shift and go to state 55
-
-state 182
-
-    (55) b_content -> list_consult COMMA INT . COMMA time_mes COMMA value
-
-    COMMA           shift and go to state 206
-
-
-state 183
-
-    (56) b_content -> list_consult COMMA value .
-
-    RPARENT         reduce using rule 56 (b_content -> list_consult COMMA value .)
-
-
-state 184
-
-    (72) list_consult -> ID PARENTCL indice . PARENTCR
-    (73) list_consult -> ID PARENTCL indice . TP indice PARENTCR
-
-    PARENTCR        shift and go to state 142
-    TP              shift and go to state 143
-
-
-state 185
-
-    (29) delay -> DELAY LPARENT d_content RPARENT SEMICOLON . block
-    (3) block -> . assignment
-    (4) block -> . function
-    (5) block -> . consult SEMICOLON block
-    (6) block -> . cycle
-    (7) assignment -> . identifier ASSIGN a_content SEMICOLON block
-    (8) assignment -> . GLOBAL ID ASSIGN a_content SEMICOLON block
-    (9) assignment -> . ID COMMA ID ASSIGN value COMMA value SEMICOLON block
-    (10) assignment -> . empty
-    (11) function -> . type
-    (12) function -> . insert
-    (13) function -> . del
-    (14) function -> . len
-    (15) function -> . neg
-    (16) function -> . t_f
-    (17) function -> . blink
-    (18) function -> . delay
-    (19) function -> . shape
-    (20) function -> . delete
-    (69) consult -> . list_consult
-    (70) consult -> . mat_consult
-    (71) consult -> . 3dmat_consult
-    (35) cycle -> . for
-    (101) identifier -> . ID
-    (102) identifier -> . consult
-    (105) empty -> .
-    (21) type -> . TYPE LPARENT ID RPARENT SEMICOLON block
-    (23) insert -> . ID DOT INSERT LPARENT i_content RPARENT SEMICOLON block
-    (24) del -> . ID DOT DEL LPARENT INT RPARENT SEMICOLON block
-    (25) len -> . LEN LPARENT ID RPARENT SEMICOLON block
-    (26) neg -> . consult DOT NEG SEMICOLON block
-    (27) t_f -> . consult DOT tf SEMICOLON block
-    (28) blink -> . BLINK LPARENT b_content RPARENT SEMICOLON block
-    (29) delay -> . DELAY LPARENT d_content RPARENT SEMICOLON block
-    (33) shape -> . ID DOT shape_arg SEMICOLON block
-    (34) delete -> . ID DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON block
-    (72) list_consult -> . ID PARENTCL indice PARENTCR
-    (73) list_consult -> . ID PARENTCL indice TP indice PARENTCR
-    (74) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
-    (75) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
-    (76) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
-    (36) for -> . FOR ID IN iterable step LCORCH block RCORCH SEMICOLON block
-
-    GLOBAL          shift and go to state 39
-    ID              shift and go to state 40
-    $end            reduce using rule 105 (empty -> .)
-    RCORCH          reduce using rule 105 (empty -> .)
-    TYPE            shift and go to state 56
-    LEN             shift and go to state 57
-    BLINK           shift and go to state 58
-    DELAY           shift and go to state 59
-    FOR             shift and go to state 60
-
-    block                          shift and go to state 207
-    assignment                     shift and go to state 34
-    function                       shift and go to state 35
-    consult                        shift and go to state 36
-    cycle                          shift and go to state 37
-    identifier                     shift and go to state 38
-    empty                          shift and go to state 41
-    type                           shift and go to state 42
-    insert                         shift and go to state 43
-    del                            shift and go to state 44
-    len                            shift and go to state 45
-    neg                            shift and go to state 46
-    t_f                            shift and go to state 47
-    blink                          shift and go to state 48
-    delay                          shift and go to state 49
-    shape                          shift and go to state 50
-    delete                         shift and go to state 51
-    list_consult                   shift and go to state 52
-    mat_consult                    shift and go to state 53
-    3dmat_consult                  shift and go to state 54
-    for                            shift and go to state 55
-
-state 186
-
-    (58) d_content -> INT COMMA time_mes .
-
-    RPARENT         reduce using rule 58 (d_content -> INT COMMA time_mes .)
-
-
-state 187
-
-    (36) for -> FOR ID IN iterable step . LCORCH block RCORCH SEMICOLON block
-
-    LCORCH          shift and go to state 208
-
-
-state 188
-
-    (37) step -> STEP . INT
-
-    INT             shift and go to state 209
-
-
-state 189
-
-    (38) step -> empty .
-
-    LCORCH          reduce using rule 38 (step -> empty .)
-
-
-state 190
-
-    (22) a_content -> RANGE LPARENT INT COMMA . value RPARENT
-    (93) value -> . FALSE
-    (94) value -> . TRUE
-
-    FALSE           shift and go to state 86
-    TRUE            shift and go to state 87
-
-    value                          shift and go to state 210
-
-state 191
-
-    (65) list_term -> list_value COMMA list_term .
-
-    PARENTCR        reduce using rule 65 (list_term -> list_value COMMA list_term .)
-
-
-state 192
-
-    (8) assignment -> GLOBAL ID ASSIGN a_content SEMICOLON block .
-
-    $end            reduce using rule 8 (assignment -> GLOBAL ID ASSIGN a_content SEMICOLON block .)
-    RCORCH          reduce using rule 8 (assignment -> GLOBAL ID ASSIGN a_content SEMICOLON block .)
-
-
-state 193
-
-    (9) assignment -> ID COMMA ID ASSIGN value COMMA . value SEMICOLON block
-    (93) value -> . FALSE
-    (94) value -> . TRUE
-
-    FALSE           shift and go to state 86
-    TRUE            shift and go to state 87
-
-    value                          shift and go to state 211
-
-state 194
-
-    (23) insert -> ID DOT INSERT LPARENT i_content RPARENT . SEMICOLON block
-
-    SEMICOLON       shift and go to state 212
-
-
-state 195
-
-    (61) i_content -> INT COMMA . value
-    (93) value -> . FALSE
-    (94) value -> . TRUE
-
-    FALSE           shift and go to state 86
-    TRUE            shift and go to state 87
-
-    value                          shift and go to state 213
-
-state 196
-
-    (62) i_content -> list COMMA . INT i_ind
-
-    INT             shift and go to state 214
-
-
-state 197
-
-    (24) del -> ID DOT DEL LPARENT INT RPARENT . SEMICOLON block
-
-    SEMICOLON       shift and go to state 215
-
-
-state 198
-
-    (34) delete -> ID DOT DELETE LPARENT indice COMMA . INT RPARENT SEMICOLON block
-
-    INT             shift and go to state 216
-
-
-state 199
-
-    (73) list_consult -> ID PARENTCL indice TP indice PARENTCR .
-
-    SEMICOLON       reduce using rule 73 (list_consult -> ID PARENTCL indice TP indice PARENTCR .)
-    DOT             reduce using rule 73 (list_consult -> ID PARENTCL indice TP indice PARENTCR .)
-    ASSIGN          reduce using rule 73 (list_consult -> ID PARENTCL indice TP indice PARENTCR .)
-    COMMA           reduce using rule 73 (list_consult -> ID PARENTCL indice TP indice PARENTCR .)
-    STEP            reduce using rule 73 (list_consult -> ID PARENTCL indice TP indice PARENTCR .)
-    LCORCH          reduce using rule 73 (list_consult -> ID PARENTCL indice TP indice PARENTCR .)
-
-
-state 200
-
-    (76) 3dmat_consult -> ID PARENTCL indice COMMA indice COMMA . indice PARENTCR
-    (77) indice -> . INT
-    (78) indice -> . ID
-
-    INT             shift and go to state 107
-    ID              shift and go to state 104
-
-    indice                         shift and go to state 217
-
-state 201
-
-    (74) mat_consult -> ID PARENTCL indice COMMA indice PARENTCR .
-
-    SEMICOLON       reduce using rule 74 (mat_consult -> ID PARENTCL indice COMMA indice PARENTCR .)
-    DOT             reduce using rule 74 (mat_consult -> ID PARENTCL indice COMMA indice PARENTCR .)
-    ASSIGN          reduce using rule 74 (mat_consult -> ID PARENTCL indice COMMA indice PARENTCR .)
-    STEP            reduce using rule 74 (mat_consult -> ID PARENTCL indice COMMA indice PARENTCR .)
-    LCORCH          reduce using rule 74 (mat_consult -> ID PARENTCL indice COMMA indice PARENTCR .)
-
-
-state 202
-
-    (75) mat_consult -> ID PARENTCL TP COMMA indice PARENTCR .
-
-    SEMICOLON       reduce using rule 75 (mat_consult -> ID PARENTCL TP COMMA indice PARENTCR .)
-    DOT             reduce using rule 75 (mat_consult -> ID PARENTCL TP COMMA indice PARENTCR .)
-    ASSIGN          reduce using rule 75 (mat_consult -> ID PARENTCL TP COMMA indice PARENTCR .)
-    STEP            reduce using rule 75 (mat_consult -> ID PARENTCL TP COMMA indice PARENTCR .)
-    LCORCH          reduce using rule 75 (mat_consult -> ID PARENTCL TP COMMA indice PARENTCR .)
-
-
-state 203
-
-    (21) type -> TYPE LPARENT ID RPARENT SEMICOLON block .
-
-    $end            reduce using rule 21 (type -> TYPE LPARENT ID RPARENT SEMICOLON block .)
-    RCORCH          reduce using rule 21 (type -> TYPE LPARENT ID RPARENT SEMICOLON block .)
-
-
-state 204
-
-    (25) len -> LEN LPARENT ID RPARENT SEMICOLON block .
-
-    $end            reduce using rule 25 (len -> LEN LPARENT ID RPARENT SEMICOLON block .)
-    RCORCH          reduce using rule 25 (len -> LEN LPARENT ID RPARENT SEMICOLON block .)
-
-
-state 205
-
-    (28) blink -> BLINK LPARENT b_content RPARENT SEMICOLON block .
-
-    $end            reduce using rule 28 (blink -> BLINK LPARENT b_content RPARENT SEMICOLON block .)
-    RCORCH          reduce using rule 28 (blink -> BLINK LPARENT b_content RPARENT SEMICOLON block .)
-
-
-state 206
-
-    (55) b_content -> list_consult COMMA INT COMMA . time_mes COMMA value
-    (83) time_mes -> . QUOTES MIL QUOTES
-    (84) time_mes -> . QUOTES MIN QUOTES
-    (85) time_mes -> . QUOTES SEG QUOTES
-
-    QUOTES          shift and go to state 18
-
-    time_mes                       shift and go to state 218
-
-state 207
-
-    (29) delay -> DELAY LPARENT d_content RPARENT SEMICOLON block .
-
-    $end            reduce using rule 29 (delay -> DELAY LPARENT d_content RPARENT SEMICOLON block .)
-    RCORCH          reduce using rule 29 (delay -> DELAY LPARENT d_content RPARENT SEMICOLON block .)
-
-
-state 208
-
-    (36) for -> FOR ID IN iterable step LCORCH . block RCORCH SEMICOLON block
-    (3) block -> . assignment
-    (4) block -> . function
-    (5) block -> . consult SEMICOLON block
-    (6) block -> . cycle
-    (7) assignment -> . identifier ASSIGN a_content SEMICOLON block
-    (8) assignment -> . GLOBAL ID ASSIGN a_content SEMICOLON block
-    (9) assignment -> . ID COMMA ID ASSIGN value COMMA value SEMICOLON block
-    (10) assignment -> . empty
-    (11) function -> . type
-    (12) function -> . insert
-    (13) function -> . del
-    (14) function -> . len
-    (15) function -> . neg
-    (16) function -> . t_f
-    (17) function -> . blink
-    (18) function -> . delay
-    (19) function -> . shape
-    (20) function -> . delete
-    (69) consult -> . list_consult
-    (70) consult -> . mat_consult
-    (71) consult -> . 3dmat_consult
-    (35) cycle -> . for
-    (101) identifier -> . ID
-    (102) identifier -> . consult
-    (105) empty -> .
-    (21) type -> . TYPE LPARENT ID RPARENT SEMICOLON block
-    (23) insert -> . ID DOT INSERT LPARENT i_content RPARENT SEMICOLON block
-    (24) del -> . ID DOT DEL LPARENT INT RPARENT SEMICOLON block
-    (25) len -> . LEN LPARENT ID RPARENT SEMICOLON block
-    (26) neg -> . consult DOT NEG SEMICOLON block
-    (27) t_f -> . consult DOT tf SEMICOLON block
-    (28) blink -> . BLINK LPARENT b_content RPARENT SEMICOLON block
-    (29) delay -> . DELAY LPARENT d_content RPARENT SEMICOLON block
-    (33) shape -> . ID DOT shape_arg SEMICOLON block
-    (34) delete -> . ID DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON block
-    (72) list_consult -> . ID PARENTCL indice PARENTCR
-    (73) list_consult -> . ID PARENTCL indice TP indice PARENTCR
-    (74) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
-    (75) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
-    (76) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
-    (36) for -> . FOR ID IN iterable step LCORCH block RCORCH SEMICOLON block
-
-    GLOBAL          shift and go to state 39
-    ID              shift and go to state 40
-    RCORCH          reduce using rule 105 (empty -> .)
-    TYPE            shift and go to state 56
-    LEN             shift and go to state 57
-    BLINK           shift and go to state 58
-    DELAY           shift and go to state 59
-    FOR             shift and go to state 60
-
-    block                          shift and go to state 219
-    assignment                     shift and go to state 34
-    function                       shift and go to state 35
-    consult                        shift and go to state 36
-    cycle                          shift and go to state 37
-    identifier                     shift and go to state 38
-    empty                          shift and go to state 41
-    type                           shift and go to state 42
-    insert                         shift and go to state 43
-    del                            shift and go to state 44
-    len                            shift and go to state 45
-    neg                            shift and go to state 46
-    t_f                            shift and go to state 47
-    blink                          shift and go to state 48
-    delay                          shift and go to state 49
-    shape                          shift and go to state 50
-    delete                         shift and go to state 51
-    list_consult                   shift and go to state 52
-    mat_consult                    shift and go to state 53
-    3dmat_consult                  shift and go to state 54
-    for                            shift and go to state 55
-
-state 209
-
-    (37) step -> STEP INT .
-
-    LCORCH          reduce using rule 37 (step -> STEP INT .)
-
-
-state 210
-
-    (22) a_content -> RANGE LPARENT INT COMMA value . RPARENT
-
-    RPARENT         shift and go to state 220
-
-
-state 211
-
-    (9) assignment -> ID COMMA ID ASSIGN value COMMA value . SEMICOLON block
-
-    SEMICOLON       shift and go to state 221
-
-
-state 212
-
-    (23) insert -> ID DOT INSERT LPARENT i_content RPARENT SEMICOLON . block
-    (3) block -> . assignment
-    (4) block -> . function
-    (5) block -> . consult SEMICOLON block
-    (6) block -> . cycle
-    (7) assignment -> . identifier ASSIGN a_content SEMICOLON block
-    (8) assignment -> . GLOBAL ID ASSIGN a_content SEMICOLON block
-    (9) assignment -> . ID COMMA ID ASSIGN value COMMA value SEMICOLON block
-    (10) assignment -> . empty
-    (11) function -> . type
-    (12) function -> . insert
-    (13) function -> . del
-    (14) function -> . len
-    (15) function -> . neg
-    (16) function -> . t_f
-    (17) function -> . blink
-    (18) function -> . delay
-    (19) function -> . shape
-    (20) function -> . delete
-    (69) consult -> . list_consult
-    (70) consult -> . mat_consult
-    (71) consult -> . 3dmat_consult
-    (35) cycle -> . for
-    (101) identifier -> . ID
-    (102) identifier -> . consult
-    (105) empty -> .
-    (21) type -> . TYPE LPARENT ID RPARENT SEMICOLON block
-    (23) insert -> . ID DOT INSERT LPARENT i_content RPARENT SEMICOLON block
-    (24) del -> . ID DOT DEL LPARENT INT RPARENT SEMICOLON block
-    (25) len -> . LEN LPARENT ID RPARENT SEMICOLON block
-    (26) neg -> . consult DOT NEG SEMICOLON block
-    (27) t_f -> . consult DOT tf SEMICOLON block
-    (28) blink -> . BLINK LPARENT b_content RPARENT SEMICOLON block
-    (29) delay -> . DELAY LPARENT d_content RPARENT SEMICOLON block
-    (33) shape -> . ID DOT shape_arg SEMICOLON block
-    (34) delete -> . ID DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON block
-    (72) list_consult -> . ID PARENTCL indice PARENTCR
-    (73) list_consult -> . ID PARENTCL indice TP indice PARENTCR
-    (74) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
-    (75) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
-    (76) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
-    (36) for -> . FOR ID IN iterable step LCORCH block RCORCH SEMICOLON block
-
-    GLOBAL          shift and go to state 39
-    ID              shift and go to state 40
-    $end            reduce using rule 105 (empty -> .)
-    RCORCH          reduce using rule 105 (empty -> .)
-    TYPE            shift and go to state 56
-    LEN             shift and go to state 57
-    BLINK           shift and go to state 58
-    DELAY           shift and go to state 59
-    FOR             shift and go to state 60
-
-    block                          shift and go to state 222
-    assignment                     shift and go to state 34
-    function                       shift and go to state 35
-    consult                        shift and go to state 36
-    cycle                          shift and go to state 37
-    identifier                     shift and go to state 38
-    empty                          shift and go to state 41
-    type                           shift and go to state 42
-    insert                         shift and go to state 43
-    del                            shift and go to state 44
-    len                            shift and go to state 45
-    neg                            shift and go to state 46
-    t_f                            shift and go to state 47
-    blink                          shift and go to state 48
-    delay                          shift and go to state 49
-    shape                          shift and go to state 50
-    delete                         shift and go to state 51
-    list_consult                   shift and go to state 52
-    mat_consult                    shift and go to state 53
-    3dmat_consult                  shift and go to state 54
-    for                            shift and go to state 55
-
-state 213
-
-    (61) i_content -> INT COMMA value .
-
-    RPARENT         reduce using rule 61 (i_content -> INT COMMA value .)
-
-
-state 214
-
-    (62) i_content -> list COMMA INT . i_ind
-    (79) i_ind -> . COMMA INT
-    (80) i_ind -> . empty
-    (105) empty -> .
-
-    COMMA           shift and go to state 223
-    RPARENT         reduce using rule 105 (empty -> .)
-
-    i_ind                          shift and go to state 224
-    empty                          shift and go to state 225
-
-state 215
-
-    (24) del -> ID DOT DEL LPARENT INT RPARENT SEMICOLON . block
-    (3) block -> . assignment
-    (4) block -> . function
-    (5) block -> . consult SEMICOLON block
-    (6) block -> . cycle
-    (7) assignment -> . identifier ASSIGN a_content SEMICOLON block
-    (8) assignment -> . GLOBAL ID ASSIGN a_content SEMICOLON block
-    (9) assignment -> . ID COMMA ID ASSIGN value COMMA value SEMICOLON block
-    (10) assignment -> . empty
-    (11) function -> . type
-    (12) function -> . insert
-    (13) function -> . del
-    (14) function -> . len
-    (15) function -> . neg
-    (16) function -> . t_f
-    (17) function -> . blink
-    (18) function -> . delay
-    (19) function -> . shape
-    (20) function -> . delete
-    (69) consult -> . list_consult
-    (70) consult -> . mat_consult
-    (71) consult -> . 3dmat_consult
-    (35) cycle -> . for
-    (101) identifier -> . ID
-    (102) identifier -> . consult
-    (105) empty -> .
-    (21) type -> . TYPE LPARENT ID RPARENT SEMICOLON block
-    (23) insert -> . ID DOT INSERT LPARENT i_content RPARENT SEMICOLON block
-    (24) del -> . ID DOT DEL LPARENT INT RPARENT SEMICOLON block
-    (25) len -> . LEN LPARENT ID RPARENT SEMICOLON block
-    (26) neg -> . consult DOT NEG SEMICOLON block
-    (27) t_f -> . consult DOT tf SEMICOLON block
-    (28) blink -> . BLINK LPARENT b_content RPARENT SEMICOLON block
-    (29) delay -> . DELAY LPARENT d_content RPARENT SEMICOLON block
-    (33) shape -> . ID DOT shape_arg SEMICOLON block
-    (34) delete -> . ID DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON block
-    (72) list_consult -> . ID PARENTCL indice PARENTCR
-    (73) list_consult -> . ID PARENTCL indice TP indice PARENTCR
-    (74) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
-    (75) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
-    (76) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
-    (36) for -> . FOR ID IN iterable step LCORCH block RCORCH SEMICOLON block
-
-    GLOBAL          shift and go to state 39
-    ID              shift and go to state 40
-    $end            reduce using rule 105 (empty -> .)
-    RCORCH          reduce using rule 105 (empty -> .)
+    $end            reduce using rule 116 (empty -> .)
+    RCORCH          reduce using rule 116 (empty -> .)
     TYPE            shift and go to state 56
     LEN             shift and go to state 57
     BLINK           shift and go to state 58
@@ -3391,42 +3081,681 @@ state 215
     3dmat_consult                  shift and go to state 54
     for                            shift and go to state 55
 
+state 198
+
+    (57) b_content -> list_consult COMMA INT . COMMA time_mes COMMA value
+
+    COMMA           shift and go to state 227
+
+
+state 199
+
+    (58) b_content -> list_consult COMMA value .
+
+    RPARENT         reduce using rule 58 (b_content -> list_consult COMMA value .)
+
+
+state 200
+
+    (81) list_consult -> ID PARENTCL indice . PARENTCR
+    (82) list_consult -> ID PARENTCL indice . TP indice PARENTCR
+
+    PARENTCR        shift and go to state 228
+    TP              shift and go to state 151
+
+
+state 201
+
+    (29) delay -> DELAY LPARENT d_content RPARENT SEMICOLON . block
+    (3) block -> . assignment
+    (4) block -> . function
+    (5) block -> . consult SEMICOLON block
+    (6) block -> . cycle
+    (7) assignment -> . identifier ASSIGN a_content SEMICOLON block
+    (8) assignment -> . GLOBAL ID ASSIGN a_content SEMICOLON block
+    (9) assignment -> . ID COMMA ID ASSIGN value COMMA value SEMICOLON block
+    (10) assignment -> . empty
+    (11) function -> . type
+    (12) function -> . insert
+    (13) function -> . del
+    (14) function -> . len
+    (15) function -> . neg
+    (16) function -> . t_f
+    (17) function -> . blink
+    (18) function -> . delay
+    (19) function -> . shape
+    (20) function -> . delete
+    (78) consult -> . list_consult
+    (79) consult -> . mat_consult
+    (80) consult -> . 3dmat_consult
+    (35) cycle -> . for
+    (112) identifier -> . ID
+    (113) identifier -> . consult
+    (116) empty -> .
+    (21) type -> . TYPE LPARENT ID RPARENT SEMICOLON block
+    (23) insert -> . ID DOT INSERT LPARENT i_content RPARENT SEMICOLON block
+    (24) del -> . ID DOT DEL LPARENT INT RPARENT SEMICOLON block
+    (25) len -> . LEN LPARENT ID RPARENT SEMICOLON block
+    (26) neg -> . consult DOT NEG SEMICOLON block
+    (27) t_f -> . consult DOT tf SEMICOLON block
+    (28) blink -> . BLINK LPARENT b_content RPARENT SEMICOLON block
+    (29) delay -> . DELAY LPARENT d_content RPARENT SEMICOLON block
+    (33) shape -> . ID DOT shape_arg SEMICOLON block
+    (34) delete -> . ID DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON block
+    (81) list_consult -> . ID PARENTCL indice PARENTCR
+    (82) list_consult -> . ID PARENTCL indice TP indice PARENTCR
+    (83) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
+    (84) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
+    (85) mat_consult -> . ID PARENTCL TP PARENTCR PARENTCL indice PARENTCR
+    (86) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (87) 3dmat_consult -> . ID PARENTCL indice PARENTCR PARENTCL indice PARENTCR PARENTCL indice PARENTCR
+    (36) for -> . FOR ID IN iterable step LCORCH block RCORCH SEMICOLON block
+
+    GLOBAL          shift and go to state 39
+    ID              shift and go to state 40
+    $end            reduce using rule 116 (empty -> .)
+    RCORCH          reduce using rule 116 (empty -> .)
+    TYPE            shift and go to state 56
+    LEN             shift and go to state 57
+    BLINK           shift and go to state 58
+    DELAY           shift and go to state 59
+    FOR             shift and go to state 60
+
+    block                          shift and go to state 229
+    assignment                     shift and go to state 34
+    function                       shift and go to state 35
+    consult                        shift and go to state 36
+    cycle                          shift and go to state 37
+    identifier                     shift and go to state 38
+    empty                          shift and go to state 41
+    type                           shift and go to state 42
+    insert                         shift and go to state 43
+    del                            shift and go to state 44
+    len                            shift and go to state 45
+    neg                            shift and go to state 46
+    t_f                            shift and go to state 47
+    blink                          shift and go to state 48
+    delay                          shift and go to state 49
+    shape                          shift and go to state 50
+    delete                         shift and go to state 51
+    list_consult                   shift and go to state 52
+    mat_consult                    shift and go to state 53
+    3dmat_consult                  shift and go to state 54
+    for                            shift and go to state 55
+
+state 202
+
+    (60) d_content -> INT COMMA time_mes .
+
+    RPARENT         reduce using rule 60 (d_content -> INT COMMA time_mes .)
+
+
+state 203
+
+    (36) for -> FOR ID IN iterable step . LCORCH block RCORCH SEMICOLON block
+
+    LCORCH          shift and go to state 230
+
+
+state 204
+
+    (37) step -> STEP . INT
+
+    INT             shift and go to state 231
+
+
+state 205
+
+    (38) step -> empty .
+
+    LCORCH          reduce using rule 38 (step -> empty .)
+
+
+state 206
+
+    (22) a_content -> RANGE LPARENT INT COMMA . value RPARENT
+    (104) value -> . FALSE
+    (105) value -> . TRUE
+
+    FALSE           shift and go to state 88
+    TRUE            shift and go to state 89
+
+    value                          shift and go to state 232
+
+state 207
+
+    (67) list_term -> list_value COMMA list_term .
+
+    PARENTCR        reduce using rule 67 (list_term -> list_value COMMA list_term .)
+
+
+state 208
+
+    (71) mat_term -> mat_value COMMA mat_term .
+
+    PARENTCR        reduce using rule 71 (mat_term -> mat_value COMMA mat_term .)
+
+
+state 209
+
+    (75) 3dmat_term -> 3dmat_value COMMA 3dmat_term .
+
+    PARENTCR        reduce using rule 75 (3dmat_term -> 3dmat_value COMMA 3dmat_term .)
+
+
+state 210
+
+    (70) mat -> PARENTCL . mat_term PARENTCR
+    (71) mat_term -> . mat_value COMMA mat_term
+    (72) mat_term -> . mat_value
+    (73) mat_value -> . list
+    (65) list -> . PARENTCL list_term PARENTCR
+    (66) list -> . PARENTCL empty PARENTCR
+
+    PARENTCL        shift and go to state 174
+
+    mat_term                       shift and go to state 136
+    mat_value                      shift and go to state 139
+    list                           shift and go to state 142
+
+state 211
+
+    (8) assignment -> GLOBAL ID ASSIGN a_content SEMICOLON block .
+
+    $end            reduce using rule 8 (assignment -> GLOBAL ID ASSIGN a_content SEMICOLON block .)
+    RCORCH          reduce using rule 8 (assignment -> GLOBAL ID ASSIGN a_content SEMICOLON block .)
+
+
+state 212
+
+    (9) assignment -> ID COMMA ID ASSIGN value COMMA . value SEMICOLON block
+    (104) value -> . FALSE
+    (105) value -> . TRUE
+
+    FALSE           shift and go to state 88
+    TRUE            shift and go to state 89
+
+    value                          shift and go to state 233
+
+state 213
+
+    (23) insert -> ID DOT INSERT LPARENT i_content RPARENT . SEMICOLON block
+
+    SEMICOLON       shift and go to state 234
+
+
+state 214
+
+    (63) i_content -> INT COMMA . value
+    (104) value -> . FALSE
+    (105) value -> . TRUE
+
+    FALSE           shift and go to state 88
+    TRUE            shift and go to state 89
+
+    value                          shift and go to state 235
+
+state 215
+
+    (64) i_content -> list COMMA . INT i_ind
+
+    INT             shift and go to state 236
+
+
 state 216
 
-    (34) delete -> ID DOT DELETE LPARENT indice COMMA INT . RPARENT SEMICOLON block
+    (24) del -> ID DOT DEL LPARENT INT RPARENT . SEMICOLON block
 
-    RPARENT         shift and go to state 227
+    SEMICOLON       shift and go to state 237
 
 
 state 217
 
-    (76) 3dmat_consult -> ID PARENTCL indice COMMA indice COMMA indice . PARENTCR
+    (34) delete -> ID DOT DELETE LPARENT indice COMMA . INT RPARENT SEMICOLON block
 
-    PARENTCR        shift and go to state 228
+    INT             shift and go to state 238
 
 
 state 218
 
-    (55) b_content -> list_consult COMMA INT COMMA time_mes . COMMA value
+    (87) 3dmat_consult -> ID PARENTCL indice PARENTCR PARENTCL indice . PARENTCR PARENTCL indice PARENTCR
 
-    COMMA           shift and go to state 229
+    PARENTCR        shift and go to state 239
 
 
 state 219
 
-    (36) for -> FOR ID IN iterable step LCORCH block . RCORCH SEMICOLON block
+    (82) list_consult -> ID PARENTCL indice TP indice PARENTCR .
 
-    RCORCH          shift and go to state 230
+    SEMICOLON       reduce using rule 82 (list_consult -> ID PARENTCL indice TP indice PARENTCR .)
+    DOT             reduce using rule 82 (list_consult -> ID PARENTCL indice TP indice PARENTCR .)
+    ASSIGN          reduce using rule 82 (list_consult -> ID PARENTCL indice TP indice PARENTCR .)
+    COMMA           reduce using rule 82 (list_consult -> ID PARENTCL indice TP indice PARENTCR .)
+    STEP            reduce using rule 82 (list_consult -> ID PARENTCL indice TP indice PARENTCR .)
+    LCORCH          reduce using rule 82 (list_consult -> ID PARENTCL indice TP indice PARENTCR .)
 
 
 state 220
+
+    (86) 3dmat_consult -> ID PARENTCL indice COMMA indice COMMA . indice PARENTCR
+    (88) indice -> . INT
+    (89) indice -> . ID
+
+    INT             shift and go to state 109
+    ID              shift and go to state 106
+
+    indice                         shift and go to state 240
+
+state 221
+
+    (83) mat_consult -> ID PARENTCL indice COMMA indice PARENTCR .
+
+    SEMICOLON       reduce using rule 83 (mat_consult -> ID PARENTCL indice COMMA indice PARENTCR .)
+    DOT             reduce using rule 83 (mat_consult -> ID PARENTCL indice COMMA indice PARENTCR .)
+    ASSIGN          reduce using rule 83 (mat_consult -> ID PARENTCL indice COMMA indice PARENTCR .)
+    STEP            reduce using rule 83 (mat_consult -> ID PARENTCL indice COMMA indice PARENTCR .)
+    LCORCH          reduce using rule 83 (mat_consult -> ID PARENTCL indice COMMA indice PARENTCR .)
+
+
+state 222
+
+    (84) mat_consult -> ID PARENTCL TP COMMA indice PARENTCR .
+
+    SEMICOLON       reduce using rule 84 (mat_consult -> ID PARENTCL TP COMMA indice PARENTCR .)
+    DOT             reduce using rule 84 (mat_consult -> ID PARENTCL TP COMMA indice PARENTCR .)
+    ASSIGN          reduce using rule 84 (mat_consult -> ID PARENTCL TP COMMA indice PARENTCR .)
+    STEP            reduce using rule 84 (mat_consult -> ID PARENTCL TP COMMA indice PARENTCR .)
+    LCORCH          reduce using rule 84 (mat_consult -> ID PARENTCL TP COMMA indice PARENTCR .)
+
+
+state 223
+
+    (85) mat_consult -> ID PARENTCL TP PARENTCR PARENTCL indice . PARENTCR
+
+    PARENTCR        shift and go to state 241
+
+
+state 224
+
+    (21) type -> TYPE LPARENT ID RPARENT SEMICOLON block .
+
+    $end            reduce using rule 21 (type -> TYPE LPARENT ID RPARENT SEMICOLON block .)
+    RCORCH          reduce using rule 21 (type -> TYPE LPARENT ID RPARENT SEMICOLON block .)
+
+
+state 225
+
+    (25) len -> LEN LPARENT ID RPARENT SEMICOLON block .
+
+    $end            reduce using rule 25 (len -> LEN LPARENT ID RPARENT SEMICOLON block .)
+    RCORCH          reduce using rule 25 (len -> LEN LPARENT ID RPARENT SEMICOLON block .)
+
+
+state 226
+
+    (28) blink -> BLINK LPARENT b_content RPARENT SEMICOLON block .
+
+    $end            reduce using rule 28 (blink -> BLINK LPARENT b_content RPARENT SEMICOLON block .)
+    RCORCH          reduce using rule 28 (blink -> BLINK LPARENT b_content RPARENT SEMICOLON block .)
+
+
+state 227
+
+    (57) b_content -> list_consult COMMA INT COMMA . time_mes COMMA value
+    (94) time_mes -> . QUOTES MIL QUOTES
+    (95) time_mes -> . QUOTES MIN QUOTES
+    (96) time_mes -> . QUOTES SEG QUOTES
+
+    QUOTES          shift and go to state 18
+
+    time_mes                       shift and go to state 242
+
+state 228
+
+    (81) list_consult -> ID PARENTCL indice PARENTCR .
+
+    COMMA           reduce using rule 81 (list_consult -> ID PARENTCL indice PARENTCR .)
+
+
+state 229
+
+    (29) delay -> DELAY LPARENT d_content RPARENT SEMICOLON block .
+
+    $end            reduce using rule 29 (delay -> DELAY LPARENT d_content RPARENT SEMICOLON block .)
+    RCORCH          reduce using rule 29 (delay -> DELAY LPARENT d_content RPARENT SEMICOLON block .)
+
+
+state 230
+
+    (36) for -> FOR ID IN iterable step LCORCH . block RCORCH SEMICOLON block
+    (3) block -> . assignment
+    (4) block -> . function
+    (5) block -> . consult SEMICOLON block
+    (6) block -> . cycle
+    (7) assignment -> . identifier ASSIGN a_content SEMICOLON block
+    (8) assignment -> . GLOBAL ID ASSIGN a_content SEMICOLON block
+    (9) assignment -> . ID COMMA ID ASSIGN value COMMA value SEMICOLON block
+    (10) assignment -> . empty
+    (11) function -> . type
+    (12) function -> . insert
+    (13) function -> . del
+    (14) function -> . len
+    (15) function -> . neg
+    (16) function -> . t_f
+    (17) function -> . blink
+    (18) function -> . delay
+    (19) function -> . shape
+    (20) function -> . delete
+    (78) consult -> . list_consult
+    (79) consult -> . mat_consult
+    (80) consult -> . 3dmat_consult
+    (35) cycle -> . for
+    (112) identifier -> . ID
+    (113) identifier -> . consult
+    (116) empty -> .
+    (21) type -> . TYPE LPARENT ID RPARENT SEMICOLON block
+    (23) insert -> . ID DOT INSERT LPARENT i_content RPARENT SEMICOLON block
+    (24) del -> . ID DOT DEL LPARENT INT RPARENT SEMICOLON block
+    (25) len -> . LEN LPARENT ID RPARENT SEMICOLON block
+    (26) neg -> . consult DOT NEG SEMICOLON block
+    (27) t_f -> . consult DOT tf SEMICOLON block
+    (28) blink -> . BLINK LPARENT b_content RPARENT SEMICOLON block
+    (29) delay -> . DELAY LPARENT d_content RPARENT SEMICOLON block
+    (33) shape -> . ID DOT shape_arg SEMICOLON block
+    (34) delete -> . ID DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON block
+    (81) list_consult -> . ID PARENTCL indice PARENTCR
+    (82) list_consult -> . ID PARENTCL indice TP indice PARENTCR
+    (83) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
+    (84) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
+    (85) mat_consult -> . ID PARENTCL TP PARENTCR PARENTCL indice PARENTCR
+    (86) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (87) 3dmat_consult -> . ID PARENTCL indice PARENTCR PARENTCL indice PARENTCR PARENTCL indice PARENTCR
+    (36) for -> . FOR ID IN iterable step LCORCH block RCORCH SEMICOLON block
+
+    GLOBAL          shift and go to state 39
+    ID              shift and go to state 40
+    RCORCH          reduce using rule 116 (empty -> .)
+    TYPE            shift and go to state 56
+    LEN             shift and go to state 57
+    BLINK           shift and go to state 58
+    DELAY           shift and go to state 59
+    FOR             shift and go to state 60
+
+    block                          shift and go to state 243
+    assignment                     shift and go to state 34
+    function                       shift and go to state 35
+    consult                        shift and go to state 36
+    cycle                          shift and go to state 37
+    identifier                     shift and go to state 38
+    empty                          shift and go to state 41
+    type                           shift and go to state 42
+    insert                         shift and go to state 43
+    del                            shift and go to state 44
+    len                            shift and go to state 45
+    neg                            shift and go to state 46
+    t_f                            shift and go to state 47
+    blink                          shift and go to state 48
+    delay                          shift and go to state 49
+    shape                          shift and go to state 50
+    delete                         shift and go to state 51
+    list_consult                   shift and go to state 52
+    mat_consult                    shift and go to state 53
+    3dmat_consult                  shift and go to state 54
+    for                            shift and go to state 55
+
+state 231
+
+    (37) step -> STEP INT .
+
+    LCORCH          reduce using rule 37 (step -> STEP INT .)
+
+
+state 232
+
+    (22) a_content -> RANGE LPARENT INT COMMA value . RPARENT
+
+    RPARENT         shift and go to state 244
+
+
+state 233
+
+    (9) assignment -> ID COMMA ID ASSIGN value COMMA value . SEMICOLON block
+
+    SEMICOLON       shift and go to state 245
+
+
+state 234
+
+    (23) insert -> ID DOT INSERT LPARENT i_content RPARENT SEMICOLON . block
+    (3) block -> . assignment
+    (4) block -> . function
+    (5) block -> . consult SEMICOLON block
+    (6) block -> . cycle
+    (7) assignment -> . identifier ASSIGN a_content SEMICOLON block
+    (8) assignment -> . GLOBAL ID ASSIGN a_content SEMICOLON block
+    (9) assignment -> . ID COMMA ID ASSIGN value COMMA value SEMICOLON block
+    (10) assignment -> . empty
+    (11) function -> . type
+    (12) function -> . insert
+    (13) function -> . del
+    (14) function -> . len
+    (15) function -> . neg
+    (16) function -> . t_f
+    (17) function -> . blink
+    (18) function -> . delay
+    (19) function -> . shape
+    (20) function -> . delete
+    (78) consult -> . list_consult
+    (79) consult -> . mat_consult
+    (80) consult -> . 3dmat_consult
+    (35) cycle -> . for
+    (112) identifier -> . ID
+    (113) identifier -> . consult
+    (116) empty -> .
+    (21) type -> . TYPE LPARENT ID RPARENT SEMICOLON block
+    (23) insert -> . ID DOT INSERT LPARENT i_content RPARENT SEMICOLON block
+    (24) del -> . ID DOT DEL LPARENT INT RPARENT SEMICOLON block
+    (25) len -> . LEN LPARENT ID RPARENT SEMICOLON block
+    (26) neg -> . consult DOT NEG SEMICOLON block
+    (27) t_f -> . consult DOT tf SEMICOLON block
+    (28) blink -> . BLINK LPARENT b_content RPARENT SEMICOLON block
+    (29) delay -> . DELAY LPARENT d_content RPARENT SEMICOLON block
+    (33) shape -> . ID DOT shape_arg SEMICOLON block
+    (34) delete -> . ID DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON block
+    (81) list_consult -> . ID PARENTCL indice PARENTCR
+    (82) list_consult -> . ID PARENTCL indice TP indice PARENTCR
+    (83) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
+    (84) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
+    (85) mat_consult -> . ID PARENTCL TP PARENTCR PARENTCL indice PARENTCR
+    (86) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (87) 3dmat_consult -> . ID PARENTCL indice PARENTCR PARENTCL indice PARENTCR PARENTCL indice PARENTCR
+    (36) for -> . FOR ID IN iterable step LCORCH block RCORCH SEMICOLON block
+
+    GLOBAL          shift and go to state 39
+    ID              shift and go to state 40
+    $end            reduce using rule 116 (empty -> .)
+    RCORCH          reduce using rule 116 (empty -> .)
+    TYPE            shift and go to state 56
+    LEN             shift and go to state 57
+    BLINK           shift and go to state 58
+    DELAY           shift and go to state 59
+    FOR             shift and go to state 60
+
+    block                          shift and go to state 246
+    assignment                     shift and go to state 34
+    function                       shift and go to state 35
+    consult                        shift and go to state 36
+    cycle                          shift and go to state 37
+    identifier                     shift and go to state 38
+    empty                          shift and go to state 41
+    type                           shift and go to state 42
+    insert                         shift and go to state 43
+    del                            shift and go to state 44
+    len                            shift and go to state 45
+    neg                            shift and go to state 46
+    t_f                            shift and go to state 47
+    blink                          shift and go to state 48
+    delay                          shift and go to state 49
+    shape                          shift and go to state 50
+    delete                         shift and go to state 51
+    list_consult                   shift and go to state 52
+    mat_consult                    shift and go to state 53
+    3dmat_consult                  shift and go to state 54
+    for                            shift and go to state 55
+
+state 235
+
+    (63) i_content -> INT COMMA value .
+
+    RPARENT         reduce using rule 63 (i_content -> INT COMMA value .)
+
+
+state 236
+
+    (64) i_content -> list COMMA INT . i_ind
+    (90) i_ind -> . COMMA INT
+    (91) i_ind -> . empty
+    (116) empty -> .
+
+    COMMA           shift and go to state 247
+    RPARENT         reduce using rule 116 (empty -> .)
+
+    i_ind                          shift and go to state 248
+    empty                          shift and go to state 249
+
+state 237
+
+    (24) del -> ID DOT DEL LPARENT INT RPARENT SEMICOLON . block
+    (3) block -> . assignment
+    (4) block -> . function
+    (5) block -> . consult SEMICOLON block
+    (6) block -> . cycle
+    (7) assignment -> . identifier ASSIGN a_content SEMICOLON block
+    (8) assignment -> . GLOBAL ID ASSIGN a_content SEMICOLON block
+    (9) assignment -> . ID COMMA ID ASSIGN value COMMA value SEMICOLON block
+    (10) assignment -> . empty
+    (11) function -> . type
+    (12) function -> . insert
+    (13) function -> . del
+    (14) function -> . len
+    (15) function -> . neg
+    (16) function -> . t_f
+    (17) function -> . blink
+    (18) function -> . delay
+    (19) function -> . shape
+    (20) function -> . delete
+    (78) consult -> . list_consult
+    (79) consult -> . mat_consult
+    (80) consult -> . 3dmat_consult
+    (35) cycle -> . for
+    (112) identifier -> . ID
+    (113) identifier -> . consult
+    (116) empty -> .
+    (21) type -> . TYPE LPARENT ID RPARENT SEMICOLON block
+    (23) insert -> . ID DOT INSERT LPARENT i_content RPARENT SEMICOLON block
+    (24) del -> . ID DOT DEL LPARENT INT RPARENT SEMICOLON block
+    (25) len -> . LEN LPARENT ID RPARENT SEMICOLON block
+    (26) neg -> . consult DOT NEG SEMICOLON block
+    (27) t_f -> . consult DOT tf SEMICOLON block
+    (28) blink -> . BLINK LPARENT b_content RPARENT SEMICOLON block
+    (29) delay -> . DELAY LPARENT d_content RPARENT SEMICOLON block
+    (33) shape -> . ID DOT shape_arg SEMICOLON block
+    (34) delete -> . ID DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON block
+    (81) list_consult -> . ID PARENTCL indice PARENTCR
+    (82) list_consult -> . ID PARENTCL indice TP indice PARENTCR
+    (83) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
+    (84) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
+    (85) mat_consult -> . ID PARENTCL TP PARENTCR PARENTCL indice PARENTCR
+    (86) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (87) 3dmat_consult -> . ID PARENTCL indice PARENTCR PARENTCL indice PARENTCR PARENTCL indice PARENTCR
+    (36) for -> . FOR ID IN iterable step LCORCH block RCORCH SEMICOLON block
+
+    GLOBAL          shift and go to state 39
+    ID              shift and go to state 40
+    $end            reduce using rule 116 (empty -> .)
+    RCORCH          reduce using rule 116 (empty -> .)
+    TYPE            shift and go to state 56
+    LEN             shift and go to state 57
+    BLINK           shift and go to state 58
+    DELAY           shift and go to state 59
+    FOR             shift and go to state 60
+
+    block                          shift and go to state 250
+    assignment                     shift and go to state 34
+    function                       shift and go to state 35
+    consult                        shift and go to state 36
+    cycle                          shift and go to state 37
+    identifier                     shift and go to state 38
+    empty                          shift and go to state 41
+    type                           shift and go to state 42
+    insert                         shift and go to state 43
+    del                            shift and go to state 44
+    len                            shift and go to state 45
+    neg                            shift and go to state 46
+    t_f                            shift and go to state 47
+    blink                          shift and go to state 48
+    delay                          shift and go to state 49
+    shape                          shift and go to state 50
+    delete                         shift and go to state 51
+    list_consult                   shift and go to state 52
+    mat_consult                    shift and go to state 53
+    3dmat_consult                  shift and go to state 54
+    for                            shift and go to state 55
+
+state 238
+
+    (34) delete -> ID DOT DELETE LPARENT indice COMMA INT . RPARENT SEMICOLON block
+
+    RPARENT         shift and go to state 251
+
+
+state 239
+
+    (87) 3dmat_consult -> ID PARENTCL indice PARENTCR PARENTCL indice PARENTCR . PARENTCL indice PARENTCR
+
+    PARENTCL        shift and go to state 252
+
+
+state 240
+
+    (86) 3dmat_consult -> ID PARENTCL indice COMMA indice COMMA indice . PARENTCR
+
+    PARENTCR        shift and go to state 253
+
+
+state 241
+
+    (85) mat_consult -> ID PARENTCL TP PARENTCR PARENTCL indice PARENTCR .
+
+    SEMICOLON       reduce using rule 85 (mat_consult -> ID PARENTCL TP PARENTCR PARENTCL indice PARENTCR .)
+    DOT             reduce using rule 85 (mat_consult -> ID PARENTCL TP PARENTCR PARENTCL indice PARENTCR .)
+    ASSIGN          reduce using rule 85 (mat_consult -> ID PARENTCL TP PARENTCR PARENTCL indice PARENTCR .)
+    STEP            reduce using rule 85 (mat_consult -> ID PARENTCL TP PARENTCR PARENTCL indice PARENTCR .)
+    LCORCH          reduce using rule 85 (mat_consult -> ID PARENTCL TP PARENTCR PARENTCL indice PARENTCR .)
+
+
+state 242
+
+    (57) b_content -> list_consult COMMA INT COMMA time_mes . COMMA value
+
+    COMMA           shift and go to state 254
+
+
+state 243
+
+    (36) for -> FOR ID IN iterable step LCORCH block . RCORCH SEMICOLON block
+
+    RCORCH          shift and go to state 255
+
+
+state 244
 
     (22) a_content -> RANGE LPARENT INT COMMA value RPARENT .
 
     SEMICOLON       reduce using rule 22 (a_content -> RANGE LPARENT INT COMMA value RPARENT .)
 
 
-state 221
+state 245
 
     (9) assignment -> ID COMMA ID ASSIGN value COMMA value SEMICOLON . block
     (3) block -> . assignment
@@ -3447,13 +3776,13 @@ state 221
     (18) function -> . delay
     (19) function -> . shape
     (20) function -> . delete
-    (69) consult -> . list_consult
-    (70) consult -> . mat_consult
-    (71) consult -> . 3dmat_consult
+    (78) consult -> . list_consult
+    (79) consult -> . mat_consult
+    (80) consult -> . 3dmat_consult
     (35) cycle -> . for
-    (101) identifier -> . ID
-    (102) identifier -> . consult
-    (105) empty -> .
+    (112) identifier -> . ID
+    (113) identifier -> . consult
+    (116) empty -> .
     (21) type -> . TYPE LPARENT ID RPARENT SEMICOLON block
     (23) insert -> . ID DOT INSERT LPARENT i_content RPARENT SEMICOLON block
     (24) del -> . ID DOT DEL LPARENT INT RPARENT SEMICOLON block
@@ -3464,24 +3793,26 @@ state 221
     (29) delay -> . DELAY LPARENT d_content RPARENT SEMICOLON block
     (33) shape -> . ID DOT shape_arg SEMICOLON block
     (34) delete -> . ID DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON block
-    (72) list_consult -> . ID PARENTCL indice PARENTCR
-    (73) list_consult -> . ID PARENTCL indice TP indice PARENTCR
-    (74) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
-    (75) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
-    (76) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (81) list_consult -> . ID PARENTCL indice PARENTCR
+    (82) list_consult -> . ID PARENTCL indice TP indice PARENTCR
+    (83) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
+    (84) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
+    (85) mat_consult -> . ID PARENTCL TP PARENTCR PARENTCL indice PARENTCR
+    (86) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (87) 3dmat_consult -> . ID PARENTCL indice PARENTCR PARENTCL indice PARENTCR PARENTCL indice PARENTCR
     (36) for -> . FOR ID IN iterable step LCORCH block RCORCH SEMICOLON block
 
     GLOBAL          shift and go to state 39
     ID              shift and go to state 40
-    $end            reduce using rule 105 (empty -> .)
-    RCORCH          reduce using rule 105 (empty -> .)
+    $end            reduce using rule 116 (empty -> .)
+    RCORCH          reduce using rule 116 (empty -> .)
     TYPE            shift and go to state 56
     LEN             shift and go to state 57
     BLINK           shift and go to state 58
     DELAY           shift and go to state 59
     FOR             shift and go to state 60
 
-    block                          shift and go to state 231
+    block                          shift and go to state 256
     assignment                     shift and go to state 34
     function                       shift and go to state 35
     consult                        shift and go to state 36
@@ -3503,7 +3834,7 @@ state 221
     3dmat_consult                  shift and go to state 54
     for                            shift and go to state 55
 
-state 222
+state 246
 
     (23) insert -> ID DOT INSERT LPARENT i_content RPARENT SEMICOLON block .
 
@@ -3511,28 +3842,28 @@ state 222
     RCORCH          reduce using rule 23 (insert -> ID DOT INSERT LPARENT i_content RPARENT SEMICOLON block .)
 
 
-state 223
+state 247
 
-    (79) i_ind -> COMMA . INT
+    (90) i_ind -> COMMA . INT
 
-    INT             shift and go to state 232
-
-
-state 224
-
-    (62) i_content -> list COMMA INT i_ind .
-
-    RPARENT         reduce using rule 62 (i_content -> list COMMA INT i_ind .)
+    INT             shift and go to state 257
 
 
-state 225
+state 248
 
-    (80) i_ind -> empty .
+    (64) i_content -> list COMMA INT i_ind .
 
-    RPARENT         reduce using rule 80 (i_ind -> empty .)
+    RPARENT         reduce using rule 64 (i_content -> list COMMA INT i_ind .)
 
 
-state 226
+state 249
+
+    (91) i_ind -> empty .
+
+    RPARENT         reduce using rule 91 (i_ind -> empty .)
+
+
+state 250
 
     (24) del -> ID DOT DEL LPARENT INT RPARENT SEMICOLON block .
 
@@ -3540,43 +3871,54 @@ state 226
     RCORCH          reduce using rule 24 (del -> ID DOT DEL LPARENT INT RPARENT SEMICOLON block .)
 
 
-state 227
+state 251
 
     (34) delete -> ID DOT DELETE LPARENT indice COMMA INT RPARENT . SEMICOLON block
 
-    SEMICOLON       shift and go to state 233
+    SEMICOLON       shift and go to state 258
 
 
-state 228
+state 252
 
-    (76) 3dmat_consult -> ID PARENTCL indice COMMA indice COMMA indice PARENTCR .
+    (87) 3dmat_consult -> ID PARENTCL indice PARENTCR PARENTCL indice PARENTCR PARENTCL . indice PARENTCR
+    (88) indice -> . INT
+    (89) indice -> . ID
 
-    SEMICOLON       reduce using rule 76 (3dmat_consult -> ID PARENTCL indice COMMA indice COMMA indice PARENTCR .)
-    DOT             reduce using rule 76 (3dmat_consult -> ID PARENTCL indice COMMA indice COMMA indice PARENTCR .)
-    ASSIGN          reduce using rule 76 (3dmat_consult -> ID PARENTCL indice COMMA indice COMMA indice PARENTCR .)
-    STEP            reduce using rule 76 (3dmat_consult -> ID PARENTCL indice COMMA indice COMMA indice PARENTCR .)
-    LCORCH          reduce using rule 76 (3dmat_consult -> ID PARENTCL indice COMMA indice COMMA indice PARENTCR .)
+    INT             shift and go to state 109
+    ID              shift and go to state 106
+
+    indice                         shift and go to state 259
+
+state 253
+
+    (86) 3dmat_consult -> ID PARENTCL indice COMMA indice COMMA indice PARENTCR .
+
+    SEMICOLON       reduce using rule 86 (3dmat_consult -> ID PARENTCL indice COMMA indice COMMA indice PARENTCR .)
+    DOT             reduce using rule 86 (3dmat_consult -> ID PARENTCL indice COMMA indice COMMA indice PARENTCR .)
+    ASSIGN          reduce using rule 86 (3dmat_consult -> ID PARENTCL indice COMMA indice COMMA indice PARENTCR .)
+    STEP            reduce using rule 86 (3dmat_consult -> ID PARENTCL indice COMMA indice COMMA indice PARENTCR .)
+    LCORCH          reduce using rule 86 (3dmat_consult -> ID PARENTCL indice COMMA indice COMMA indice PARENTCR .)
 
 
-state 229
+state 254
 
-    (55) b_content -> list_consult COMMA INT COMMA time_mes COMMA . value
-    (93) value -> . FALSE
-    (94) value -> . TRUE
+    (57) b_content -> list_consult COMMA INT COMMA time_mes COMMA . value
+    (104) value -> . FALSE
+    (105) value -> . TRUE
 
-    FALSE           shift and go to state 86
-    TRUE            shift and go to state 87
+    FALSE           shift and go to state 88
+    TRUE            shift and go to state 89
 
-    value                          shift and go to state 234
+    value                          shift and go to state 260
 
-state 230
+state 255
 
     (36) for -> FOR ID IN iterable step LCORCH block RCORCH . SEMICOLON block
 
-    SEMICOLON       shift and go to state 235
+    SEMICOLON       shift and go to state 261
 
 
-state 231
+state 256
 
     (9) assignment -> ID COMMA ID ASSIGN value COMMA value SEMICOLON block .
 
@@ -3584,14 +3926,14 @@ state 231
     RCORCH          reduce using rule 9 (assignment -> ID COMMA ID ASSIGN value COMMA value SEMICOLON block .)
 
 
-state 232
+state 257
 
-    (79) i_ind -> COMMA INT .
+    (90) i_ind -> COMMA INT .
 
-    RPARENT         reduce using rule 79 (i_ind -> COMMA INT .)
+    RPARENT         reduce using rule 90 (i_ind -> COMMA INT .)
 
 
-state 233
+state 258
 
     (34) delete -> ID DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON . block
     (3) block -> . assignment
@@ -3612,13 +3954,13 @@ state 233
     (18) function -> . delay
     (19) function -> . shape
     (20) function -> . delete
-    (69) consult -> . list_consult
-    (70) consult -> . mat_consult
-    (71) consult -> . 3dmat_consult
+    (78) consult -> . list_consult
+    (79) consult -> . mat_consult
+    (80) consult -> . 3dmat_consult
     (35) cycle -> . for
-    (101) identifier -> . ID
-    (102) identifier -> . consult
-    (105) empty -> .
+    (112) identifier -> . ID
+    (113) identifier -> . consult
+    (116) empty -> .
     (21) type -> . TYPE LPARENT ID RPARENT SEMICOLON block
     (23) insert -> . ID DOT INSERT LPARENT i_content RPARENT SEMICOLON block
     (24) del -> . ID DOT DEL LPARENT INT RPARENT SEMICOLON block
@@ -3629,24 +3971,26 @@ state 233
     (29) delay -> . DELAY LPARENT d_content RPARENT SEMICOLON block
     (33) shape -> . ID DOT shape_arg SEMICOLON block
     (34) delete -> . ID DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON block
-    (72) list_consult -> . ID PARENTCL indice PARENTCR
-    (73) list_consult -> . ID PARENTCL indice TP indice PARENTCR
-    (74) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
-    (75) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
-    (76) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (81) list_consult -> . ID PARENTCL indice PARENTCR
+    (82) list_consult -> . ID PARENTCL indice TP indice PARENTCR
+    (83) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
+    (84) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
+    (85) mat_consult -> . ID PARENTCL TP PARENTCR PARENTCL indice PARENTCR
+    (86) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (87) 3dmat_consult -> . ID PARENTCL indice PARENTCR PARENTCL indice PARENTCR PARENTCL indice PARENTCR
     (36) for -> . FOR ID IN iterable step LCORCH block RCORCH SEMICOLON block
 
     GLOBAL          shift and go to state 39
     ID              shift and go to state 40
-    $end            reduce using rule 105 (empty -> .)
-    RCORCH          reduce using rule 105 (empty -> .)
+    $end            reduce using rule 116 (empty -> .)
+    RCORCH          reduce using rule 116 (empty -> .)
     TYPE            shift and go to state 56
     LEN             shift and go to state 57
     BLINK           shift and go to state 58
     DELAY           shift and go to state 59
     FOR             shift and go to state 60
 
-    block                          shift and go to state 236
+    block                          shift and go to state 262
     assignment                     shift and go to state 34
     function                       shift and go to state 35
     consult                        shift and go to state 36
@@ -3668,14 +4012,21 @@ state 233
     3dmat_consult                  shift and go to state 54
     for                            shift and go to state 55
 
-state 234
+state 259
 
-    (55) b_content -> list_consult COMMA INT COMMA time_mes COMMA value .
+    (87) 3dmat_consult -> ID PARENTCL indice PARENTCR PARENTCL indice PARENTCR PARENTCL indice . PARENTCR
 
-    RPARENT         reduce using rule 55 (b_content -> list_consult COMMA INT COMMA time_mes COMMA value .)
+    PARENTCR        shift and go to state 263
 
 
-state 235
+state 260
+
+    (57) b_content -> list_consult COMMA INT COMMA time_mes COMMA value .
+
+    RPARENT         reduce using rule 57 (b_content -> list_consult COMMA INT COMMA time_mes COMMA value .)
+
+
+state 261
 
     (36) for -> FOR ID IN iterable step LCORCH block RCORCH SEMICOLON . block
     (3) block -> . assignment
@@ -3696,13 +4047,13 @@ state 235
     (18) function -> . delay
     (19) function -> . shape
     (20) function -> . delete
-    (69) consult -> . list_consult
-    (70) consult -> . mat_consult
-    (71) consult -> . 3dmat_consult
+    (78) consult -> . list_consult
+    (79) consult -> . mat_consult
+    (80) consult -> . 3dmat_consult
     (35) cycle -> . for
-    (101) identifier -> . ID
-    (102) identifier -> . consult
-    (105) empty -> .
+    (112) identifier -> . ID
+    (113) identifier -> . consult
+    (116) empty -> .
     (21) type -> . TYPE LPARENT ID RPARENT SEMICOLON block
     (23) insert -> . ID DOT INSERT LPARENT i_content RPARENT SEMICOLON block
     (24) del -> . ID DOT DEL LPARENT INT RPARENT SEMICOLON block
@@ -3713,24 +4064,26 @@ state 235
     (29) delay -> . DELAY LPARENT d_content RPARENT SEMICOLON block
     (33) shape -> . ID DOT shape_arg SEMICOLON block
     (34) delete -> . ID DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON block
-    (72) list_consult -> . ID PARENTCL indice PARENTCR
-    (73) list_consult -> . ID PARENTCL indice TP indice PARENTCR
-    (74) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
-    (75) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
-    (76) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (81) list_consult -> . ID PARENTCL indice PARENTCR
+    (82) list_consult -> . ID PARENTCL indice TP indice PARENTCR
+    (83) mat_consult -> . ID PARENTCL indice COMMA indice PARENTCR
+    (84) mat_consult -> . ID PARENTCL TP COMMA indice PARENTCR
+    (85) mat_consult -> . ID PARENTCL TP PARENTCR PARENTCL indice PARENTCR
+    (86) 3dmat_consult -> . ID PARENTCL indice COMMA indice COMMA indice PARENTCR
+    (87) 3dmat_consult -> . ID PARENTCL indice PARENTCR PARENTCL indice PARENTCR PARENTCL indice PARENTCR
     (36) for -> . FOR ID IN iterable step LCORCH block RCORCH SEMICOLON block
 
     GLOBAL          shift and go to state 39
     ID              shift and go to state 40
-    $end            reduce using rule 105 (empty -> .)
-    RCORCH          reduce using rule 105 (empty -> .)
+    $end            reduce using rule 116 (empty -> .)
+    RCORCH          reduce using rule 116 (empty -> .)
     TYPE            shift and go to state 56
     LEN             shift and go to state 57
     BLINK           shift and go to state 58
     DELAY           shift and go to state 59
     FOR             shift and go to state 60
 
-    block                          shift and go to state 237
+    block                          shift and go to state 264
     assignment                     shift and go to state 34
     function                       shift and go to state 35
     consult                        shift and go to state 36
@@ -3752,7 +4105,7 @@ state 235
     3dmat_consult                  shift and go to state 54
     for                            shift and go to state 55
 
-state 236
+state 262
 
     (34) delete -> ID DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON block .
 
@@ -3760,7 +4113,18 @@ state 236
     RCORCH          reduce using rule 34 (delete -> ID DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON block .)
 
 
-state 237
+state 263
+
+    (87) 3dmat_consult -> ID PARENTCL indice PARENTCR PARENTCL indice PARENTCR PARENTCL indice PARENTCR .
+
+    SEMICOLON       reduce using rule 87 (3dmat_consult -> ID PARENTCL indice PARENTCR PARENTCL indice PARENTCR PARENTCL indice PARENTCR .)
+    DOT             reduce using rule 87 (3dmat_consult -> ID PARENTCL indice PARENTCR PARENTCL indice PARENTCR PARENTCL indice PARENTCR .)
+    ASSIGN          reduce using rule 87 (3dmat_consult -> ID PARENTCL indice PARENTCR PARENTCL indice PARENTCR PARENTCL indice PARENTCR .)
+    STEP            reduce using rule 87 (3dmat_consult -> ID PARENTCL indice PARENTCR PARENTCL indice PARENTCR PARENTCL indice PARENTCR .)
+    LCORCH          reduce using rule 87 (3dmat_consult -> ID PARENTCL indice PARENTCR PARENTCL indice PARENTCR PARENTCL indice PARENTCR .)
+
+
+state 264
 
     (36) for -> FOR ID IN iterable step LCORCH block RCORCH SEMICOLON block .
 
