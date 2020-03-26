@@ -168,7 +168,7 @@ def p_cycle0(p):
     '''cycle : for'''
     print("cycle0")
 
-def p_for0(p):
+def p_for(p):
     '''for : FOR ID IN iterable step LCORCH block RCORCH SEMICOLON block'''
     print("for")
 
@@ -264,7 +264,9 @@ def p_Acont2(p):
     '''a_content : list'''
     print("a_content2")
 
-
+def p_Acont3(p):
+    '''a_content : consult'''
+    print("a_content3")
 
 
 
@@ -480,7 +482,7 @@ def p_identifier0(p):
     print("identifier0")
 
 def p_identifier1(p):
-    '''identifier : complex_id'''
+    '''identifier : consult'''
     print("identifier1")
 
 def p_cmplxId0(p):
@@ -529,6 +531,6 @@ test = '/home/dcamachog1501/Induced_Desktop/Test'
 fp = codecs.open(test, "r", "utf-8")
 chain = fp.read()
 parser = yacc.yacc()
-#tv(chain)
+tv(chain)
 result = parser.parse(chain)
 print(result)
