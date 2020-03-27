@@ -27,20 +27,37 @@ def p_constB(p):
     print("const_block")
 
 def p_block0(p):
-    '''block : instruction block'''
+    '''block : procedure block'''
     print("block0")
 
 def p_block1(p):
-    '''block : procedure block'''
-    print("block1")
-
-def p_block2(p):
     '''block : assignment block'''
-    print("block2")
+    print("block1")
 
 def p_blockEmp(p):
     '''block : empty'''
     print("blockEmp")
+
+
+
+
+
+##########---BLOQUES ALTERNATIVOS---##########
+def p_altBlock(p):
+    '''alt_block : alt_content alt_block'''
+    print("alt_block")
+
+def p_emptyaltBlock(p):
+    '''alt_block : empty'''
+    print("emptyaltBlock")
+
+def p_altContent0(p):
+    '''alt_content : instruction'''
+    print("altCont0")
+
+def p_altContent1(p):
+    '''alt_content : assignment'''
+    print("altCont1")
 
 
 
@@ -53,16 +70,15 @@ def p_instruction0(p):
 
 def p_instruction1(p):
     ''' instruction : consult SEMICOLON '''
+    print("instruction1")
+
+def p_instruction2(p):
+    '''instruction : cycle '''
     print("instruction2")
 
-def p_instruction4(p):
-    '''instruction : cycle '''
-    print("instruction3")
-
-def p_instruction5(p):
+def p_instruction3(p):
     '''instruction : statement '''
-    print("instruction4")
-
+    print("instruction3")
 
 
 
@@ -77,7 +93,7 @@ def p_simpleAssignment1(p):
     print("simpleAssignment1")
 
 def p_doubleAssignment(p):
-    '''assignment : identifier COMMA identifier ASSIGN value COMMA value SEMICOLON '''
+    '''assignment : identifier COMMA identifier ASSIGN a_content COMMA a_content SEMICOLON '''
     print("doubleAssignment")
 
 
@@ -125,8 +141,12 @@ def p_function9(p):
     '''function : delete'''
     print("function9")
 
+def p_function10(p):
+    '''function : call'''
+    print("function10")
+
 def p_type(p):
-    '''type : TYPE LPARENT ID RPARENT SEMICOLON '''
+    '''type : TYPE LPARENT identifier RPARENT SEMICOLON '''
     print("type")
 
 def p_range(p):
@@ -134,23 +154,23 @@ def p_range(p):
     print("range")
 
 def p_insert(p):
-    '''insert : ID DOT INSERT LPARENT i_content RPARENT SEMICOLON '''
+    '''insert : identifier DOT INSERT LPARENT i_content RPARENT SEMICOLON '''
     print("insert")
 
 def p_del(p):
-    ''' del : ID DOT DEL LPARENT INT RPARENT SEMICOLON '''
+    ''' del : identifier DOT DEL LPARENT INT RPARENT SEMICOLON '''
     print("delete_list")
 
 def p_len(p):
     ''' len : LEN LPARENT ID RPARENT SEMICOLON '''
     print("len")
 
-def p_neg(p):
-    ''' neg : consult DOT NEG SEMICOLON '''
-    print("neg")
+def p_neg0(p):
+    ''' neg :  identifier DOT NEG SEMICOLON '''
+    print("neg0")
 
 def p_tf(p):
-    '''t_f : consult DOT tf SEMICOLON '''
+    '''t_f : identifier DOT tf SEMICOLON '''
     print("tf_function")
 
 def p_blink(p):
@@ -174,12 +194,16 @@ def p_shapeArg2(p):
     print("shapeArg2")
 
 def p_shape(p):
-    '''shape : ID DOT shape_arg SEMICOLON '''
+    '''shape : identifier DOT shape_arg SEMICOLON '''
     print("shape")
 
 def p_delete(p):
-    '''delete : ID DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON '''
+    '''delete : identifier DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON '''
     print("delete_mat")
+
+def p_call(p):
+    '''call : CALL proc_dec SEMICOLON'''
+    print("call")
 
 
 
@@ -191,7 +215,7 @@ def p_cycle0(p):
     print("cycle0")
 
 def p_for(p):
-    '''for : FOR ID IN iterable step LCORCH instruction RCORCH SEMICOLON '''
+    '''for : FOR ID IN iterable step LCORCH alt_block RCORCH SEMICOLON '''
     print("for")
 
 def p_step0(p):
@@ -208,11 +232,11 @@ def p_stepEmp(p):
 
 ##########---BIFURCACIONES---##########
 def p_statement(p):
-    '''statement : IF LPARENT iterable relation bif_value RPARENT LCORCH instruction RCORCH SEMICOLON opt_statement '''
+    '''statement : IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement '''
     print("statement")
 
 def p_optStatment0(p):
-    '''opt_statement : ELSE LCORCH instruction RCORCH SEMICOLON '''
+    '''opt_statement : ELSE LCORCH alt_block RCORCH SEMICOLON '''
     print("optStatement0")
 
 def p_optStatment1(p):
@@ -252,20 +276,8 @@ def p_procParam0(p):
     print("proc_param0")
 
 def p_body(p):
-    '''body : BEGIN proc_block END SEMICOLON '''
+    '''body : BEGIN alt_block END SEMICOLON '''
     print("proc_body")
-
-def p_procBlock0(p):
-    '''proc_block : instruction proc_block'''
-    print("proc_block0")
-
-def p_procBlock1(p):
-    '''proc_block : assignment proc_block'''
-    print("proc_block1")
-
-def p_procBlock2(p):
-    '''proc_block : call proc_block'''
-    print("proc_block2")
 
 def p_mainProcedure(p):
     '''main_proc : MAIN LPARENT RPARENT LCORCH main_body RCORCH SEMICOLON block'''
@@ -279,17 +291,6 @@ def p_mainBlock0(p):
     '''main_block : instruction main_block'''
     print("main_block0")
 
-def p_mainBlock1(p):
-    '''main_block : call main_block'''
-    print("main_block1")
-
-def p_call(p):
-    '''call : CALL proc_dec SEMICOLON'''
-    print("call")
-
-def p_emptyProcblk(p):
-    '''proc_block : empty'''
-    print("emptyProcblk")
 
 def p_emptyMainblk(p):
     '''main_block : empty'''
@@ -494,38 +495,49 @@ def p_consult2(p):
     '''consult : 3dmat_consult'''
     print("consult2")
 
-def p_Lstconsult0(p):
-    '''list_consult : ID PARENTCL indice PARENTCR '''
+def p_Lstconsult(p):
+    '''list_consult : ID lst_consultT '''
     print("listConslt0")
 
-def p_Lstconsult1(p):
-    '''list_consult : ID PARENTCL indice TP indice PARENTCR '''
-    print("listConslt1")
+def p_LstconsultT0(p):
+    '''lst_consultT : PARENTCL indice PARENTCR'''
+    print("LstConsltT0")
 
-def p_Matconsult0(p):
-    '''mat_consult : ID PARENTCL indice COMMA indice PARENTCR '''
+def p_LstconsultT1(p):
+    '''lst_consultT : PARENTCL indice TP indice PARENTCR '''
+    print("LstConsltT1")
+
+def p_Matconsult(p):
+    '''mat_consult : ID mat_consultT '''
     print("matConslt0")
 
-def p_Matconsult1(p):
-    '''mat_consult : ID PARENTCL TP COMMA indice PARENTCR '''
-    print("matConslt1")
+def p_MatconsultT0(p):
+    '''mat_consultT : PARENTCL indice COMMA indice PARENTCR'''
+    print("matConsltT0")
 
-def p_Matconsult2(p):
-    '''mat_consult : ID PARENTCL TP PARENTCR PARENTCL indice PARENTCR '''
-    print("matConslt2")
+def p_MatconsultT1(p):
+    '''mat_consultT : PARENTCL TP COMMA indice PARENTCR '''
+    print("matConsltT1")
 
-def p_Matconsult3(p):
-    '''mat_consult : ID PARENTCL indice PARENTCR PARENTCL indice PARENTCR'''
-    print("matConslt3")
+def p_MatconsultT2(p):
+    '''mat_consultT : PARENTCL TP PARENTCR lst_consultT '''
+    print("matConsltT2")
 
+def p_MatconsultT3(p):
+    '''mat_consultT : PARENTCL indice PARENTCR lst_consultT'''
+    print("matConsltT3")
 
-def p_3dMatconsult0(p):
-    '''3dmat_consult : ID PARENTCL indice COMMA indice COMMA indice PARENTCR'''
-    print("3dmatConslt0")
+def p_3dMatconsult(p):
+    '''3dmat_consult : ID 3dmat_consultT'''
+    print("3dmatConslt")
 
-def p_3dMatconsult1(p):
-    '''3dmat_consult : ID PARENTCL indice PARENTCR PARENTCL indice PARENTCR PARENTCL indice PARENTCR'''
-    print("3dmatConslt1")
+def p_3dMatconsultT0(p):
+    '''3dmat_consultT : PARENTCL indice COMMA indice COMMA indice PARENTCR'''
+    print("3dmatConsltT0")
+
+def p_3dMatconsultT1(p):
+    '''3dmat_consultT : PARENTCL indice PARENTCR mat_consultT'''
+    print("3dmatConsltT1")
 
 
 
@@ -705,6 +717,6 @@ test = '/home/dcamachog1501/Induced_Desktop/Test'
 fp = codecs.open(test, "r", "utf-8")
 chain = fp.read()
 parser = yacc.yacc()
-tv(chain)
+#tv(chain)
 result = parser.parse(chain)
 print(result)
