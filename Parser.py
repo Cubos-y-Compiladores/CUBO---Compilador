@@ -31,7 +31,7 @@ def p_block0(p):
     print("block0")
 
 def p_block1(p):
-    '''block : assignment block'''
+    '''block : global block'''
     print("block1")
 
 def p_blockEmp(p):
@@ -83,14 +83,20 @@ def p_instruction3(p):
 
 
 
-##########---ASIGNACIONES---##########
-def p_simpleAssignment0(p):
-    '''assignment :  GLOBAL identifier ASSIGN a_content SEMICOLON '''
-    print("simpleAssignment0")
 
-def p_simpleAssignment1(p):
+##########---ASIGNACIONES GLOBALES---##########
+def p_globalAssignment(p):
+    '''global : GLOBAL assignment '''
+    print("globalAssignment")
+
+
+
+
+
+##########---ASIGNACIONES---##########
+def p_simpleAssignment(p):
     '''assignment : identifier ASSIGN a_content SEMICOLON '''
-    print("simpleAssignment1")
+    print("simpleAssignment")
 
 def p_doubleAssignment(p):
     '''assignment : identifier COMMA identifier ASSIGN a_content COMMA a_content SEMICOLON '''
@@ -717,6 +723,6 @@ test = '/home/dcamachog1501/Induced_Desktop/Test'
 fp = codecs.open(test, "r", "utf-8")
 chain = fp.read()
 parser = yacc.yacc()
-#tv(chain)
+tv(chain)
 result = parser.parse(chain)
 print(result)
