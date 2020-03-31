@@ -1,5 +1,6 @@
 import ply.yacc as yacc
 import os, codecs, re
+from TreeGen import *
 
 from pip._vendor import colorama
 from pip._vendor.distlib.compat import raw_input
@@ -20,22 +21,27 @@ precedence = (
 ##########---BLOQUES BASICOS---#########
 def p_program(p):
     '''program : const_block main_proc'''
+    p[0]=Program("Program",p[1],p[2])
     print("program")
 
 def p_constB(p):
     '''const_block : const const const const const block'''
+    p[0]=ConstB("ConstB",p[1],p[2],p[3],p[4],p[5],[6])
     print("const_block")
 
 def p_block0(p):
     '''block : procedure block'''
+    p[0]=Block0("Block0",p[1],p[2])
     print("block0")
 
 def p_block1(p):
     '''block : global block'''
+    p[0]=Block1("Block1",p[1],p[2])
     print("block1")
 
 def p_blockEmp(p):
     '''block : empty'''
+    p[0]=Null()
     print("blockEmp")
 
 
@@ -45,18 +51,22 @@ def p_blockEmp(p):
 ##########---BLOQUES ALTERNATIVOS---##########
 def p_altBlock(p):
     '''alt_block : alt_content alt_block'''
+    p[0]= AltBlock("AltBlock",p[1],p[2])
     print("alt_block")
 
 def p_emptyaltBlock(p):
     '''alt_block : empty'''
+    p[0]=Null()
     print("emptyaltBlock")
 
 def p_altContent0(p):
     '''alt_content : instruction'''
+    p[0]=AltContent0("AltContent0",p[1])
     print("altCont0")
 
 def p_altContent1(p):
     '''alt_content : assignment'''
+    p[0]=AltContent1("AltContent1",p[1])
     print("altCont1")
 
 
@@ -66,18 +76,22 @@ def p_altContent1(p):
 ##########---INSTRUCCIONES---##########
 def p_instruction0(p):
     ''' instruction : function '''
-    print("instruction1")
+    p[0]=Instruction0("Instruction0",p[1])
+    print("instruction0")
 
 def p_instruction1(p):
     ''' instruction : consult SEMICOLON '''
+    p[0]=Instruction1("Instruction1",p[1])
     print("instruction1")
 
 def p_instruction2(p):
     '''instruction : cycle '''
+    p[0]=Instruction2("Instruction2",p[1])
     print("instruction2")
 
 def p_instruction3(p):
     '''instruction : statement '''
+    p[0]=Instruction3("Instruction3",p[1])
     print("instruction3")
 
 
@@ -87,6 +101,7 @@ def p_instruction3(p):
 ##########---ASIGNACIONES GLOBALES---##########
 def p_globalAssignment(p):
     '''global : GLOBAL assignment '''
+    p[0]=GlobalAssignment("GLobalAssignment",p[2])
     print("globalAssignment")
 
 
@@ -96,10 +111,12 @@ def p_globalAssignment(p):
 ##########---ASIGNACIONES---##########
 def p_simpleAssignment(p):
     '''assignment : identifier ASSIGN a_content SEMICOLON '''
+    p[0]=SimpleAssignment("SimpleAssignment",p[1],Assign([2]),p[3])
     print("simpleAssignment")
 
 def p_doubleAssignment(p):
     '''assignment : identifier COMMA identifier ASSIGN a_content COMMA a_content SEMICOLON '''
+    p[0]=DoubleAssignment("DoubleAssignment",p[1],p[3],Assign(p[4]),p[5],p[7])
     print("doubleAssignment")
 
 
@@ -109,106 +126,132 @@ def p_doubleAssignment(p):
 ##########---FUNCIONES---##########
 def p_function0(p):
     '''function : type '''
+    p[0]=Function0("Function0",p[1])
     print("function0")
 
 def p_function1(p):
     '''function : insert'''
+    p[0]=Function1("Function1",p[1])
     print("function1")
 
 def p_function2(p):
     '''function : del'''
+    p[0]=Function2("Function2",p[1])
     print("function2")
 
 def p_function3(p):
     '''function : len'''
+    p[0]=Function3("Function3",p[1])
     print("function3")
 
 def p_function4(p):
     '''function : neg'''
+    p[0]=Function4("Function4",p[1])
     print("function4")
 
 def p_function5(p):
     '''function : t_f'''
+    p[0]=Function5("Function5",p[1])
     print("function5")
 
 def p_function6(p):
     '''function : blink'''
+    p[0]=Function6("Function6",p[1])
     print("function6")
 
 def p_function7(p):
     '''function : delay'''
+    p[0]=Function7("Function7",p[1])
     print("function7")
 
 def p_function8(p):
     '''function : shape'''
+    p[0]=Function8("Function8",p[1])
     print("function8")
 
 def p_function9(p):
     '''function : delete'''
+    p[0]=Function9("Function9",p[1])
     print("function9")
 
 def p_function10(p):
     '''function : call'''
+    p[0]=Function10("Function10",p[1])
     print("function10")
 
 def p_type(p):
     '''type : TYPE LPARENT identifier RPARENT SEMICOLON '''
+    p[0]=Type("Type",p[3])
     print("type")
 
 def p_range(p):
     '''a_content : RANGE LPARENT INT COMMA value RPARENT'''
+    p[0]=Range("Range",Int(p[3]),p[5])
     print("range")
 
 def p_insert(p):
     '''insert : identifier DOT INSERT LPARENT i_content RPARENT SEMICOLON '''
+    p[0]=Insert("Insert",p[0],p[5])
     print("insert")
 
 def p_del(p):
     ''' del : identifier DOT DEL LPARENT INT RPARENT SEMICOLON '''
+    p[0]=Del("Del",p[0],Int(p[5]))
     print("delete_list")
 
 def p_len(p):
     ''' len : LEN LPARENT ID RPARENT SEMICOLON '''
+    p[0]=Len("Len",Id(p[3]))
     print("len")
 
-def p_neg0(p):
+def p_neg(p):
     ''' neg :  identifier DOT NEG SEMICOLON '''
-    print("neg0")
+    p[0]=Neg("Neg",p[1])
+    print("neg")
 
 def p_tf(p):
     '''t_f : identifier DOT tf SEMICOLON '''
+    p[0]=TF("TF",p[1],p[3])
     print("tf_function")
 
 def p_blink(p):
     ''' blink : BLINK LPARENT b_content RPARENT SEMICOLON '''
+    p[0]=Blink("Blink",p[3])
     print("blink")
 
 def p_delay(p):
     '''delay : DELAY LPARENT d_content RPARENT SEMICOLON '''
+    p[0]=Delay("Delay",p[3])
     print("delay")
 
 def p_shapeArg0(p):
     '''shape_arg : SHAPEF'''
+    p[0]=ShapeArg0("ShapeArg0",ShapeF(p[1]))
     print("shapeArg0")
 
 def p_shapeArg1(p):
     '''shape_arg : SHAPEC'''
+    p[0]=ShapeArg1("ShapeArg1",ShapeC(p[1]))
     print("shapeArg1")
 
 def p_shapeArg2(p):
     '''shape_arg : SHAPEA'''
+    p[0]=ShapeArg2("ShapeArg2",ShapeA(p[1]))
     print("shapeArg2")
 
 def p_shape(p):
     '''shape : identifier DOT shape_arg SEMICOLON '''
+    p[0]=Shape("Shape",p[1],p[3])
     print("shape")
 
 def p_delete(p):
     '''delete : identifier DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON '''
+    p[0]=Delete("Delete",p[1],p[5],Int(p[7]))
     print("delete_mat")
 
 def p_call(p):
     '''call : CALL proc_dec SEMICOLON'''
+    p[0]=Call("Call",p[2])
     print("call")
 
 
@@ -719,7 +762,7 @@ def p_error(p):
         print(colorama.Fore.RED + "SYNTACTIC ERROR: Unknown syntax error" + colorama.Fore.RESET)
 
 
-test = '/home/dcamachog1501/Induced_Desktop/Test'
+test = 'C:/Users/dcama/Desktop/Compilador/Test'
 fp = codecs.open(test, "r", "utf-8")
 chain = fp.read()
 parser = yacc.yacc()

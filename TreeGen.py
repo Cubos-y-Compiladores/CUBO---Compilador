@@ -1,6 +1,6 @@
-txt = " "
+output= " "
 cont = 0
-def incremetarContador():
+def counterIncreaser():
 	global cont
 	cont +=1
 	return "%d" %cont
@@ -12,13 +12,13 @@ class Null(Node):
 	def __init__(self):
 		self.type = 'void'
 
-	def imprimir(self,ident):
-		print ident + "nodo nulo"
+	def printer(self,ident):
+		print (ident + "Null node")
 
 	def traducir(self):
-		global txt
-		id = incremetarContador()
-		txt += id+"[label= "+"nodo_nulo"+"]"+"\n\t"
+		global output
+		id = counterIncreaser()
+		output += id+"[label= "+"Null node"+"]"+"\n\t"
 
 		return id
 
@@ -27,53 +27,137 @@ class Null(Node):
 
 
 ##########---BLOQUES BASICOS---#########
-class p_program(Node):
-    def __init__(self):
+class Program(Node):
+    def __init__(self,name,son1,son2):
+        self.name=name
+        self.son1=son1
+        self.son2=son2
 
     def printer(self, ident):
+        self.son1.printer(" "+ident)
+        self.son2.printer(" "+ident)
 
     def translate(self):
         global output
+        id=counterIncreaser()
+        son1=self.son1.translate()
+        son2=self.son2.translate()
 
+        output += id+"[label= "+self.name+"]"+"\n\t"
+        output += id + "->" + son1 + "\n\t"
+        output += id + "->" + son2 + "\n\t"
 
-class p_constB(Node):
+        return "digraph G {\n\t" + output+ "}"
 
-    def __init__(self):
+class ConstB(Node):
+
+    def __init__(self,name,son1,son2,son3,son4,son5,son6):
+        self.name=name
+        self.son1=son1
+        self.son2=son2
+        self.son3=son3
+        self.son4=son4
+        self.son5=son5
+        self.son6=son6
 
     def printer(self, ident):
+        self.son1.printer(" " + ident)
+        self.son2.printer(" " + ident)
+        self.son3.printer(" " + ident)
+        self.son4.printer(" " + ident)
+        self.son5.printer(" " + ident)
+
+        if(type(self.son6)==type(tuple())):
+            self.son6[0].printer(" " + ident)
+
+        else:
+            self.son6.printer(" "+ ident)
 
     def translate(self):
         global output
+        id=counterIncreaser()
 
+        son1=self.son1.translate()
+        son2=self.son2.translate()
+        son3=self.son3.translate()
+        son4=self.son4.translate()
+        son5=self.son5.translate()
+        if (type(self.son6) == type(tuple())):
+            son6=self.son6[0].translate()
 
-class p_block0(Node):
+        else:
+            son6=self.son6.translate()
 
-    def __init__(self):
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+        output += id + " -> " + son2 + "\n\t"
+        output += id + " -> " + son3 + "\n\t"
+        output += id + " -> " + son4 + "\n\t"
+        output += id + " -> " + son5 + "\n\t"
+        output += id + " -> " + son6 + "\n\t"
+
+        return id
+
+class Block0(Node):
+    def __init__(self,name,son1,son2):
+        self.name=name
+        self.son1=son1
+        self.son2=son2
 
     def printer(self, ident):
+        self.son1.printer(" "+ident)
+        if (type(self.son2) == type(tuple())):
+            self.son2[0].printer(" " + ident)
+
+        else:
+            self.son2.printer(" " + ident)
 
     def translate(self):
         global output
+        id=counterIncreaser()
+        son1=self.son1.translate()
+        if type(self.son2) == type(tuple()):
+            son2=self.son2[0].translate()
 
+        else:
+            son2=self.son2.translate()
 
-class p_block1(Node):
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+        output += id + " -> " + son2 + "\n\t"
 
-    def __init__(self):
+        return id
+
+class Block1(Node):
+
+    def __init__(self,name,son1,son2):
+        self.name = name
+        self.son1 = son1
+        self.son2 = son2
 
     def printer(self, ident):
+        self.son1.printer(" " + ident)
+        if (type(self.son2) == type(tuple())):
+            self.son2[0].printer(" " + ident)
+
+        else:
+            self.son2.printer(" " + ident)
 
     def translate(self):
         global output
+        id = counterIncreaser()
+        son1 = self.son1.translate()
+        if (type(self.son2) == type(tuple())):
+            son2 = self.son2[0].translate()
 
+        else:
+            son2 = self.son2.translate()
 
-class p_blockEmp(Node):
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+        output += id + " -> " + son2 + "\n\t"
 
-    def __init__(self):
-
-    def printer(self, ident):
-
-    def translate(self):
-        global output
+        return id
 
 
 
@@ -82,388 +166,874 @@ class p_blockEmp(Node):
 ##########---BLOQUES ALTERNATIVOS---##########
 class p_altBlock(Node):
 
-    def __init__(self):
+    def __init__(self,name,son1,son2):
+        self.name=name
+        self.son1=son1
+        self.son2=son2
 
     def printer(self, ident):
+        self.son1.printer(" " + ident)
+        if (type(self.son2) == type(tuple())):
+            self.son2[0].printer(" " + ident)
+
+        else:
+            self.son2.printer(" " + ident)
 
     def translate(self):
         global output
+        id = counterIncreaser()
+        son1 = self.son1.translate()
+        if (type(self.son2) == type(tuple())):
+            son2 = self.son2[0].translate()
 
+        else:
+            son2 = self.son2.translate()
 
-class p_emptyaltBlock(Node):
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+        output += id + " -> " + son2 + "\n\t"
 
-    def __init__(self):
+        return id
+
+class AltContent0(Node):
+
+    def __init__(self,name,son1):
+        self.name=name
+        self.son1=son1
 
     def printer(self, ident):
+        self.son1.printer(" " + ident)
 
     def translate(self):
         global output
+        id = counterIncreaser()
+        son1 = self.son1.translate()
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
 
-
-class p_altContent0(Node):
-
-    def __init__(self):
-
-    def printer(self, ident):
-
-    def translate(self):
-        global output
+        return id
 
 
 class p_altContent1(Node):
 
-    def __init__(self):
+    def __init__(self, name, son1):
+        self.name = name
+        self.son1 = son1
 
     def printer(self, ident):
+        self.son1.printer(" " + ident)
 
     def translate(self):
         global output
+        id = counterIncreaser()
+        son1 = self.son1.translate()
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+
+        return id
 
 
 
 
 
 ##########---INSTRUCCIONES---##########
-class p_instruction0(Node):
+class Instruction0(Node):
 
-    def __init__(self):
+    def __init__(self,name,son1):
+        self.name=name
+        self.son1=son1
 
     def printer(self, ident):
+        self.son1.printer(" "+ident)
 
     def translate(self):
         global output
+        id = counterIncreaser()
+        son1 = self.son1.translate()
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
 
+        return id
 
-class p_instruction1(Node):
+class Instruction1(Node):
 
-    def __init__(self):
+    def __init__(self, name, son1):
+        self.name = name
+        self.son1 = son1
 
     def printer(self, ident):
+        self.son1.printer(" " + ident)
 
     def translate(self):
         global output
+        id = counterIncreaser()
+        son1 = self.son1.translate()
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
 
+        return id
 
-class p_instruction2(Node):
+class Instruction2(Node):
 
-    def __init__(self):
+    def __init__(self, name, son1):
+        self.name = name
+        self.son1 = son1
 
     def printer(self, ident):
+        self.son1.printer(" " + ident)
 
     def translate(self):
         global output
+        id = counterIncreaser()
+        son1 = self.son1.translate()
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+
+        return id
 
 
-class p_instruction3(Node):
+class Instruction3(Node):
 
-    def __init__(self):
+    def __init__(self, name, son1):
+        self.name = name
+        self.son1 = son1
 
     def printer(self, ident):
+        self.son1.printer(" " + ident)
 
     def translate(self):
         global output
+        id = counterIncreaser()
+        son1 = self.son1.translate()
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+
+        return id
 
 
 
 
 
 ##########---ASIGNACIONES GLOBALES---##########
-class p_globalAssignment(Node):
+class GlobalAssignment(Node):
 
-    def __init__(self):
+    def __init__(self, name, son1):
+        self.name = name
+        self.son1 = son1
 
     def printer(self, ident):
+        self.son1.printer(" " + ident)
 
     def translate(self):
         global output
+        id = counterIncreaser()
+        son1 = self.son1.translate()
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+
+        return id
 
 
 
 
 
 ##########---ASIGNACIONES---##########
-class p_simpleAssignment(Node):
+class SimpleAssignment(Node):
 
-    def __init__(self):
+    def __init__(self,name,son1,son2,son3):
+        self.name=name
+        self.son1=son1
+        self.son2=son2
+        self.son3=son3
 
     def printer(self, ident):
+        self.son1.printer(" "+ident)
+        self.son2.printer(" "+ident)
+        self.son3.printer(" "+ident)
 
     def translate(self):
         global output
+        id = counterIncreaser()
+
+        son1 = self.son1.translate()
+        son2 = self.son2.translate()
+        son3 = self.son3.translate()
+
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+        output += id + " -> " + son2 + "\n\t"
+        output += id + " -> " + son3 + "\n\t"
+
+        return id
 
 
-class p_doubleAssignment(Node):
+class DoubleAssignment(Node):
 
-    def __init__(self):
+    def __init__(self,name,son1,son2,son3,son4,son5):
+        self.name = name
+        self.son1 = son1
+        self.son2 = son2
+        self.son3 = son3
+        self.son4 = son4
+        self.son5 = son5
 
     def printer(self, ident):
+        self.son1.printer(" " + ident)
+        self.son2.printer(" " + ident)
+        self.son3.printer(" " + ident)
+        self.son4.printer(" " + ident)
+        self.son5.printer(" " + ident)
 
     def translate(self):
         global output
+        id = counterIncreaser()
 
+        son1 = self.son1.translate()
+        son2 = self.son2.translate()
+        son3 = self.son3.translate()
+        son4 = self.son4.translate()
+        son5 = self.son5.translate()
+
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+        output += id + " -> " + son2 + "\n\t"
+        output += id + " -> " + son3 + "\n\t"
+        output += id + " -> " + son4 + "\n\t"
+        output += id + " -> " + son5 + "\n\t"
 
 
 
 
 ##########---FUNCIONES---##########
-class p_function0(Node):
+class Function0(Node):
 
-    def __init__(self):
+    def __init__(self,name,son1):
+        self.name=name
+        self.son1=son1
 
     def printer(self, ident):
+        self.son1.printer(" "+ident)
+    def translate(self):
+        global output
+
+        id = counterIncreaser()
+
+        son1=self.son1.translate()
+
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+
+        return id
+
+class Function1(Node):
+
+    def __init__(self, name, son1):
+        self.name = name
+        self.son1 = son1
+
+    def printer(self, ident):
+        self.son1.printer(" " + ident)
 
     def translate(self):
         global output
 
+        id = counterIncreaser()
 
-class p_function1(Node):
+        son1 = self.son1.translate()
 
-    def __init__(self):
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+
+        return id
+
+
+class Function2(Node):
+
+    def __init__(self, name, son1):
+        self.name = name
+        self.son1 = son1
 
     def printer(self, ident):
+        self.son1.printer(" " + ident)
 
     def translate(self):
         global output
 
+        id = counterIncreaser()
 
-class p_function2(Node):
+        son1 = self.son1.translate()
 
-    def __init__(self):
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+
+        return id
+
+
+class Function3(Node):
+
+    def __init__(self, name, son1):
+        self.name = name
+        self.son1 = son1
 
     def printer(self, ident):
+        self.son1.printer(" " + ident)
 
     def translate(self):
         global output
 
+        id = counterIncreaser()
 
-class p_function3(Node):
+        son1 = self.son1.translate()
 
-    def __init__(self):
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+
+        return id
+
+
+class Function4(Node):
+
+    def __init__(self, name, son1):
+        self.name = name
+        self.son1 = son1
 
     def printer(self, ident):
+        self.son1.printer(" " + ident)
 
     def translate(self):
         global output
 
+        id = counterIncreaser()
 
-class p_function4(Node):
+        son1 = self.son1.translate()
 
-    def __init__(self):
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+
+        return id
+
+
+class Function5(Node):
+
+    def __init__(self, name, son1):
+        self.name = name
+        self.son1 = son1
 
     def printer(self, ident):
+        self.son1.printer(" " + ident)
 
     def translate(self):
         global output
 
+        id = counterIncreaser()
 
-class p_function5(Node):
+        son1 = self.son1.translate()
 
-    def __init__(self):
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+
+        return id
+
+
+class Function6(Node):
+
+    def __init__(self, name, son1):
+        self.name = name
+        self.son1 = son1
 
     def printer(self, ident):
+        self.son1.printer(" " + ident)
 
     def translate(self):
         global output
 
+        id = counterIncreaser()
 
-class p_function6(Node):
+        son1 = self.son1.translate()
 
-    def __init__(self):
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+
+        return id
+
+
+class Function7(Node):
+
+    def __init__(self, name, son1):
+        self.name = name
+        self.son1 = son1
 
     def printer(self, ident):
+        self.son1.printer(" " + ident)
 
     def translate(self):
         global output
 
+        id = counterIncreaser()
 
-class p_function7(Node):
+        son1 = self.son1.translate()
 
-    def __init__(self):
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+
+        return id
+
+
+class Function8(Node):
+
+    def __init__(self, name, son1):
+        self.name = name
+        self.son1 = son1
 
     def printer(self, ident):
+        self.son1.printer(" " + ident)
 
     def translate(self):
         global output
 
+        id = counterIncreaser()
 
-class p_function8(Node):
+        son1 = self.son1.translate()
 
-    def __init__(self):
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+
+        return id
+
+
+class Function9(Node):
+
+    def __init__(self, name, son1):
+        self.name = name
+        self.son1 = son1
 
     def printer(self, ident):
+        self.son1.printer(" " + ident)
 
     def translate(self):
         global output
 
+        id = counterIncreaser()
 
-class p_function9(Node):
+        son1 = self.son1.translate()
 
-    def __init__(self):
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+
+        return id
+
+
+class Function10(Node):
+
+    def __init__(self, name, son1):
+        self.name = name
+        self.son1 = son1
 
     def printer(self, ident):
+        self.son1.printer(" " + ident)
 
     def translate(self):
         global output
 
+        id = counterIncreaser()
 
-class p_function10(Node):
+        son1 = self.son1.translate()
 
-    def __init__(self):
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+
+        return id
+
+
+class Type(Node):
+
+    def __init__(self, name, son1):
+        self.name = name
+        self.son1 = son1
 
     def printer(self, ident):
+        self.son1.printer(" " + ident)
 
     def translate(self):
         global output
 
+        id = counterIncreaser()
 
-class p_type(Node):
+        son1 = self.son1.translate()
 
-    def __init__(self):
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+
+        return id
+
+
+class Range(Node):
+
+    def __init__(self,name,son1,son2):
+        self.name=name
+        self.son1=son1
+        self.son2=son2
 
     def printer(self, ident):
+        self.son1.printer(" " + ident)
+        self.son2.printer(" " + ident)
+
 
     def translate(self):
         global output
 
+        id = counterIncreaser()
 
-class p_range(Node):
+        son1 = self.son1.translate()
+        son2 = self.son2.translate()
 
-    def __init__(self):
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+        output += id + " -> " + son2 + "\n\t"
+
+        return id
+
+
+class Insert(Node):
+
+    def __init__(self, name, son1, son2):
+        self.name = name
+        self.son1 = son1
+        self.son2 = son2
 
     def printer(self, ident):
+        self.son1.printer(" " + ident)
+        self.son2.printer(" " + ident)
 
     def translate(self):
         global output
 
+        id = counterIncreaser()
 
-class p_insert(Node):
+        son1 = self.son1.translate()
+        son2 = self.son2.translate()
 
-    def __init__(self):
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+        output += id + " -> " + son2 + "\n\t"
+
+        return id
+
+
+class Del(Node):
+
+    def __init__(self, name, son1, son2):
+        self.name = name
+        self.son1 = son1
+        self.son2 = son2
 
     def printer(self, ident):
+        self.son1.printer(" " + ident)
+        self.son2.printer(" " + ident)
 
     def translate(self):
         global output
 
+        id = counterIncreaser()
 
-class p_del(Node):
+        son1 = self.son1.translate()
+        son2 = self.son2.translate()
 
-    def __init__(self):
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+        output += id + " -> " + son2 + "\n\t"
+
+        return id
+
+
+class Len(Node):
+
+    def __init__(self, name, son1):
+        self.name = name
+        self.son1 = son1
 
     def printer(self, ident):
+        self.son1.printer(" " + ident)
 
     def translate(self):
         global output
 
+        id = counterIncreaser()
 
-class p_len(Node):
+        son1 = self.son1.translate()
 
-    def __init__(self):
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+
+        return id
+
+
+class Neg(Node):
+
+    def __init__(self, name, son1):
+        self.name = name
+        self.son1 = son1
 
     def printer(self, ident):
+        self.son1.printer(" " + ident)
 
     def translate(self):
         global output
 
+        id = counterIncreaser()
 
-class p_neg0(Node):
+        son1 = self.son1.translate()
 
-    def __init__(self):
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+
+        return id
+
+
+class TF(Node):
+
+    def __init__(self, name, son1, son2):
+        self.name = name
+        self.son1 = son1
+        self.son2 = son2
 
     def printer(self, ident):
+        self.son1.printer(" " + ident)
+        self.son2.printer(" " + ident)
 
     def translate(self):
         global output
 
+        id = counterIncreaser()
 
-class p_tf(Node):
+        son1 = self.son1.translate()
+        son2 = self.son2.translate()
 
-    def __init__(self):
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+        output += id + " -> " + son2 + "\n\t"
+
+        return id
+
+
+class Blink(Node):
+
+    def __init__(self, name, son1):
+        self.name = name
+        self.son1 = son1
 
     def printer(self, ident):
+        self.son1.printer(" " + ident)
 
     def translate(self):
         global output
 
+        id = counterIncreaser()
 
-class p_blink(Node):
+        son1 = self.son1.translate()
 
-    def __init__(self):
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+
+        return id
+
+
+class Delay(Node):
+
+    def __init__(self, name, son1):
+        self.name = name
+        self.son1 = son1
 
     def printer(self, ident):
+        if (type(self.son1) == type(tuple())):
+            self.son1[0].printer(" " + ident)
+
+        else:
+            self.son1.printer(" " + ident)
 
     def translate(self):
         global output
 
+        id = counterIncreaser()
 
-class p_delay(Node):
+        if type(self.son1) == type(tuple()):
+            son1 = self.son1[0].translate()
 
-    def __init__(self):
+        else:
+            son1 = self.son1.translate()
+
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+
+        return id
+
+
+class ShapeArg0(Node):
+
+    def __init__(self, name, son1):
+        self.name = name
+        self.son1 = son1
 
     def printer(self, ident):
+        if (type(self.son1) == type(tuple())):
+            self.son1[0].printer(" " + ident)
+
+        else:
+            self.son1.printer(" " + ident)
 
     def translate(self):
         global output
 
+        id = counterIncreaser()
 
-class p_shapeArg0(Node):
+        if type(self.son1) == type(tuple()):
+            son1 = self.son1[0].translate()
 
-    def __init__(self):
+        else:
+            son1 = self.son1.translate()
+
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+
+        return id
+
+
+class ShapeArg1(Node):
+
+    def __init__(self, name, son1):
+        self.name = name
+        self.son1 = son1
 
     def printer(self, ident):
+        if (type(self.son1) == type(tuple())):
+            self.son1[0].printer(" " + ident)
+
+        else:
+            self.son1.printer(" " + ident)
 
     def translate(self):
         global output
 
+        id = counterIncreaser()
 
-class p_shapeArg1(Node):
+        if type(self.son1) == type(tuple()):
+            son1 = self.son1[0].translate()
 
-    def __init__(self):
+        else:
+            son1 = self.son1.translate()
+
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+
+        return id
+
+
+class ShapeArg2(Node):
+
+    def __init__(self, name, son1):
+        self.name = name
+        self.son1 = son1
 
     def printer(self, ident):
+        if (type(self.son1) == type(tuple())):
+            self.son1[0].printer(" " + ident)
+
+        else:
+            self.son1.printer(" " + ident)
 
     def translate(self):
         global output
 
+        id = counterIncreaser()
 
-class p_shapeArg2(Node):
+        if type(self.son1) == type(tuple()):
+            son1 = self.son1[0].translate()
 
-    def __init__(self):
+        else:
+            son1 = self.son1.translate()
+
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+
+        return id
+
+
+class Shape(Node):
+
+    def __init__(self, name, son1, son2):
+        self.name = name
+        self.son1 = son1
+        self.son2 = son2
 
     def printer(self, ident):
+        self.son1.printer(" " + ident)
+        self.son2.printer(" " + ident)
 
     def translate(self):
         global output
 
+        id = counterIncreaser()
 
-class p_shape(Node):
+        son1 = self.son1.translate()
+        son2 = self.son2.translate()
 
-    def __init__(self):
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+        output += id + " -> " + son2 + "\n\t"
+
+        return id
+
+
+class Delete(Node):
+
+    def __init__(self,name,son1,son2,son3):
+        self.name=name
+        self.son1=son1
+        self.son2=son2
+        self.son3=son3
 
     def printer(self, ident):
+        self.son1.printer(" " + ident)
+        self.son2.printer(" " + ident)
+        self.son3.printer(" " + ident)
 
     def translate(self):
         global output
 
+        id = counterIncreaser()
 
-class p_delete(Node):
+        son1 = self.son1.translate()
+        son2 = self.son2.translate()
+        son3 = self.son3.translate()
 
-    def __init__(self):
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
+        output += id + " -> " + son2 + "\n\t"
+        output += id + " -> " + son3 + "\n\t"
+
+        return id
+
+
+class Call(Node):
+
+    def __init__(self, name, son1):
+        self.name = name
+        self.son1 = son1
 
     def printer(self, ident):
+        self.son1.printer(" " + ident)
 
     def translate(self):
         global output
 
+        id = counterIncreaser()
 
-class p_call(Node):
+        son1 = self.son1.translate()
 
-    def __init__(self):
+        output += id + "[label= " + self.name + "]" + "\n\t"
+        output += id + " -> " + son1 + "\n\t"
 
-    def printer(self, ident):
-
-    def translate(self):
-        global output
+        return id
 
 
 
@@ -1567,3 +2137,96 @@ class p_iterable1(Node):
 
     def translate(self):
         global output
+
+##########---TOKENS---##########
+class Assign(Node):
+    def __init__(self, name):
+        self.name = name
+
+    def imprimir(self, ident):
+        print
+        ident + "Assign: " + self.name
+
+    def traducir(self):
+        global txt
+        id = counterIncreaser()
+
+        txt += id + "[label= \"" + self.name + "\"]" + "\n\t"
+
+        return id
+
+
+class Int(Node):
+    def __init__(self, name):
+        self.name = name
+
+    def imprimir(self, ident):
+        print
+        ident + "Int: " + str(self.name)
+
+    def traducir(self):
+        global txt
+        id = counterIncreaser()
+        txt += id + "[label= " + str(self.name) + "]" + "\n\t"
+
+        return id
+
+class Id(Node):
+    def __init__(self, name):
+        self.name = name
+
+    def imprimir(self, ident):
+        print
+        ident + "ID: " + self.name
+
+    def traducir(self):
+        global txt
+        id = counterIncreaser()
+        txt += id + "[label= " + self.name + "]" + "\n\t"
+
+        return id
+
+class ShapeF(Node):
+    def __init__(self, name):
+        self.name = name
+
+    def imprimir(self, ident):
+        print
+        ident + "ShapeF: " + str(self.name)
+
+    def traducir(self):
+        global txt
+        id = counterIncreaser()
+        txt += id + "[label= " + str(self.name) + "]" + "\n\t"
+
+        return id
+
+class ShapeC(Node):
+    def __init__(self, name):
+        self.name = name
+
+    def imprimir(self, ident):
+        print
+        ident + "ShapeC: " + str(self.name)
+
+    def traducir(self):
+        global txt
+        id = counterIncreaser()
+        txt += id + "[label= " + str(self.name) + "]" + "\n\t"
+
+        return id
+
+class ShapeA(Node):
+    def __init__(self, name):
+        self.name = name
+
+    def imprimir(self, ident):
+        print
+        ident + "ShapeA: " + str(self.name)
+
+    def traducir(self):
+        global txt
+        id = counterIncreaser()
+        txt += id + "[label= " + str(self.name) + "]" + "\n\t"
+
+        return id
