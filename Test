@@ -3,7 +3,7 @@ Rango_Timer = "Mil";
 Dim_Filas = 5;
 Dim_Columnas = 6;
 Cubo=9;
-
+global v=False;
 --Asignaciones
 
 	Procedure test ()
@@ -16,8 +16,6 @@ Cubo=9;
 		end;	
 	};
 
-
-
 --Variables y asignacion de variables
 
 	Procedure test ()
@@ -25,15 +23,13 @@ Cubo=9;
 		begin
 		--masdediezcaracteres=10;
 		--Mayusc=10;
-		v@a_r&=10;
+		v@ar&=10;
 		v=10;
 		z= x + y * 10 / 4;
 		m=x + ((y * 10) / 4);
 		w=((x + y) * 10) / 4;
 		end;	
 	};
-
-
 
 --Listas
 	Procedure test ()
@@ -47,8 +43,6 @@ Cubo=9;
 		l=range(5,True);
 		end;	
 	};
-	
-
 
 --Modificando los valores de la lista
 	Procedure test ()
@@ -57,9 +51,7 @@ Cubo=9;
 		milista[0] = True;
 		milista[1:3] = [True, False];
 		end;	
-	};	
-
-
+	};
 
 --Agregando valores a una lista
 	Procedure test ()
@@ -69,8 +61,6 @@ Cubo=9;
 		end;	
 	};
 
-
-
 --Borrando valores de una lista
 	Procedure test ()
 	{
@@ -78,8 +68,6 @@ Cubo=9;
 		miLista.del(2);
 		end;	
 	};
-
-
 
 --Longitud de una lista
 	Procedure test ()
@@ -89,8 +77,6 @@ Cubo=9;
 		end;	
 	};
 
-
-	
 --Operaciones booleanas
 	Procedure test ()
 	{
@@ -113,8 +99,6 @@ Cubo=9;
 		end;	
 	};
 
-
-
 --Temporalizador
 	Procedure test ()
 	{
@@ -123,8 +107,6 @@ Cubo=9;
 		Delay(5, "Mil"); 
 		end;	
 	};
-	
-
 
 --Ciclos for
 	Procedure test ()
@@ -135,8 +117,6 @@ Cubo=9;
 		for var1 in 10{x=10;type(x);};
 		end;	
 	};
-	
-
 
 --Matrices
 	Procedure test ()
@@ -154,22 +134,8 @@ Cubo=9;
 		a3dmat[1].delete(0,0);
 		end;	
 	};
-	
 
---Modificar Matrices
-	Procedure test ()
-	{
-		begin
-		mat[1][1] = True;
-		m[1] = m2[5];
-		m[:,1] = m2 [:,3];
-		ad3m[1][:][1]=m2[:,3];
-		end;	
-	};
-
-
-
----Modificar Matrices 3D
+--Modificar Matrices 3D
 	Procedure test ()
 	{
 		begin
@@ -180,33 +146,23 @@ Cubo=9;
 		end;	
 	};
 
-
-
 --Bifurcacion
 	Procedure test ()
 	{
 		begin
-			if (var== 5){var=10;};
-			if (lista2[2] == True){type(lista2);};
-			if (mat[:, 1] == True)
-			{
-			 	CALL procedure();	
-			};
+		if (var== 5){var=10;};
+		if (lista2[2] == True){type(lista2);};else{lista[2]=True;};
+		if (mat[:,1] == True){CALL procedure();	};
 		end;	
 	};
-	
 
 
-Main ()
-{
- begin
- 	
- end;
-};
 
-Procedure test ()
-{
-	begin
 
-	end;	
-};
+
+	Main ()
+	{
+	 begin
+	 	
+	 end;
+	};

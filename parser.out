@@ -114,14 +114,14 @@ Rule 100   3dmat_value -> mat
 Rule 101   consult -> list_consult
 Rule 102   consult -> mat_consult
 Rule 103   consult -> 3dmat_consult
-Rule 104   list_consult -> ID lst_consultT
-Rule 105   lst_consultT -> PARENTCL indice PARENTCR
-Rule 106   lst_consultT -> PARENTCL indice TP indice PARENTCR
+Rule 104   list_consult -> ID list_consultT
+Rule 105   list_consultT -> PARENTCL indice PARENTCR
+Rule 106   list_consultT -> PARENTCL indice TP indice PARENTCR
 Rule 107   mat_consult -> ID mat_consultT
 Rule 108   mat_consultT -> PARENTCL indice COMMA indice PARENTCR
 Rule 109   mat_consultT -> PARENTCL TP COMMA indice PARENTCR
-Rule 110   mat_consultT -> PARENTCL TP PARENTCR lst_consultT
-Rule 111   mat_consultT -> PARENTCL indice PARENTCR lst_consultT
+Rule 110   mat_consultT -> PARENTCL TP PARENTCR list_consultT
+Rule 111   mat_consultT -> PARENTCL indice PARENTCR list_consultT
 Rule 112   3dmat_consult -> ID 3dmat_consultT
 Rule 113   3dmat_consultT -> PARENTCL indice COMMA indice COMMA indice PARENTCR
 Rule 114   3dmat_consultT -> PARENTCL indice PARENTCR mat_consultT
@@ -272,9 +272,9 @@ iterable             : 44 47
 len                  : 20
 list                 : 76 87 96
 list_consult         : 80 81 101
+list_consultT        : 104 110 111
 list_term            : 88 90
 list_value           : 90 91
-lst_consultT         : 104 110 111
 main_block           : 59 60
 main_body            : 58
 main_proc            : 1
@@ -737,7 +737,7 @@ state 39
     (40) shape -> . identifier DOT shape_arg SEMICOLON
     (41) delete -> . identifier DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON
     (42) call -> . CALL proc_dec SEMICOLON
-    (104) list_consult -> . ID lst_consultT
+    (104) list_consult -> . ID list_consultT
     (107) mat_consult -> . ID mat_consultT
     (112) 3dmat_consult -> . ID 3dmat_consultT
     (44) for -> . FOR ID IN iterable step LCORCH alt_block RCORCH SEMICOLON
@@ -854,7 +854,7 @@ state 45
     (101) consult -> . list_consult
     (102) consult -> . mat_consult
     (103) consult -> . 3dmat_consult
-    (104) list_consult -> . ID lst_consultT
+    (104) list_consult -> . ID list_consultT
     (107) mat_consult -> . ID mat_consultT
     (112) 3dmat_consult -> . ID 3dmat_consultT
 
@@ -918,7 +918,7 @@ state 48
     (40) shape -> . identifier DOT shape_arg SEMICOLON
     (41) delete -> . identifier DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON
     (42) call -> . CALL proc_dec SEMICOLON
-    (104) list_consult -> . ID lst_consultT
+    (104) list_consult -> . ID list_consultT
     (107) mat_consult -> . ID mat_consultT
     (112) 3dmat_consult -> . ID 3dmat_consultT
     (44) for -> . FOR ID IN iterable step LCORCH alt_block RCORCH SEMICOLON
@@ -1309,23 +1309,23 @@ state 72
 
 state 73
 
-    (104) list_consult -> ID . lst_consultT
+    (104) list_consult -> ID . list_consultT
     (107) mat_consult -> ID . mat_consultT
     (112) 3dmat_consult -> ID . 3dmat_consultT
     (142) identifier -> ID .
-    (105) lst_consultT -> . PARENTCL indice PARENTCR
-    (106) lst_consultT -> . PARENTCL indice TP indice PARENTCR
+    (105) list_consultT -> . PARENTCL indice PARENTCR
+    (106) list_consultT -> . PARENTCL indice TP indice PARENTCR
     (108) mat_consultT -> . PARENTCL indice COMMA indice PARENTCR
     (109) mat_consultT -> . PARENTCL TP COMMA indice PARENTCR
-    (110) mat_consultT -> . PARENTCL TP PARENTCR lst_consultT
-    (111) mat_consultT -> . PARENTCL indice PARENTCR lst_consultT
+    (110) mat_consultT -> . PARENTCL TP PARENTCR list_consultT
+    (111) mat_consultT -> . PARENTCL indice PARENTCR list_consultT
     (113) 3dmat_consultT -> . PARENTCL indice COMMA indice COMMA indice PARENTCR
     (114) 3dmat_consultT -> . PARENTCL indice PARENTCR mat_consultT
 
     DOT             reduce using rule 142 (identifier -> ID .)
     PARENTCL        shift and go to state 98
 
-    lst_consultT                   shift and go to state 95
+    list_consultT                  shift and go to state 95
     mat_consultT                   shift and go to state 96
     3dmat_consultT                 shift and go to state 97
 
@@ -1420,15 +1420,15 @@ state 84
 state 85
 
     (142) identifier -> ID .
-    (104) list_consult -> ID . lst_consultT
+    (104) list_consult -> ID . list_consultT
     (107) mat_consult -> ID . mat_consultT
     (112) 3dmat_consult -> ID . 3dmat_consultT
-    (105) lst_consultT -> . PARENTCL indice PARENTCR
-    (106) lst_consultT -> . PARENTCL indice TP indice PARENTCR
+    (105) list_consultT -> . PARENTCL indice PARENTCR
+    (106) list_consultT -> . PARENTCL indice TP indice PARENTCR
     (108) mat_consultT -> . PARENTCL indice COMMA indice PARENTCR
     (109) mat_consultT -> . PARENTCL TP COMMA indice PARENTCR
-    (110) mat_consultT -> . PARENTCL TP PARENTCR lst_consultT
-    (111) mat_consultT -> . PARENTCL indice PARENTCR lst_consultT
+    (110) mat_consultT -> . PARENTCL TP PARENTCR list_consultT
+    (111) mat_consultT -> . PARENTCL indice PARENTCR list_consultT
     (113) 3dmat_consultT -> . PARENTCL indice COMMA indice COMMA indice PARENTCR
     (114) 3dmat_consultT -> . PARENTCL indice PARENTCR mat_consultT
 
@@ -1446,7 +1446,7 @@ state 85
     DOT             reduce using rule 142 (identifier -> ID .)
     PARENTCL        shift and go to state 98
 
-    lst_consultT                   shift and go to state 95
+    list_consultT                  shift and go to state 95
     mat_consultT                   shift and go to state 96
     3dmat_consultT                 shift and go to state 97
 
@@ -1526,7 +1526,7 @@ state 91
     (101) consult -> . list_consult
     (102) consult -> . mat_consult
     (103) consult -> . 3dmat_consult
-    (104) list_consult -> . ID lst_consultT
+    (104) list_consult -> . ID list_consultT
     (107) mat_consult -> . ID mat_consultT
     (112) 3dmat_consult -> . ID 3dmat_consultT
 
@@ -1548,7 +1548,7 @@ state 92
     (101) consult -> . list_consult
     (102) consult -> . mat_consult
     (103) consult -> . 3dmat_consult
-    (104) list_consult -> . ID lst_consultT
+    (104) list_consult -> . ID list_consultT
     (107) mat_consult -> . ID mat_consultT
     (112) 3dmat_consult -> . ID 3dmat_consultT
 
@@ -1596,21 +1596,21 @@ state 94
 
 state 95
 
-    (104) list_consult -> ID lst_consultT .
+    (104) list_consult -> ID list_consultT .
 
-    SEMICOLON       reduce using rule 104 (list_consult -> ID lst_consultT .)
-    DOT             reduce using rule 104 (list_consult -> ID lst_consultT .)
-    ASSIGN          reduce using rule 104 (list_consult -> ID lst_consultT .)
-    COMMA           reduce using rule 104 (list_consult -> ID lst_consultT .)
-    NE              reduce using rule 104 (list_consult -> ID lst_consultT .)
-    LT              reduce using rule 104 (list_consult -> ID lst_consultT .)
-    GT              reduce using rule 104 (list_consult -> ID lst_consultT .)
-    LTE             reduce using rule 104 (list_consult -> ID lst_consultT .)
-    GTE             reduce using rule 104 (list_consult -> ID lst_consultT .)
-    COMPARE         reduce using rule 104 (list_consult -> ID lst_consultT .)
-    RPARENT         reduce using rule 104 (list_consult -> ID lst_consultT .)
-    STEP            reduce using rule 104 (list_consult -> ID lst_consultT .)
-    LCORCH          reduce using rule 104 (list_consult -> ID lst_consultT .)
+    SEMICOLON       reduce using rule 104 (list_consult -> ID list_consultT .)
+    DOT             reduce using rule 104 (list_consult -> ID list_consultT .)
+    ASSIGN          reduce using rule 104 (list_consult -> ID list_consultT .)
+    COMMA           reduce using rule 104 (list_consult -> ID list_consultT .)
+    NE              reduce using rule 104 (list_consult -> ID list_consultT .)
+    LT              reduce using rule 104 (list_consult -> ID list_consultT .)
+    GT              reduce using rule 104 (list_consult -> ID list_consultT .)
+    LTE             reduce using rule 104 (list_consult -> ID list_consultT .)
+    GTE             reduce using rule 104 (list_consult -> ID list_consultT .)
+    COMPARE         reduce using rule 104 (list_consult -> ID list_consultT .)
+    RPARENT         reduce using rule 104 (list_consult -> ID list_consultT .)
+    STEP            reduce using rule 104 (list_consult -> ID list_consultT .)
+    LCORCH          reduce using rule 104 (list_consult -> ID list_consultT .)
 
 
 state 96
@@ -1653,12 +1653,12 @@ state 97
 
 state 98
 
-    (105) lst_consultT -> PARENTCL . indice PARENTCR
-    (106) lst_consultT -> PARENTCL . indice TP indice PARENTCR
+    (105) list_consultT -> PARENTCL . indice PARENTCR
+    (106) list_consultT -> PARENTCL . indice TP indice PARENTCR
     (108) mat_consultT -> PARENTCL . indice COMMA indice PARENTCR
     (109) mat_consultT -> PARENTCL . TP COMMA indice PARENTCR
-    (110) mat_consultT -> PARENTCL . TP PARENTCR lst_consultT
-    (111) mat_consultT -> PARENTCL . indice PARENTCR lst_consultT
+    (110) mat_consultT -> PARENTCL . TP PARENTCR list_consultT
+    (111) mat_consultT -> PARENTCL . indice PARENTCR list_consultT
     (113) 3dmat_consultT -> PARENTCL . indice COMMA indice COMMA indice PARENTCR
     (114) 3dmat_consultT -> PARENTCL . indice PARENTCR mat_consultT
     (115) indice -> . INT
@@ -1675,7 +1675,7 @@ state 99
     (35) blink -> BLINK LPARENT . b_content RPARENT SEMICOLON
     (80) b_content -> . list_consult COMMA INT COMMA time_mes COMMA value
     (81) b_content -> . list_consult COMMA value
-    (104) list_consult -> . ID lst_consultT
+    (104) list_consult -> . ID list_consultT
 
     ID              shift and go to state 131
 
@@ -1760,7 +1760,7 @@ state 105
     (66) term -> . term multiplying_operator factor
     (124) adding_operator -> . PLUS
     (125) adding_operator -> . MINUS
-    (104) list_consult -> . ID lst_consultT
+    (104) list_consult -> . ID list_consultT
     (107) mat_consult -> . ID mat_consultT
     (112) 3dmat_consult -> . ID 3dmat_consultT
     (67) factor -> . INT
@@ -1799,7 +1799,7 @@ state 106
     (101) consult -> . list_consult
     (102) consult -> . mat_consult
     (103) consult -> . 3dmat_consult
-    (104) list_consult -> . ID lst_consultT
+    (104) list_consult -> . ID list_consultT
     (107) mat_consult -> . ID mat_consultT
     (112) 3dmat_consult -> . ID 3dmat_consultT
 
@@ -1969,10 +1969,10 @@ state 124
 
 state 125
 
-    (105) lst_consultT -> PARENTCL indice . PARENTCR
-    (106) lst_consultT -> PARENTCL indice . TP indice PARENTCR
+    (105) list_consultT -> PARENTCL indice . PARENTCR
+    (106) list_consultT -> PARENTCL indice . TP indice PARENTCR
     (108) mat_consultT -> PARENTCL indice . COMMA indice PARENTCR
-    (111) mat_consultT -> PARENTCL indice . PARENTCR lst_consultT
+    (111) mat_consultT -> PARENTCL indice . PARENTCR list_consultT
     (113) 3dmat_consultT -> PARENTCL indice . COMMA indice COMMA indice PARENTCR
     (114) 3dmat_consultT -> PARENTCL indice . PARENTCR mat_consultT
 
@@ -1984,7 +1984,7 @@ state 125
 state 126
 
     (109) mat_consultT -> PARENTCL TP . COMMA indice PARENTCR
-    (110) mat_consultT -> PARENTCL TP . PARENTCR lst_consultT
+    (110) mat_consultT -> PARENTCL TP . PARENTCR list_consultT
 
     COMMA           shift and go to state 182
     PARENTCR        shift and go to state 183
@@ -2025,13 +2025,13 @@ state 130
 
 state 131
 
-    (104) list_consult -> ID . lst_consultT
-    (105) lst_consultT -> . PARENTCL indice PARENTCR
-    (106) lst_consultT -> . PARENTCL indice TP indice PARENTCR
+    (104) list_consult -> ID . list_consultT
+    (105) list_consultT -> . PARENTCL indice PARENTCR
+    (106) list_consultT -> . PARENTCL indice TP indice PARENTCR
 
     PARENTCL        shift and go to state 186
 
-    lst_consultT                   shift and go to state 95
+    list_consultT                  shift and go to state 95
 
 state 132
 
@@ -2080,7 +2080,7 @@ state 136
     (101) consult -> . list_consult
     (102) consult -> . mat_consult
     (103) consult -> . 3dmat_consult
-    (104) list_consult -> . ID lst_consultT
+    (104) list_consult -> . ID list_consultT
     (107) mat_consult -> . ID mat_consultT
     (112) 3dmat_consult -> . ID 3dmat_consultT
 
@@ -2144,7 +2144,7 @@ state 138
     (40) shape -> . identifier DOT shape_arg SEMICOLON
     (41) delete -> . identifier DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON
     (42) call -> . CALL proc_dec SEMICOLON
-    (104) list_consult -> . ID lst_consultT
+    (104) list_consult -> . ID list_consultT
     (107) mat_consult -> . ID mat_consultT
     (112) 3dmat_consult -> . ID 3dmat_consultT
     (44) for -> . FOR ID IN iterable step LCORCH alt_block RCORCH SEMICOLON
@@ -2458,16 +2458,16 @@ state 160
 
 state 161
 
-    (104) list_consult -> ID . lst_consultT
+    (104) list_consult -> ID . list_consultT
     (107) mat_consult -> ID . mat_consultT
     (112) 3dmat_consult -> ID . 3dmat_consultT
     (68) factor -> ID .
-    (105) lst_consultT -> . PARENTCL indice PARENTCR
-    (106) lst_consultT -> . PARENTCL indice TP indice PARENTCR
+    (105) list_consultT -> . PARENTCL indice PARENTCR
+    (106) list_consultT -> . PARENTCL indice TP indice PARENTCR
     (108) mat_consultT -> . PARENTCL indice COMMA indice PARENTCR
     (109) mat_consultT -> . PARENTCL TP COMMA indice PARENTCR
-    (110) mat_consultT -> . PARENTCL TP PARENTCR lst_consultT
-    (111) mat_consultT -> . PARENTCL indice PARENTCR lst_consultT
+    (110) mat_consultT -> . PARENTCL TP PARENTCR list_consultT
+    (111) mat_consultT -> . PARENTCL indice PARENTCR list_consultT
     (113) 3dmat_consultT -> . PARENTCL indice COMMA indice COMMA indice PARENTCR
     (114) 3dmat_consultT -> . PARENTCL indice PARENTCR mat_consultT
 
@@ -2482,7 +2482,7 @@ state 161
     COMMA           reduce using rule 68 (factor -> ID .)
     PARENTCL        shift and go to state 98
 
-    lst_consultT                   shift and go to state 95
+    list_consultT                  shift and go to state 95
     mat_consultT                   shift and go to state 96
     3dmat_consultT                 shift and go to state 97
 
@@ -2713,37 +2713,37 @@ state 178
 
 state 179
 
-    (105) lst_consultT -> PARENTCL indice PARENTCR .
-    (111) mat_consultT -> PARENTCL indice PARENTCR . lst_consultT
+    (105) list_consultT -> PARENTCL indice PARENTCR .
+    (111) mat_consultT -> PARENTCL indice PARENTCR . list_consultT
     (114) 3dmat_consultT -> PARENTCL indice PARENTCR . mat_consultT
-    (105) lst_consultT -> . PARENTCL indice PARENTCR
-    (106) lst_consultT -> . PARENTCL indice TP indice PARENTCR
+    (105) list_consultT -> . PARENTCL indice PARENTCR
+    (106) list_consultT -> . PARENTCL indice TP indice PARENTCR
     (108) mat_consultT -> . PARENTCL indice COMMA indice PARENTCR
     (109) mat_consultT -> . PARENTCL TP COMMA indice PARENTCR
-    (110) mat_consultT -> . PARENTCL TP PARENTCR lst_consultT
-    (111) mat_consultT -> . PARENTCL indice PARENTCR lst_consultT
+    (110) mat_consultT -> . PARENTCL TP PARENTCR list_consultT
+    (111) mat_consultT -> . PARENTCL indice PARENTCR list_consultT
 
-    SEMICOLON       reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    DOT             reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    ASSIGN          reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    COMMA           reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    NE              reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    LT              reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    GT              reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    LTE             reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    GTE             reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    COMPARE         reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    RPARENT         reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    STEP            reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    LCORCH          reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
+    SEMICOLON       reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    DOT             reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    ASSIGN          reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    COMMA           reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    NE              reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    LT              reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    GT              reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    LTE             reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    GTE             reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    COMPARE         reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    RPARENT         reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    STEP            reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    LCORCH          reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
     PARENTCL        shift and go to state 234
 
-    lst_consultT                   shift and go to state 235
+    list_consultT                  shift and go to state 235
     mat_consultT                   shift and go to state 236
 
 state 180
 
-    (106) lst_consultT -> PARENTCL indice TP . indice PARENTCR
+    (106) list_consultT -> PARENTCL indice TP . indice PARENTCR
     (115) indice -> . INT
     (116) indice -> . ID
 
@@ -2777,13 +2777,13 @@ state 182
 
 state 183
 
-    (110) mat_consultT -> PARENTCL TP PARENTCR . lst_consultT
-    (105) lst_consultT -> . PARENTCL indice PARENTCR
-    (106) lst_consultT -> . PARENTCL indice TP indice PARENTCR
+    (110) mat_consultT -> PARENTCL TP PARENTCR . list_consultT
+    (105) list_consultT -> . PARENTCL indice PARENTCR
+    (106) list_consultT -> . PARENTCL indice TP indice PARENTCR
 
     PARENTCL        shift and go to state 186
 
-    lst_consultT                   shift and go to state 240
+    list_consultT                  shift and go to state 240
 
 state 184
 
@@ -2807,8 +2807,8 @@ state 185
 
 state 186
 
-    (105) lst_consultT -> PARENTCL . indice PARENTCR
-    (106) lst_consultT -> PARENTCL . indice TP indice PARENTCR
+    (105) list_consultT -> PARENTCL . indice PARENTCR
+    (106) list_consultT -> PARENTCL . indice TP indice PARENTCR
     (115) indice -> . INT
     (116) indice -> . ID
 
@@ -2905,7 +2905,7 @@ state 192
     (40) shape -> . identifier DOT shape_arg SEMICOLON
     (41) delete -> . identifier DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON
     (42) call -> . CALL proc_dec SEMICOLON
-    (104) list_consult -> . ID lst_consultT
+    (104) list_consult -> . ID list_consultT
     (107) mat_consult -> . ID mat_consultT
     (112) 3dmat_consult -> . ID 3dmat_consultT
     (44) for -> . FOR ID IN iterable step LCORCH alt_block RCORCH SEMICOLON
@@ -3315,7 +3315,7 @@ state 222
     (66) term -> . term multiplying_operator factor
     (124) adding_operator -> . PLUS
     (125) adding_operator -> . MINUS
-    (104) list_consult -> . ID lst_consultT
+    (104) list_consult -> . ID list_consultT
     (107) mat_consult -> . ID mat_consultT
     (112) 3dmat_consult -> . ID 3dmat_consultT
     (67) factor -> . INT
@@ -3462,12 +3462,12 @@ state 233
 
 state 234
 
-    (105) lst_consultT -> PARENTCL . indice PARENTCR
-    (106) lst_consultT -> PARENTCL . indice TP indice PARENTCR
+    (105) list_consultT -> PARENTCL . indice PARENTCR
+    (106) list_consultT -> PARENTCL . indice TP indice PARENTCR
     (108) mat_consultT -> PARENTCL . indice COMMA indice PARENTCR
     (109) mat_consultT -> PARENTCL . TP COMMA indice PARENTCR
-    (110) mat_consultT -> PARENTCL . TP PARENTCR lst_consultT
-    (111) mat_consultT -> PARENTCL . indice PARENTCR lst_consultT
+    (110) mat_consultT -> PARENTCL . TP PARENTCR list_consultT
+    (111) mat_consultT -> PARENTCL . indice PARENTCR list_consultT
     (115) indice -> . INT
     (116) indice -> . ID
 
@@ -3479,21 +3479,21 @@ state 234
 
 state 235
 
-    (111) mat_consultT -> PARENTCL indice PARENTCR lst_consultT .
+    (111) mat_consultT -> PARENTCL indice PARENTCR list_consultT .
 
-    SEMICOLON       reduce using rule 111 (mat_consultT -> PARENTCL indice PARENTCR lst_consultT .)
-    DOT             reduce using rule 111 (mat_consultT -> PARENTCL indice PARENTCR lst_consultT .)
-    ASSIGN          reduce using rule 111 (mat_consultT -> PARENTCL indice PARENTCR lst_consultT .)
-    COMMA           reduce using rule 111 (mat_consultT -> PARENTCL indice PARENTCR lst_consultT .)
-    NE              reduce using rule 111 (mat_consultT -> PARENTCL indice PARENTCR lst_consultT .)
-    LT              reduce using rule 111 (mat_consultT -> PARENTCL indice PARENTCR lst_consultT .)
-    GT              reduce using rule 111 (mat_consultT -> PARENTCL indice PARENTCR lst_consultT .)
-    LTE             reduce using rule 111 (mat_consultT -> PARENTCL indice PARENTCR lst_consultT .)
-    GTE             reduce using rule 111 (mat_consultT -> PARENTCL indice PARENTCR lst_consultT .)
-    COMPARE         reduce using rule 111 (mat_consultT -> PARENTCL indice PARENTCR lst_consultT .)
-    RPARENT         reduce using rule 111 (mat_consultT -> PARENTCL indice PARENTCR lst_consultT .)
-    STEP            reduce using rule 111 (mat_consultT -> PARENTCL indice PARENTCR lst_consultT .)
-    LCORCH          reduce using rule 111 (mat_consultT -> PARENTCL indice PARENTCR lst_consultT .)
+    SEMICOLON       reduce using rule 111 (mat_consultT -> PARENTCL indice PARENTCR list_consultT .)
+    DOT             reduce using rule 111 (mat_consultT -> PARENTCL indice PARENTCR list_consultT .)
+    ASSIGN          reduce using rule 111 (mat_consultT -> PARENTCL indice PARENTCR list_consultT .)
+    COMMA           reduce using rule 111 (mat_consultT -> PARENTCL indice PARENTCR list_consultT .)
+    NE              reduce using rule 111 (mat_consultT -> PARENTCL indice PARENTCR list_consultT .)
+    LT              reduce using rule 111 (mat_consultT -> PARENTCL indice PARENTCR list_consultT .)
+    GT              reduce using rule 111 (mat_consultT -> PARENTCL indice PARENTCR list_consultT .)
+    LTE             reduce using rule 111 (mat_consultT -> PARENTCL indice PARENTCR list_consultT .)
+    GTE             reduce using rule 111 (mat_consultT -> PARENTCL indice PARENTCR list_consultT .)
+    COMPARE         reduce using rule 111 (mat_consultT -> PARENTCL indice PARENTCR list_consultT .)
+    RPARENT         reduce using rule 111 (mat_consultT -> PARENTCL indice PARENTCR list_consultT .)
+    STEP            reduce using rule 111 (mat_consultT -> PARENTCL indice PARENTCR list_consultT .)
+    LCORCH          reduce using rule 111 (mat_consultT -> PARENTCL indice PARENTCR list_consultT .)
 
 
 state 236
@@ -3517,7 +3517,7 @@ state 236
 
 state 237
 
-    (106) lst_consultT -> PARENTCL indice TP indice . PARENTCR
+    (106) list_consultT -> PARENTCL indice TP indice . PARENTCR
 
     PARENTCR        shift and go to state 273
 
@@ -3540,21 +3540,21 @@ state 239
 
 state 240
 
-    (110) mat_consultT -> PARENTCL TP PARENTCR lst_consultT .
+    (110) mat_consultT -> PARENTCL TP PARENTCR list_consultT .
 
-    SEMICOLON       reduce using rule 110 (mat_consultT -> PARENTCL TP PARENTCR lst_consultT .)
-    DOT             reduce using rule 110 (mat_consultT -> PARENTCL TP PARENTCR lst_consultT .)
-    ASSIGN          reduce using rule 110 (mat_consultT -> PARENTCL TP PARENTCR lst_consultT .)
-    COMMA           reduce using rule 110 (mat_consultT -> PARENTCL TP PARENTCR lst_consultT .)
-    NE              reduce using rule 110 (mat_consultT -> PARENTCL TP PARENTCR lst_consultT .)
-    LT              reduce using rule 110 (mat_consultT -> PARENTCL TP PARENTCR lst_consultT .)
-    GT              reduce using rule 110 (mat_consultT -> PARENTCL TP PARENTCR lst_consultT .)
-    LTE             reduce using rule 110 (mat_consultT -> PARENTCL TP PARENTCR lst_consultT .)
-    GTE             reduce using rule 110 (mat_consultT -> PARENTCL TP PARENTCR lst_consultT .)
-    COMPARE         reduce using rule 110 (mat_consultT -> PARENTCL TP PARENTCR lst_consultT .)
-    RPARENT         reduce using rule 110 (mat_consultT -> PARENTCL TP PARENTCR lst_consultT .)
-    STEP            reduce using rule 110 (mat_consultT -> PARENTCL TP PARENTCR lst_consultT .)
-    LCORCH          reduce using rule 110 (mat_consultT -> PARENTCL TP PARENTCR lst_consultT .)
+    SEMICOLON       reduce using rule 110 (mat_consultT -> PARENTCL TP PARENTCR list_consultT .)
+    DOT             reduce using rule 110 (mat_consultT -> PARENTCL TP PARENTCR list_consultT .)
+    ASSIGN          reduce using rule 110 (mat_consultT -> PARENTCL TP PARENTCR list_consultT .)
+    COMMA           reduce using rule 110 (mat_consultT -> PARENTCL TP PARENTCR list_consultT .)
+    NE              reduce using rule 110 (mat_consultT -> PARENTCL TP PARENTCR list_consultT .)
+    LT              reduce using rule 110 (mat_consultT -> PARENTCL TP PARENTCR list_consultT .)
+    GT              reduce using rule 110 (mat_consultT -> PARENTCL TP PARENTCR list_consultT .)
+    LTE             reduce using rule 110 (mat_consultT -> PARENTCL TP PARENTCR list_consultT .)
+    GTE             reduce using rule 110 (mat_consultT -> PARENTCL TP PARENTCR list_consultT .)
+    COMPARE         reduce using rule 110 (mat_consultT -> PARENTCL TP PARENTCR list_consultT .)
+    RPARENT         reduce using rule 110 (mat_consultT -> PARENTCL TP PARENTCR list_consultT .)
+    STEP            reduce using rule 110 (mat_consultT -> PARENTCL TP PARENTCR list_consultT .)
+    LCORCH          reduce using rule 110 (mat_consultT -> PARENTCL TP PARENTCR list_consultT .)
 
 
 state 241
@@ -3589,8 +3589,8 @@ state 243
 
 state 244
 
-    (105) lst_consultT -> PARENTCL indice . PARENTCR
-    (106) lst_consultT -> PARENTCL indice . TP indice PARENTCR
+    (105) list_consultT -> PARENTCL indice . PARENTCR
+    (106) list_consultT -> PARENTCL indice . TP indice PARENTCR
 
     PARENTCR        shift and go to state 278
     TP              shift and go to state 180
@@ -3869,10 +3869,10 @@ state 271
 
 state 272
 
-    (105) lst_consultT -> PARENTCL indice . PARENTCR
-    (106) lst_consultT -> PARENTCL indice . TP indice PARENTCR
+    (105) list_consultT -> PARENTCL indice . PARENTCR
+    (106) list_consultT -> PARENTCL indice . TP indice PARENTCR
     (108) mat_consultT -> PARENTCL indice . COMMA indice PARENTCR
-    (111) mat_consultT -> PARENTCL indice . PARENTCR lst_consultT
+    (111) mat_consultT -> PARENTCL indice . PARENTCR list_consultT
 
     PARENTCR        shift and go to state 294
     TP              shift and go to state 180
@@ -3881,21 +3881,21 @@ state 272
 
 state 273
 
-    (106) lst_consultT -> PARENTCL indice TP indice PARENTCR .
+    (106) list_consultT -> PARENTCL indice TP indice PARENTCR .
 
-    SEMICOLON       reduce using rule 106 (lst_consultT -> PARENTCL indice TP indice PARENTCR .)
-    DOT             reduce using rule 106 (lst_consultT -> PARENTCL indice TP indice PARENTCR .)
-    ASSIGN          reduce using rule 106 (lst_consultT -> PARENTCL indice TP indice PARENTCR .)
-    COMMA           reduce using rule 106 (lst_consultT -> PARENTCL indice TP indice PARENTCR .)
-    NE              reduce using rule 106 (lst_consultT -> PARENTCL indice TP indice PARENTCR .)
-    LT              reduce using rule 106 (lst_consultT -> PARENTCL indice TP indice PARENTCR .)
-    GT              reduce using rule 106 (lst_consultT -> PARENTCL indice TP indice PARENTCR .)
-    LTE             reduce using rule 106 (lst_consultT -> PARENTCL indice TP indice PARENTCR .)
-    GTE             reduce using rule 106 (lst_consultT -> PARENTCL indice TP indice PARENTCR .)
-    COMPARE         reduce using rule 106 (lst_consultT -> PARENTCL indice TP indice PARENTCR .)
-    RPARENT         reduce using rule 106 (lst_consultT -> PARENTCL indice TP indice PARENTCR .)
-    STEP            reduce using rule 106 (lst_consultT -> PARENTCL indice TP indice PARENTCR .)
-    LCORCH          reduce using rule 106 (lst_consultT -> PARENTCL indice TP indice PARENTCR .)
+    SEMICOLON       reduce using rule 106 (list_consultT -> PARENTCL indice TP indice PARENTCR .)
+    DOT             reduce using rule 106 (list_consultT -> PARENTCL indice TP indice PARENTCR .)
+    ASSIGN          reduce using rule 106 (list_consultT -> PARENTCL indice TP indice PARENTCR .)
+    COMMA           reduce using rule 106 (list_consultT -> PARENTCL indice TP indice PARENTCR .)
+    NE              reduce using rule 106 (list_consultT -> PARENTCL indice TP indice PARENTCR .)
+    LT              reduce using rule 106 (list_consultT -> PARENTCL indice TP indice PARENTCR .)
+    GT              reduce using rule 106 (list_consultT -> PARENTCL indice TP indice PARENTCR .)
+    LTE             reduce using rule 106 (list_consultT -> PARENTCL indice TP indice PARENTCR .)
+    GTE             reduce using rule 106 (list_consultT -> PARENTCL indice TP indice PARENTCR .)
+    COMPARE         reduce using rule 106 (list_consultT -> PARENTCL indice TP indice PARENTCR .)
+    RPARENT         reduce using rule 106 (list_consultT -> PARENTCL indice TP indice PARENTCR .)
+    STEP            reduce using rule 106 (list_consultT -> PARENTCL indice TP indice PARENTCR .)
+    LCORCH          reduce using rule 106 (list_consultT -> PARENTCL indice TP indice PARENTCR .)
 
 
 state 274
@@ -3960,21 +3960,21 @@ state 277
 
 state 278
 
-    (105) lst_consultT -> PARENTCL indice PARENTCR .
+    (105) list_consultT -> PARENTCL indice PARENTCR .
 
-    COMMA           reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    SEMICOLON       reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    DOT             reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    ASSIGN          reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    NE              reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    LT              reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    GT              reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    LTE             reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    GTE             reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    COMPARE         reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    RPARENT         reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    STEP            reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    LCORCH          reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
+    COMMA           reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    SEMICOLON       reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    DOT             reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    ASSIGN          reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    NE              reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    LT              reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    GT              reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    LTE             reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    GTE             reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    COMPARE         reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    RPARENT         reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    STEP            reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    LCORCH          reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
 
 
 state 279
@@ -4020,7 +4020,7 @@ state 279
     (40) shape -> . identifier DOT shape_arg SEMICOLON
     (41) delete -> . identifier DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON
     (42) call -> . CALL proc_dec SEMICOLON
-    (104) list_consult -> . ID lst_consultT
+    (104) list_consult -> . ID list_consultT
     (107) mat_consult -> . ID mat_consultT
     (112) 3dmat_consult -> . ID 3dmat_consultT
     (44) for -> . FOR ID IN iterable step LCORCH alt_block RCORCH SEMICOLON
@@ -4148,7 +4148,7 @@ state 287
     (66) term -> . term multiplying_operator factor
     (124) adding_operator -> . PLUS
     (125) adding_operator -> . MINUS
-    (104) list_consult -> . ID lst_consultT
+    (104) list_consult -> . ID list_consultT
     (107) mat_consult -> . ID mat_consultT
     (112) 3dmat_consult -> . ID 3dmat_consultT
     (67) factor -> . INT
@@ -4222,7 +4222,7 @@ state 288
     (40) shape -> . identifier DOT shape_arg SEMICOLON
     (41) delete -> . identifier DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON
     (42) call -> . CALL proc_dec SEMICOLON
-    (104) list_consult -> . ID lst_consultT
+    (104) list_consult -> . ID list_consultT
     (107) mat_consult -> . ID mat_consultT
     (112) 3dmat_consult -> . ID 3dmat_consultT
     (44) for -> . FOR ID IN iterable step LCORCH alt_block RCORCH SEMICOLON
@@ -4324,27 +4324,27 @@ state 293
 
 state 294
 
-    (105) lst_consultT -> PARENTCL indice PARENTCR .
-    (111) mat_consultT -> PARENTCL indice PARENTCR . lst_consultT
-    (105) lst_consultT -> . PARENTCL indice PARENTCR
-    (106) lst_consultT -> . PARENTCL indice TP indice PARENTCR
+    (105) list_consultT -> PARENTCL indice PARENTCR .
+    (111) mat_consultT -> PARENTCL indice PARENTCR . list_consultT
+    (105) list_consultT -> . PARENTCL indice PARENTCR
+    (106) list_consultT -> . PARENTCL indice TP indice PARENTCR
 
-    SEMICOLON       reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    DOT             reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    ASSIGN          reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    COMMA           reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    NE              reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    LT              reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    GT              reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    LTE             reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    GTE             reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    COMPARE         reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    RPARENT         reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    STEP            reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
-    LCORCH          reduce using rule 105 (lst_consultT -> PARENTCL indice PARENTCR .)
+    SEMICOLON       reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    DOT             reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    ASSIGN          reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    COMMA           reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    NE              reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    LT              reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    GT              reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    LTE             reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    GTE             reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    COMPARE         reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    RPARENT         reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    STEP            reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
+    LCORCH          reduce using rule 105 (list_consultT -> PARENTCL indice PARENTCR .)
     PARENTCL        shift and go to state 186
 
-    lst_consultT                   shift and go to state 235
+    list_consultT                  shift and go to state 235
 
 state 295
 
@@ -4656,7 +4656,7 @@ state 321
     (40) shape -> . identifier DOT shape_arg SEMICOLON
     (41) delete -> . identifier DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON
     (42) call -> . CALL proc_dec SEMICOLON
-    (104) list_consult -> . ID lst_consultT
+    (104) list_consult -> . ID list_consultT
     (107) mat_consult -> . ID mat_consultT
     (112) 3dmat_consult -> . ID 3dmat_consultT
     (44) for -> . FOR ID IN iterable step LCORCH alt_block RCORCH SEMICOLON
