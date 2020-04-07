@@ -9,152 +9,152 @@ global v=False;
 	Procedure test ()
 	{
 		begin
-		var1=5;
+		--var1=5;
 		x,y =m[2][1][0],n[9];
-		var=True;
-		type(var);
+		--var=True;
+		--type(var);
 		end;	
 	};
 
 --Variables y asignacion de variables
 
-	Procedure test ()
-	{
-		begin
+	--Procedure test ()
+	--{
+		--begin
 		--masdediezcaracteres=10;
 		--Mayusc=10;
-		v@ar&=10;
-		v=10;
-		z= x + y * 10 / 4;
-		m=x + ((y * 10) / 4);
-		w=((x + y) * 10) / 4;
-		end;	
-	};
+		--v@ar&=10;
+		--v=10;
+		--z= x + y * 10 / 4;
+		--m=x + ((y * 10) / 4);
+		--w=((x + y) * 10) / 4;
+		--end;	
+	--};
 
 --Listas
-	Procedure test ()
-	{
-		begin
-		var=[];
-		x = [True, True, False, False, False, False, True, True, True, True];
-		type(x[0]);
-		x[1:4];
-		type(x[1:4]);
-		l=range(5,True);
-		end;	
-	};
+	--Procedure test ()
+	--{
+		--begin
+		--var=[];
+		--x = [True, True, False, False, False, False, True, True, True, True];
+		--type(x[0]);
+		--x[1:4];
+		--type(x[1:4]);
+		--l=range(5,True);
+		--end;	
+	--};
 
 --Modificando los valores de la lista
-	Procedure test ()
-	{
-		begin
-		milista[0] = True;
-		milista[1:3] = [True, False];
-		end;	
-	};
+	--Procedure test ()
+	--{
+		--begin
+		--milista[0] = True;
+		---milista[1:3] = [True, False];
+		--end;	
+	--};
 
 --Agregando valores a una lista
-	Procedure test ()
-	{
-		begin
-		miLista.insert(2,False);
-		end;	
-	};
+	--Procedure test ()
+	--{
+		--begin
+		--miLista.insert(2,False);
+		--end;	
+	--};
 
 --Borrando valores de una lista
-	Procedure test ()
-	{
-		begin
-		miLista.del(2);
-		end;	
-	};
+	--Procedure test ()
+	--{
+		--begin
+		--miLista.del(2);
+		--end;	
+	--};
 
 --Longitud de una lista
-	Procedure test ()
-	{
-		begin
-		len(miLista);
-		end;	
-	};
+	--Procedure test ()
+	--{
+		--begin
+		--len(miLista);
+		--end;	
+	--};
 
 --Operaciones booleanas
-	Procedure test ()
-	{
-		begin
-		x.Neg;
-		x[0].Neg;
-		x[0,1].Neg;
-		x[:,15];
-		x[1:10];
-		x[1,0,4].Neg;
+	--Procedure test ()
+	--{
+		--begin
+		--x.Neg;
+		--x[0].Neg;
+		--x[0,1].Neg;
+		--x[:,15];
+		--x[1:10];
+		--x[1,0,4].Neg;
 
-		milista[1].T;
-		milista[1:3].T;
-		milista.T;
-		mat[0][1].T;
-		mat[0,1,2].T;
+		--milista[1].T;
+		--milista[1:3].T;
+		--milista.T;
+		--mat[0][1].T;
+		--mat[0,1,2].T;
 
-		Blink(x[1],5, "Seg", True);
-		Blink(x[1], False);
-		end;	
-	};
+		--Blink(x[1],5, "Seg", True);
+		--Blink(x[1], False);
+		--end;	
+	--};
 
 --Temporalizador
-	Procedure test ()
-	{
-		begin
-		Delay();
-		Delay(5, "Mil"); 
-		end;	
-	};
+	--Procedure test ()
+	--{
+		--begin
+		--Delay();
+		--Delay(5, "Mil"); 
+		--end;	
+	--};
 
 --Ciclos for
-	Procedure test ()
-	{
-		begin
-		for var1 in x Step 2{x[var1].Neg;};
-		for var1 in milista[1:3]{x[var1].Neg;};
-		for var1 in 10{x=10;type(x);};
-		end;	
-	};
+	--Procedure test ()
+	--{
+		--begin
+		--for var1 in x Step 2{x[var1].Neg;};
+		--for var1 in milista[1:3]{x[var1].Neg;};
+		--for var1 in 10{x=10;type(x);};
+		--end;	
+	--};
 
 --Matrices
-	Procedure test ()
-	{
-		begin
-		mat=[[True, False, True],[True, True, True],[False, False, True]];
-		mat[1];
-		mat[1][1];
-		mat[:][1];
-		mat.shapeA;
-		mat.insert([True, False, True], 0);
-		mat.insert([True, False, True], 0,0);
-		a3dmat[1].insert([True, False, True], 0);
-		mat.delete(0,0);
-		a3dmat[1].delete(0,0);
-		end;	
-	};
+	--Procedure test ()
+	--{
+		--begin
+		--mat=[[True, False, True],[True, True, True],[False, False, True]];
+		--mat[1];
+		--mat[1][1];
+		--mat[:][1];
+		--mat.shapeA;
+		--mat.insert([True, False, True], 0);
+		--mat.insert([True, False, True], 0,0);
+		--a3dmat[1].insert([True, False, True], 0);
+		--mat.delete(0,0);
+		--a3dmat[1].delete(0,0);
+		--end;	
+	--};
 
 --Modificar Matrices 3D
-	Procedure test ()
-	{
-		begin
-		a3dmat[1][1][1] = True;
-		a3dmat[1][1][1] = a3dmat[2][2][2];
-		a3dmat[1][1][1] = lista1;
-		a3dmat[1]=mat1;
-		end;	
-	};
+	--Procedure test ()
+	--{
+		--begin
+		---a3dmat[1][1][1] = True;
+		--a3dmat[1][1][1] = a3dmat[2][2][2];
+		--a3dmat[1][1][1] = lista1;
+		--a3dmat[1]=mat1;
+		--end;	
+	--};
 
 --Bifurcacion
-	Procedure test ()
-	{
-		begin
-		if (var== 5){var=10;};
-		if (lista2[2] == True){type(lista2);};else{lista[2]=True;};
-		if (mat[:,1] == True){CALL procedure();	};
-		end;	
-	};
+	--Procedure test ()
+	--{
+		--begin
+		--if (var== 5){var=10;};
+		--if (lista2[2] == True){type(lista2);};else{lista[2]=True;};
+		--if (mat[:,1] == True){CALL procedure();	};
+		--end;	
+	--};
 
 
 
@@ -166,3 +166,9 @@ global v=False;
 	 	
 	 end;
 	};
+
+
+	--Procedure test ()
+	--{
+		
+	--};
