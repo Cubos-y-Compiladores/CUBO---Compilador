@@ -354,7 +354,7 @@ class MyApp(wx.Frame):
         self.t.start()
     def loop(self):
         while 1:
-            #self.changeReservedWords()
+            # self.changeReservedWords()
             self.changeReservedWords2()
     def click1(self,event):
         list1 = ['"', ",", "{", "}", "=", "--", "(", ")", "[", "]"]
@@ -534,56 +534,40 @@ class MyApp(wx.Frame):
         self.textMain.SetStyle(start, end, wx.TextAttr(color))
         self.textMain.SetDefaultStyle(wx.TextAttr(self.colorWhite))
 
-    def changeReservedWords(self):
+    def changeReservedWords(self,pos,text):
 
-        if self.flagSlider:
-            self.changeTextColorWithoutClear()
+        lexer = lex.lex()
+        lexer.input(text)
+        posInit = pos
 
-        if self.textMain.GetValue() != self.currenttext or len(self.textMain.GetValue()) != len(self.currenttext):
-
-            curPos = self.textMain.GetInsertionPoint()
-            print("curPos: " + str(curPos))
-            linenumber = self.textMain.PositionToXY(curPos)
-            print("linenumber: " + str(linenumber[2]))
-            # lineNum = self.textMain.GetRange(0,self.textMain.GetInsertionPoint())
-            lineText = self.textMain.GetLineText(linenumber[2])
-
-            print(lineText)
-            text = self.textMain.GetValue()
-            lexer = lex.lex()
-            lexer.input(lineText)
-            self.currenttext = text
-            posInit = curPos - linenumber[1]
-            print("POSIIT: "+ str(posInit))
-
-            while 1:
-                tok = lexer.token()
-                if not tok:
-                    break
-                else:
-                    if tok != None:
-                        if tok.type in self.reservedWords1:
-                            self.setStyleText(tok.lexpos+posInit,tok.lexpos + len(tok.value)+posInit, self.colorPurple)
-                        elif tok.type in self.reservedWords2:
-                            self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorLightBlue)
-                        elif tok.type == self.comment:
-                            self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorCel)
-                        elif tok.type in self.reservedWords3:
-                            self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorOrange)
-                        elif tok.type == self.rTrue:
-                            self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorGreen)
-                        elif tok.type in self.rFalse:
-                            self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorRed)
-                        elif tok.type in self.parentscorchs:
-                            self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorGrey)
-                        elif tok.type == "ID":
-                            self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorWhite)
-                        elif tok.type == "DOT" or tok.type == "SEMICOLON":
-                            self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorWhite)
-                        elif tok.type in self.symbols:
-                            self.setStyleText(tok.lexpos + posInit, tok.lexpos + len(tok.value) + posInit, self.colorOrange2)
-                        elif tok.type == "INT":
-                            self.setStyleText(tok.lexpos + posInit, tok.lexpos + len(str(tok.value)) + posInit, self.colorWhite)
+        while 1:
+            tok = lexer.token()
+            if not tok:
+                break
+            else:
+                if tok != None:
+                    if tok.type in self.reservedWords1:
+                        self.setStyleText(tok.lexpos+posInit,tok.lexpos + len(tok.value)+posInit, self.colorPurple)
+                    elif tok.type in self.reservedWords2:
+                        self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorLightBlue)
+                    elif tok.type == self.comment:
+                        self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorCel)
+                    elif tok.type in self.reservedWords3:
+                        self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorOrange)
+                    elif tok.type == self.rTrue:
+                        self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorGreen)
+                    elif tok.type in self.rFalse:
+                        self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorRed)
+                    elif tok.type in self.parentscorchs:
+                        self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorGrey)
+                    elif tok.type == "ID":
+                        self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorWhite)
+                    elif tok.type == "DOT" or tok.type == "SEMICOLON":
+                        self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorWhite)
+                    elif tok.type in self.symbols:
+                        self.setStyleText(tok.lexpos + posInit, tok.lexpos + len(tok.value) + posInit, self.colorOrange2)
+                    elif tok.type == "INT":
+                        self.setStyleText(tok.lexpos + posInit, tok.lexpos + len(str(tok.value)) + posInit, self.colorWhite)
 
     def changeReservedWords2(self):
         if self.flagSlider:
@@ -591,8 +575,9 @@ class MyApp(wx.Frame):
 
         if self.textMain.GetValue() != self.currenttext or len(self.textMain.GetValue()) != len(self.currenttext):
             if self.textMain.GetValue() != "":
-    
+
                 curPos = self.textMain.GetInsertionPoint()
+                print("curpos: "+ str(curPos))
                 linenumber = self.textMain.PositionToXY(curPos)
                 lineText = self.textMain.GetLineText(linenumber[2])
 
@@ -603,42 +588,42 @@ class MyApp(wx.Frame):
                 self.currenttext = text
                 posInit = curPos - linenumber[1]
 
-                list1 = ['"',",","{","}","=","--","(",")","[","]"]
-                list2 = "abcdefghijklmnñopqrstuvwxyz"
-                pack = []
-
-                if lineText[linenumber[1]-1] in list1:
-                    pack = (linenumber[1]-1,linenumber[1],lineText[linenumber[1]-1:linenumber[1]])
+                if "-" in lineText:
+                    self.changeReservedWords(posInit,lineText)
                 else:
-                    start = linenumber[1]-2
-                    end = linenumber[1]+1
+
+                    list1 = ['"',",","{","}","=","--","(",")","[","]"," "]
+                    listNum = "1234567890"
+                    list2 = "abcdefghijklmnñopqrstuvwxyz"
+                    pack = []
 
 
-                    if start <= 0:
-                        start = 0
-                    if end >= len(lineText):
-                        end = len(lineText)
-                    print("start: "+str(start))
-                    print("end: " + str(end))
+                    print(len(lineText))
+                    if len(lineText) != 0:
+                        if lineText[linenumber[1]-1] in list1 or lineText[linenumber[1]-1] in listNum:
 
-                    while lineText[start] in list2 and start != 0:
-                        start-=1
-                    while end != len(lineText) and lineText[end] in list2:
-                        end+=1
-                    pack = (start,end,lineText[start:end])
+                            pack = (linenumber[1]-1,linenumber[1],lineText[linenumber[1]-1:linenumber[1]],posInit)
+                        else:
+                            s = linenumber[1] - 1
+                            e = linenumber[1]
+                            if s <= 0:
+                                s = 0
+                            if e >= len(lineText):
+                                e = len(lineText)
+
+                            while lineText[s] in list2 and s != 0:
+                                s-=1
+                            while e != len(lineText) and lineText[e] in list2:
+                                e+=1
+                            pack = (s,e,lineText[s:e],posInit)
 
 
-                self.changeWordColor(pack)
+                        self.changeWordColor(pack)
 
-
-            # lintext
-            # whiles para recortar las palabras , aqui van los casos
-            # recortar el texto en las posiciones
-            # meterlo en el lexer
-            # cambiarlo de color en las posiciones
 
     def changeWordColor(self,tuple):
-        print("word: "+ str(tuple[2]))
+        print("tuple: ",tuple)
+
         lexer = lex.lex()
         lexer.input(tuple[2])
 
@@ -649,30 +634,27 @@ class MyApp(wx.Frame):
             else:
                 if tok != None:
                     if tok.type in self.reservedWords1:
-                        self.setStyleText(tuple[0], tuple[1], self.colorPurple)
+                        self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3], self.colorPurple)
                     elif tok.type in self.reservedWords2:
-                        self.setStyleText(tuple[0], tuple[1],self.colorLightBlue)
+                        self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3],self.colorLightBlue)
                     elif tok.type == self.comment:
-                        self.setStyleText(tuple[0], tuple[1], self.colorCel)
+                        self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3], self.colorCel)
                     elif tok.type in self.reservedWords3:
-                        self.setStyleText(tuple[0], tuple[1], self.colorOrange)
+                        self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3], self.colorOrange)
                     elif tok.type == self.rTrue:
-                        self.setStyleText(tuple[0], tuple[1], self.colorGreen)
+                        self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3], self.colorGreen)
                     elif tok.type in self.rFalse:
-                        self.setStyleText(tuple[0], tuple[1], self.colorRed)
+                        self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3], self.colorRed)
                     elif tok.type in self.parentscorchs:
-                        self.setStyleText(tuple[0], tuple[1], self.colorGrey)
+                        self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3], self.colorGrey)
                     elif tok.type == "ID":
-                        self.setStyleText(tuple[0], tuple[1], self.colorWhite)
+                        self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3], self.colorWhite)
                     elif tok.type == "DOT" or tok.type == "SEMICOLON":
-                        self.setStyleText(tuple[0], tuple[1], self.colorWhite)
+                        self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3], self.colorWhite)
                     elif tok.type in self.symbols:
-                        self.setStyleText(tuple[0], tuple[1],self.colorOrange2)
+                        self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3],self.colorOrange2)
                     elif tok.type == "INT":
-                        self.setStyleText(tuple[0], tuple[1],self.colorWhite)
-
-
-
+                        self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3],self.colorWhite)
 
 
 # Creando funcion que reconoce solo el texto nuevo para colorearlo
