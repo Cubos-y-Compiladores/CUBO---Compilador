@@ -1,0 +1,215 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Unused terminals:
+
+    BOOKED
+    CONST
+    GLOBAL
+    LENGHTERROR
+    VARERROR
+    WHILE
+
+Grammar
+
+Rule 0     S' -> program
+Rule 1     program -> const_block main_proc
+Rule 2     const_block -> const const const const const block
+Rule 3     block -> procedure block
+Rule 4     block -> global block
+Rule 5     block -> empty
+Rule 6     alt_block -> alt_content alt_block
+Rule 7     alt_block -> empty
+Rule 8     alt_content -> instruction
+Rule 9     alt_content -> assignment
+Rule 10    instruction -> function
+Rule 11    instruction -> consult SEMICOLON
+Rule 12    instruction -> cycle
+Rule 13    instruction -> statement
+Rule 14    assignment -> identifier ASSIGN a_content SEMICOLON
+Rule 15    assignment -> identifier COMMA identifier ASSIGN a_content COMMA a_content SEMICOLON
+Rule 16    function -> type
+Rule 17    function -> insert
+Rule 18    function -> del
+Rule 19    function -> len
+Rule 20    function -> neg
+Rule 21    function -> t_f
+Rule 22    function -> blink
+Rule 23    function -> delay
+Rule 24    function -> shape
+Rule 25    function -> delete
+Rule 26    function -> call
+Rule 27    type -> TYPE LPARENT identifier RPARENT SEMICOLON
+Rule 28    a_content -> RANGE LPARENT INT COMMA value RPARENT
+Rule 29    insert -> identifier DOT INSERT LPARENT i_content RPARENT SEMICOLON
+Rule 30    del -> identifier DOT DEL LPARENT INT RPARENT SEMICOLON
+Rule 31    len -> LEN LPARENT ID RPARENT SEMICOLON
+Rule 32    neg -> identifier DOT NEG SEMICOLON
+Rule 33    t_f -> identifier DOT tf SEMICOLON
+Rule 34    blink -> BLINK LPARENT b_content RPARENT SEMICOLON
+Rule 35    delay -> DELAY LPARENT d_content RPARENT SEMICOLON
+Rule 36    shape_arg -> SHAPEF
+Rule 37    shape_arg -> SHAPEC
+Rule 38    shape_arg -> SHAPEA
+Rule 39    shape -> identifier DOT shape_arg SEMICOLON
+Rule 40    delete -> identifier DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON
+Rule 41    call -> CALL proc_dec SEMICOLON
+Rule 42    cycle -> for
+Rule 43    for -> FOR ID IN iterable step LCORCH alt_block RCORCH SEMICOLON
+Rule 44    step -> STEP INT
+Rule 45    step -> empty
+Rule 46    statement -> IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement
+Rule 47    opt_statement -> ELSE LCORCH alt_block RCORCH SEMICOLON
+Rule 48    opt_statement -> empty
+Rule 49    procedure -> PROCEDURE proc_dec LCORCH body RCORCH SEMICOLON
+Rule 50    proc_dec -> proc_name LPARENT parameter RPARENT
+Rule 51    proc_name -> ID
+Rule 52    parameter -> proc_param
+Rule 53    parameter -> proc_param COMMA parameter
+Rule 54    parameter -> empty
+Rule 55    proc_param -> ID
+Rule 56    body -> BEGIN alt_block END SEMICOLON
+Rule 57    main_proc -> MAIN LPARENT RPARENT LCORCH main_body RCORCH SEMICOLON block
+Rule 58    main_body -> BEGIN main_block END SEMICOLON
+Rule 59    main_block -> instruction main_block
+Rule 60    main_block -> empty
+Rule 61    arithmetic -> term
+Rule 62    arithmetic -> adding_operator term
+Rule 63    arithmetic -> arithmetic adding_operator term
+Rule 64    term -> factor
+Rule 65    term -> term multiplying_operator factor
+Rule 66    factor -> INT
+Rule 67    factor -> ID
+Rule 68    factor -> LPARENT arithmetic RPARENT
+Rule 69    const -> TIMER ASSIGN INT SEMICOLON
+Rule 70    const -> RANGOTIMER ASSIGN time_mes SEMICOLON
+Rule 71    const -> dimension ASSIGN INT SEMICOLON
+Rule 72    const -> CUBO ASSIGN INT SEMICOLON
+Rule 73    a_content -> value
+Rule 74    a_content -> arithmetic
+Rule 75    a_content -> list
+Rule 76    a_content -> mat
+Rule 77    a_content -> 3dmat
+Rule 78    a_content -> consult
+Rule 79    b_content -> list_consult COMMA INT COMMA time_mes COMMA value
+Rule 80    b_content -> list_consult COMMA value
+Rule 81    d_content -> empty
+Rule 82    d_content -> INT COMMA time_mes
+Rule 83    tf -> T
+Rule 84    tf -> F
+Rule 85    i_content -> INT COMMA value
+Rule 86    i_content -> list COMMA INT i_ind
+Rule 87    list -> PARENTCL list_term PARENTCR
+Rule 88    list -> PARENTCL empty PARENTCR
+Rule 89    list_term -> list_value COMMA list_term
+Rule 90    list_term -> list_value
+Rule 91    list_value -> value
+Rule 92    mat -> PARENTCL mat_term PARENTCR
+Rule 93    mat_term -> mat_value COMMA mat_term
+Rule 94    mat_term -> mat_value
+Rule 95    mat_value -> list
+Rule 96    3dmat -> PARENTCL 3dmat_term PARENTCR
+Rule 97    3dmat_term -> 3dmat_value COMMA 3dmat_term
+Rule 98    3dmat_term -> 3dmat_value
+Rule 99    3dmat_value -> mat
+Rule 100   consult -> list_consult
+Rule 101   consult -> mat_consult
+Rule 102   consult -> 3dmat_consult
+Rule 103   list_consult -> ID list_consultT
+Rule 104   list_consultT -> PARENTCL indice PARENTCR
+Rule 105   list_consultT -> PARENTCL indice TP indice PARENTCR
+Rule 106   mat_consult -> ID mat_consultT
+Rule 107   mat_consultT -> PARENTCL indice COMMA indice PARENTCR
+Rule 108   mat_consultT -> PARENTCL TP COMMA indice PARENTCR
+Rule 109   mat_consultT -> PARENTCL TP PARENTCR list_consultT
+Rule 110   mat_consultT -> PARENTCL indice PARENTCR list_consultT
+Rule 111   3dmat_consult -> ID 3dmat_consultT
+Rule 112   3dmat_consultT -> PARENTCL indice COMMA indice COMMA indice PARENTCR
+Rule 113   3dmat_consultT -> PARENTCL indice PARENTCR mat_consultT
+Rule 114   indice -> INT
+Rule 115   indice -> ID
+Rule 116   i_ind -> COMMA INT
+Rule 117   i_ind -> empty
+Rule 118   dimension -> DIMFILAS
+Rule 119   dimension -> DIMCOLUMNAS
+Rule 120   time_mes -> QUOTES MIL QUOTES
+Rule 121   time_mes -> QUOTES MIN QUOTES
+Rule 122   time_mes -> QUOTES SEG QUOTES
+Rule 123   adding_operator -> PLUS
+Rule 124   adding_operator -> MINUS
+Rule 125   multiplying_operator -> TIMES
+Rule 126   multiplying_operator -> EXP
+Rule 127   multiplying_operator -> DIVIDE
+Rule 128   multiplying_operator -> DIVENT
+Rule 129   multiplying_operator -> MOD
+Rule 130   value -> FALSE
+Rule 131   value -> TRUE
+Rule 132   bif_value -> value
+Rule 133   bif_value -> arithmetic
+Rule 134   relation -> ASSIGN
+Rule 135   relation -> NE
+Rule 136   relation -> LT
+Rule 137   relation -> GT
+Rule 138   relation -> LTE
+Rule 139   relation -> GTE
+Rule 140   relation -> COMPARE
+Rule 141   identifier -> ID
+Rule 142   identifier -> consult
+Rule 143   iterable -> identifier
+Rule 144   iterable -> INT
+Rule 145   empty -> <empty>
+
+Terminals, with rules where they appear
+
+ASSIGN               : 14 15 69 70 71 72 134
+BEGIN                : 56 58
+BLINK                : 34
+BOOKED               : 
+CALL                 : 41
+COMMA                : 15 15 28 40 53 79 79 79 80 82 85 86 89 93 97 107 108 112 112 116
+COMPARE              : 140
+CONST                : 
+CUBO                 : 72
+DEL                  : 30
+DELAY                : 35
+DELETE               : 40
+DIMCOLUMNAS          : 119
+DIMFILAS             : 118
+DIVENT               : 128
+DIVIDE               : 127
+DOT                  : 29 30 32 33 39 40
+ELSE                 : 47
+END                  : 56 58
+EXP                  : 126
+F                    : 84
+FALSE                : 130
+FOR                  : 43
+GLOBAL               : 
+GT                   : 137
+GTE                  : 139
+ID                   : 31 43 51 55 67 103 106 111 115 141
+IF                   : 46
+IN                   : 43
+INSERT               : 29
+INT                  : 28 30 40 44 66 69 71 72 79 82 85 86 114 116 144
+LCORCH               : 43 46 47 49 57
+LEN                  : 31
+LENGHTERROR          : 
+LPARENT              : 27 28 29 30 31 34 35 40 46 50 57 68
+LT                   : 136
+LTE                  : 138
+MAIN                 : 57
+MIL                  : 120
+MIN                  : 121
+MINUS                : 124
+MOD                  : 129
+NE                   : 135
+NEG                  : 32
+PARENTCL             : 87 88 92 96 104 105 107 108 109 110 112 113
+PARENTCR             : 87 88 92 96 104 105 107 108 109 110 112 113
+PLUS                 : 123
+PROCEDURE            : 49
+QUOTES               : 120 120 121 121 122 122
+RANGE                : 28
+RANGOTIMER           : 70
+RCORCH               : 43 46 47 49 57
+RPARENT              : 27 28 29 30 31 34 35 40 46 50 57 68

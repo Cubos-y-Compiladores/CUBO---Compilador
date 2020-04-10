@@ -3,8 +3,9 @@ Rango_Timer = "Mil";
 Dim_Filas = 5;
 Dim_Columnas = 6;
 Cubo=9;
-global v=False;
---Asignaciones
+global x=9;
+global r=[[[True,False,False],[True,True,False],[True,True,True]],[[True,False,False],[True,True,False],[True,True,True]],[[True,False,False],[True,True,False],[True,True,True]]];
+global w=r[0][0][0];
 
 	Procedure test ()
 	{

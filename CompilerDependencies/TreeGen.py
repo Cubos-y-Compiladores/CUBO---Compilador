@@ -39,6 +39,7 @@ class NonTerminalNode(Node):
     def __init__(self,name,childs):
         self.name=name
         self.childs=childs
+        self.isToken= False
 
     def translate(self):
         global output
@@ -50,13 +51,42 @@ class NonTerminalNode(Node):
 
         return id
 
+    def getChilds(self):
+        return self.childs
+
+    def getName(self):
+        return self.name
+
+    def getIsToken(self):
+        return self.isToken
+
 class TerminalNode(Node):
     def __init__(self,name,token):
         self.name=name
         self.token=str(token)
+        self.isToken = True
+        self.type= None
 
     def translate(self):
         global output
         id = counterIncreaser()
         output += id + "[label= " + self.token + "]" + "\n\t"
         return id
+
+    def getChilds(self):
+        return self.childs
+
+    def getToken(self):
+        return self.token
+
+    def getName(self):
+        return self.name
+
+    def getIsToken(self):
+        return self.isToken
+
+    def setType(self,type):
+        self.type=type
+
+    def getType(self):
+        return self.type

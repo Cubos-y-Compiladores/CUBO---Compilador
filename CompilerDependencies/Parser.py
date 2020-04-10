@@ -1,14 +1,10 @@
 import ply.yacc as yacc
-import os, codecs, re
-from TreeGen import *
+import codecs, sys
+from CompilerDependencies.Lexer import *
+from CompilerDependencies.TreeGen import *
+from CompilerDependencies.Semantics import *
 
 from pip._vendor import colorama
-from pip._vendor.distlib.compat import raw_input
-
-from Lexer import tokens
-from Lexer import tokenViewer as tv
-from sys import stdin
-
 precedence = (
     ('left','ID','IF','WHILE','TYPE','LEN','BLINK','DELAY','FOR'),
     ('right','ASSIGN'),
@@ -23,6 +19,8 @@ def p_program(p):
     '''program : const_block main_proc'''
     p[0]=ProgramNode([p[1],p[2]])
     print("program")
+    print(colorama.Fore.GREEN + "Successful compilation! Generating code...")
+
 
 def p_constB(p):
     '''const_block : const const const const const block'''
@@ -101,6 +99,7 @@ def p_instruction3(p):
 ##########---ASIGNACIONES GLOBALES---##########
 def p_globalAssignment(p):
     '''global : GLOBAL assignment '''
+    globalAssignmentSem(p)
     p[0]=NonTerminalNode("GlobalAssignment",[TerminalNode("Global","GLOBAL"),p[2]])
     print("globalAssignment")
 
@@ -345,6 +344,7 @@ def p_body(p):
 
 def p_mainProcedure(p):
     '''main_proc : MAIN LPARENT RPARENT LCORCH main_body RCORCH SEMICOLON block'''
+    line = len(p.stack)
     p[0]=NonTerminalNode("MainProc",[TerminalNode("Main","MAIN"),TerminalNode("Lparent","LPARENT"),TerminalNode("Rparent","RPARENT"),TerminalNode("Lcorch","LCORCH"),p[5],TerminalNode("Rcorch","RCORCH"),p[8]])
     print("mainProcedure")
 
@@ -860,7 +860,7 @@ def p_empty(p):
     pass
 
 def translate(result):
-	graphFile = open('graphviztree.vz','w')
+	graphFile = open('graphviztree.vz', 'w')
 	graphFile.write(result.translate())
 	graphFile.close()
 
@@ -874,11 +874,10 @@ def p_error(p):
     else:
         print(colorama.Fore.RED + "SYNTACTIC ERROR: Unknown syntax error" + colorama.Fore.RESET)
 
-
 test = 'C:/Users/dcama/Desktop/Compilador/Test'
 fp = codecs.open(test, "r", "utf-8")
 chain = fp.read()
 parser = yacc.yacc()
-tv(chain)
+#tv(chain)
 result = parser.parse(chain)
 translate(result)
