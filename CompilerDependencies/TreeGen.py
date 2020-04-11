@@ -84,9 +84,3 @@ class TerminalNode(Node):
 
     def getIsToken(self):
         return self.isToken
-
-    def setType(self,type):
-        self.type=type
-
-    def getType(self):
-        return self.type

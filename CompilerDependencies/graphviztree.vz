@@ -1,50 +1,50 @@
 digraph G {
 	 1[label= Program]
 	2[label= ConstB]
-	3[label= Const0]
-	4[label= TIMER]
+	3[label= Const1]
+	4[label= RANGOTIMER]
 	3->4
 	5[label= ASSIGN]
 	3->5
-	6[label= 15]
+	6[label= TimeM2]
+	7[label= SEG]
+	6->7
 	3->6
 	2->3
-	7[label= Const1]
-	8[label= RANGOTIMER]
-	7->8
-	9[label= ASSIGN]
-	7->9
-	10[label= TimeM0]
-	11[label= MIL]
-	10->11
-	7->10
-	2->7
-	12[label= Const2]
-	13[label= Dim0]
-	14[label= DIMFILAS]
+	8[label= Const2]
+	9[label= Dim0]
+	10[label= DIMFILAS]
+	9->10
+	8->9
+	11[label= ASSIGN]
+	8->11
+	12[label= 6]
+	8->12
+	2->8
+	13[label= Const2]
+	14[label= Dim1]
+	15[label= DIMCOLUMNAS]
+	14->15
 	13->14
-	12->13
-	15[label= ASSIGN]
-	12->15
-	16[label= 5]
-	12->16
-	2->12
-	17[label= Const2]
-	18[label= Dim1]
-	19[label= DIMCOLUMNAS]
+	16[label= ASSIGN]
+	13->16
+	17[label= 5]
+	13->17
+	2->13
+	18[label= Const0]
+	19[label= TIMER]
 	18->19
-	17->18
 	20[label= ASSIGN]
-	17->20
-	21[label= 6]
-	17->21
-	2->17
+	18->20
+	21[label= 15]
+	18->21
+	2->18
 	22[label= Const3]
 	23[label= CUBE]
 	22->23
 	24[label= ASSIGN]
 	22->24
-	25[label= 9]
+	25[label= 6]
 	22->25
 	2->22
 	26[label= Block1]
@@ -53,213 +53,601 @@ digraph G {
 	27->28
 	29[label= SimpleAssignment]
 	30[label= Identifier0]
-	31[label= r]
+	31[label= z]
 	30->31
 	29->30
 	32[label= ASSIGN]
 	29->32
-	33[label= Acont0]
-	34[label= Value1]
-	35[label= TRUE]
+	33[label= Acont1]
+	34[label= Arithmetic0]
+	35[label= Term0]
+	36[label= Factor0]
+	37[label= 10]
+	36->37
+	35->36
 	34->35
 	33->34
 	29->33
 	27->29
 	26->27
-	36[label= Block1]
-	37[label= GlobalAssignment]
-	38[label= GLOBAL]
-	37->38
-	39[label= DoubleAssignment]
-	40[label= Identifier0]
-	41[label= w]
-	40->41
+	38[label= Block1]
+	39[label= GlobalAssignment]
+	40[label= GLOBAL]
 	39->40
-	42[label= COMMA]
-	39->42
-	43[label= Identifier0]
-	44[label= l]
-	43->44
-	39->43
-	45[label= ASSIGN]
-	39->45
-	46[label= Acont0]
-	47[label= Value1]
-	48[label= TRUE]
-	47->48
+	41[label= SimpleAssignment]
+	42[label= Identifier0]
+	43[label= r]
+	42->43
+	41->42
+	44[label= ASSIGN]
+	41->44
+	45[label= Acont4]
+	46[label= 3dMat]
+	47[label= PARENTCL]
 	46->47
-	39->46
-	49[label= COMMA]
-	39->49
-	50[label= Acont2]
-	51[label= List]
-	52[label= PARENTCL]
-	51->52
-	53[label= ListT0]
-	54[label= ListV]
-	55[label= Value1]
-	56[label= TRUE]
-	55->56
-	54->55
-	53->54
-	57[label= COMMA]
-	53->57
-	58[label= ListT0]
-	59[label= ListV]
-	60[label= Value0]
-	61[label= FALSE]
-	60->61
-	59->60
-	58->59
-	62[label= COMMA]
-	58->62
-	63[label= ListT1]
-	64[label= ListV]
-	65[label= Value1]
-	66[label= TRUE]
-	65->66
-	64->65
-	63->64
-	58->63
-	53->58
-	51->53
-	67[label= PARENTCR]
-	51->67
+	48[label= ThreeDMatT0]
+	49[label= ThreeDMatV]
+	50[label= Mat]
+	51[label= PARENTCL]
 	50->51
-	39->50
-	37->39
-	36->37
-	68[label= Block0]
-	69[label= ProcedureP]
-	70[label= PROCEDURE]
-	69->70
-	71[label= ProcDec]
-	72[label= ProcName]
-	73[label= test]
-	72->73
-	71->72
-	74[label= LPARENT]
-	71->74
-	75[label= Null]
-	71->75
-	76[label= RPARENT]
-	71->76
-	69->71
-	77[label= LCORCH]
-	69->77
-	78[label= Body]
-	79[label= BEGIN]
+	52[label= MatT0]
+	53[label= MatV]
+	54[label= List]
+	55[label= PARENTCL]
+	54->55
+	56[label= ListT0]
+	57[label= ListV]
+	58[label= Value1]
+	59[label= TRUE]
+	58->59
+	57->58
+	56->57
+	60[label= COMMA]
+	56->60
+	61[label= ListT0]
+	62[label= ListV]
+	63[label= Value0]
+	64[label= FALSE]
+	63->64
+	62->63
+	61->62
+	65[label= COMMA]
+	61->65
+	66[label= ListT1]
+	67[label= ListV]
+	68[label= Value0]
+	69[label= FALSE]
+	68->69
+	67->68
+	66->67
+	61->66
+	56->61
+	54->56
+	70[label= PARENTCR]
+	54->70
+	53->54
+	52->53
+	71[label= COMMA]
+	52->71
+	72[label= MatT0]
+	73[label= MatV]
+	74[label= List]
+	75[label= PARENTCL]
+	74->75
+	76[label= ListT0]
+	77[label= ListV]
+	78[label= Value1]
+	79[label= TRUE]
 	78->79
-	80[label= AltBlock]
-	81[label= AltContent1]
-	82[label= DoubleAssignment]
-	83[label= Identifier0]
-	84[label= x]
+	77->78
+	76->77
+	80[label= COMMA]
+	76->80
+	81[label= ListT0]
+	82[label= ListV]
+	83[label= Value1]
+	84[label= TRUE]
 	83->84
 	82->83
-	85[label= COMMA]
-	82->85
-	86[label= Identifier0]
-	87[label= y]
-	86->87
-	82->86
-	88[label= ASSIGN]
-	82->88
-	89[label= Acont5]
-	90[label= Consult2]
-	91[label= ThreeDMatConsult]
-	92[label= m]
-	91->92
-	93[label= ThreeDMatConsultT1]
-	94[label= PARENTCL]
-	93->94
-	95[label= Indice0]
-	96[label= 2]
-	95->96
-	93->95
-	97[label= PARENTCR]
-	93->97
-	98[label= MatConsultT3]
-	99[label= PARENTCL]
-	98->99
-	100[label= Indice0]
-	101[label= 1]
-	100->101
-	98->100
-	102[label= PARENTCR]
-	98->102
-	103[label= ListConsultT0]
-	104[label= PARENTCL]
-	103->104
-	105[label= Indice0]
-	106[label= 0]
-	105->106
-	103->105
-	107[label= PARENTCR]
-	103->107
-	98->103
-	93->98
-	91->93
-	90->91
-	89->90
-	82->89
-	108[label= COMMA]
-	82->108
-	109[label= Acont5]
-	110[label= Consult0]
-	111[label= ListConsult]
-	112[label= n]
-	111->112
-	113[label= ListConsultT0]
-	114[label= PARENTCL]
-	113->114
-	115[label= Indice0]
-	116[label= 9]
-	115->116
-	113->115
-	117[label= PARENTCR]
-	113->117
-	111->113
-	110->111
-	109->110
-	82->109
 	81->82
-	80->81
-	118[label= Null]
-	80->118
-	78->80
-	119[label= END]
-	78->119
-	69->78
-	120[label= RCORCH]
-	69->120
-	68->69
-	121[label= Null]
-	68->121
-	36->68
-	26->36
+	85[label= COMMA]
+	81->85
+	86[label= ListT1]
+	87[label= ListV]
+	88[label= Value0]
+	89[label= FALSE]
+	88->89
+	87->88
+	86->87
+	81->86
+	76->81
+	74->76
+	90[label= PARENTCR]
+	74->90
+	73->74
+	72->73
+	91[label= COMMA]
+	72->91
+	92[label= MatT1]
+	93[label= MatV]
+	94[label= List]
+	95[label= PARENTCL]
+	94->95
+	96[label= ListT0]
+	97[label= ListV]
+	98[label= Value1]
+	99[label= TRUE]
+	98->99
+	97->98
+	96->97
+	100[label= COMMA]
+	96->100
+	101[label= ListT0]
+	102[label= ListV]
+	103[label= Value1]
+	104[label= TRUE]
+	103->104
+	102->103
+	101->102
+	105[label= COMMA]
+	101->105
+	106[label= ListT1]
+	107[label= ListV]
+	108[label= Value1]
+	109[label= TRUE]
+	108->109
+	107->108
+	106->107
+	101->106
+	96->101
+	94->96
+	110[label= PARENTCR]
+	94->110
+	93->94
+	92->93
+	72->92
+	52->72
+	50->52
+	111[label= PARENTCR]
+	50->111
+	49->50
+	48->49
+	112[label= COMMA]
+	48->112
+	113[label= ThreeDMatT0]
+	114[label= ThreeDMatV]
+	115[label= Mat]
+	116[label= PARENTCL]
+	115->116
+	117[label= MatT0]
+	118[label= MatV]
+	119[label= List]
+	120[label= PARENTCL]
+	119->120
+	121[label= ListT0]
+	122[label= ListV]
+	123[label= Value1]
+	124[label= TRUE]
+	123->124
+	122->123
+	121->122
+	125[label= COMMA]
+	121->125
+	126[label= ListT0]
+	127[label= ListV]
+	128[label= Value0]
+	129[label= FALSE]
+	128->129
+	127->128
+	126->127
+	130[label= COMMA]
+	126->130
+	131[label= ListT1]
+	132[label= ListV]
+	133[label= Value0]
+	134[label= FALSE]
+	133->134
+	132->133
+	131->132
+	126->131
+	121->126
+	119->121
+	135[label= PARENTCR]
+	119->135
+	118->119
+	117->118
+	136[label= COMMA]
+	117->136
+	137[label= MatT0]
+	138[label= MatV]
+	139[label= List]
+	140[label= PARENTCL]
+	139->140
+	141[label= ListT0]
+	142[label= ListV]
+	143[label= Value1]
+	144[label= TRUE]
+	143->144
+	142->143
+	141->142
+	145[label= COMMA]
+	141->145
+	146[label= ListT0]
+	147[label= ListV]
+	148[label= Value1]
+	149[label= TRUE]
+	148->149
+	147->148
+	146->147
+	150[label= COMMA]
+	146->150
+	151[label= ListT1]
+	152[label= ListV]
+	153[label= Value0]
+	154[label= FALSE]
+	153->154
+	152->153
+	151->152
+	146->151
+	141->146
+	139->141
+	155[label= PARENTCR]
+	139->155
+	138->139
+	137->138
+	156[label= COMMA]
+	137->156
+	157[label= MatT1]
+	158[label= MatV]
+	159[label= List]
+	160[label= PARENTCL]
+	159->160
+	161[label= ListT0]
+	162[label= ListV]
+	163[label= Value1]
+	164[label= TRUE]
+	163->164
+	162->163
+	161->162
+	165[label= COMMA]
+	161->165
+	166[label= ListT0]
+	167[label= ListV]
+	168[label= Value1]
+	169[label= TRUE]
+	168->169
+	167->168
+	166->167
+	170[label= COMMA]
+	166->170
+	171[label= ListT1]
+	172[label= ListV]
+	173[label= Value1]
+	174[label= TRUE]
+	173->174
+	172->173
+	171->172
+	166->171
+	161->166
+	159->161
+	175[label= PARENTCR]
+	159->175
+	158->159
+	157->158
+	137->157
+	117->137
+	115->117
+	176[label= PARENTCR]
+	115->176
+	114->115
+	113->114
+	177[label= COMMA]
+	113->177
+	178[label= ThreeDMatT1]
+	179[label= ThreeDMatV]
+	180[label= Mat]
+	181[label= PARENTCL]
+	180->181
+	182[label= MatT0]
+	183[label= MatV]
+	184[label= List]
+	185[label= PARENTCL]
+	184->185
+	186[label= ListT0]
+	187[label= ListV]
+	188[label= Value1]
+	189[label= TRUE]
+	188->189
+	187->188
+	186->187
+	190[label= COMMA]
+	186->190
+	191[label= ListT0]
+	192[label= ListV]
+	193[label= Value0]
+	194[label= FALSE]
+	193->194
+	192->193
+	191->192
+	195[label= COMMA]
+	191->195
+	196[label= ListT1]
+	197[label= ListV]
+	198[label= Value0]
+	199[label= FALSE]
+	198->199
+	197->198
+	196->197
+	191->196
+	186->191
+	184->186
+	200[label= PARENTCR]
+	184->200
+	183->184
+	182->183
+	201[label= COMMA]
+	182->201
+	202[label= MatT0]
+	203[label= MatV]
+	204[label= List]
+	205[label= PARENTCL]
+	204->205
+	206[label= ListT0]
+	207[label= ListV]
+	208[label= Value1]
+	209[label= TRUE]
+	208->209
+	207->208
+	206->207
+	210[label= COMMA]
+	206->210
+	211[label= ListT0]
+	212[label= ListV]
+	213[label= Value1]
+	214[label= TRUE]
+	213->214
+	212->213
+	211->212
+	215[label= COMMA]
+	211->215
+	216[label= ListT1]
+	217[label= ListV]
+	218[label= Value0]
+	219[label= FALSE]
+	218->219
+	217->218
+	216->217
+	211->216
+	206->211
+	204->206
+	220[label= PARENTCR]
+	204->220
+	203->204
+	202->203
+	221[label= COMMA]
+	202->221
+	222[label= MatT1]
+	223[label= MatV]
+	224[label= List]
+	225[label= PARENTCL]
+	224->225
+	226[label= ListT0]
+	227[label= ListV]
+	228[label= Value1]
+	229[label= TRUE]
+	228->229
+	227->228
+	226->227
+	230[label= COMMA]
+	226->230
+	231[label= ListT0]
+	232[label= ListV]
+	233[label= Value1]
+	234[label= TRUE]
+	233->234
+	232->233
+	231->232
+	235[label= COMMA]
+	231->235
+	236[label= ListT1]
+	237[label= ListV]
+	238[label= Value1]
+	239[label= TRUE]
+	238->239
+	237->238
+	236->237
+	231->236
+	226->231
+	224->226
+	240[label= PARENTCR]
+	224->240
+	223->224
+	222->223
+	202->222
+	182->202
+	180->182
+	241[label= PARENTCR]
+	180->241
+	179->180
+	178->179
+	113->178
+	48->113
+	46->48
+	242[label= PARENTCR]
+	46->242
+	45->46
+	41->45
+	39->41
+	38->39
+	243[label= Block1]
+	244[label= GlobalAssignment]
+	245[label= GLOBAL]
+	244->245
+	246[label= DoubleAssignment]
+	247[label= Identifier0]
+	248[label= w]
+	247->248
+	246->247
+	249[label= COMMA]
+	246->249
+	250[label= Identifier0]
+	251[label= x]
+	250->251
+	246->250
+	252[label= ASSIGN]
+	246->252
+	253[label= Acont0]
+	254[label= Value1]
+	255[label= TRUE]
+	254->255
+	253->254
+	246->253
+	256[label= COMMA]
+	246->256
+	257[label= Acont1]
+	258[label= Arithmetic0]
+	259[label= Term0]
+	260[label= Factor1]
+	261[label= r]
+	260->261
+	259->260
+	258->259
+	257->258
+	246->257
+	244->246
+	243->244
+	262[label= Block0]
+	263[label= ProcedureP]
+	264[label= PROCEDURE]
+	263->264
+	265[label= ProcDec]
+	266[label= ProcName]
+	267[label= test]
+	266->267
+	265->266
+	268[label= LPARENT]
+	265->268
+	269[label= Null]
+	265->269
+	270[label= RPARENT]
+	265->270
+	263->265
+	271[label= LCORCH]
+	263->271
+	272[label= Body]
+	273[label= BEGIN]
+	272->273
+	274[label= AltBlock]
+	275[label= AltContent1]
+	276[label= DoubleAssignment]
+	277[label= Identifier0]
+	278[label= x]
+	277->278
+	276->277
+	279[label= COMMA]
+	276->279
+	280[label= Identifier0]
+	281[label= y]
+	280->281
+	276->280
+	282[label= ASSIGN]
+	276->282
+	283[label= Acont5]
+	284[label= Consult2]
+	285[label= ThreeDMatConsult]
+	286[label= m]
+	285->286
+	287[label= ThreeDMatConsultT1]
+	288[label= PARENTCL]
+	287->288
+	289[label= Indice0]
+	290[label= 2]
+	289->290
+	287->289
+	291[label= PARENTCR]
+	287->291
+	292[label= MatConsultT3]
+	293[label= PARENTCL]
+	292->293
+	294[label= Indice0]
+	295[label= 1]
+	294->295
+	292->294
+	296[label= PARENTCR]
+	292->296
+	297[label= ListConsultT0]
+	298[label= PARENTCL]
+	297->298
+	299[label= Indice0]
+	300[label= 0]
+	299->300
+	297->299
+	301[label= PARENTCR]
+	297->301
+	292->297
+	287->292
+	285->287
+	284->285
+	283->284
+	276->283
+	302[label= COMMA]
+	276->302
+	303[label= Acont5]
+	304[label= Consult0]
+	305[label= ListConsult]
+	306[label= n]
+	305->306
+	307[label= ListConsultT0]
+	308[label= PARENTCL]
+	307->308
+	309[label= Indice0]
+	310[label= 9]
+	309->310
+	307->309
+	311[label= PARENTCR]
+	307->311
+	305->307
+	304->305
+	303->304
+	276->303
+	275->276
+	274->275
+	312[label= Null]
+	274->312
+	272->274
+	313[label= END]
+	272->313
+	263->272
+	314[label= RCORCH]
+	263->314
+	262->263
+	315[label= Null]
+	262->315
+	243->262
+	38->243
+	26->38
 	2->26
 	1->2
-	122[label= MainProc]
-	123[label= MAIN]
-	122->123
-	124[label= LPARENT]
-	122->124
-	125[label= RPARENT]
-	122->125
-	126[label= LCORCH]
-	122->126
-	127[label= MainBody]
-	128[label= BEGIN]
-	127->128
-	129[label= Null]
-	127->129
-	130[label= END]
-	127->130
-	122->127
-	131[label= RCORCH]
-	122->131
-	132[label= Null]
-	122->132
-	1->122
+	316[label= MainProc]
+	317[label= MAIN]
+	316->317
+	318[label= LPARENT]
+	316->318
+	319[label= RPARENT]
+	316->319
+	320[label= LCORCH]
+	316->320
+	321[label= MainBody]
+	322[label= BEGIN]
+	321->322
+	323[label= Null]
+	321->323
+	324[label= END]
+	321->324
+	316->321
+	325[label= RCORCH]
+	316->325
+	326[label= Null]
+	316->326
+	1->316
 	}

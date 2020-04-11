@@ -1,11 +1,13 @@
-Timer = 15;
-Rango_Timer = "Mil";
-Dim_Filas = 5;
-Dim_Columnas = 6;
-Cubo=9;
-global x=9;
+Rango_Timer = "Seg";
+Dim_Filas=6;
+Dim_Columnas = 5;
+Timer=15;
+Cubo = 6;
+global z=10;
+global y=15;
 global r=[[[True,False,False],[True,True,False],[True,True,True]],[[True,False,False],[True,True,False],[True,True,True]],[[True,False,False],[True,True,False],[True,True,True]]];
-global w=r[0][0][0];
+global k=(z*y)/10;
+global w,x=True,r;
 
 	Procedure test ()
 	{

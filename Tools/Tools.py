@@ -87,11 +87,12 @@ def arithmeticTranslator(operacion,dictionary):
             token = valor.getToken()
             if(valor.getName()=="Id"):
                 if(token in dictionary):
-                    result+=str(dictionary[token])+" "
-
+                    if(str(type(dictionary[token]))=="<class 'int'>"):
+                        result+=str(dictionary[token])+" "
+                    else:
+                        nonArithmeticVariableError(token)
                 else:
                     outOfScopeError(token)
-                    sys.exit()
 
             else:
                 result+=str(token)+" "
@@ -100,6 +101,7 @@ def arithmeticTranslator(operacion,dictionary):
     return result
 
 def consultTranslator(consult,dictionary):
+    translation={}
     if(consult.getChilds()[0].getToken() not in dictionary):
         outOfScopeError(consult.getChilds()[0].getToken())
 
@@ -112,7 +114,8 @@ def consultTranslator(consult,dictionary):
         expr=var+"["+str(ind)+"]"
         if(abs(ind)>=len(dictionary[var])):
             outOfBoundsError(ind,expr)
-        return(dictionary[var][ind])
+        translation[expr]=dictionary[var][ind]
+        return(translation)
 
     elif (consult.getName() == "MatConsult"):
         var = consult.getChilds()[0].getToken()
@@ -124,7 +127,8 @@ def consultTranslator(consult,dictionary):
         elif(ind2>=len(dictionary[var][ind1])):
             outOfBoundsError(ind2,expr)
 
-        return (dictionary[var][ind1][ind2])
+        translation[expr]=dictionary[var][ind1][ind2]
+        return (translation)
 
     elif (consult.getName() == "ThreeDMatConsult"):
         var = consult.getChilds()[0].getToken()
@@ -138,7 +142,8 @@ def consultTranslator(consult,dictionary):
             outOfBoundsError(ind2, expr)
         elif (ind3 >= len(dictionary[var][ind1][ind2])):
             outOfBoundsError(ind3, expr)
-        return (dictionary[var][ind1][ind2][ind3])
+        translation[expr]=dictionary[var][ind1][ind2][ind3]
+        return (translation)
 
 
 def outOfBoundsError(index,iterable):
@@ -153,6 +158,24 @@ def nonIterableObjectError(var):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The variable " + str(var) + " is not an iterable object")
     sys.exit()
 
-def alreadyDefinedVarError(var):
-    print(colorama.Fore.RED + "SEMANTIC ERROR: The global variable " + str(var) + " already exists in this scope ")
+def alreadyDefinedVarError(var,varType):
+    if(str(varType)=="<class 'int'>"):
+        varType="INT"
+    elif (str(varType)=="<class 'bool'>"):
+        varType="BOOL"
+    elif (str(varType)=="<class 'list'>"):
+        varType="LIST"
+    print(colorama.Fore.RED + "SEMANTIC ERROR: The global variable " + str(var) + " already exists in this scope as a "+varType+ " variable")
+    sys.exit()
+
+def alreadyDefinedConstError(var):
+    print(colorama.Fore.RED + "SEMANTIC ERROR: The configuration constant " + var + " has already been defined ")
+    sys.exit()
+
+def globalConsultError():
+    print(colorama.Fore.RED + "SEMANTIC ERROR: List and Matrix positions can't be defined as global variables")
+    sys.exit()
+
+def nonArithmeticVariableError(var):
+    print(colorama.Fore.RED + "SEMANTIC ERROR: variable "+str(var)+" is not a variable arithmetical operations can be done with")
     sys.exit()

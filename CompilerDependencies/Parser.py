@@ -24,6 +24,7 @@ def p_program(p):
 
 def p_constB(p):
     '''const_block : const const const const const block'''
+    constBSem(p)
     p[0]=NonTerminalNode("ConstB",[p[1],p[2],p[3],p[4],p[5],p[6]])
     print("const_block")
 
@@ -99,7 +100,7 @@ def p_instruction3(p):
 ##########---ASIGNACIONES GLOBALES---##########
 def p_globalAssignment(p):
     '''global : GLOBAL assignment '''
-    globalAssignmentSem(p)
+    AssignmentSem(p,"global")
     p[0]=NonTerminalNode("GlobalAssignment",[TerminalNode("Global","GLOBAL"),p[2]])
     print("globalAssignment")
 
