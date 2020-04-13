@@ -99,10 +99,30 @@ def p_instruction3(p):
 
 ##########---ASIGNACIONES GLOBALES---##########
 def p_globalAssignment(p):
-    '''global : GLOBAL assignment '''
-    AssignmentSem(p,"global")
-    p[0]=NonTerminalNode("GlobalAssignment",[TerminalNode("Global","GLOBAL"),p[2]])
+    '''global : assignment '''
+    assignmentSem(p[1],"global")
+    p[0]=NonTerminalNode("GlobalAssignment",[p[1]])
     print("globalAssignment")
+
+def p_globalCall(p):
+    '''global_call : GLOBAL global_term SEMICOLON global_call'''
+    p[0]=NonTerminalNode("GlobalCall",[TerminalNode("Global","GLOBAL"),p[2],p[4]])
+    print("globalCall")
+
+def p_EmptyGlobalCall(p):
+    '''global_call : empty'''
+    p[0]=Null()
+    print("emptyGlobalCall")
+
+def p_globalTerm0(p):
+    '''global_term : ID COMMA global_term'''
+    p[0]=NonTerminalNode("GlobalTerm0",[TerminalNode("Id",p[1]),TerminalNode("Coma","COMMA"),p[3]])
+    print("globalTerm0")
+
+def p_globalTerm1(p):
+    '''global_term : ID'''
+    p[0]=NonTerminalNode("GlobalTerm1",[TerminalNode("Id",p[1])])
+    print("globalTerm1")
 
 
 
@@ -186,7 +206,7 @@ def p_type(p):
 
 def p_range(p):
     '''a_content : RANGE LPARENT INT COMMA value RPARENT'''
-    p[0]=NonTerminalNode("RangeF",[TerminalNode("Range","RANGE"),TerminalNode("Lparent","LPARENT"),TerminalNode("Int",p[3]),TerminalNode("Comma","COMMA"),p[5],TerminalNode("Rparent""RPARENT")])
+    p[0]=NonTerminalNode("RangeF",[TerminalNode("Range","RANGE"),TerminalNode("Lparent","LPARENT"),TerminalNode("Int",p[3]),TerminalNode("Comma","COMMA"),p[5],TerminalNode("Rparent","RPARENT")])
     print("range")
 
 def p_insert(p):
@@ -200,8 +220,8 @@ def p_del(p):
     print("delete_list")
 
 def p_len(p):
-    ''' len : LEN LPARENT ID RPARENT SEMICOLON '''
-    p[0]=NonTerminalNode("LenF",[TerminalNode("Len","LEN"),TerminalNode("Lparent","LPARENT"),TerminalNode("Id",p[3]),TerminalNode("Rparent","RPARENT")])
+    ''' len : LEN LPARENT identifier RPARENT SEMICOLON '''
+    p[0]=NonTerminalNode("LenF",[TerminalNode("Len","LEN"),TerminalNode("Lparent","LPARENT"),p[3],TerminalNode("Rparent","RPARENT")])
     print("len")
 
 def p_neg(p):
@@ -306,6 +326,7 @@ def p_EmptyOptStatment(p):
 ##########---PROCEDIMIENTOS---##########
 def p_procedure(p):
     '''procedure : PROCEDURE proc_dec LCORCH body RCORCH SEMICOLON '''
+    procedureSem(p)
     p[0]=NonTerminalNode("ProcedureP",[TerminalNode("Procedure","PROCEDURE"),p[2],TerminalNode("Lcorch","LCORCH"),p[4],TerminalNode("Rcorch","RCORCH")])
     print("procedure")
 def p_procDec(p):
@@ -339,8 +360,8 @@ def p_procParam(p):
     print("proc_param")
 
 def p_body(p):
-    '''body : BEGIN alt_block END SEMICOLON '''
-    p[0]=NonTerminalNode("Body",[TerminalNode("Begin","BEGIN"),p[2],TerminalNode("End","END")])
+    '''body : global_call BEGIN alt_block END SEMICOLON '''
+    p[0]=NonTerminalNode("Body",[p[1],TerminalNode("Begin","BEGIN"),p[3],TerminalNode("End","END")])
     print("proc_body")
 
 def p_mainProcedure(p):
@@ -484,12 +505,12 @@ def p_Acont5(p):
 
 ##########---CONTENIDO DE FUNCIONES---##########
 def p_Fcont0(p):
-    '''b_content : list_consult COMMA INT COMMA time_mes COMMA value'''
+    '''b_content : identifier COMMA INT COMMA time_mes COMMA value'''
     p[0]=NonTerminalNode("Fcont0",[p[1],TerminalNode("Comma","COMMA"),TerminalNode("Int",p[3]),TerminalNode("Comma","COMMA"),p[5],TerminalNode("Comma","COMMA"),p[7]])
     print("blink_content0")
 
 def p_Fcont1(p):
-    '''b_content : list_consult COMMA value'''
+    '''b_content : identifier COMMA value'''
     p[0]=NonTerminalNode("Fcont1",[p[1],TerminalNode("Comma","COMMA"),p[3]])
     print("blink_content1")
 

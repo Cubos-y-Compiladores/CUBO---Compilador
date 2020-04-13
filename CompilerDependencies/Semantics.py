@@ -1,35 +1,39 @@
 import sys
 from Tools.Tools import *
 from pip._vendor import colorama
-global global_var,regular_var
+global global_var,global_temp,regular_var,procedures
 global_var={}
+global_temp=[]
 local_var={}
 consts={}
 procedures={}
-def AssignmentSem(p,scope):
-    global global_var,local_var
+def assignmentSem(p,scope):
+    global global_var,local_var,global_temp
+    tempdict = local_var.copy()
     scopeType=scope
     if(scope=="global"):
         scope=global_var
     elif(scope=="local"):
-        scope=local_var
+        for valor in global_temp:
+            tempdict[valor]=global_var[valor]
+        scope=tempdict
 
-    if(p[2].getName()=="SimpleAssignment"):
-        varName = p[2].getChilds()[0].getChilds()[0].getToken()
+    if(p.getName()=="SimpleAssignment"):
+        varName = p.getChilds()[0].getChilds()[0].getToken()
         varType = ""
         if (varName in scope):
             varType = type(scope[varName])
 
-        if(p[2].getChilds()[2].getName()=="Acont0"):
-           value=tokenTranslator(p[2].getChilds()[2].getChilds()[0].getChilds()[0].getToken())
+        if(p.getChilds()[2].getName()=="Acont0"):
+           value=tokenTranslator(p.getChilds()[2].getChilds()[0].getChilds()[0].getToken())
            if(typeVerifier(varType,value)):
                 scope[varName]=value
            else:
                alreadyDefinedVarError(varName,varType)
 
-        elif (p[2].getChilds()[2].getName() == "Acont1"):
+        elif (p.getChilds()[2].getName() == "Acont1"):
             value=""
-            temp =p[2].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0]
+            temp =p.getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0]
             if (temp.getName() == "Factor1"):
                 var=temp.getChilds()[0].getToken()
                 if(var in scope):
@@ -37,7 +41,7 @@ def AssignmentSem(p,scope):
                 else:
                     outOfScopeError(var)
             else:
-                value=tokenTranslator(arithmeticTranslator(p[2].getChilds()[2].getChilds()[0],scope))
+                value=tokenTranslator(arithmeticTranslator(p.getChilds()[2].getChilds()[0],scope))
 
             if (typeVerifier(varType, value)):
                scope[varName] = value
@@ -45,40 +49,48 @@ def AssignmentSem(p,scope):
                alreadyDefinedVarError(varName, varType)
             print("Test")
 
-        elif (p[2].getChilds()[2].getName() == "Acont2"):
-           value=listTranslator(p[2].getChilds()[2].getChilds()[0].getChilds()[1].getChilds())
+        elif (p.getChilds()[2].getName() == "Acont2"):
+           value=listTranslator(p.getChilds()[2].getChilds()[0].getChilds()[1].getChilds())
            if (typeVerifier(varType, value)):
                scope[varName] = value
            else:
                alreadyDefinedVarError(varName, varType)
 
-        elif (p[2].getChilds()[2].getName() == "Acont3"):
-           value=matTranslator(p[2].getChilds()[2].getChilds()[0].getChilds()[1].getChilds())
+        elif (p.getChilds()[2].getName() == "Acont3"):
+           value=matTranslator(p.getChilds()[2].getChilds()[0].getChilds()[1].getChilds())
            if (typeVerifier(varType, value)):
                scope[varName] = value
            else:
                alreadyDefinedVarError(varName, varType)
 
-        elif (p[2].getChilds()[2].getName() == "Acont4"):
-           value=threeDmatTranslator(p[2].getChilds()[2].getChilds()[0].getChilds()[1].getChilds())
+        elif (p.getChilds()[2].getName() == "Acont4"):
+           value=threeDmatTranslator(p.getChilds()[2].getChilds()[0].getChilds()[1].getChilds())
            if (typeVerifier(varType, value)):
                scope[varName] = value
            else:
                alreadyDefinedVarError(varName, varType)
 
 
-        elif (p[2].getChilds()[2].getName() == "Acont5"):
-           value=list(consultTranslator(p[2].getChilds()[2].getChilds()[0].getChilds()[0],scope).values())[0]
+        elif (p.getChilds()[2].getName() == "Acont5"):
+           value=list(consultTranslator(p.getChilds()[2].getChilds()[0].getChilds()[0],local_var,global_temp,global_var,scopeType).values())[0]
            if (typeVerifier(varType, value)):
                scope[varName] = value
            else:
                alreadyDefinedVarError(varName, varType)
 
-    elif (p[2].getName() == "DoubleAssignment"):
+        elif(p.getChilds()[2].getName() == "RangeF"):
+            value = functionTranslator(p.getChilds()[2])
+            if (typeVerifier(varType, value)):
+                scope[varName] = value
+                print("Test")
+            else:
+                alreadyDefinedVarError(varName, varType)
+
+    elif (p.getName() == "DoubleAssignment"):
         varList=[]
         valueList=[]
         typeList=[]
-        for child in p[2].getChilds():
+        for child in p.getChilds():
             if(child.getName()=="Identifier0"):
                 var=str(child.getChilds()[0].getToken())
                 varType = ""
@@ -90,20 +102,20 @@ def AssignmentSem(p,scope):
             elif(child.getName()=="Identifier1"):
                 if(scopeType=="global"):
                     globalConsultError()
-                expr = consultTranslator(str(child.getChilds()[0].getToken()),scope)
+                expr = consultTranslator(str(child.getChilds()[0].getToken()),local_var,global_var,scopeType)
                 var=str(expr.keys()[0])
                 varType =type(expr.values()[0])
                 varList.append(var)
                 typeList.append(varType)
 
 
-            elif (child.getName() == "Acont0"):
+            elif (child.getName()=="Acont0"):
                 valueList.append(tokenTranslator(child.getChilds()[0].getChilds()[0].getToken()))
 
-            elif (child.getName() == "Acont1"):
+            elif (child.getName()=="Acont1"):
                 value = ""
                 temp =child.getChilds()[0].getChilds()[0].getChilds()[0]
-                if (temp.getName() == "Factor1"):
+                if (temp.getName()=="Factor1"):
                     var = temp.getChilds()[0].getToken()
                     if (var in scope):
                         value = scope[var]
@@ -114,17 +126,20 @@ def AssignmentSem(p,scope):
                 valueList.append(value)
                 print("test")
 
-            elif (child.getName() == "Acont2"):
+            elif (child.getName()=="Acont2"):
                 valueList.append(listTranslator(child.getChilds()[0].getChilds()[1].getChilds()))
 
-            elif (child.getName() == "Acont3"):
+            elif (child.getName()=="Acont3"):
                 valueList.append(matTranslator(child.getChilds()[0].getChilds()[1].getChilds()))
 
-            elif (child.getName() == "Acont4"):
+            elif (child.getName()=="Acont4"):
                 valueList.append(threeDmatTranslator(child.getChilds()[0].getChilds()[1].getChilds()))
 
             elif(child.getName()=="Acont5"):
-                valueList.append(list(consultTranslator(child.getChilds()[0].getChilds()[0],scope).values())[0])
+                valueList.append(list(consultTranslator(child.getChilds()[0].getChilds()[0],local_var,global_temp,global_var,scopeType).values())[0])
+
+            elif (child.getName()=="RangeF"):
+                valueList.append(functionTranslator(child))
 
         ind=0
         while(ind<len(varList)):
@@ -133,6 +148,14 @@ def AssignmentSem(p,scope):
             else:
                 alreadyDefinedVarError(varList[ind],typeList[ind])
             ind+=1
+    if(tempdict!={}):
+        lista=list(tempdict.keys())
+        for valor in lista:
+            if(valor in global_temp):
+                global_var[valor]=tempdict[valor]
+            else:
+                local_var[valor]=tempdict[valor]
+        print("Test")
 
 def constBSem(p):
     global consts
@@ -176,8 +199,265 @@ def constBSem(p):
 
     temp=consts
     print("Test")
+def procedureSem(p):
+    global procedures,local_var,global_temp,global_var
+    local_var={}
+    global_temp=[]
+    if(not p[4].getChilds()[0].isNull()):
+        global_temp=globalUsageSem(p[4].getChilds()[0])
+        print("test")
+    temp=global_temp
+    procName=p[2].getChilds()[0].getChilds()[0].getToken()
+    procParams=parameterTranslator(p[2].getChilds()[2].getChilds())
+    procBody=p[4].getChilds()[2]
 
-def typeVerifier(varType,value):
-    if (varType == "" or varType == type(value)):
-        return True
-    return False
+    if(procName in procedures and len(procedures[procName])==len(procParams)):
+        sameFirmProcedureError(procName,str(len(procParams)))
+    procedures[procName]=procParams
+
+    if(not procBody.isNull()):
+        statementQueue=processBodyTranslator(procBody.getChilds())
+        for statement in statementQueue:
+            if("Assignment" in statement.getName()):
+                assignmentSem(statement,"local")
+
+            elif ("Instruction" in statement.getName()):
+                instructionSem(statement)
+
+def instructionSem(p):
+    if(p.getName()=="Instruction0"):
+        functionSem(p.getChilds()[0])
+
+def functionSem(p):
+    "TODO: Hacer errores que relacionen al valor de las consultas y no a la variable directamente "
+    if(p.getName()=="Function0"):
+        varName=""
+        if(p.getChilds()[0].getChilds()[2].getName()=="Identifier0"):
+            varName=p.getChilds()[0].getChilds()[2].getChilds()[0].getToken()
+
+        elif(p.getChilds()[0].getChilds()[2].getName()=="Identifier1"):
+            varName=p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
+
+        if(not existenceVerifier(varName,local_var,global_temp,global_var)):
+            outOfScopeError(varName)
+
+    elif(p.getName()=="Function1"):
+        varName = ""
+        consult=""
+        if (p.getChilds()[0].getChilds()[0].getName() == "Identifier0"):
+            varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getToken()
+        elif (p.getChilds()[0].getChilds()[0].getName() == "Identifier1"):
+            varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
+            consult=list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var,global_temp,global_var,"local").values())[0]
+
+
+        if (not existenceVerifier(varName, local_var, global_temp)):
+            outOfScopeError(varName)
+
+        if(consult!=""):
+
+            if(type(consult)!=type([])):
+                insertOnNotIterableObjectError(varName)
+        else:
+            if (varName in global_temp):
+                if(type(global_var[varName])!=type([])):
+                    insertOnNotIterableObjectError(varName)
+            elif (type(local_var[varName]) != type([])):
+                insertOnNotIterableObjectError(varName)
+
+    elif (p.getName() == "Function2"):
+        varName = ""
+        consult = ""
+        if (p.getChilds()[0].getChilds()[0].getName() == "Identifier0"):
+            varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getToken()
+        elif (p.getChilds()[0].getChilds()[0].getName() == "Identifier1"):
+            varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
+            consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var, global_temp,global_var, "local").values())[0]
+
+        if (not existenceVerifier(varName, local_var, global_temp)):
+            outOfScopeError(varName)
+
+        if (consult != ""):
+            temp = type(consult)
+            temp2 = type([])
+            if (type(consult) != type([])):
+                delOnNotIterableObjectError(varName)
+        else:
+            if (varName in global_temp):
+                if (type(global_var[varName]) != type([])):
+                    delOnNotIterableObjectError(varName)
+            elif (type(local_var[varName]) != type([])):
+                delOnNotIterableObjectError(varName)
+
+    elif (p.getName() == "Function3"):
+        varName = ""
+        if (p.getChilds()[0].getChilds()[2].getName() == "Identifier0"):
+            varName = p.getChilds()[0].getChilds()[2].getChilds()[0].getToken()
+        elif (p.getChilds()[0].getChilds()[2].getName() == "Identifier1"):
+            varName = p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
+            consultTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0], local_var, global_temp,global_var, "local")
+
+        if (not existenceVerifier(varName, local_var, global_temp)):
+            outOfScopeError(varName)
+
+    elif (p.getName() == "Function4"):
+        varName = ""
+        consult = ""
+        if (p.getChilds()[0].getChilds()[0].getName() == "Identifier0"):
+            varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getToken()
+        elif (p.getChilds()[0].getChilds()[0].getName() == "Identifier1"):
+            varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
+            consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var, global_temp,global_var, "local").values())[0]
+
+        if(consult!=""):
+            if(type(consult)!=type([]) and type(consult)!=type(True)):
+                negOnNotBooleanError(varName)
+
+        if (not existenceVerifier(varName, local_var, global_temp)):
+            outOfScopeError(varName)
+        if (varName in global_temp):
+            if (type(global_var[varName]) != type([]) and type(global_var[varName]) != type(True)):
+                negOnNotBooleanError(varName)
+        elif (type(local_var[varName]) != type([]) and type(local_var[varName]) != type(True)):
+                negOnNotBooleanError(varName)
+
+    elif (p.getName() == "Function5"):
+        varName = ""
+        consult = ""
+        if (p.getChilds()[0].getChilds()[0].getName() == "Identifier0"):
+            varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getToken()
+        elif (p.getChilds()[0].getChilds()[0].getName() == "Identifier1"):
+            varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
+            consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var, global_temp,global_var, "local").values())[0]
+
+        if(consult!=""):
+            if (type(consult) != type([]) and type(consult) != type(True)):
+                tfOnNotBooleanError(varName)
+
+        if (not existenceVerifier(varName, local_var, global_temp)):
+            outOfScopeError(varName)
+
+        if (varName in global_temp):
+            if (type(global_var[varName]) != type([]) and type(global_var[varName]) != type(True)):
+                tfOnNotBooleanError(varName)
+        elif (type(local_var[varName]) != type([]) and type(local_var[varName]) != type(True)):
+            tfOnNotBooleanError(varName)
+
+    elif (p.getName() == "Function6"):
+        varName = ""
+        consult = ""
+        if (p.getChilds()[0].getChilds()[2].getChilds()[0].getName() == "Identifier0"):
+            varName = p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getToken()
+        elif (p.getChilds()[0].getChilds()[2].getChilds()[0].getName() == "Identifier1"):
+            varName = p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
+            consult = list(consultTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0], local_var, global_temp,global_var, "local").values())[0]
+
+        if (consult != ""):
+            if (type(consult) != type([]) and type(consult) != type(True)):
+                BlinkOnNotBooleanError(varName)
+
+        if (not existenceVerifier(varName, local_var, global_temp)):
+            outOfScopeError(varName)
+
+        if (varName in global_temp):
+            if (type(global_var[varName]) != type([]) and type(global_var[varName]) != type(True)):
+                BlinkOnNotBooleanError(varName)
+        elif (type(local_var[varName]) != type([]) and type(local_var[varName]) != type(True)):
+            BlinkOnNotBooleanError(varName)
+
+    elif (p.getName() == "Function8"):
+        varName = ""
+        consult = ""
+        if (p.getChilds()[0].getChilds()[0].getName() == "Identifier0"):
+            varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getToken()
+        elif (p.getChilds()[0].getChilds()[0].getName() == "Identifier1"):
+            varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
+            consult =consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var, global_temp, global_var, "local")
+
+        if (not existenceVerifier(varName, local_var, global_temp)):
+            outOfScopeError(varName)
+
+        if (list(consult.values())[0] != ""):
+
+            if (not matrixVerifier(list(consult.values())[0])):
+                shapeOnNotMatrixError(list(consult.keys())[0])
+        else:
+            if (varName in global_temp):
+                if (not matrixVerifier(global_var[varName])):
+                    shapeOnNotMatrixError(varName)
+            elif (not matrixVerifier(local_var[varName])):
+                shapeOnNotMatrixError(varName)
+
+    elif (p.getName() == "Function9"):
+        varName = ""
+        consult = ""
+        mat=""
+        if (p.getChilds()[0].getChilds()[0].getName() == "Identifier0"):
+            varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getToken()
+        elif (p.getChilds()[0].getChilds()[0].getName() == "Identifier1"):
+            varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
+            consult =consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var, global_temp, global_var, "local")
+
+        if (not existenceVerifier(varName, local_var, global_temp)):
+            outOfScopeError(varName)
+
+        if (consult != ""):
+
+            if (not matVerifier(list(consult.values())[0])):
+                deleteOnNotMatrixError(list(consult.keys())[0])
+            mat=list(consult.values())[0]
+
+            bounds = matBoundsVerifier(mat)
+            if (int(p.getChilds()[0].getChilds()[6].getToken()) == 0):
+                line = int(p.getChilds()[0].getChilds()[4].getChilds()[0].getToken())
+                if (bounds[0] <= line):
+                    outOfBoundsError(line, str(list(consult.keys())[0])+".delete("+str(line)+",0)")
+            elif (int(p.getChilds()[0].getChilds()[6].getToken()) == 1):
+                column = int(p.getChilds()[0].getChilds()[4].getChilds()[0].getToken())
+                if (bounds[1] <= column):
+                    outOfBoundsError(column, str(list(consult.keys())[0])+".delete("+str(column)+",1)")
+
+        else:
+
+            if (varName in global_temp):
+                if (not matVerifier(global_var[varName])):
+                    deleteOnNotMatrixError(varName)
+                mat = global_var[varName]
+            else:
+                if(not matVerifier(local_var[varName])):
+                    deleteOnNotMatrixError(varName)
+                mat=local_var[varName]
+
+            bounds = matBoundsVerifier(mat)
+            if (int(p.getChilds()[0].getChilds()[6].getToken()) == 0):
+                line = int(p.getChilds()[0].getChilds()[4].getChilds()[0].getToken())
+                if (bounds[0] <= line):
+                    outOfBoundsError(line, varName + ".delete(" + str(line) + ",0)")
+            elif (int(p.getChilds()[0].getChilds()[6].getToken()) == 1):
+                column = int(p.getChilds()[0].getChilds()[4].getChilds()[0].getToken())
+                if (bounds[1] <= column):
+                    outOfBoundsError(column, varName + ".delete(" + str(column) + ",1)")
+
+        if(int(p.getChilds()[0].getChilds()[6].getToken())>1 or int(p.getChilds()[0].getChilds()[6].getToken())<0):
+            wrongOperationNumberError()
+
+
+
+
+def globalUsageSem(globalCall):
+    global global_var
+    globals=globalCall.getChilds()
+    output=[]
+    for valor in globals:
+        if(valor.isNull()):
+            break
+        elif(valor.getName()=="GlobalTerm0"):
+            output.extend(globalSplitter(valor.getChilds()))
+        elif(valor.getName()=="GlobalTerm1"):
+            output.append(valor.getChilds()[0].getToken())
+        elif(valor.getName()=="GlobalCall"):
+            output.extend(globalUsageSem(valor))
+    for valor in output:
+        if(valor not in global_var):
+            outOfGlobalScopeError(valor)
+    return output

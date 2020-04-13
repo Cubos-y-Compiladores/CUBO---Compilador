@@ -1,23 +1,25 @@
 output= " "
 cont = 0
 def counterIncreaser():
-	global cont
-	cont +=1
-	return "%d" %cont
+    global cont
+    cont +=1
+    return "%d" %cont
 
 class Node():
-	pass
+    pass
 
 class Null(Node):
-	def __init__(self):
-		self.type = 'void'
+    def __init__(self):
+        self.type = 'void'
 
-	def translate(self):
-		global output
-		id = counterIncreaser()
-		output += id+"[label= "+"Null"+"]"+"\n\t"
+    def translate(self):
+        global output
+        id = counterIncreaser()
+        output += id+"[label= "+"Null"+"]"+"\n\t"
+        return id
 
-		return id
+    def isNull(self):
+        return True
 
 class ProgramNode(Node):
     def __init__(self,childs):
@@ -39,7 +41,6 @@ class NonTerminalNode(Node):
     def __init__(self,name,childs):
         self.name=name
         self.childs=childs
-        self.isToken= False
 
     def translate(self):
         global output
@@ -57,15 +58,16 @@ class NonTerminalNode(Node):
     def getName(self):
         return self.name
 
-    def getIsToken(self):
-        return self.isToken
+    def isToken(self):
+        return False
+
+    def isNull(self):
+        return False
 
 class TerminalNode(Node):
     def __init__(self,name,token):
         self.name=name
         self.token=str(token)
-        self.isToken = True
-        self.type= None
 
     def translate(self):
         global output
@@ -82,5 +84,8 @@ class TerminalNode(Node):
     def getName(self):
         return self.name
 
-    def getIsToken(self):
-        return self.isToken
+    def isToken(self):
+        return True
+
+    def isNull(self):
+        return False
