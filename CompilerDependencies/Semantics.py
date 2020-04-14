@@ -29,7 +29,7 @@ def assignmentSem(p,scope):
            if(typeVerifier(varType,value)):
                 scope[varName]=value
            else:
-               alreadyDefinedVarError(varName,varType)
+               alreadyDefinedVarError(varName,scope[varName])
 
         elif (p.getChilds()[2].getName() == "Acont1"):
             value=""
@@ -46,29 +46,29 @@ def assignmentSem(p,scope):
             if (typeVerifier(varType, value)):
                scope[varName] = value
             else:
-               alreadyDefinedVarError(varName, varType)
-            print("Test")
+               alreadyDefinedVarError(varName,scope[varName])
+
 
         elif (p.getChilds()[2].getName() == "Acont2"):
            value=listTranslator(p.getChilds()[2].getChilds()[0].getChilds()[1].getChilds())
            if (typeVerifier(varType, value)):
                scope[varName] = value
            else:
-               alreadyDefinedVarError(varName, varType)
+               alreadyDefinedVarError(varName,scope[varName])
 
         elif (p.getChilds()[2].getName() == "Acont3"):
            value=matTranslator(p.getChilds()[2].getChilds()[0].getChilds()[1].getChilds())
            if (typeVerifier(varType, value)):
                scope[varName] = value
            else:
-               alreadyDefinedVarError(varName, varType)
+              alreadyDefinedVarError(varName,scope[varName])
 
         elif (p.getChilds()[2].getName() == "Acont4"):
            value=threeDmatTranslator(p.getChilds()[2].getChilds()[0].getChilds()[1].getChilds())
            if (typeVerifier(varType, value)):
                scope[varName] = value
            else:
-               alreadyDefinedVarError(varName, varType)
+              alreadyDefinedVarError(varName,scope[varName])
 
 
         elif (p.getChilds()[2].getName() == "Acont5"):
@@ -76,15 +76,15 @@ def assignmentSem(p,scope):
            if (typeVerifier(varType, value)):
                scope[varName] = value
            else:
-               alreadyDefinedVarError(varName, varType)
+              alreadyDefinedVarError(varName,scope[varName])
 
         elif(p.getChilds()[2].getName() == "RangeF"):
             value = functionTranslator(p.getChilds()[2])
             if (typeVerifier(varType, value)):
                 scope[varName] = value
-                print("Test")
+
             else:
-                alreadyDefinedVarError(varName, varType)
+               alreadyDefinedVarError(varName,scope[varName])
 
     elif (p.getName() == "DoubleAssignment"):
         varList=[]
@@ -124,7 +124,6 @@ def assignmentSem(p,scope):
                 else:
                     value = tokenTranslator(arithmeticTranslator(child.getChilds()[0],scope))
                 valueList.append(value)
-                print("test")
 
             elif (child.getName()=="Acont2"):
                 valueList.append(listTranslator(child.getChilds()[0].getChilds()[1].getChilds()))
@@ -146,7 +145,7 @@ def assignmentSem(p,scope):
             if(typeVerifier(typeList[ind],valueList[ind])):
                 scope[varList[ind]]=valueList[ind]
             else:
-                alreadyDefinedVarError(varList[ind],typeList[ind])
+                alreadyDefinedVarError(varList[ind],scope[varList[ind]])
             ind+=1
     if(tempdict!={}):
         lista=list(tempdict.keys())
@@ -155,7 +154,7 @@ def assignmentSem(p,scope):
                 global_var[valor]=tempdict[valor]
             else:
                 local_var[valor]=tempdict[valor]
-        print("Test")
+
 
 def constBSem(p):
     global consts
@@ -198,14 +197,14 @@ def constBSem(p):
                 consts["Cubo"] = int(const.getChilds()[2].getToken())
 
     temp=consts
-    print("Test")
+
 def procedureSem(p):
     global procedures,local_var,global_temp,global_var
     local_var={}
     global_temp=[]
     if(not p[4].getChilds()[0].isNull()):
         global_temp=globalUsageSem(p[4].getChilds()[0])
-        print("test")
+
     temp=global_temp
     procName=p[2].getChilds()[0].getChilds()[0].getToken()
     procParams=parameterTranslator(p[2].getChilds()[2].getChilds())
@@ -224,6 +223,17 @@ def procedureSem(p):
             elif ("Instruction" in statement.getName()):
                 instructionSem(statement)
 
+    print("---------Global Scope---------")
+    keys = list(global_var.keys())
+    for test in keys:
+        print(str(test) + ": " + str(global_var[test]))
+    print(" ")
+    print(" ")
+    print("---------Local Scope---------")
+    keys = list(local_var.keys())
+    for test in keys:
+        print(str(test) + ": " + str(local_var[test]))
+
 def instructionSem(p):
     if(p.getName()=="Instruction0"):
         functionSem(p.getChilds()[0])
@@ -237,11 +247,13 @@ def functionSem(p):
 
         elif(p.getChilds()[0].getChilds()[2].getName()=="Identifier1"):
             varName=p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
+            consultTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0],local_var,global_temp,global_var,"local")
 
-        if(not existenceVerifier(varName,local_var,global_temp,global_var)):
+        if(not existenceVerifier(varName,local_var,global_temp)):
             outOfScopeError(varName)
 
     elif(p.getName()=="Function1"):
+        #TODO: Actualizar las variables modificadas
         varName = ""
         consult=""
         if (p.getChilds()[0].getChilds()[0].getName() == "Identifier0"):
@@ -250,20 +262,102 @@ def functionSem(p):
             varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
             consult=list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var,global_temp,global_var,"local").values())[0]
 
-
         if (not existenceVerifier(varName, local_var, global_temp)):
             outOfScopeError(varName)
 
         if(consult!=""):
 
-            if(type(consult)!=type([])):
+            if (type(consult) != type([])):
                 insertOnNotIterableObjectError(varName)
+            if (p.getChilds()[0].getChilds()[4].getName() == "Fcont6"):
+                if(matVerifier(consult)):
+                    consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var,global_temp, global_var, "local").keys())[0]
+                    insertingBoolOnMatObjectError(consult)
+                consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var,global_temp, global_var, "local").keys())[0]
+                insertingOnListInsideMatrixError(varName)
+
+            elif (p.getChilds()[0].getChilds()[4].getName() == "Fcont7"):
+                if (matrixVerifier(consult)):
+                    colSize = len(consult)
+                    lineSize = len(consult[0])
+                    ind = p.getChilds()[0].getChilds()[4].getChilds()[3]
+                    listed = listTranslator(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds())
+                    if (not ind.isNull()):
+                        ind = int(p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getToken())
+                        if (int(p.getChilds()[0].getChilds()[4].getChilds()[2].getToken()) == 0):
+                            if (ind >= colSize):
+                                consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var, global_temp, global_var, "local").keys())[0]
+                                outOfBoundsError(ind, consult + ".insert(" + str(listed) + ",0," + str(ind) + ")")
+
+                        elif (int(p.getChilds()[0].getChilds()[4].getChilds()[2].getToken()) == 1):
+                            if (ind >= lineSize):
+                                consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var, global_temp, global_var, "local").keys())[0]
+                                outOfBoundsError(ind, consult + ".insert(" + str(listed) + ",1," + str(ind) + ")")
+
+                    if (int(p.getChilds()[0].getChilds()[4].getChilds()[2].getToken()) == 0):
+                        if (len(listed) != lineSize):
+                            consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var, global_temp, global_var, "local").keys())[0]
+                            differentSizeInsertion(str(listed), consult + ".insert(" + str(listed) + ",0)")
+
+                    elif (int(p.getChilds()[0].getChilds()[4].getChilds()[2].getToken()) == 1):
+                        if (len(listed) != colSize):
+                            consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var, global_temp, global_var, "local").keys())[0]
+                            differentSizeInsertion(str(listed), consult + ".insert(" + str(listed) + ",1)")
+                    else:
+                        wrongOperationNumberError("Insertion")
+                else:
+                    consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var,global_temp, global_var, "local").keys())[0]
+                    insertingListOnNoMatObjectError(consult)
+
         else:
+            scope=""
             if (varName in global_temp):
-                if(type(global_var[varName])!=type([])):
-                    insertOnNotIterableObjectError(varName)
-            elif (type(local_var[varName]) != type([])):
+                scope = global_var
+            elif (varName in local_var):
+                scope = local_var
+            structure = scope[varName]
+            if (not typeVerifier(type([]),scope[varName])):
                 insertOnNotIterableObjectError(varName)
+            if (p.getChilds()[0].getChilds()[4].getName() == "Fcont6"):
+                if (matVerifier(structure)):
+                    insertingBoolOnMatObjectError(varName)
+
+                ind = int(p.getChilds()[0].getChilds()[4].getChilds()[0].getToken())
+                value = tokenTranslator(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getToken())
+                if (ind >= len(structure)):
+                    outOfBoundsError(ind, varName + ".insert(" + str(ind) + "," + str(value) + ")")
+                else:
+                    scope[varName] = structure.insert(ind,value)
+
+
+            elif (p.getChilds()[0].getChilds()[4].getName() == "Fcont7"):
+                if (matrixVerifier(structure)):
+                    colSize = len(structure)
+                    lineSize = len(structure[0])
+                    ind = p.getChilds()[0].getChilds()[4].getChilds()[3]
+                    lista = listTranslator(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds())
+                    if (not ind.isNull()):
+                        ind = int(p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getToken())
+                        if (int(p.getChilds()[0].getChilds()[4].getChilds()[2].getToken()) == 0):
+                            if (ind >= colSize):
+                                outOfBoundsError(ind, varName + ".insert(" + str(lista) + ",0," + str(ind) + ")")
+
+                        elif (int(p.getChilds()[0].getChilds()[4].getChilds()[2].getToken()) == 1):
+                            if (ind >= lineSize):
+                                outOfBoundsError(ind, varName + ".insert(" + str(lista) + ",1," + str(ind) + ")")
+
+                    if (int(p.getChilds()[0].getChilds()[4].getChilds()[2].getToken()) == 0):
+                        if (len(lista) != lineSize):
+                            differentSizeInsertion(str(lista), varName + ".insert(" + str(lista) + ",0)")
+
+                    elif (int(p.getChilds()[0].getChilds()[4].getChilds()[2].getToken()) == 1):
+                        if (len(lista) != colSize):
+                            differentSizeInsertion(str(lista), varName + ".insert(" + str(lista) + ",1)")
+                    else:
+                        wrongOperationNumberError("Insertion")
+                else:
+                    insertingListOnNoMatObjectError(varName)
+
 
     elif (p.getName() == "Function2"):
         varName = ""
@@ -440,6 +534,7 @@ def functionSem(p):
 
         if(int(p.getChilds()[0].getChilds()[6].getToken())>1 or int(p.getChilds()[0].getChilds()[6].getToken())<0):
             wrongOperationNumberError()
+
 
 
 

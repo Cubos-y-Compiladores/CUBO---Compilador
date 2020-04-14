@@ -3,8 +3,9 @@ Dim_Filas=6;
 Dim_Columnas = 5;
 Timer=15;
 Cubo = 6;
-z=[[True],[False]];
-y=15;
+z=[[True,False],[False,True]];
+t=16;
+y=[True];
 r=[[[False,False,False],[False,False,False],[False,False,False]],[[False,False,False],[False,False,False],[False,False,False]],[[False,False,False],[True,False,False],[False,False,False]]];
 --k=(z*y)/10;
 w,x=True,range(10,True);
@@ -12,8 +13,12 @@ w,x=True,range(10,True);
 	Procedure test (param1,param2,param3)
 	{
 	global r,z,y;
+	global t;
 		begin
-		r.delete(20,1);
+		m=True;
+		k=[True];
+		type(r[0][2]);
+		k.insert(10,True);
 		--type(j[1]);
 		--var1=5;
 		--m=[[[True,False,False],[True,True,False],[True,True,True]],[[True,False,False],[True,True,False],[True,True,True]],[[True,False,False],[True,True,False],[True,True,True]]];

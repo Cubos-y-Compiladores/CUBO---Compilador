@@ -286,14 +286,19 @@ def nonIterableObjectError(var):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The variable " + str(var) + " is not an iterable object")
     sys.exit()
 
-def alreadyDefinedVarError(var,varType):
-    if(str(varType)=="<class 'int'>"):
+def alreadyDefinedVarError(var,varContent):
+    if(str(type(varContent))=="<class 'int'>"):
         varType="INT"
-    elif (str(varType)=="<class 'bool'>"):
+    elif (str(type(varContent))=="<class 'bool'>"):
         varType="BOOL"
-    elif (str(varType)=="<class 'list'>"):
-        varType="LIST"
-    print(colorama.Fore.RED + "SEMANTIC ERROR: The global variable " + str(var) + " already exists in this scope as a "+varType+ " variable")
+    elif (str(type(varContent))=="<class 'list'>"):
+        if(threeDMatrixVerifier(varContent)):
+            varType = "3DMATRIX"
+        elif(matrixVerifier(varContent)):
+            varType = "MATRIX"
+        else:
+            varType="LIST"
+    print(colorama.Fore.RED + "SEMANTIC ERROR: The variable " + str(var) + " already exists in this scope as a "+varType+ " variable")
     sys.exit()
 
 def alreadyDefinedConstError(var):
@@ -318,6 +323,14 @@ def outOfAnyScopeError(var):
 
 def insertOnNotIterableObjectError(var):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The variable " + var + " is not an iterable object, therefore insertion operations can't be performed on it")
+    sys.exit()
+
+def insertingBoolOnMatObjectError(var):
+    print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in " + var + " is a matrix or 3Dmatrix object, therefore the insertion of boolean values is forbidden")
+    sys.exit()
+
+def insertingListOnNoMatObjectError(var):
+    print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in " + var + " is a not matrix object, therefore the insertion of list values is forbidden")
     sys.exit()
 
 def delOnNotIterableObjectError(var):
@@ -348,7 +361,14 @@ def deleteOnNotMatrixError(var):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The value in " + var + " is not a Matrix object, therefore the function Delete can't be used on it ")
     sys.exit()
 
-def wrongOperationNumberError():
-    print(
-    colorama.Fore.RED + "SEMANTIC ERROR: The operation Delete only accepts 1 or 0 in the operation type index")
+def wrongOperationNumberError(operation):
+    print(colorama.Fore.RED + "SEMANTIC ERROR: The "+ operation +" operation only accepts 1 or 0 in the operation type index")
+    sys.exit()
+
+def differentSizeInsertion(list,functionStat):
+    print(colorama.Fore.RED + "SEMANTIC ERROR: The list" + list + " in "+functionStat+" is not the same size as the others in the stucture it is being tried to insert")
+    sys.exit()
+
+def insertingOnListInsideMatrixError(var):
+    print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in "+var+" is a Matrix or a 3DMatrix object and inserting an element in one of it's Lists would alter it's integrity ")
     sys.exit()
