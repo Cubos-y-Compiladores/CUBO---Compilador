@@ -158,9 +158,23 @@ def consultTranslator(consult,localdictionary,globallocallist,globaldictionary,s
         translation[expr]=dictionary[var][ind1][ind2][ind3]
         return translation
 
-def functionTranslator(function):
+def functionTranslator(function,globalScope,localScope,type):
     if(function.getName() == "RangeF"):
-        size=int(function.getChilds()[2].getToken())
+        scope=None
+        size=None
+        if(type=="global"):
+            scope=globalScope
+        elif(type=="local"):
+            scope=localScope
+        if (function.getChilds()[2].getName() == "Iterable0"):
+            if (indVerifier(function.getChilds()[2], scope)):
+                size = scope[function.getChilds()[2].getChilds()[0].getChilds()[0].getToken()]
+            else:
+                notIterableIndError()
+        elif(function.getChilds()[2].getName() == "Iterable1"):
+            size = int(function.getChilds()[2].getChilds()[0].getToken())
+
+
         boolValue=tokenTranslator(function.getChilds()[4].getChilds()[0].getToken())
         output=[]
         for v in range(size):
@@ -270,6 +284,38 @@ def matBoundsVerifier(mat):
     elif(threeDMatrixVerifier(mat)):
         return[len(mat[0]),len(mat[0][0]),len(mat)]
 
+def indVerifier(ind,scope):
+    if(ind.getChilds()[0].getChilds()[0].getToken() in scope):
+        if(isinstance(scope[ind.getChilds()[0].getChilds()[0].getToken()],int)):
+            return True
+        return False
+    outOfScopeError(ind.getChilds()[0].getChilds()[0].getToken())
+
+def globalFetch(globalScope,varList):
+    output={}
+    for valor in varList:
+        if(valor in globalScope):
+            output[valor]=globalScope[valor]
+    return output
+
+def scopeSelector(globalScope,localScope,globalLocalList,var):
+    scope = ""
+    if (var in globalLocalList):
+        scope = globalScope
+    elif (var in localScope):
+        scope = localScope
+    return scope
+
+def matrixInserter(type,listed,mat,ind):
+    if(type==0):
+       mat.insert(ind,listed)
+
+    elif(type==1):
+        index=0
+        for valor in mat:
+            valor.insert(ind,listed[index])
+            index+=1
+    return mat
 def outOfBoundsError(index,iterable):
     print(colorama.Fore.RED + "SEMANTIC ERROR: Index "+str(index)+" in "+ str(iterable)+" out of bounds ")
     sys.exit()
@@ -371,4 +417,8 @@ def differentSizeInsertion(list,functionStat):
 
 def insertingOnListInsideMatrixError(var):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in "+var+" is a Matrix or a 3DMatrix object and inserting an element in one of it's Lists would alter it's integrity ")
+    sys.exit()
+
+def notIterableIndError():
+    print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in the variable used in the Range function is not an integer, therefore it can't be used as an ind")
     sys.exit()

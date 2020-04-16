@@ -200,8 +200,8 @@ def p_type(p):
     
 
 def p_range(p):
-    '''a_content : RANGE LPARENT INT COMMA value RPARENT'''
-    p[0]=NonTerminalNode("RangeF",[TerminalNode("Range","RANGE"),TerminalNode("Lparent","LPARENT"),TerminalNode("Int",p[3]),TerminalNode("Comma","COMMA"),p[5],TerminalNode("Rparent","RPARENT")])
+    '''a_content : RANGE LPARENT iterable COMMA value RPARENT'''
+    p[0]=NonTerminalNode("RangeF",[TerminalNode("Range","RANGE"),TerminalNode("Lparent","LPARENT"),p[3],TerminalNode("Comma","COMMA"),p[5],TerminalNode("Rparent","RPARENT")])
 
 
 def p_insert(p):
@@ -210,8 +210,8 @@ def p_insert(p):
     
 
 def p_del(p):
-    ''' del : identifier DOT DEL LPARENT INT RPARENT SEMICOLON '''
-    p[0]=NonTerminalNode("DelF",[p[1],TerminalNode("Dot","DOT"),TerminalNode("Del","DEL"),TerminalNode("Lparent","LPARENT"),TerminalNode("Int",p[5]),TerminalNode("Rparent","RPARENT")])
+    ''' del : identifier DOT DEL LPARENT iterable RPARENT SEMICOLON '''
+    p[0]=NonTerminalNode("DelF",[p[1],TerminalNode("Dot","DOT"),TerminalNode("Del","DEL"),TerminalNode("Lparent","LPARENT"),p[5],TerminalNode("Rparent","RPARENT")])
     
 
 def p_len(p):
@@ -322,6 +322,7 @@ def p_EmptyOptStatment(p):
 def p_procedure(p):
     '''procedure : PROCEDURE proc_dec LCORCH body RCORCH SEMICOLON '''
     procedureSem(p)
+    varViewer()
     p[0]=NonTerminalNode("ProcedureP",[TerminalNode("Procedure","PROCEDURE"),p[2],TerminalNode("Lcorch","LCORCH"),p[4],TerminalNode("Rcorch","RCORCH")])
     
 def p_procDec(p):
@@ -530,8 +531,8 @@ def p_Fcont5(p):
     
 
 def p_Fcont6(p):
-    '''i_content : INT COMMA value'''
-    p[0]=NonTerminalNode("Fcont6",[TerminalNode("Int",p[1]),TerminalNode("Comma","COMMA"),p[3]])
+    '''i_content : iterable COMMA value'''
+    p[0]=NonTerminalNode("Fcont6",[p[1],TerminalNode("Comma","COMMA"),p[3]])
    
 
 def p_Fcont7(p):
@@ -693,8 +694,8 @@ def p_indice1(p):
     
 
 def p_Insind0(p):
-    '''i_ind : COMMA INT'''
-    p[0]=NonTerminalNode("Insind0",[TerminalNode("Comma","COMMA"),TerminalNode("Int",p[2])])
+    '''i_ind : COMMA iterable'''
+    p[0]=NonTerminalNode("Insind0",[TerminalNode("Comma","COMMA"),p[2]])
     
 
 def p_InsindEmp(p):
@@ -863,7 +864,7 @@ def p_iterable0(p):
 
 def p_iterable1(p):
     '''iterable : INT'''
-    p[0]=NonTerminalNode("Iterable1",TerminalNode("Int",p[1]))
+    p[0]=NonTerminalNode("Iterable1",[TerminalNode("Int",p[1])])
     
 
 

@@ -3,22 +3,23 @@ Dim_Filas=6;
 Dim_Columnas = 5;
 Timer=15;
 Cubo = 6;
-z=[[True,False],[False,True]];
-t=16;
+t=1;
+z=[[True,True],[True,True]];
+k,l=range(t,True),[True];
 y=[True];
-r=[[[False,False,False],[False,False,False],[False,False,False]],[[False,False,False],[False,False,False],[False,False,False]],[[False,False,False],[True,False,False],[False,False,False]]];
+r=[[[False,False,False],[False,False,False],[False,False,False]],[[False,False,False],[False,False,False],[False,False,False]],[[False,False,False],[False,False,False],[False,False,False]]];
 --k=(z*y)/10;
 w,x=True,range(10,True);
 
 	Procedure test (param1,param2,param3)
 	{
-	global r,z,y;
+	global r,z,y,k;
 	global t;
 		begin
 		m=True;
 		k=[True];
 		type(r[0][2]);
-		k.insert(10,True);
+		r[1].insert([True,True,True],1,0);
 		--type(j[1]);
 		--var1=5;
 		--m=[[[True,False,False],[True,True,False],[True,True,True]],[[True,False,False],[True,True,False],[True,True,True]],[[True,False,False],[True,True,False],[True,True,True]]];
@@ -36,14 +37,16 @@ w,x=True,range(10,True);
 		--if (lista2[2] == True){type(lista2);};else{lista[2]=True;};
 		end;	
 	};
-	--Procedure test (param1,param2)
-	--{
-		--begin
+	Procedure test (param1,param2)
+	{
+		global k;
+		begin
+		k.insert(1,False);
 		--var1=5;
 		--var=True;
 		--type(var);
-		--end;	
-	--};
+		end;	
+	};
 
 --Variables y asignacion de variables
 

@@ -14,8 +14,7 @@ def assignmentSem(p,scope):
     if(scope=="global"):
         scope=global_var
     elif(scope=="local"):
-        for valor in global_temp:
-            tempdict[valor]=global_var[valor]
+        tempdict.update(globalFetch(global_var,global_temp))
         scope=tempdict
 
     if(p.getName()=="SimpleAssignment"):
@@ -79,7 +78,9 @@ def assignmentSem(p,scope):
               alreadyDefinedVarError(varName,scope[varName])
 
         elif(p.getChilds()[2].getName() == "RangeF"):
-            value = functionTranslator(p.getChilds()[2])
+            temp=local_var.copy()
+            temp.update(globalFetch(global_var, global_temp))
+            value = functionTranslator(p.getChilds()[2],global_var,temp,scopeType)
             if (typeVerifier(varType, value)):
                 scope[varName] = value
 
@@ -135,10 +136,13 @@ def assignmentSem(p,scope):
                 valueList.append(threeDmatTranslator(child.getChilds()[0].getChilds()[1].getChilds()))
 
             elif(child.getName()=="Acont5"):
-                valueList.append(list(consultTranslator(child.getChilds()[0].getChilds()[0],local_var,global_temp,global_var,scopeType).values())[0])
+                valueList.append(list(consultTranslator(child.getChilds()[0].getChilds()[0],global_var,local_var,scopeType).values())[0])
 
             elif (child.getName()=="RangeF"):
-                valueList.append(functionTranslator(child))
+                temp=local_var.copy()
+                temp.update(globalFetch(global_var, global_temp))
+                valueList.append(functionTranslator(child,global_var,temp,scopeType))
+
 
         ind=0
         while(ind<len(varList)):
@@ -223,22 +227,16 @@ def procedureSem(p):
             elif ("Instruction" in statement.getName()):
                 instructionSem(statement)
 
-    print("---------Global Scope---------")
-    keys = list(global_var.keys())
-    for test in keys:
-        print(str(test) + ": " + str(global_var[test]))
-    print(" ")
-    print(" ")
-    print("---------Local Scope---------")
-    keys = list(local_var.keys())
-    for test in keys:
-        print(str(test) + ": " + str(local_var[test]))
-
 def instructionSem(p):
     if(p.getName()=="Instruction0"):
         functionSem(p.getChilds()[0])
 
 def functionSem(p):
+    global global_temp,global_var,local_var
+    temp3=global_temp
+    temp1=global_var
+    temp2=local_var
+    scope = ""
     "TODO: Hacer errores que relacionen al valor de las consultas y no a la variable directamente "
     if(p.getName()=="Function0"):
         varName=""
@@ -251,7 +249,7 @@ def functionSem(p):
 
         if(not existenceVerifier(varName,local_var,global_temp)):
             outOfScopeError(varName)
-
+        scope=scopeSelector(global_var,local_var,global_temp,varName)
     elif(p.getName()=="Function1"):
         #TODO: Actualizar las variables modificadas
         varName = ""
@@ -264,12 +262,13 @@ def functionSem(p):
 
         if (not existenceVerifier(varName, local_var, global_temp)):
             outOfScopeError(varName)
-
+        scope = scopeSelector(global_var, local_var, global_temp, varName)
         if(consult!=""):
 
             if (type(consult) != type([])):
                 insertOnNotIterableObjectError(varName)
             if (p.getChilds()[0].getChilds()[4].getName() == "Fcont6"):
+
                 if(matVerifier(consult)):
                     consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var,global_temp, global_var, "local").keys())[0]
                     insertingBoolOnMatObjectError(consult)
@@ -283,26 +282,43 @@ def functionSem(p):
                     ind = p.getChilds()[0].getChilds()[4].getChilds()[3]
                     listed = listTranslator(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds())
                     if (not ind.isNull()):
-                        ind = int(p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getToken())
+                        ind = None
+                        if (p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getName() == "Iterable0"):
+                            temp = local_var.copy()
+                            temp.update(globalFetch(global_var, global_temp))
+                            if (indVerifier(p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1], temp)):
+                                ind = temp[p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getChilds()[0].getChilds()[0].getToken()]
+
+                        elif (p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getName() == "Iterable1"):
+                            ind = int(
+                                p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getChilds()[0].getToken())
                         if (int(p.getChilds()[0].getChilds()[4].getChilds()[2].getToken()) == 0):
-                            if (ind >= colSize):
+                            if (ind > colSize):
                                 consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var, global_temp, global_var, "local").keys())[0]
                                 outOfBoundsError(ind, consult + ".insert(" + str(listed) + ",0," + str(ind) + ")")
+                            else:
+                                matrixInserter(0,listed,consult,ind)
 
                         elif (int(p.getChilds()[0].getChilds()[4].getChilds()[2].getToken()) == 1):
                             if (ind >= lineSize):
                                 consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var, global_temp, global_var, "local").keys())[0]
                                 outOfBoundsError(ind, consult + ".insert(" + str(listed) + ",1," + str(ind) + ")")
+                            else:
+                                matrixInserter(1,listed,consult,ind)
 
-                    if (int(p.getChilds()[0].getChilds()[4].getChilds()[2].getToken()) == 0):
+                    elif (int(p.getChilds()[0].getChilds()[4].getChilds()[2].getToken()) == 0):
                         if (len(listed) != lineSize):
                             consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var, global_temp, global_var, "local").keys())[0]
                             differentSizeInsertion(str(listed), consult + ".insert(" + str(listed) + ",0)")
+                        else:
+                            matrixInserter(0, listed, consult,colSize)
 
                     elif (int(p.getChilds()[0].getChilds()[4].getChilds()[2].getToken()) == 1):
                         if (len(listed) != colSize):
                             consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var, global_temp, global_var, "local").keys())[0]
                             differentSizeInsertion(str(listed), consult + ".insert(" + str(listed) + ",1)")
+                        else:
+                            matrixInserter(1, listed, consult, lineSize)
                     else:
                         wrongOperationNumberError("Insertion")
                 else:
@@ -310,24 +326,30 @@ def functionSem(p):
                     insertingListOnNoMatObjectError(consult)
 
         else:
-            scope=""
-            if (varName in global_temp):
-                scope = global_var
-            elif (varName in local_var):
-                scope = local_var
             structure = scope[varName]
             if (not typeVerifier(type([]),scope[varName])):
                 insertOnNotIterableObjectError(varName)
             if (p.getChilds()[0].getChilds()[4].getName() == "Fcont6"):
                 if (matVerifier(structure)):
                     insertingBoolOnMatObjectError(varName)
+                ind=None
+                if(p.getChilds()[0].getChilds()[4].getChilds()[0].getName()=="Iterable0"):
 
-                ind = int(p.getChilds()[0].getChilds()[4].getChilds()[0].getToken())
+                    temp = local_var.copy()
+                    temp.update(globalFetch(global_var,global_temp))
+                    if(indVerifier(p.getChilds()[0].getChilds()[4].getChilds()[0],temp)):
+                        ind=temp[p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getToken()]
+
+                elif (p.getChilds()[0].getChilds()[4].getChilds()[0].getName() == "Iterable1"):
+                    ind=int(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getToken())
+
+
                 value = tokenTranslator(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getToken())
-                if (ind >= len(structure)):
+                if (ind > len(structure)):
                     outOfBoundsError(ind, varName + ".insert(" + str(ind) + "," + str(value) + ")")
                 else:
-                    scope[varName] = structure.insert(ind,value)
+                    structure.insert(ind, value)
+                    scope[varName] = structure
 
 
             elif (p.getChilds()[0].getChilds()[4].getName() == "Fcont7"):
@@ -337,22 +359,39 @@ def functionSem(p):
                     ind = p.getChilds()[0].getChilds()[4].getChilds()[3]
                     lista = listTranslator(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds())
                     if (not ind.isNull()):
-                        ind = int(p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getToken())
+                        ind = None
+                        if (p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getName()=="Iterable0"):
+                            temp = local_var.copy()
+                            temp.update(globalFetch(global_var, global_temp))
+                            if (indVerifier(p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1], temp)):
+                                ind = temp[p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getChilds()[0].getChilds()[0].getToken()]
+
+                        elif (p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getName()=="Iterable1"):
+                            ind = int(p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getChilds()[0].getToken())
+
                         if (int(p.getChilds()[0].getChilds()[4].getChilds()[2].getToken()) == 0):
-                            if (ind >= colSize):
+                            if (ind > colSize):
                                 outOfBoundsError(ind, varName + ".insert(" + str(lista) + ",0," + str(ind) + ")")
+                            else:
+                                scope[varName]=matrixInserter(0,lista,scope[varName],ind)
 
                         elif (int(p.getChilds()[0].getChilds()[4].getChilds()[2].getToken()) == 1):
-                            if (ind >= lineSize):
+                            if (ind > lineSize):
                                 outOfBoundsError(ind, varName + ".insert(" + str(lista) + ",1," + str(ind) + ")")
+                            else:
+                                scope[varName]=matrixInserter(1,lista,scope[varName],ind)
 
-                    if (int(p.getChilds()[0].getChilds()[4].getChilds()[2].getToken()) == 0):
+                    elif (int(p.getChilds()[0].getChilds()[4].getChilds()[2].getToken()) == 0):
                         if (len(lista) != lineSize):
                             differentSizeInsertion(str(lista), varName + ".insert(" + str(lista) + ",0)")
+                        else:
+                            scope[varName] = matrixInserter(0, lista, scope[varName],colSize)
 
                     elif (int(p.getChilds()[0].getChilds()[4].getChilds()[2].getToken()) == 1):
                         if (len(lista) != colSize):
                             differentSizeInsertion(str(lista), varName + ".insert(" + str(lista) + ",1)")
+                        else:
+                            scope[varName] = matrixInserter(1, lista, scope[varName],lineSize)
                     else:
                         wrongOperationNumberError("Insertion")
                 else:
@@ -370,7 +409,7 @@ def functionSem(p):
 
         if (not existenceVerifier(varName, local_var, global_temp)):
             outOfScopeError(varName)
-
+        scope = scopeSelector(global_var, local_var, global_temp, varName)
         if (consult != ""):
             temp = type(consult)
             temp2 = type([])
@@ -393,7 +432,7 @@ def functionSem(p):
 
         if (not existenceVerifier(varName, local_var, global_temp)):
             outOfScopeError(varName)
-
+        scope = scopeSelector(global_var, local_var, global_temp, varName)
     elif (p.getName() == "Function4"):
         varName = ""
         consult = ""
@@ -423,7 +462,7 @@ def functionSem(p):
         elif (p.getChilds()[0].getChilds()[0].getName() == "Identifier1"):
             varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
             consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var, global_temp,global_var, "local").values())[0]
-
+        scope = scopeSelector(global_var, local_var, global_temp, varName)
         if(consult!=""):
             if (type(consult) != type([]) and type(consult) != type(True)):
                 tfOnNotBooleanError(varName)
@@ -445,7 +484,7 @@ def functionSem(p):
         elif (p.getChilds()[0].getChilds()[2].getChilds()[0].getName() == "Identifier1"):
             varName = p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
             consult = list(consultTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0], local_var, global_temp,global_var, "local").values())[0]
-
+        scope = scopeSelector(global_var, local_var, global_temp, varName)
         if (consult != ""):
             if (type(consult) != type([]) and type(consult) != type(True)):
                 BlinkOnNotBooleanError(varName)
@@ -470,7 +509,7 @@ def functionSem(p):
 
         if (not existenceVerifier(varName, local_var, global_temp)):
             outOfScopeError(varName)
-
+        scope = scopeSelector(global_var, local_var, global_temp, varName)
         if (list(consult.values())[0] != ""):
 
             if (not matrixVerifier(list(consult.values())[0])):
@@ -494,7 +533,7 @@ def functionSem(p):
 
         if (not existenceVerifier(varName, local_var, global_temp)):
             outOfScopeError(varName)
-
+        scope = scopeSelector(global_var, local_var, global_temp, varName)
         if (consult != ""):
 
             if (not matVerifier(list(consult.values())[0])):
@@ -556,3 +595,15 @@ def globalUsageSem(globalCall):
         if(valor not in global_var):
             outOfGlobalScopeError(valor)
     return output
+
+def varViewer():
+    print("---------Global Scope---------")
+    keys = list(global_var.keys())
+    for test in keys:
+        print(str(test) + ": " + str(global_var[test]))
+    print(" ")
+    print(" ")
+    print("---------Local Scope---------")
+    keys = list(local_var.keys())
+    for test in keys:
+        print(str(test) + ": " + str(local_var[test]))

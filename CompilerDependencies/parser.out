@@ -43,9 +43,9 @@ Rule 29    function -> shape
 Rule 30    function -> delete
 Rule 31    function -> call
 Rule 32    type -> TYPE LPARENT identifier RPARENT SEMICOLON
-Rule 33    a_content -> RANGE LPARENT INT COMMA value RPARENT
+Rule 33    a_content -> RANGE LPARENT iterable COMMA value RPARENT
 Rule 34    insert -> identifier DOT INSERT LPARENT i_content RPARENT SEMICOLON
-Rule 35    del -> identifier DOT DEL LPARENT INT RPARENT SEMICOLON
+Rule 35    del -> identifier DOT DEL LPARENT iterable RPARENT SEMICOLON
 Rule 36    len -> LEN LPARENT identifier RPARENT SEMICOLON
 Rule 37    neg -> identifier DOT NEG SEMICOLON
 Rule 38    t_f -> identifier DOT tf SEMICOLON
@@ -100,7 +100,7 @@ Rule 86    d_content -> empty
 Rule 87    d_content -> INT COMMA time_mes
 Rule 88    tf -> T
 Rule 89    tf -> F
-Rule 90    i_content -> INT COMMA value
+Rule 90    i_content -> iterable COMMA value
 Rule 91    i_content -> list COMMA INT i_ind
 Rule 92    list -> PARENTCL list_term PARENTCR
 Rule 93    list -> PARENTCL empty PARENTCR
@@ -131,7 +131,7 @@ Rule 117   3dmat_consultT -> PARENTCL indice COMMA indice COMMA indice PARENTCR
 Rule 118   3dmat_consultT -> PARENTCL indice PARENTCR mat_consultT
 Rule 119   indice -> INT
 Rule 120   indice -> ID
-Rule 121   i_ind -> COMMA INT
+Rule 121   i_ind -> COMMA iterable
 Rule 122   i_ind -> empty
 Rule 123   dimension -> DIMFILAS
 Rule 124   dimension -> DIMCOLUMNAS
@@ -194,7 +194,7 @@ ID                   : 17 18 48 56 60 72 108 111 116 120 146
 IF                   : 51
 IN                   : 48
 INSERT               : 34
-INT                  : 33 35 45 49 71 74 76 77 84 87 90 91 119 121 149
+INT                  : 45 49 71 74 76 77 84 87 91 119 149
 LCORCH               : 48 51 52 54 62
 LEN                  : 36
 LENGHTERROR          : 
@@ -274,7 +274,7 @@ identifier           : 19 20 20 32 34 35 36 37 38 44 45 84 85 148
 indice               : 45 109 110 110 112 112 113 115 117 117 117 118
 insert               : 22
 instruction          : 8 64
-iterable             : 48 51
+iterable             : 33 35 48 51 90 121
 len                  : 24
 list                 : 80 91 100
 list_consult         : 105
@@ -750,7 +750,7 @@ state 39
     (51) statement -> . IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement
     (32) type -> . TYPE LPARENT identifier RPARENT SEMICOLON
     (34) insert -> . identifier DOT INSERT LPARENT i_content RPARENT SEMICOLON
-    (35) del -> . identifier DOT DEL LPARENT INT RPARENT SEMICOLON
+    (35) del -> . identifier DOT DEL LPARENT iterable RPARENT SEMICOLON
     (36) len -> . LEN LPARENT identifier RPARENT SEMICOLON
     (37) neg -> . identifier DOT NEG SEMICOLON
     (38) t_f -> . identifier DOT tf SEMICOLON
@@ -1066,7 +1066,7 @@ state 54
     (51) statement -> . IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement
     (32) type -> . TYPE LPARENT identifier RPARENT SEMICOLON
     (34) insert -> . identifier DOT INSERT LPARENT i_content RPARENT SEMICOLON
-    (35) del -> . identifier DOT DEL LPARENT INT RPARENT SEMICOLON
+    (35) del -> . identifier DOT DEL LPARENT iterable RPARENT SEMICOLON
     (36) len -> . LEN LPARENT identifier RPARENT SEMICOLON
     (37) neg -> . identifier DOT NEG SEMICOLON
     (38) t_f -> . identifier DOT tf SEMICOLON
@@ -1391,7 +1391,7 @@ state 73
 state 74
 
     (34) insert -> identifier . DOT INSERT LPARENT i_content RPARENT SEMICOLON
-    (35) del -> identifier . DOT DEL LPARENT INT RPARENT SEMICOLON
+    (35) del -> identifier . DOT DEL LPARENT iterable RPARENT SEMICOLON
     (37) neg -> identifier . DOT NEG SEMICOLON
     (38) t_f -> identifier . DOT tf SEMICOLON
     (44) shape -> identifier . DOT shape_arg SEMICOLON
@@ -1501,7 +1501,7 @@ state 85
 state 86
 
     (19) assignment -> identifier ASSIGN . a_content SEMICOLON
-    (33) a_content -> . RANGE LPARENT INT COMMA value RPARENT
+    (33) a_content -> . RANGE LPARENT iterable COMMA value RPARENT
     (78) a_content -> . value
     (79) a_content -> . arithmetic
     (80) a_content -> . list
@@ -1532,28 +1532,28 @@ state 86
     (73) factor -> . LPARENT arithmetic RPARENT
 
     RANGE           shift and go to state 107
-    FALSE           shift and go to state 116
-    TRUE            shift and go to state 117
-    PARENTCL        shift and go to state 120
-    PLUS            shift and go to state 122
-    MINUS           shift and go to state 123
-    ID              shift and go to state 124
-    INT             shift and go to state 109
+    FALSE           shift and go to state 115
+    TRUE            shift and go to state 116
+    PARENTCL        shift and go to state 119
+    PLUS            shift and go to state 121
+    MINUS           shift and go to state 122
+    ID              shift and go to state 123
+    INT             shift and go to state 124
     LPARENT         shift and go to state 108
 
     a_content                      shift and go to state 106
-    value                          shift and go to state 110
-    arithmetic                     shift and go to state 111
-    list                           shift and go to state 112
-    mat                            shift and go to state 113
-    3dmat                          shift and go to state 114
-    consult                        shift and go to state 115
-    term                           shift and go to state 118
-    adding_operator                shift and go to state 119
+    value                          shift and go to state 109
+    arithmetic                     shift and go to state 110
+    list                           shift and go to state 111
+    mat                            shift and go to state 112
+    3dmat                          shift and go to state 113
+    consult                        shift and go to state 114
+    term                           shift and go to state 117
+    adding_operator                shift and go to state 118
     list_consult                   shift and go to state 49
     mat_consult                    shift and go to state 50
     3dmat_consult                  shift and go to state 51
-    factor                         shift and go to state 121
+    factor                         shift and go to state 120
 
 state 87
 
@@ -1763,7 +1763,7 @@ state 97
 state 98
 
     (34) insert -> identifier DOT . INSERT LPARENT i_content RPARENT SEMICOLON
-    (35) del -> identifier DOT . DEL LPARENT INT RPARENT SEMICOLON
+    (35) del -> identifier DOT . DEL LPARENT iterable RPARENT SEMICOLON
     (37) neg -> identifier DOT . NEG SEMICOLON
     (38) t_f -> identifier DOT . tf SEMICOLON
     (44) shape -> identifier DOT . shape_arg SEMICOLON
@@ -1897,7 +1897,7 @@ state 106
 
 state 107
 
-    (33) a_content -> RANGE . LPARENT INT COMMA value RPARENT
+    (33) a_content -> RANGE . LPARENT iterable COMMA value RPARENT
 
     LPARENT         shift and go to state 164
 
@@ -1916,34 +1916,18 @@ state 108
     (72) factor -> . ID
     (73) factor -> . LPARENT arithmetic RPARENT
 
-    PLUS            shift and go to state 122
-    MINUS           shift and go to state 123
-    INT             shift and go to state 109
+    PLUS            shift and go to state 121
+    MINUS           shift and go to state 122
+    INT             shift and go to state 124
     ID              shift and go to state 166
     LPARENT         shift and go to state 108
 
     arithmetic                     shift and go to state 165
-    term                           shift and go to state 118
-    adding_operator                shift and go to state 119
-    factor                         shift and go to state 121
+    term                           shift and go to state 117
+    adding_operator                shift and go to state 118
+    factor                         shift and go to state 120
 
 state 109
-
-    (71) factor -> INT .
-
-    TIMES           reduce using rule 71 (factor -> INT .)
-    EXP             reduce using rule 71 (factor -> INT .)
-    DIVIDE          reduce using rule 71 (factor -> INT .)
-    DIVENT          reduce using rule 71 (factor -> INT .)
-    MOD             reduce using rule 71 (factor -> INT .)
-    PLUS            reduce using rule 71 (factor -> INT .)
-    MINUS           reduce using rule 71 (factor -> INT .)
-    SEMICOLON       reduce using rule 71 (factor -> INT .)
-    RPARENT         reduce using rule 71 (factor -> INT .)
-    COMMA           reduce using rule 71 (factor -> INT .)
-
-
-state 110
 
     (78) a_content -> value .
 
@@ -1951,7 +1935,7 @@ state 110
     COMMA           reduce using rule 78 (a_content -> value .)
 
 
-state 111
+state 110
 
     (79) a_content -> arithmetic .
     (68) arithmetic -> arithmetic . adding_operator term
@@ -1960,12 +1944,12 @@ state 111
 
     SEMICOLON       reduce using rule 79 (a_content -> arithmetic .)
     COMMA           reduce using rule 79 (a_content -> arithmetic .)
-    PLUS            shift and go to state 122
-    MINUS           shift and go to state 123
+    PLUS            shift and go to state 121
+    MINUS           shift and go to state 122
 
     adding_operator                shift and go to state 167
 
-state 112
+state 111
 
     (80) a_content -> list .
 
@@ -1973,7 +1957,7 @@ state 112
     COMMA           reduce using rule 80 (a_content -> list .)
 
 
-state 113
+state 112
 
     (81) a_content -> mat .
 
@@ -1981,7 +1965,7 @@ state 113
     COMMA           reduce using rule 81 (a_content -> mat .)
 
 
-state 114
+state 113
 
     (82) a_content -> 3dmat .
 
@@ -1989,7 +1973,7 @@ state 114
     COMMA           reduce using rule 82 (a_content -> 3dmat .)
 
 
-state 115
+state 114
 
     (83) a_content -> consult .
 
@@ -1997,7 +1981,7 @@ state 115
     COMMA           reduce using rule 83 (a_content -> consult .)
 
 
-state 116
+state 115
 
     (135) value -> FALSE .
 
@@ -2007,7 +1991,7 @@ state 116
     RPARENT         reduce using rule 135 (value -> FALSE .)
 
 
-state 117
+state 116
 
     (136) value -> TRUE .
 
@@ -2017,7 +2001,7 @@ state 117
     RPARENT         reduce using rule 136 (value -> TRUE .)
 
 
-state 118
+state 117
 
     (66) arithmetic -> term .
     (70) term -> term . multiplying_operator factor
@@ -2040,7 +2024,7 @@ state 118
 
     multiplying_operator           shift and go to state 168
 
-state 119
+state 118
 
     (67) arithmetic -> adding_operator . term
     (69) term -> . factor
@@ -2049,14 +2033,14 @@ state 119
     (72) factor -> . ID
     (73) factor -> . LPARENT arithmetic RPARENT
 
-    INT             shift and go to state 109
+    INT             shift and go to state 124
     ID              shift and go to state 166
     LPARENT         shift and go to state 108
 
     term                           shift and go to state 174
-    factor                         shift and go to state 121
+    factor                         shift and go to state 120
 
-state 120
+state 119
 
     (92) list -> PARENTCL . list_term PARENTCR
     (93) list -> PARENTCL . empty PARENTCR
@@ -2079,8 +2063,8 @@ state 120
     (97) mat -> . PARENTCL mat_term PARENTCR
 
     PARENTCR        reduce using rule 150 (empty -> .)
-    FALSE           shift and go to state 116
-    TRUE            shift and go to state 117
+    FALSE           shift and go to state 115
+    TRUE            shift and go to state 116
     PARENTCL        shift and go to state 175
 
     list_term                      shift and go to state 176
@@ -2094,7 +2078,7 @@ state 120
     list                           shift and go to state 184
     mat                            shift and go to state 185
 
-state 121
+state 120
 
     (69) term -> factor .
 
@@ -2110,7 +2094,7 @@ state 121
     COMMA           reduce using rule 69 (term -> factor .)
 
 
-state 122
+state 121
 
     (128) adding_operator -> PLUS .
 
@@ -2119,7 +2103,7 @@ state 122
     LPARENT         reduce using rule 128 (adding_operator -> PLUS .)
 
 
-state 123
+state 122
 
     (129) adding_operator -> MINUS .
 
@@ -2128,7 +2112,7 @@ state 123
     LPARENT         reduce using rule 129 (adding_operator -> MINUS .)
 
 
-state 124
+state 123
 
     (108) list_consult -> ID . list_consultT
     (111) mat_consult -> ID . mat_consultT
@@ -2157,6 +2141,22 @@ state 124
     list_consultT                  shift and go to state 88
     mat_consultT                   shift and go to state 89
     3dmat_consultT                 shift and go to state 90
+
+state 124
+
+    (71) factor -> INT .
+
+    TIMES           reduce using rule 71 (factor -> INT .)
+    EXP             reduce using rule 71 (factor -> INT .)
+    DIVIDE          reduce using rule 71 (factor -> INT .)
+    DIVENT          reduce using rule 71 (factor -> INT .)
+    MOD             reduce using rule 71 (factor -> INT .)
+    PLUS            reduce using rule 71 (factor -> INT .)
+    MINUS           reduce using rule 71 (factor -> INT .)
+    SEMICOLON       reduce using rule 71 (factor -> INT .)
+    RPARENT         reduce using rule 71 (factor -> INT .)
+    COMMA           reduce using rule 71 (factor -> INT .)
+
 
 state 125
 
@@ -2254,6 +2254,8 @@ state 133
     COMPARE         reduce using rule 148 (iterable -> identifier .)
     STEP            reduce using rule 148 (iterable -> identifier .)
     LCORCH          reduce using rule 148 (iterable -> identifier .)
+    COMMA           reduce using rule 148 (iterable -> identifier .)
+    RPARENT         reduce using rule 148 (iterable -> identifier .)
 
 
 state 134
@@ -2269,6 +2271,8 @@ state 134
     COMPARE         reduce using rule 149 (iterable -> INT .)
     STEP            reduce using rule 149 (iterable -> INT .)
     LCORCH          reduce using rule 149 (iterable -> INT .)
+    COMMA           reduce using rule 149 (iterable -> INT .)
+    RPARENT         reduce using rule 149 (iterable -> INT .)
 
 
 state 135
@@ -2287,7 +2291,7 @@ state 136
 
 state 137
 
-    (35) del -> identifier DOT DEL . LPARENT INT RPARENT SEMICOLON
+    (35) del -> identifier DOT DEL . LPARENT iterable RPARENT SEMICOLON
 
     LPARENT         shift and go to state 202
 
@@ -2521,10 +2525,27 @@ state 163
 
 state 164
 
-    (33) a_content -> RANGE LPARENT . INT COMMA value RPARENT
+    (33) a_content -> RANGE LPARENT . iterable COMMA value RPARENT
+    (148) iterable -> . identifier
+    (149) iterable -> . INT
+    (146) identifier -> . ID
+    (147) identifier -> . consult
+    (105) consult -> . list_consult
+    (106) consult -> . mat_consult
+    (107) consult -> . 3dmat_consult
+    (108) list_consult -> . ID list_consultT
+    (111) mat_consult -> . ID mat_consultT
+    (116) 3dmat_consult -> . ID 3dmat_consultT
 
-    INT             shift and go to state 219
+    INT             shift and go to state 134
+    ID              shift and go to state 47
 
+    iterable                       shift and go to state 219
+    identifier                     shift and go to state 133
+    consult                        shift and go to state 48
+    list_consult                   shift and go to state 49
+    mat_consult                    shift and go to state 50
+    3dmat_consult                  shift and go to state 51
 
 state 165
 
@@ -2534,8 +2555,8 @@ state 165
     (129) adding_operator -> . MINUS
 
     RPARENT         shift and go to state 220
-    PLUS            shift and go to state 122
-    MINUS           shift and go to state 123
+    PLUS            shift and go to state 121
+    MINUS           shift and go to state 122
 
     adding_operator                shift and go to state 167
 
@@ -2564,12 +2585,12 @@ state 167
     (72) factor -> . ID
     (73) factor -> . LPARENT arithmetic RPARENT
 
-    INT             shift and go to state 109
+    INT             shift and go to state 124
     ID              shift and go to state 166
     LPARENT         shift and go to state 108
 
     term                           shift and go to state 221
-    factor                         shift and go to state 121
+    factor                         shift and go to state 120
 
 state 168
 
@@ -2578,7 +2599,7 @@ state 168
     (72) factor -> . ID
     (73) factor -> . LPARENT arithmetic RPARENT
 
-    INT             shift and go to state 109
+    INT             shift and go to state 124
     ID              shift and go to state 166
     LPARENT         shift and go to state 108
 
@@ -2670,8 +2691,8 @@ state 175
     (93) list -> . PARENTCL empty PARENTCR
 
     PARENTCR        reduce using rule 150 (empty -> .)
-    FALSE           shift and go to state 116
-    TRUE            shift and go to state 117
+    FALSE           shift and go to state 115
+    TRUE            shift and go to state 116
     PARENTCL        shift and go to state 223
 
     list_term                      shift and go to state 176
@@ -2764,7 +2785,7 @@ state 185
 state 186
 
     (20) assignment -> identifier COMMA identifier ASSIGN . a_content COMMA a_content SEMICOLON
-    (33) a_content -> . RANGE LPARENT INT COMMA value RPARENT
+    (33) a_content -> . RANGE LPARENT iterable COMMA value RPARENT
     (78) a_content -> . value
     (79) a_content -> . arithmetic
     (80) a_content -> . list
@@ -2795,28 +2816,28 @@ state 186
     (73) factor -> . LPARENT arithmetic RPARENT
 
     RANGE           shift and go to state 107
-    FALSE           shift and go to state 116
-    TRUE            shift and go to state 117
-    PARENTCL        shift and go to state 120
-    PLUS            shift and go to state 122
-    MINUS           shift and go to state 123
-    ID              shift and go to state 124
-    INT             shift and go to state 109
+    FALSE           shift and go to state 115
+    TRUE            shift and go to state 116
+    PARENTCL        shift and go to state 119
+    PLUS            shift and go to state 121
+    MINUS           shift and go to state 122
+    ID              shift and go to state 123
+    INT             shift and go to state 124
     LPARENT         shift and go to state 108
 
     a_content                      shift and go to state 231
-    value                          shift and go to state 110
-    arithmetic                     shift and go to state 111
-    list                           shift and go to state 112
-    mat                            shift and go to state 113
-    3dmat                          shift and go to state 114
-    consult                        shift and go to state 115
-    term                           shift and go to state 118
-    adding_operator                shift and go to state 119
+    value                          shift and go to state 109
+    arithmetic                     shift and go to state 110
+    list                           shift and go to state 111
+    mat                            shift and go to state 112
+    3dmat                          shift and go to state 113
+    consult                        shift and go to state 114
+    term                           shift and go to state 117
+    adding_operator                shift and go to state 118
     list_consult                   shift and go to state 49
     mat_consult                    shift and go to state 50
     3dmat_consult                  shift and go to state 51
-    factor                         shift and go to state 121
+    factor                         shift and go to state 120
 
 state 187
 
@@ -2910,20 +2931,20 @@ state 192
     (72) factor -> . ID
     (73) factor -> . LPARENT arithmetic RPARENT
 
-    FALSE           shift and go to state 116
-    TRUE            shift and go to state 117
-    PLUS            shift and go to state 122
-    MINUS           shift and go to state 123
-    INT             shift and go to state 109
+    FALSE           shift and go to state 115
+    TRUE            shift and go to state 116
+    PLUS            shift and go to state 121
+    MINUS           shift and go to state 122
+    INT             shift and go to state 124
     ID              shift and go to state 166
     LPARENT         shift and go to state 108
 
     bif_value                      shift and go to state 240
     value                          shift and go to state 241
     arithmetic                     shift and go to state 242
-    term                           shift and go to state 118
-    adding_operator                shift and go to state 119
-    factor                         shift and go to state 121
+    term                           shift and go to state 117
+    adding_operator                shift and go to state 118
+    factor                         shift and go to state 120
 
 state 193
 
@@ -3026,23 +3047,57 @@ state 200
 state 201
 
     (34) insert -> identifier DOT INSERT LPARENT . i_content RPARENT SEMICOLON
-    (90) i_content -> . INT COMMA value
+    (90) i_content -> . iterable COMMA value
     (91) i_content -> . list COMMA INT i_ind
+    (148) iterable -> . identifier
+    (149) iterable -> . INT
     (92) list -> . PARENTCL list_term PARENTCR
     (93) list -> . PARENTCL empty PARENTCR
+    (146) identifier -> . ID
+    (147) identifier -> . consult
+    (105) consult -> . list_consult
+    (106) consult -> . mat_consult
+    (107) consult -> . 3dmat_consult
+    (108) list_consult -> . ID list_consultT
+    (111) mat_consult -> . ID mat_consultT
+    (116) 3dmat_consult -> . ID 3dmat_consultT
 
-    INT             shift and go to state 245
+    INT             shift and go to state 134
     PARENTCL        shift and go to state 223
+    ID              shift and go to state 47
 
+    identifier                     shift and go to state 133
     i_content                      shift and go to state 244
+    iterable                       shift and go to state 245
     list                           shift and go to state 246
+    consult                        shift and go to state 48
+    list_consult                   shift and go to state 49
+    mat_consult                    shift and go to state 50
+    3dmat_consult                  shift and go to state 51
 
 state 202
 
-    (35) del -> identifier DOT DEL LPARENT . INT RPARENT SEMICOLON
+    (35) del -> identifier DOT DEL LPARENT . iterable RPARENT SEMICOLON
+    (148) iterable -> . identifier
+    (149) iterable -> . INT
+    (146) identifier -> . ID
+    (147) identifier -> . consult
+    (105) consult -> . list_consult
+    (106) consult -> . mat_consult
+    (107) consult -> . 3dmat_consult
+    (108) list_consult -> . ID list_consultT
+    (111) mat_consult -> . ID mat_consultT
+    (116) 3dmat_consult -> . ID 3dmat_consultT
 
-    INT             shift and go to state 247
+    INT             shift and go to state 134
+    ID              shift and go to state 47
 
+    identifier                     shift and go to state 133
+    iterable                       shift and go to state 247
+    consult                        shift and go to state 48
+    list_consult                   shift and go to state 49
+    mat_consult                    shift and go to state 50
+    3dmat_consult                  shift and go to state 51
 
 state 203
 
@@ -3125,8 +3180,8 @@ state 209
     (136) value -> . TRUE
 
     INT             shift and go to state 251
-    FALSE           shift and go to state 116
-    TRUE            shift and go to state 117
+    FALSE           shift and go to state 115
+    TRUE            shift and go to state 116
 
     value                          shift and go to state 252
 
@@ -3202,7 +3257,7 @@ state 214
     (147) identifier -> . consult
     (32) type -> . TYPE LPARENT identifier RPARENT SEMICOLON
     (34) insert -> . identifier DOT INSERT LPARENT i_content RPARENT SEMICOLON
-    (35) del -> . identifier DOT DEL LPARENT INT RPARENT SEMICOLON
+    (35) del -> . identifier DOT DEL LPARENT iterable RPARENT SEMICOLON
     (36) len -> . LEN LPARENT identifier RPARENT SEMICOLON
     (37) neg -> . identifier DOT NEG SEMICOLON
     (38) t_f -> . identifier DOT tf SEMICOLON
@@ -3294,7 +3349,7 @@ state 218
 
 state 219
 
-    (33) a_content -> RANGE LPARENT INT . COMMA value RPARENT
+    (33) a_content -> RANGE LPARENT iterable . COMMA value RPARENT
 
     COMMA           shift and go to state 268
 
@@ -3366,8 +3421,8 @@ state 223
     (136) value -> . TRUE
 
     PARENTCR        reduce using rule 150 (empty -> .)
-    FALSE           shift and go to state 116
-    TRUE            shift and go to state 117
+    FALSE           shift and go to state 115
+    TRUE            shift and go to state 116
 
     list_term                      shift and go to state 176
     empty                          shift and go to state 177
@@ -3418,8 +3473,8 @@ state 228
     (135) value -> . FALSE
     (136) value -> . TRUE
 
-    FALSE           shift and go to state 116
-    TRUE            shift and go to state 117
+    FALSE           shift and go to state 115
+    TRUE            shift and go to state 116
 
     list_value                     shift and go to state 180
     list_term                      shift and go to state 269
@@ -3592,8 +3647,8 @@ state 242
     (129) adding_operator -> . MINUS
 
     RPARENT         reduce using rule 138 (bif_value -> arithmetic .)
-    PLUS            shift and go to state 122
-    MINUS           shift and go to state 123
+    PLUS            shift and go to state 121
+    MINUS           shift and go to state 122
 
     adding_operator                shift and go to state 167
 
@@ -3622,7 +3677,7 @@ state 244
 
 state 245
 
-    (90) i_content -> INT . COMMA value
+    (90) i_content -> iterable . COMMA value
 
     COMMA           shift and go to state 282
 
@@ -3636,7 +3691,7 @@ state 246
 
 state 247
 
-    (35) del -> identifier DOT DEL LPARENT INT . RPARENT SEMICOLON
+    (35) del -> identifier DOT DEL LPARENT iterable . RPARENT SEMICOLON
 
     RPARENT         shift and go to state 284
 
@@ -3789,7 +3844,7 @@ state 260
     (147) identifier -> . consult
     (32) type -> . TYPE LPARENT identifier RPARENT SEMICOLON
     (34) insert -> . identifier DOT INSERT LPARENT i_content RPARENT SEMICOLON
-    (35) del -> . identifier DOT DEL LPARENT INT RPARENT SEMICOLON
+    (35) del -> . identifier DOT DEL LPARENT iterable RPARENT SEMICOLON
     (36) len -> . LEN LPARENT identifier RPARENT SEMICOLON
     (37) neg -> . identifier DOT NEG SEMICOLON
     (38) t_f -> . identifier DOT tf SEMICOLON
@@ -3885,7 +3940,7 @@ state 264
     (19) assignment -> identifier . ASSIGN a_content SEMICOLON
     (20) assignment -> identifier . COMMA identifier ASSIGN a_content COMMA a_content SEMICOLON
     (34) insert -> identifier . DOT INSERT LPARENT i_content RPARENT SEMICOLON
-    (35) del -> identifier . DOT DEL LPARENT INT RPARENT SEMICOLON
+    (35) del -> identifier . DOT DEL LPARENT iterable RPARENT SEMICOLON
     (37) neg -> identifier . DOT NEG SEMICOLON
     (38) t_f -> identifier . DOT tf SEMICOLON
     (44) shape -> identifier . DOT shape_arg SEMICOLON
@@ -3928,12 +3983,12 @@ state 267
 
 state 268
 
-    (33) a_content -> RANGE LPARENT INT COMMA . value RPARENT
+    (33) a_content -> RANGE LPARENT iterable COMMA . value RPARENT
     (135) value -> . FALSE
     (136) value -> . TRUE
 
-    FALSE           shift and go to state 116
-    TRUE            shift and go to state 117
+    FALSE           shift and go to state 115
+    TRUE            shift and go to state 116
 
     value                          shift and go to state 293
 
@@ -3976,7 +4031,7 @@ state 272
 state 273
 
     (20) assignment -> identifier COMMA identifier ASSIGN a_content COMMA . a_content SEMICOLON
-    (33) a_content -> . RANGE LPARENT INT COMMA value RPARENT
+    (33) a_content -> . RANGE LPARENT iterable COMMA value RPARENT
     (78) a_content -> . value
     (79) a_content -> . arithmetic
     (80) a_content -> . list
@@ -4007,28 +4062,28 @@ state 273
     (73) factor -> . LPARENT arithmetic RPARENT
 
     RANGE           shift and go to state 107
-    FALSE           shift and go to state 116
-    TRUE            shift and go to state 117
-    PARENTCL        shift and go to state 120
-    PLUS            shift and go to state 122
-    MINUS           shift and go to state 123
-    ID              shift and go to state 124
-    INT             shift and go to state 109
+    FALSE           shift and go to state 115
+    TRUE            shift and go to state 116
+    PARENTCL        shift and go to state 119
+    PLUS            shift and go to state 121
+    MINUS           shift and go to state 122
+    ID              shift and go to state 123
+    INT             shift and go to state 124
     LPARENT         shift and go to state 108
 
     a_content                      shift and go to state 294
-    value                          shift and go to state 110
-    arithmetic                     shift and go to state 111
-    list                           shift and go to state 112
-    mat                            shift and go to state 113
-    3dmat                          shift and go to state 114
-    consult                        shift and go to state 115
-    term                           shift and go to state 118
-    adding_operator                shift and go to state 119
+    value                          shift and go to state 109
+    arithmetic                     shift and go to state 110
+    list                           shift and go to state 111
+    mat                            shift and go to state 112
+    3dmat                          shift and go to state 113
+    consult                        shift and go to state 114
+    term                           shift and go to state 117
+    adding_operator                shift and go to state 118
     list_consult                   shift and go to state 49
     mat_consult                    shift and go to state 50
     3dmat_consult                  shift and go to state 51
-    factor                         shift and go to state 121
+    factor                         shift and go to state 120
 
 state 274
 
@@ -4135,12 +4190,12 @@ state 281
 
 state 282
 
-    (90) i_content -> INT COMMA . value
+    (90) i_content -> iterable COMMA . value
     (135) value -> . FALSE
     (136) value -> . TRUE
 
-    FALSE           shift and go to state 116
-    TRUE            shift and go to state 117
+    FALSE           shift and go to state 115
+    TRUE            shift and go to state 116
 
     value                          shift and go to state 301
 
@@ -4153,7 +4208,7 @@ state 283
 
 state 284
 
-    (35) del -> identifier DOT DEL LPARENT INT RPARENT . SEMICOLON
+    (35) del -> identifier DOT DEL LPARENT iterable RPARENT . SEMICOLON
 
     SEMICOLON       shift and go to state 303
 
@@ -4210,7 +4265,7 @@ state 287
     (147) identifier -> . consult
     (32) type -> . TYPE LPARENT identifier RPARENT SEMICOLON
     (34) insert -> . identifier DOT INSERT LPARENT i_content RPARENT SEMICOLON
-    (35) del -> . identifier DOT DEL LPARENT INT RPARENT SEMICOLON
+    (35) del -> . identifier DOT DEL LPARENT iterable RPARENT SEMICOLON
     (36) len -> . LEN LPARENT identifier RPARENT SEMICOLON
     (37) neg -> . identifier DOT NEG SEMICOLON
     (38) t_f -> . identifier DOT tf SEMICOLON
@@ -4298,7 +4353,7 @@ state 292
 
 state 293
 
-    (33) a_content -> RANGE LPARENT INT COMMA value . RPARENT
+    (33) a_content -> RANGE LPARENT iterable COMMA value . RPARENT
 
     RPARENT         shift and go to state 308
 
@@ -4405,7 +4460,7 @@ state 299
     (147) identifier -> . consult
     (32) type -> . TYPE LPARENT identifier RPARENT SEMICOLON
     (34) insert -> . identifier DOT INSERT LPARENT i_content RPARENT SEMICOLON
-    (35) del -> . identifier DOT DEL LPARENT INT RPARENT SEMICOLON
+    (35) del -> . identifier DOT DEL LPARENT iterable RPARENT SEMICOLON
     (36) len -> . LEN LPARENT identifier RPARENT SEMICOLON
     (37) neg -> . identifier DOT NEG SEMICOLON
     (38) t_f -> . identifier DOT tf SEMICOLON
@@ -4473,15 +4528,15 @@ state 300
 
 state 301
 
-    (90) i_content -> INT COMMA value .
+    (90) i_content -> iterable COMMA value .
 
-    RPARENT         reduce using rule 90 (i_content -> INT COMMA value .)
+    RPARENT         reduce using rule 90 (i_content -> iterable COMMA value .)
 
 
 state 302
 
     (91) i_content -> list COMMA INT . i_ind
-    (121) i_ind -> . COMMA INT
+    (121) i_ind -> . COMMA iterable
     (122) i_ind -> . empty
     (150) empty -> .
 
@@ -4493,18 +4548,18 @@ state 302
 
 state 303
 
-    (35) del -> identifier DOT DEL LPARENT INT RPARENT SEMICOLON .
+    (35) del -> identifier DOT DEL LPARENT iterable RPARENT SEMICOLON .
 
-    IF              reduce using rule 35 (del -> identifier DOT DEL LPARENT INT RPARENT SEMICOLON .)
-    TYPE            reduce using rule 35 (del -> identifier DOT DEL LPARENT INT RPARENT SEMICOLON .)
-    LEN             reduce using rule 35 (del -> identifier DOT DEL LPARENT INT RPARENT SEMICOLON .)
-    BLINK           reduce using rule 35 (del -> identifier DOT DEL LPARENT INT RPARENT SEMICOLON .)
-    DELAY           reduce using rule 35 (del -> identifier DOT DEL LPARENT INT RPARENT SEMICOLON .)
-    CALL            reduce using rule 35 (del -> identifier DOT DEL LPARENT INT RPARENT SEMICOLON .)
-    ID              reduce using rule 35 (del -> identifier DOT DEL LPARENT INT RPARENT SEMICOLON .)
-    FOR             reduce using rule 35 (del -> identifier DOT DEL LPARENT INT RPARENT SEMICOLON .)
-    END             reduce using rule 35 (del -> identifier DOT DEL LPARENT INT RPARENT SEMICOLON .)
-    RCORCH          reduce using rule 35 (del -> identifier DOT DEL LPARENT INT RPARENT SEMICOLON .)
+    IF              reduce using rule 35 (del -> identifier DOT DEL LPARENT iterable RPARENT SEMICOLON .)
+    TYPE            reduce using rule 35 (del -> identifier DOT DEL LPARENT iterable RPARENT SEMICOLON .)
+    LEN             reduce using rule 35 (del -> identifier DOT DEL LPARENT iterable RPARENT SEMICOLON .)
+    BLINK           reduce using rule 35 (del -> identifier DOT DEL LPARENT iterable RPARENT SEMICOLON .)
+    DELAY           reduce using rule 35 (del -> identifier DOT DEL LPARENT iterable RPARENT SEMICOLON .)
+    CALL            reduce using rule 35 (del -> identifier DOT DEL LPARENT iterable RPARENT SEMICOLON .)
+    ID              reduce using rule 35 (del -> identifier DOT DEL LPARENT iterable RPARENT SEMICOLON .)
+    FOR             reduce using rule 35 (del -> identifier DOT DEL LPARENT iterable RPARENT SEMICOLON .)
+    END             reduce using rule 35 (del -> identifier DOT DEL LPARENT iterable RPARENT SEMICOLON .)
+    RCORCH          reduce using rule 35 (del -> identifier DOT DEL LPARENT iterable RPARENT SEMICOLON .)
 
 
 state 304
@@ -4537,10 +4592,10 @@ state 307
 
 state 308
 
-    (33) a_content -> RANGE LPARENT INT COMMA value RPARENT .
+    (33) a_content -> RANGE LPARENT iterable COMMA value RPARENT .
 
-    SEMICOLON       reduce using rule 33 (a_content -> RANGE LPARENT INT COMMA value RPARENT .)
-    COMMA           reduce using rule 33 (a_content -> RANGE LPARENT INT COMMA value RPARENT .)
+    SEMICOLON       reduce using rule 33 (a_content -> RANGE LPARENT iterable COMMA value RPARENT .)
+    COMMA           reduce using rule 33 (a_content -> RANGE LPARENT iterable COMMA value RPARENT .)
 
 
 state 309
@@ -4597,10 +4652,27 @@ state 312
 
 state 313
 
-    (121) i_ind -> COMMA . INT
+    (121) i_ind -> COMMA . iterable
+    (148) iterable -> . identifier
+    (149) iterable -> . INT
+    (146) identifier -> . ID
+    (147) identifier -> . consult
+    (105) consult -> . list_consult
+    (106) consult -> . mat_consult
+    (107) consult -> . 3dmat_consult
+    (108) list_consult -> . ID list_consultT
+    (111) mat_consult -> . ID mat_consultT
+    (116) 3dmat_consult -> . ID 3dmat_consultT
 
-    INT             shift and go to state 320
+    INT             shift and go to state 134
+    ID              shift and go to state 47
 
+    iterable                       shift and go to state 320
+    identifier                     shift and go to state 133
+    consult                        shift and go to state 48
+    list_consult                   shift and go to state 49
+    mat_consult                    shift and go to state 50
+    3dmat_consult                  shift and go to state 51
 
 state 314
 
@@ -4629,8 +4701,8 @@ state 317
     (135) value -> . FALSE
     (136) value -> . TRUE
 
-    FALSE           shift and go to state 116
-    TRUE            shift and go to state 117
+    FALSE           shift and go to state 115
+    TRUE            shift and go to state 116
 
     value                          shift and go to state 322
 
@@ -4650,9 +4722,9 @@ state 319
 
 state 320
 
-    (121) i_ind -> COMMA INT .
+    (121) i_ind -> COMMA iterable .
 
-    RPARENT         reduce using rule 121 (i_ind -> COMMA INT .)
+    RPARENT         reduce using rule 121 (i_ind -> COMMA iterable .)
 
 
 state 321
@@ -4789,7 +4861,7 @@ state 328
     (147) identifier -> . consult
     (32) type -> . TYPE LPARENT identifier RPARENT SEMICOLON
     (34) insert -> . identifier DOT INSERT LPARENT i_content RPARENT SEMICOLON
-    (35) del -> . identifier DOT DEL LPARENT INT RPARENT SEMICOLON
+    (35) del -> . identifier DOT DEL LPARENT iterable RPARENT SEMICOLON
     (36) len -> . LEN LPARENT identifier RPARENT SEMICOLON
     (37) neg -> . identifier DOT NEG SEMICOLON
     (38) t_f -> . identifier DOT tf SEMICOLON
