@@ -305,6 +305,49 @@ def globalUpdater(globalD,localD,localList):
             globalD[valor]=localD[valor]
     return globalD
 
+def nope(structure):
+    if(isinstance(structure,list)):
+        if(matVerifier(structure)):
+            col = 0
+            lin = 0
+            if(matrixVerifier(structure)):
+                for line in structure:
+                    col=0
+                    for value in line:
+                        structure[lin][col]=not value
+                        col+=1
+                    lin+=1
+            else:
+                mat=0
+                for matrix in structure:
+                    lin=0
+                    for line in matrix:
+                        col=0
+                        for value in line:
+                            structure[mat][lin][col]=not value
+                            col+=1
+                        lin+=1
+                    mat+=1
+        else:
+            ind=0
+            for valor in structure:
+                structure[ind]=not valor
+                ind+=1
+    else:
+        structure=not structure
+    return structure
+def structureUpdater(value,structure,expresion):
+    inds=[]
+    for valor in expresion:
+        if(valor.isdigit()):
+            inds.append(eval(valor))
+    if(len(inds)==1):
+        structure[inds[0]]=value
+    elif(len(inds)==2):
+        structure[inds[0]][inds[1]] = value
+    elif(len(inds)==3):
+        structure[inds[0]][inds[1]][inds[2]] = value
+    return structure
 def outOfBoundsError(index,iterable):
     print(colorama.Fore.RED + "SEMANTIC ERROR: Index "+str(index)+" in "+ str(iterable)+" out of bounds ")
     sys.exit()
@@ -377,7 +420,7 @@ def incompatibleConsultError(var,consultType,type):
     sys.exit()
 
 def negOnNotBooleanError(var):
-    print(colorama.Fore.RED + "SEMANTIC ERROR: The variable " + var + " is not a boolean or list object, therefore it can't be denied with Neg")
+    print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in " + var + " is not a boolean or list object, therefore it can't be denied with Neg")
     sys.exit()
 
 def tfOnNotBooleanError(var):

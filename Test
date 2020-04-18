@@ -4,6 +4,7 @@ Dim_Columnas = 5;
 Timer=15;
 Cubo = 6;
 t=1;
+b=True;
 z=[[True,True],[False,False]];
 k,l=range(t,True),[True];
 y=[True,True,True,False,True];
@@ -13,16 +14,16 @@ w,x=True,range(10,True);
 
 	Procedure test (param1,param2,param3)
 	{
-	global r;
+	global z;
 		begin
-		len(r);
+		z[0].Neg;
 		end;	
 	};
 	Procedure test (param1,param2)
 	{
-		global k;
+		global b;
 		begin
-		k.insert(1,False);
+		--k.insert(1,False);
 		--var1=5;
 		--var=True;
 		--type(var);

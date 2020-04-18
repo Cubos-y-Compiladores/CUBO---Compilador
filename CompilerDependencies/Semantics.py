@@ -405,23 +405,29 @@ def functionSem(p):
 
 
     elif (p.getName() == "Function4"):
-        varName = ""
-        consult = ""
+        varName = None
+        consult = None
         if (p.getChilds()[0].getChilds()[0].getName() == "Identifier0"):
             varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getToken()
+            if (not existenceVerifier(varName, local_var)):
+                outOfScopeError(varName)
         elif (p.getChilds()[0].getChilds()[0].getName() == "Identifier1"):
             varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
+            if (not existenceVerifier(varName, local_var)):
+                outOfScopeError(varName)
             consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var).values())[0]
 
-        if(consult!=""):
-            if(type(consult)!=type([]) and type(consult)!=type(True)):
-                negOnNotBooleanError(varName)
+        if(consult!=None):
+            if(not(isinstance(consult,list) or isinstance(consult,bool))):
+                consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var).keys())[0]
+                negOnNotBooleanError(consult)
+            expresion= list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var).keys())[0]
+            local_var[varName]=structureUpdater(nope(consult),local_var[varName],expresion)
 
-        if (not existenceVerifier(varName, local_var)):
-            outOfScopeError(varName)
-
-        elif (isinstance(local_var[varName],list) and isinstance(local_var[varName],list)):
+        else:
+            if(not(isinstance(local_var[varName],list) or isinstance(local_var[varName],bool))):
                 negOnNotBooleanError(varName)
+            local_var[varName]=nope(local_var[varName])
 
     elif (p.getName() == "Function5"):
         varName = ""
@@ -526,7 +532,7 @@ def functionSem(p):
         if(int(p.getChilds()[0].getChilds()[6].getToken())>1 or int(p.getChilds()[0].getChilds()[6].getToken())<0):
             wrongOperationNumberError()
 
-    #globalUpdater(global_var,local_var,local_only)
+    globalUpdater(global_var,local_var,local_only)
 
 
 
