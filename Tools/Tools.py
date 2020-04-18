@@ -205,7 +205,7 @@ def dimensionVerifier(var,dictionary,consultType):
     types=["List","Matrix","3D Matrix"]
     temp=type(estructure)
     temp2=type(True)
-    if(type(estructure)!=type([])):
+    if(not isinstance(estructure,list)):
         nonIterableObjectError(var)
 
     elif(type(estructure[0])==type(True)):

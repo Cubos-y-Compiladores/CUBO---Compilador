@@ -391,15 +391,18 @@ def functionSem(p):
 
 
     elif (p.getName() == "Function3"):
-        varName = ""
+        varName =None
         if (p.getChilds()[0].getChilds()[2].getName() == "Identifier0"):
             varName = p.getChilds()[0].getChilds()[2].getChilds()[0].getToken()
+            if (not existenceVerifier(varName, local_var)):
+                outOfScopeError(varName)
         elif (p.getChilds()[0].getChilds()[2].getName() == "Identifier1"):
             varName = p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
+            if (not existenceVerifier(varName, local_var)):
+                outOfScopeError(varName)
             consultTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0], local_var)
 
-        if (not existenceVerifier(varName, local_var)):
-            outOfScopeError(varName)
+
 
     elif (p.getName() == "Function4"):
         varName = ""

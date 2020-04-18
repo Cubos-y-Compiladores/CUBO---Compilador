@@ -15,7 +15,7 @@ w,x=True,range(10,True);
 	{
 	global r;
 		begin
-		r.del(1);
+		len(r);
 		end;	
 	};
 	Procedure test (param1,param2)
