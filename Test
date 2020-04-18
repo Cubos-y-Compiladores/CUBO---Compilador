@@ -14,9 +14,9 @@ w,x=True,range(10,True);
 
 	Procedure test (param1,param2,param3)
 	{
-	global z;
+	global r;
 		begin
-		z[0].Neg;
+		r[1][1][1].F;
 		end;	
 	};
 	Procedure test (param1,param2)

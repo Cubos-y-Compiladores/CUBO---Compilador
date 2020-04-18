@@ -348,6 +348,43 @@ def structureUpdater(value,structure,expresion):
     elif(len(inds)==3):
         structure[inds[0]][inds[1]][inds[2]] = value
     return structure
+def tF(structure,type):
+    finalValue=None
+    if(type=="T"):
+        finalValue=True
+    elif(type=="F"):
+        finalValue=False
+    if (isinstance(structure, list)):
+        if (matVerifier(structure)):
+            col = 0
+            lin = 0
+            if (matrixVerifier(structure)):
+                for line in structure:
+                    col = 0
+                    for value in line:
+                        structure[lin][col] = finalValue
+                        col += 1
+                    lin += 1
+            else:
+                mat = 0
+                for matrix in structure:
+                    lin = 0
+                    for line in matrix:
+                        col = 0
+                        for value in line:
+                            structure[mat][lin][col] = finalValue
+                            col += 1
+                        lin += 1
+                    mat += 1
+        else:
+            ind = 0
+            for valor in structure:
+                structure[ind] = finalValue
+                ind += 1
+    else:
+        structure = finalValue
+    return structure
+
 def outOfBoundsError(index,iterable):
     print(colorama.Fore.RED + "SEMANTIC ERROR: Index "+str(index)+" in "+ str(iterable)+" out of bounds ")
     sys.exit()
@@ -378,7 +415,6 @@ def alreadyDefinedVarError(var,varContent):
             varType="LIST"
     print(colorama.Fore.RED + "SEMANTIC ERROR: The variable " + str(var) + " already exists in this scope as a "+varType+ " variable")
     sys.exit()
-
 def alreadyDefinedConstError(var):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The configuration constant " + var + " has already been defined ")
     sys.exit()
@@ -424,7 +460,7 @@ def negOnNotBooleanError(var):
     sys.exit()
 
 def tfOnNotBooleanError(var):
-    print(colorama.Fore.RED + "SEMANTIC ERROR: The variable " + var + " is not a boolean or list object, therefore the function T or F can't be used on it ")
+    print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in  " + var + " is not a boolean or list object, therefore the function T or F can't be used on it ")
     sys.exit()
 
 def BlinkOnNotBooleanError(var):

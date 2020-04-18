@@ -430,22 +430,29 @@ def functionSem(p):
             local_var[varName]=nope(local_var[varName])
 
     elif (p.getName() == "Function5"):
-        varName = ""
-        consult = ""
+        varName = None
+        consult = None
+        type=p.getChilds()[0].getChilds()[2].getChilds()[0].getToken()
         if (p.getChilds()[0].getChilds()[0].getName() == "Identifier0"):
             varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getToken()
+            if (not existenceVerifier(varName, local_var)):
+                outOfScopeError(varName)
         elif (p.getChilds()[0].getChilds()[0].getName() == "Identifier1"):
             varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
+            if (not existenceVerifier(varName, local_var)):
+                outOfScopeError(varName)
             consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var).values())[0]
-        if(consult!=""):
-            if (type(consult) != type([]) and type(consult) != type(True)):
+        if(consult!=None):
+            if (not(isinstance(consult,list) or isinstance(consult,bool))):
+                consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var).keys())[0]
+                tfOnNotBooleanError(consult)
+            expresion =list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var).keys())[0]
+            local_var[varName] = structureUpdater(tF(consult,type), local_var[varName], expresion)
+
+        else:
+            if(not(isinstance(local_var[varName],list) or isinstance(local_var[varName],bool))):
                 tfOnNotBooleanError(varName)
-
-        if (not existenceVerifier(varName, local_var)):
-            outOfScopeError(varName)
-
-        elif (isinstance(local_var[varName],list) and isinstance(local_var[varName],list)):
-            tfOnNotBooleanError(varName)
+            local_var[varName] = tF(local_var[varName],type)
 
     elif (p.getName() == "Function6"):
         varName = ""
