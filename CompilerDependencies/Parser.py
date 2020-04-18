@@ -516,8 +516,8 @@ def p_Fcont2(p):
     
 
 def p_Fcont3(p):
-    '''d_content : INT COMMA time_mes'''
-    p[0]=NonTerminalNode("Fcont3",[TerminalNode("Int",p[1]),TerminalNode("Comma","COMMA"),p[3]])
+    '''d_content : iterable COMMA time_mes'''
+    p[0]=NonTerminalNode("Fcont3",[p[1],TerminalNode("Comma","COMMA"),p[3]])
     
 
 def p_Fcont4(p):

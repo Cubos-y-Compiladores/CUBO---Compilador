@@ -490,3 +490,7 @@ def modifyingOnListInsideMatrixError(var,operation):
 def notIterableIndError(var,operation):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in the variable "+var+" used in the "+operation+" function is not an integer, therefore it can't be used as an index")
     sys.exit()
+
+def boolOnTempError(consult):
+    print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in " + consult + " is either a list or a boolean and both of this data types are forbiden in the delay time index")
+    sys.exit()

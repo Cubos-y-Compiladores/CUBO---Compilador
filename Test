@@ -16,7 +16,7 @@ w,x=True,range(10,True);
 	{
 	global r;
 		begin
-		Blink(r[1],5, "Seg", True);
+		Delay();
 		end;	
 	};
 	Procedure test (param1,param2)

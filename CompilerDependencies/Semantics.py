@@ -467,6 +467,21 @@ def functionSem(p):
         else:
             if(not(isinstance(local_var[varName],list) or isinstance(local_var[varName],bool))):
                 BlinkOnNotBooleanError(varName)
+    elif (p.getName() == "Function7"):
+        varName = ""
+        consult = ""
+        # TODO:Hacer un error para un valor de tiempo negativo
+        if(not p.getChilds()[0].getChilds()[2].isNull()):
+            if (p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getName() == "Identifier0"):
+                varName = p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
+                if (not existenceVerifier(varName, local_var)):
+                    outOfScopeError(varName)
+            elif (p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getName() == "Identifier1"):
+                consult = list(consultTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var).keys())[0]
+                boolOnTempError(consult)
+            if(varName!=None):
+                if(not isinstance(local_var[varName],int)):
+                    boolOnTempError(varName)
 
     elif (p.getName() == "Function8"):
         varName = ""

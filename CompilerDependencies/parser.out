@@ -97,7 +97,7 @@ Rule 83    a_content -> consult
 Rule 84    b_content -> identifier COMMA INT COMMA time_mes COMMA value
 Rule 85    b_content -> identifier COMMA value
 Rule 86    d_content -> empty
-Rule 87    d_content -> INT COMMA time_mes
+Rule 87    d_content -> iterable COMMA time_mes
 Rule 88    tf -> T
 Rule 89    tf -> F
 Rule 90    i_content -> iterable COMMA value
@@ -194,7 +194,7 @@ ID                   : 17 18 48 56 60 72 108 111 116 120 146
 IF                   : 51
 IN                   : 48
 INSERT               : 34
-INT                  : 45 49 71 74 76 77 84 87 91 119 149
+INT                  : 45 49 71 74 76 77 84 91 119 149
 LCORCH               : 48 51 52 54 62
 LEN                  : 36
 LENGHTERROR          : 
@@ -274,7 +274,7 @@ identifier           : 19 20 20 32 34 35 36 37 38 44 45 84 85 148
 indice               : 45 109 110 110 112 112 113 115 117 117 117 118
 insert               : 22
 instruction          : 8 64
-iterable             : 33 35 48 51 90 121
+iterable             : 33 35 48 51 87 90 121
 len                  : 24
 list                 : 80 91 100
 list_consult         : 105
@@ -1834,14 +1834,31 @@ state 101
 
     (40) delay -> DELAY LPARENT . d_content RPARENT SEMICOLON
     (86) d_content -> . empty
-    (87) d_content -> . INT COMMA time_mes
+    (87) d_content -> . iterable COMMA time_mes
     (150) empty -> .
+    (148) iterable -> . identifier
+    (149) iterable -> . INT
+    (146) identifier -> . ID
+    (147) identifier -> . consult
+    (105) consult -> . list_consult
+    (106) consult -> . mat_consult
+    (107) consult -> . 3dmat_consult
+    (108) list_consult -> . ID list_consultT
+    (111) mat_consult -> . ID mat_consultT
+    (116) 3dmat_consult -> . ID 3dmat_consultT
 
-    INT             shift and go to state 152
     RPARENT         reduce using rule 150 (empty -> .)
+    INT             shift and go to state 134
+    ID              shift and go to state 47
 
     d_content                      shift and go to state 150
     empty                          shift and go to state 151
+    iterable                       shift and go to state 152
+    identifier                     shift and go to state 133
+    consult                        shift and go to state 48
+    list_consult                   shift and go to state 49
+    mat_consult                    shift and go to state 50
+    3dmat_consult                  shift and go to state 51
 
 state 102
 
@@ -2252,9 +2269,9 @@ state 133
     LTE             reduce using rule 148 (iterable -> identifier .)
     GTE             reduce using rule 148 (iterable -> identifier .)
     COMPARE         reduce using rule 148 (iterable -> identifier .)
+    COMMA           reduce using rule 148 (iterable -> identifier .)
     STEP            reduce using rule 148 (iterable -> identifier .)
     LCORCH          reduce using rule 148 (iterable -> identifier .)
-    COMMA           reduce using rule 148 (iterable -> identifier .)
     RPARENT         reduce using rule 148 (iterable -> identifier .)
 
 
@@ -2269,9 +2286,9 @@ state 134
     LTE             reduce using rule 149 (iterable -> INT .)
     GTE             reduce using rule 149 (iterable -> INT .)
     COMPARE         reduce using rule 149 (iterable -> INT .)
+    COMMA           reduce using rule 149 (iterable -> INT .)
     STEP            reduce using rule 149 (iterable -> INT .)
     LCORCH          reduce using rule 149 (iterable -> INT .)
-    COMMA           reduce using rule 149 (iterable -> INT .)
     RPARENT         reduce using rule 149 (iterable -> INT .)
 
 
@@ -2397,7 +2414,7 @@ state 151
 
 state 152
 
-    (87) d_content -> INT . COMMA time_mes
+    (87) d_content -> iterable . COMMA time_mes
 
     COMMA           shift and go to state 211
 
@@ -3194,7 +3211,7 @@ state 210
 
 state 211
 
-    (87) d_content -> INT COMMA . time_mes
+    (87) d_content -> iterable COMMA . time_mes
     (125) time_mes -> . QUOTES MIL QUOTES
     (126) time_mes -> . QUOTES MIN QUOTES
     (127) time_mes -> . QUOTES SEG QUOTES
@@ -3767,9 +3784,9 @@ state 253
 
 state 254
 
-    (87) d_content -> INT COMMA time_mes .
+    (87) d_content -> iterable COMMA time_mes .
 
-    RPARENT         reduce using rule 87 (d_content -> INT COMMA time_mes .)
+    RPARENT         reduce using rule 87 (d_content -> iterable COMMA time_mes .)
 
 
 state 255
