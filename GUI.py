@@ -144,6 +144,7 @@ class MyApp(wx.Frame):
         self.pastLabelFileName = ""
         self.currentLabelFileName = ""
         self.flagSlider = False
+        self.currentLineNumber = self.textMain.PositionToXY(self.textMain.GetInsertionPoint())[2]
 
         # Lista de archivos
 
@@ -570,6 +571,9 @@ class MyApp(wx.Frame):
                         self.setStyleText(tok.lexpos + posInit, tok.lexpos + len(str(tok.value)) + posInit, self.colorWhite)
 
     def changeReservedWords2(self):
+
+       
+
         if self.flagSlider:
             self.changeTextColorWithoutClear()
 
@@ -577,7 +581,7 @@ class MyApp(wx.Frame):
             if self.textMain.GetValue() != "":
 
                 curPos = self.textMain.GetInsertionPoint()
-                print("curpos: "+ str(curPos))
+                # print("curpos: "+ str(curPos))
                 linenumber = self.textMain.PositionToXY(curPos)
                 lineText = self.textMain.GetLineText(linenumber[2])
 
@@ -598,27 +602,46 @@ class MyApp(wx.Frame):
                     pack = []
 
 
-                    print(len(lineText))
+                    # print(len(lineText))
                     if len(lineText) != 0:
                         if lineText[linenumber[1]-1] in list1 or lineText[linenumber[1]-1] in listNum:
 
                             pack = (linenumber[1]-1,linenumber[1],lineText[linenumber[1]-1:linenumber[1]],posInit)
                         else:
-                            s = linenumber[1] - 1
+                            print("LINENUMBER[1]",linenumber[1])
+                            s = linenumber[1] -1
+                            print("S",s)
                             e = linenumber[1]
                             if s <= 0:
                                 s = 0
                             if e >= len(lineText):
                                 e = len(lineText)
-
-                            while lineText[s] in list2 and s != 0:
-                                s-=1
+                            if s-1 >= 0:
+                                while s != 0 and lineText[s] in list2 and lineText[s-1] not in list1:
+                                    s-=1
                             while e != len(lineText) and lineText[e] in list2:
                                 e+=1
                             pack = (s,e,lineText[s:e],posInit)
 
 
                         self.changeWordColor(pack)
+
+        # if self.textMain.PositionToXY(self.textMain.GetInsertionPoint())[2] != self.currentLineNumber:
+          #  curPos = self.textMain.GetInsertionPoint()
+           # linenumber = self.textMain.PositionToXY(curPos)
+            #lineText = self.textMain.GetLineText(linenumber[2]-1)
+            #print("LENLINTEXTPrevious" + str(len(lineText)))
+
+            #if lineText.endswith("{") and self.textMain.PositionToXY(self.textMain.GetInsertionPoint())[2] > self.currentLineNumber :
+             #   self.textMain.AppendText("}")
+              #  self.currentLineNumber = self.textMain.PositionToXY(self.textMain.GetInsertionPoint())[2]
+
+                    #self.textMain.AppendText("\n")# * ((len(lineText)+2)//4))
+                    #self.textMain.AppendText("\t")# *(self.currenttext.count("}")+1) +"}")
+                    #self.textMain.SetInsertionPoint(len(lineText)+4 + (4*lineText.count("\t")))
+                    #self.textMain.SetInsertionPointEnd()
+                    #self.textMain.Refresh()
+
 
 
     def changeWordColor(self,tuple):

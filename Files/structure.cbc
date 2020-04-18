@@ -1,0 +1,15 @@
+for i in Step 2{
+	Procedure procedure1{
+		Main{
+			if x==2{
+				list0= [];
+			};
+		};
+	};
+};
+
+
+matriz2D0=  [[True,False],
+		[False,True]];
+--comentario 
+if palabra
