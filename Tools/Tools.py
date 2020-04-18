@@ -100,21 +100,8 @@ def arithmeticTranslator(operacion,dictionary):
 
     return result
 
-def consultTranslator(consult,localdictionary,globallocallist,globaldictionary,scopeType):
+def consultTranslator(consult,dictionary):
     translation={}
-    dictionary={}
-    if(scopeType=="local"):
-        if(consult.getChilds()[0].getToken() not in localdictionary and consult.getChilds()[0].getToken() not in globallocallist):
-            outOfAnyScopeError(consult.getChilds()[0].getToken())
-        dictionary=localdictionary.copy()
-        for valor in globallocallist:
-            dictionary[valor]=globaldictionary[valor]
-
-    elif(scopeType=="global"):
-        if (consult.getChilds()[0].getToken() not in globaldictionary ):
-            outOfScopeError(consult.getChilds()[0].getToken())
-        dictionary = globaldictionary.copy()
-
     if(not isinstance(dictionary[consult.getChilds()[0].getToken()],list)):
         nonIterableObjectError(consult.getChilds()[0].getToken())
 
@@ -158,16 +145,11 @@ def consultTranslator(consult,localdictionary,globallocallist,globaldictionary,s
         translation[expr]=dictionary[var][ind1][ind2][ind3]
         return translation
 
-def functionTranslator(function,globalScope,localScope,type):
+def functionTranslator(function,scope):
     if(function.getName() == "RangeF"):
-        scope=None
         size=None
-        if(type=="global"):
-            scope=globalScope
-        elif(type=="local"):
-            scope=localScope
         if (function.getChilds()[2].getName() == "Iterable0"):
-            if (indVerifier(function.getChilds()[2], scope)):
+            if (indVerifier(function.getChilds()[2].getChilds()[0], scope)):
                 size = scope[function.getChilds()[2].getChilds()[0].getChilds()[0].getToken()]
             else:
                 notIterableIndError()
@@ -251,8 +233,8 @@ def typeVerifier(varType,value):
     if (varType == "" or varType == type(value)):
         return True
     return False
-def existenceVerifier(var,localScope,localGlobalScope):
-    if(var in localScope or var in localGlobalScope):
+def existenceVerifier(var,scope):
+    if(var in scope):
         return True
     return False
 def matVerifier(var):
@@ -285,8 +267,8 @@ def matBoundsVerifier(mat):
         return[len(mat[0]),len(mat[0][0]),len(mat)]
 
 def indVerifier(ind,scope):
-    if(ind.getChilds()[0].getChilds()[0].getToken() in scope):
-        if(isinstance(scope[ind.getChilds()[0].getChilds()[0].getToken()],int)):
+    if(ind.getChilds()[0].getToken() in scope):
+        if(isinstance(scope[ind.getChilds()[0].getToken()],int)):
             return True
         return False
     outOfScopeError(ind.getChilds()[0].getChilds()[0].getToken())
@@ -298,9 +280,9 @@ def globalFetch(globalScope,varList):
             output[valor]=globalScope[valor]
     return output
 
-def scopeSelector(globalScope,localScope,globalLocalList,var):
+def scopeSelector(globalScope,localScope,var):
     scope = ""
-    if (var in globalLocalList):
+    if (var in globalScope):
         scope = globalScope
     elif (var in localScope):
         scope = localScope
@@ -315,7 +297,14 @@ def matrixInserter(type,listed,mat,ind):
         for valor in mat:
             valor.insert(ind,listed[index])
             index+=1
-    return mat
+
+
+def globalUpdater(globalD,localD,localList):
+    for valor in localD:
+        if(valor in globalD and valor not in localList):
+            globalD[valor]=localD[valor]
+    return globalD
+
 def outOfBoundsError(index,iterable):
     print(colorama.Fore.RED + "SEMANTIC ERROR: Index "+str(index)+" in "+ str(iterable)+" out of bounds ")
     sys.exit()
@@ -415,10 +404,10 @@ def differentSizeInsertion(list,functionStat):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The list" + list + " in "+functionStat+" is not the same size as the others in the stucture it is being tried to insert")
     sys.exit()
 
-def insertingOnListInsideMatrixError(var):
-    print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in "+var+" is a Matrix or a 3DMatrix object and inserting an element in one of it's Lists would alter it's integrity ")
+def modifyingOnListInsideMatrixError(var,operation):
+    print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in "+var+" is a Matrix or a 3DMatrix object and "+operation+" an element in one of it's Lists would alter it's integrity ")
     sys.exit()
 
-def notIterableIndError():
-    print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in the variable used in the Range function is not an integer, therefore it can't be used as an ind")
+def notIterableIndError(var,operation):
+    print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in the variable "+var+" used in the "+operation+" function is not an integer, therefore it can't be used as an index")
     sys.exit()
