@@ -418,9 +418,6 @@ def functionSem(p):
             consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var).values())[0]
 
         if(consult!=None):
-            if(not(isinstance(consult,list) or isinstance(consult,bool))):
-                consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var).keys())[0]
-                negOnNotBooleanError(consult)
             expresion= list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var).keys())[0]
             local_var[varName]=structureUpdater(nope(consult),local_var[varName],expresion)
 
@@ -443,9 +440,6 @@ def functionSem(p):
                 outOfScopeError(varName)
             consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var).values())[0]
         if(consult!=None):
-            if (not(isinstance(consult,list) or isinstance(consult,bool))):
-                consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var).keys())[0]
-                tfOnNotBooleanError(consult)
             expresion =list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var).keys())[0]
             local_var[varName] = structureUpdater(tF(consult,type), local_var[varName], expresion)
 
@@ -457,21 +451,22 @@ def functionSem(p):
     elif (p.getName() == "Function6"):
         varName = ""
         consult = ""
+        #TODO:Hacer un error para un valor de tiempo negativo
         if (p.getChilds()[0].getChilds()[2].getChilds()[0].getName() == "Identifier0"):
             varName = p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getToken()
+            if (not existenceVerifier(varName, local_var)):
+                outOfScopeError(varName)
         elif (p.getChilds()[0].getChilds()[2].getChilds()[0].getName() == "Identifier1"):
             varName = p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
+            if (not existenceVerifier(varName, local_var)):
+                outOfScopeError(varName)
             consult = list(consultTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0], local_var).values())[0]
 
         if (consult != ""):
-            if (type(consult) != type([]) and type(consult) != type(True)):
+            print("Test")
+        else:
+            if(not(isinstance(local_var[varName],list) or isinstance(local_var[varName],bool))):
                 BlinkOnNotBooleanError(varName)
-
-        if (not existenceVerifier(varName, local_var)):
-            outOfScopeError(varName)
-
-        elif (isinstance(local_var[varName],list) and isinstance(local_var[varName],list)):
-            BlinkOnNotBooleanError(varName)
 
     elif (p.getName() == "Function8"):
         varName = ""
