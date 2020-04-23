@@ -468,19 +468,24 @@ def functionSem(p):
             if(not(isinstance(local_var[varName],list) or isinstance(local_var[varName],bool))):
                 BlinkOnNotBooleanError(varName)
     elif (p.getName() == "Function7"):
-        varName = ""
-        consult = ""
-        # TODO:Hacer un error para un valor de tiempo negativo
+        varName = None
+        consult = None
+        ind=None
         if(not p.getChilds()[0].getChilds()[2].isNull()):
-            if (p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getName() == "Identifier0"):
-                varName = p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
-                if (not existenceVerifier(varName, local_var)):
-                    outOfScopeError(varName)
-            elif (p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getName() == "Identifier1"):
-                consult = list(consultTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var).keys())[0]
-                boolOnTempError(consult)
-            if(varName!=None):
-                if(not isinstance(local_var[varName],int)):
+            if (p.getChilds()[0].getChilds()[2].getChilds()[0].getName() == "Iterable0"):
+                if(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getName()=="Identifier0"):
+                    varName = p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
+                    if (not existenceVerifier(varName, local_var)):
+                        outOfScopeError(varName)
+                    ind=local_var[varName]
+                elif (p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getName()=="Identifier1"):
+                    consult = list(consultTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var).keys())[0]
+                    boolOnTempError(consult)
+
+            elif (p.getChilds()[0].getChilds()[2].getChilds()[0].getName() == "Iterable1"):
+                ind= int(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getToken())
+
+            if(not isinstance(local_var[varName],int)):
                     boolOnTempError(varName)
 
     elif (p.getName() == "Function8"):

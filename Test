@@ -14,7 +14,7 @@ w,x=True,range(10,True);
 
 	Procedure test (param1,param2,param3)
 	{
-	global r;
+	global r,t;
 		begin
 		Delay();
 		end;	

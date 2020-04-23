@@ -776,107 +776,101 @@ digraph G {
 	394[label= GlobalCall]
 	395[label= GLOBAL]
 	394->395
-	396[label= GlobalTerm1]
-	397[label= t]
+	396[label= GlobalTerm0]
+	397[label= r]
 	396->397
+	398[label= COMMA]
+	396->398
+	399[label= GlobalTerm1]
+	400[label= t]
+	399->400
+	396->399
 	394->396
-	398[label= Null]
-	394->398
+	401[label= Null]
+	394->401
 	393->394
-	399[label= BEGIN]
-	393->399
-	400[label= AltBlock]
-	401[label= AltContent0]
-	402[label= Instruction0]
-	403[label= Function7]
-	404[label= DelayF]
-	405[label= DELAY]
-	404->405
-	406[label= LPARENT]
-	404->406
-	407[label= Fcont3]
-	408[label= Iterable0]
-	409[label= Identifier0]
-	410[label= t]
-	409->410
-	408->409
+	402[label= BEGIN]
+	393->402
+	403[label= AltBlock]
+	404[label= AltContent0]
+	405[label= Instruction0]
+	406[label= Function7]
+	407[label= DelayF]
+	408[label= DELAY]
 	407->408
-	411[label= COMMA]
+	409[label= LPARENT]
+	407->409
+	410[label= Null]
+	407->410
+	411[label= RPARENT]
 	407->411
-	412[label= TimeM2]
-	413[label= SEG]
-	412->413
-	407->412
-	404->407
-	414[label= RPARENT]
-	404->414
+	406->407
+	405->406
+	404->405
 	403->404
-	402->403
-	401->402
-	400->401
-	415[label= Null]
-	400->415
-	393->400
-	416[label= END]
-	393->416
+	412[label= Null]
+	403->412
+	393->403
+	413[label= END]
+	393->413
 	374->393
-	417[label= RCORCH]
-	374->417
+	414[label= RCORCH]
+	374->414
 	373->374
-	418[label= Block0]
-	419[label= ProcedureP]
-	420[label= PROCEDURE]
+	415[label= Block0]
+	416[label= ProcedureP]
+	417[label= PROCEDURE]
+	416->417
+	418[label= ProcDec]
+	419[label= ProcName]
+	420[label= test]
 	419->420
-	421[label= ProcDec]
-	422[label= ProcName]
-	423[label= test]
-	422->423
-	421->422
-	424[label= LPARENT]
-	421->424
-	425[label= Parameter1]
-	426[label= ProcParam]
-	427[label= param1]
-	426->427
-	425->426
-	428[label= COMMA]
-	425->428
-	429[label= Parameter0]
-	430[label= ProcParam]
-	431[label= param2]
-	430->431
-	429->430
-	425->429
-	421->425
-	432[label= RPARENT]
-	421->432
-	419->421
-	433[label= LCORCH]
-	419->433
-	434[label= Body]
-	435[label= GlobalCall]
-	436[label= GLOBAL]
-	435->436
-	437[label= GlobalTerm1]
-	438[label= b]
-	437->438
-	435->437
-	439[label= Null]
-	435->439
-	434->435
-	440[label= BEGIN]
-	434->440
-	441[label= Null]
-	434->441
-	442[label= END]
-	434->442
-	419->434
-	443[label= RCORCH]
-	419->443
 	418->419
-	444[label= Null]
-	418->444
-	373->418
+	421[label= LPARENT]
+	418->421
+	422[label= Parameter1]
+	423[label= ProcParam]
+	424[label= param1]
+	423->424
+	422->423
+	425[label= COMMA]
+	422->425
+	426[label= Parameter0]
+	427[label= ProcParam]
+	428[label= param2]
+	427->428
+	426->427
+	422->426
+	418->422
+	429[label= RPARENT]
+	418->429
+	416->418
+	430[label= LCORCH]
+	416->430
+	431[label= Body]
+	432[label= GlobalCall]
+	433[label= GLOBAL]
+	432->433
+	434[label= GlobalTerm1]
+	435[label= b]
+	434->435
+	432->434
+	436[label= Null]
+	432->436
+	431->432
+	437[label= BEGIN]
+	431->437
+	438[label= Null]
+	431->438
+	439[label= END]
+	431->439
+	416->431
+	440[label= RCORCH]
+	416->440
+	415->416
+	441[label= Null]
+	415->441
+	373->415
 	351->373
 	147->351
 	113->147
@@ -886,26 +880,26 @@ digraph G {
 	26->37
 	2->26
 	1->2
-	445[label= MainProc]
-	446[label= MAIN]
-	445->446
-	447[label= LPARENT]
-	445->447
-	448[label= RPARENT]
-	445->448
-	449[label= LCORCH]
-	445->449
-	450[label= MainBody]
-	451[label= BEGIN]
-	450->451
+	442[label= MainProc]
+	443[label= MAIN]
+	442->443
+	444[label= LPARENT]
+	442->444
+	445[label= RPARENT]
+	442->445
+	446[label= LCORCH]
+	442->446
+	447[label= MainBody]
+	448[label= BEGIN]
+	447->448
+	449[label= Null]
+	447->449
+	450[label= END]
+	447->450
+	442->447
+	451[label= RCORCH]
+	442->451
 	452[label= Null]
-	450->452
-	453[label= END]
-	450->453
-	445->450
-	454[label= RCORCH]
-	445->454
-	455[label= Null]
-	445->455
-	1->445
+	442->452
+	1->442
 	}
