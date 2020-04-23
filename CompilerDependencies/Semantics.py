@@ -451,7 +451,6 @@ def functionSem(p):
     elif (p.getName() == "Function6"):
         varName = ""
         consult = ""
-        #TODO:Hacer un error para un valor de tiempo negativo
         if (p.getChilds()[0].getChilds()[2].getChilds()[0].getName() == "Identifier0"):
             varName = p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getToken()
             if (not existenceVerifier(varName, local_var)):
@@ -489,38 +488,41 @@ def functionSem(p):
                     boolOnTempError(varName)
 
     elif (p.getName() == "Function8"):
-        varName = ""
-        consult = ""
+        varName = None
+        consult = None
         if (p.getChilds()[0].getChilds()[0].getName() == "Identifier0"):
             varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getToken()
+            if (not existenceVerifier(varName, local_var)):
+                outOfScopeError(varName)
         elif (p.getChilds()[0].getChilds()[0].getName() == "Identifier1"):
             varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
-            consult =consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var)
+            if (not existenceVerifier(varName, local_var)):
+                outOfScopeError(varName)
+            consult =list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var).values())[0]
 
-        if (not existenceVerifier(varName, local_var)):
-            outOfScopeError(varName)
-        if (list(consult.values())[0] != ""):
 
-            if (not matrixVerifier(list(consult.values())[0])):
-                shapeOnNotMatrixError(list(consult.keys())[0])
+        if (consult!=None):
+            if (not matVerifier(consult)):
+                shapeOnNotMatrixError(list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var).keys())[0])
         else:
-            if (not matrixVerifier(local_var[varName])):
+            if (not matVerifier(local_var[varName])):
                 shapeOnNotMatrixError(varName)
 
     elif (p.getName() == "Function9"):
-        varName = ""
-        consult = ""
-        mat=""
+        varName = None
+        consult = None
+        mat=None
         if (p.getChilds()[0].getChilds()[0].getName() == "Identifier0"):
             varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getToken()
+            if (not existenceVerifier(varName, local_var)):
+                outOfScopeError(varName)
         elif (p.getChilds()[0].getChilds()[0].getName() == "Identifier1"):
             varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
+            if (not existenceVerifier(varName, local_var)):
+                outOfScopeError(varName)
             consult =consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var)
 
-        if (not existenceVerifier(varName, local_var)):
-            outOfScopeError(varName)
-
-        if (consult != ""):
+        if (consult != None):
 
             if (not matVerifier(list(consult.values())[0])):
                 deleteOnNotMatrixError(list(consult.keys())[0])

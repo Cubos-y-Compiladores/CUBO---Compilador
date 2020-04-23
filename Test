@@ -16,7 +16,7 @@ w,x=True,range(10,True);
 	{
 	global r,t;
 		begin
-		Delay();
+		r.shapeC;
 		end;	
 	};
 	Procedure test (param1,param2)
