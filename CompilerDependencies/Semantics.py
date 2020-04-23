@@ -511,7 +511,6 @@ def functionSem(p):
     elif (p.getName() == "Function9"):
         varName = None
         consult = None
-        mat=None
         if (p.getChilds()[0].getChilds()[0].getName() == "Identifier0"):
             varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getToken()
             if (not existenceVerifier(varName, local_var)):
@@ -523,38 +522,32 @@ def functionSem(p):
             consult =consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var)
 
         if (consult != None):
-
-            if (not matVerifier(list(consult.values())[0])):
+            if (not matrixVerifier(list(consult.values())[0])):
                 deleteOnNotMatrixError(list(consult.keys())[0])
-            mat=list(consult.values())[0]
-
-            bounds = matBoundsVerifier(mat)
-            if (int(p.getChilds()[0].getChilds()[6].getToken()) == 0):
-                line = int(p.getChilds()[0].getChilds()[4].getChilds()[0].getToken())
-                if (bounds[0] <= line):
-                    outOfBoundsError(line, str(list(consult.keys())[0])+".delete("+str(line)+",0)")
-            elif (int(p.getChilds()[0].getChilds()[6].getToken()) == 1):
-                column = int(p.getChilds()[0].getChilds()[4].getChilds()[0].getToken())
-                if (bounds[1] <= column):
-                    outOfBoundsError(column, str(list(consult.keys())[0])+".delete("+str(column)+",1)")
+            deleteOnMatrixInside3DMatError(list(consult.keys())[0])
 
         else:
             if(not matVerifier(local_var[varName])):
                 deleteOnNotMatrixError(varName)
             mat=local_var[varName]
-
             bounds = matBoundsVerifier(mat)
+            ind=None
+            if(p.getChilds()[0].getChilds()[4].getName()=="Indice0"):
+                ind=int(p.getChilds()[0].getChilds()[4].getChilds()[0].getToken())
+            elif(p.getChilds()[0].getChilds()[4].getName()=="Indice1"):
+                if (not existenceVerifier(p.getChilds()[0].getChilds()[4].getChilds()[0].getToken(), local_var)):
+                    outOfScopeError(varName)
+                ind=int(local_var[p.getChilds()[0].getChilds()[4].getChilds()[0].getToken()])
             if (int(p.getChilds()[0].getChilds()[6].getToken()) == 0):
-                line = int(p.getChilds()[0].getChilds()[4].getChilds()[0].getToken())
-                if (bounds[0] <= line):
-                    outOfBoundsError(line, varName + ".delete(" + str(line) + ",0)")
+                if (bounds[0] <= ind):
+                    outOfBoundsError(ind, varName + ".delete(" + str(ind) + ",0)")
+                local_var[varName]=matrixDeleter(0,ind,mat)
             elif (int(p.getChilds()[0].getChilds()[6].getToken()) == 1):
-                column = int(p.getChilds()[0].getChilds()[4].getChilds()[0].getToken())
-                if (bounds[1] <= column):
-                    outOfBoundsError(column, varName + ".delete(" + str(column) + ",1)")
-
-        if(int(p.getChilds()[0].getChilds()[6].getToken())>1 or int(p.getChilds()[0].getChilds()[6].getToken())<0):
-            wrongOperationNumberError()
+                if (bounds[1] <= ind):
+                    outOfBoundsError(ind, varName + ".delete(" + str(ind) + ",1)")
+                local_var[varName] = matrixDeleter(1, ind, mat)
+            else:
+                wrongOperationNumberError("Delete")
 
     globalUpdater(global_var,local_var,local_only)
 

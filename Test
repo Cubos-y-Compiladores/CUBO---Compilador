@@ -5,18 +5,18 @@ Timer=15;
 Cubo = 6;
 t=1;
 b=True;
-z=[[True,True],[False,False]];
+z=[[False,True],[True,False]];
 k,l=range(t,True),[True];
 y=[True,True,True,False,True];
-r=[[[False,False,False],[False,False,False],[False,False,False]],[[True,True,True],[True,True,True],[True,True,True]],[[False,False,False],[False,False,False],[False,False,False]]];
+r=[[[False,True,False],[True,False,True],[False,True,False]],[[True,False,True],[False,True,False],[True,False,True]],[[False,True,False],[True,False,True],[False,True,False]]];
 --k=(z*y)/10;
 w,x=True,range(10,True);
 
 	Procedure test (param1,param2,param3)
 	{
-	global r,t;
+	global r,t,z;
 		begin
-		r.shapeC;
+		z.delete(0,1);
 		end;	
 	};
 	Procedure test (param1,param2)

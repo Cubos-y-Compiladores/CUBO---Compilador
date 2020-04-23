@@ -384,7 +384,23 @@ def tF(structure,type):
     else:
         structure = finalValue
     return structure
+def matrixDeleter(type,ind,mat):
+    if(matrixVerifier(mat)):
+        if(type==0):
+            mat.pop(ind)
+        else:
+            for valor in mat:
+                valor.pop(ind)
+    else:
+        if(type==0):
+            for matrix in mat:
+                matrix.pop(ind)
+        else:
+            for matrix in mat:
+                for line in matrix:
+                    line.pop(ind)
 
+    return mat
 def outOfBoundsError(index,iterable):
     print(colorama.Fore.RED + "SEMANTIC ERROR: Index "+str(index)+" in "+ str(iterable)+" out of bounds ")
     sys.exit()
@@ -493,4 +509,8 @@ def notIterableIndError(var,operation):
 
 def boolOnTempError(consult):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in " + consult + " is either a list or a boolean and both of this data types are forbiden in the delay time index")
+    sys.exit()
+
+def deleteOnMatrixInside3DMatError(consult):
+    print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in " + consult + " is a matrix inside a 3Dmatrix object, therefore the deletion of one of it's lists would alter it's integrity")
     sys.exit()
