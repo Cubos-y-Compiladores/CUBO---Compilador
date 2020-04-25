@@ -7,7 +7,29 @@ global_temp=[]
 local_var={}
 local_only=[]
 consts={}
-procedures={}
+procedures=[]
+def semantics(p):
+    statementQueue=blockSplitter(p)
+    for valor in statementQueue:
+        if("Procedure" in valor.getName()):
+            procName =valor.getChilds()[1].getChilds()[0].getChilds()[0].getToken()
+            procParams =parameterTranslator(valor.getChilds()[1].getChilds())
+            for procedure in procedures:
+                if(procedure[0]==procName and len(procedure[1])==len(procParams)):
+                    sameFirmProcedureError(procName, str(len(procParams)))
+            procedures.append((procName,procParams,valor))
+        elif("Assignment" in valor .getName()):
+            assignmentSem(valor.getChilds()[0],"global")
+    temp=global_var
+    for proc in procedures:
+        params=[]
+        for param in proc[1]:
+            if(not param[0] in params):
+                params.append(param[0])
+            else:
+                paramWithSameNameError(proc[0],param[0])
+        procedureSem(proc)
+    print("Test")
 def assignmentSem(p,scope):
     global global_var,local_var,local_only
     scopeType=scope
@@ -24,68 +46,68 @@ def assignmentSem(p,scope):
             varType = type(scope[varName])
         elif(scopeType=="local"):
             local_only.append(varName)
+        if(scopeType=="global" or not noneVerifier(varName,scope)):
+            if(p.getChilds()[2].getName()=="Acont0"):
+               value=tokenTranslator(p.getChilds()[2].getChilds()[0].getChilds()[0].getToken())
+               if(typeVerifier(varType,value)):
+                    scope[varName]=value
+               else:
+                   alreadyDefinedVarError(varName,scope[varName])
 
-        if(p.getChilds()[2].getName()=="Acont0"):
-           value=tokenTranslator(p.getChilds()[2].getChilds()[0].getChilds()[0].getToken())
-           if(typeVerifier(varType,value)):
-                scope[varName]=value
-           else:
-               alreadyDefinedVarError(varName,scope[varName])
-
-        elif (p.getChilds()[2].getName() == "Acont1"):
-            value=""
-            temp =p.getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0]
-            if (temp.getName() == "Factor1"):
-                var=temp.getChilds()[0].getToken()
-                if(var in scope):
-                    value=scope[var]
+            elif (p.getChilds()[2].getName() == "Acont1"):
+                value=""
+                temp =p.getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0]
+                if (temp.getName() == "Factor1"):
+                    var=temp.getChilds()[0].getToken()
+                    if(var in scope):
+                        value=scope[var]
+                    else:
+                        outOfScopeError(var)
                 else:
-                    outOfScopeError(var)
-            else:
-                value=tokenTranslator(arithmeticTranslator(p.getChilds()[2].getChilds()[0],scope))
+                    value=tokenTranslator(arithmeticTranslator(p.getChilds()[2].getChilds()[0],scope))
 
-            if (typeVerifier(varType, value)):
-               scope[varName] = value
-            else:
-               alreadyDefinedVarError(varName,scope[varName])
+                if (typeVerifier(varType, value)):
+                   scope[varName] = value
+                else:
+                   alreadyDefinedVarError(varName,scope[varName])
 
 
-        elif (p.getChilds()[2].getName() == "Acont2"):
-           value=listTranslator(p.getChilds()[2].getChilds()[0].getChilds()[1].getChilds())
-           if (typeVerifier(varType, value)):
-               scope[varName] = value
-           else:
-               alreadyDefinedVarError(varName,scope[varName])
+            elif (p.getChilds()[2].getName() == "Acont2"):
+               value=listTranslator(p.getChilds()[2].getChilds()[0].getChilds()[1].getChilds())
+               if (typeVerifier(varType, value)):
+                   scope[varName] = value
+               else:
+                   alreadyDefinedVarError(varName,scope[varName])
 
-        elif (p.getChilds()[2].getName() == "Acont3"):
-           value=matTranslator(p.getChilds()[2].getChilds()[0].getChilds()[1].getChilds())
-           if (typeVerifier(varType, value)):
-               scope[varName] = value
-           else:
-              alreadyDefinedVarError(varName,scope[varName])
+            elif (p.getChilds()[2].getName() == "Acont3"):
+               value=matTranslator(p.getChilds()[2].getChilds()[0].getChilds()[1].getChilds())
+               if (typeVerifier(varType, value)):
+                   scope[varName] = value
+               else:
+                  alreadyDefinedVarError(varName,scope[varName])
 
-        elif (p.getChilds()[2].getName() == "Acont4"):
-           value=threeDmatTranslator(p.getChilds()[2].getChilds()[0].getChilds()[1].getChilds())
-           if (typeVerifier(varType, value)):
-               scope[varName] = value
-           else:
-              alreadyDefinedVarError(varName,scope[varName])
+            elif (p.getChilds()[2].getName() == "Acont4"):
+               value=threeDmatTranslator(p.getChilds()[2].getChilds()[0].getChilds()[1].getChilds())
+               if (typeVerifier(varType, value)):
+                   scope[varName] = value
+               else:
+                  alreadyDefinedVarError(varName,scope[varName])
 
 
-        elif (p.getChilds()[2].getName() == "Acont5"):
-           value=list(consultTranslator(p.getChilds()[2].getChilds()[0].getChilds()[0],scope).values())[0]
-           if (typeVerifier(varType, value)):
-               scope[varName] = value
-           else:
-              alreadyDefinedVarError(varName,scope[varName])
+            elif (p.getChilds()[2].getName() == "Acont5"):
+               value=list(consultTranslator(p.getChilds()[2].getChilds()[0].getChilds()[0],scope).values())[0]
+               if (typeVerifier(varType, value)):
+                   scope[varName] = value
+               else:
+                  alreadyDefinedVarError(varName,scope[varName])
 
-        elif(p.getChilds()[2].getName() == "RangeF"):
-            value = functionTranslator(p.getChilds()[2],scope)
-            if (typeVerifier(varType, value)):
-                scope[varName] = value
+            elif(p.getChilds()[2].getName() == "RangeF"):
+                value = functionTranslator(p.getChilds()[2],scope)
+                if (typeVerifier(varType, value)):
+                    scope[varName] = value
 
-            else:
-               alreadyDefinedVarError(varName,scope[varName])
+                else:
+                   alreadyDefinedVarError(varName,scope[varName])
 
     elif (p.getName() == "DoubleAssignment"):
         varList=[]
@@ -144,10 +166,11 @@ def assignmentSem(p,scope):
 
         ind=0
         while(ind<len(varList)):
-            if(typeVerifier(typeList[ind],valueList[ind])):
-                scope[varList[ind]]=valueList[ind]
-            else:
-                alreadyDefinedVarError(varList[ind],scope[varList[ind]])
+            if(scopeType=="global" or not noneVerifier(varList[ind],scope)):
+                if(typeVerifier(typeList[ind],valueList[ind])):
+                    scope[varList[ind]]=valueList[ind]
+                else:
+                    alreadyDefinedVarError(varList[ind],scope[varList[ind]])
             ind+=1
     globalUpdater(global_var,local_var,local_only)
 
@@ -199,17 +222,21 @@ def procedureSem(p):
     local_var={}
     local_only=[]
     global_temp=[]
-    if(not p[4].getChilds()[0].isNull()):
-        global_temp=globalUsageSem(p[4].getChilds()[0])
+    if(not p[2].getChilds()[3].getChilds()[0].isNull()):
+        global_temp=globalUsageSem(p[2].getChilds()[3].getChilds()[0])
     local_var=globalFetch(global_var,global_temp)
-    procName=p[2].getChilds()[0].getChilds()[0].getToken()
-    procParams=parameterTranslator(p[2].getChilds()[2].getChilds())
-    procBody=p[4].getChilds()[2]
+    params = p[1]
+    temp=local_var
+    for param in params:
+        if(param[0] in local_var):
+            paramInGlobalsError(p[0],param[0])
 
-    if(procName in procedures and len(procedures[procName])==len(procParams)):
-        sameFirmProcedureError(procName,str(len(procParams)))
-    procedures[procName]=procParams
+    local_var.update(params)
+    temp=global_temp
+    temp1=local_var
+    temp2=global_var
 
+    procBody = p[2].getChilds()[3].getChilds()[2]
     if(not procBody.isNull()):
         statementQueue=processBodyTranslator(procBody.getChilds())
         for statement in statementQueue:
@@ -218,13 +245,13 @@ def procedureSem(p):
 
             elif ("Instruction" in statement.getName()):
                 instructionSem(statement)
-
+    varViewer()
 def instructionSem(p):
     if(p.getName()=="Instruction0"):
         functionSem(p.getChilds()[0])
 
 def functionSem(p):
-    global global_var,local_var
+    global global_var,local_var,procedures
     temp1=global_var
     temp2=local_var
     scope =local_var
@@ -548,6 +575,23 @@ def functionSem(p):
                 local_var[varName] = matrixDeleter(1, ind, mat)
             else:
                 wrongOperationNumberError("Delete")
+    elif (p.getName() == "Function10"):
+        procName=p.getChilds()[0].getChilds()[1].getChilds()[0].getChilds()[0].getToken()
+        procParams=parameterCallTranslator([p.getChilds()[0].getChilds()[1].getChilds()[2]],local_var)
+        temp=procedures
+        definedProcs=procNameFetcher(procedures)
+        if(not procName in definedProcs):
+            notDefinedProcedureCallError(procName)
+        params=procParamsFetcher(procName,procedures)
+        exists=False
+        for valor in params:
+            if(len(valor)==len(procParams)):
+                exists=True
+                break;
+        if(not exists):
+            notDefinedProcedureCallError(procName)
+
+
 
     globalUpdater(global_var,local_var,local_only)
 

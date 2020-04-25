@@ -24,6 +24,7 @@ def p_program(p):
 def p_constB(p):
     '''const_block : const const const const const block'''
     constBSem(p)
+    semantics(p[6])
     p[0]=NonTerminalNode("ConstB",[p[1],p[2],p[3],p[4],p[5],p[6]])
     
 def p_block0(p):
@@ -98,7 +99,6 @@ def p_instruction3(p):
 ##########---ASIGNACIONES GLOBALES---##########
 def p_globalAssignment(p):
     '''global : assignment '''
-    assignmentSem(p[1],"global")
     p[0]=NonTerminalNode("GlobalAssignment",[p[1]])
     
 
@@ -265,7 +265,7 @@ def p_delete(p):
     
 
 def p_call(p):
-    '''call : CALL proc_dec SEMICOLON'''
+    '''call : CALL proc_call SEMICOLON'''
     p[0]=NonTerminalNode("CallF",[TerminalNode("Call","CALL"),p[2]])
     
 
@@ -321,14 +321,15 @@ def p_EmptyOptStatment(p):
 ##########---PROCEDIMIENTOS---##########
 def p_procedure(p):
     '''procedure : PROCEDURE proc_dec LCORCH body RCORCH SEMICOLON '''
-    procedureSem(p)
-    varViewer()
     p[0]=NonTerminalNode("ProcedureP",[TerminalNode("Procedure","PROCEDURE"),p[2],TerminalNode("Lcorch","LCORCH"),p[4],TerminalNode("Rcorch","RCORCH")])
     
 def p_procDec(p):
     '''proc_dec : proc_name LPARENT parameter RPARENT'''
     p[0]=NonTerminalNode("ProcDec",[p[1],TerminalNode("Lparent","LPARENT"),p[3],TerminalNode("Rparent","RPARENT")])
    
+def p_procCall(p):
+    '''proc_call : proc_name LPARENT param RPARENT'''
+    p[0]=NonTerminalNode("ProcCall",[p[1],TerminalNode("Lparent","LPARENT"),p[3],TerminalNode("Rparent","RPARENT")])
 
 def p_procName(p):
     '''proc_name : ID'''
@@ -354,6 +355,25 @@ def p_procParam(p):
     '''proc_param : ID'''
     p[0]=NonTerminalNode("ProcParam",[TerminalNode("Id",p[1])])
     
+
+def p_param0(p):
+    '''param : call_param'''
+    p[0]=NonTerminalNode("Param0",[p[1]])
+    
+
+def p_param1(p):
+    '''param : call_param COMMA param'''
+    p[0]=NonTerminalNode("Param1",[p[1],TerminalNode("Comma","COMMA"),p[3]])
+    
+
+def p_emptyParam(p):
+    '''param : empty'''
+    p[0]=Null()
+    
+
+def p_callParam(p):
+    '''call_param : iterable'''
+    p[0]=NonTerminalNode("CallParam",[p[1]])
 
 def p_body(p):
     '''body : global_call BEGIN alt_block END SEMICOLON '''

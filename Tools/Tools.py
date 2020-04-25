@@ -167,15 +167,38 @@ def parameterTranslator(parameters):
     output=[]
     for param in parameters:
         if(param.getName()=="ProcParam"):
-            output.append(param.getChilds()[0].getToken())
+            output.append((param.getChilds()[0].getToken(),None))
 
         elif(param.getName()=="Parameter0"):
-            output.append(param.getChilds()[0].getChilds()[0].getToken())
+            output.append((param.getChilds()[0].getChilds()[0].getToken(),None))
 
         elif(param.getName()=="Parameter1"):
             output.extend(parameterTranslator(param.getChilds()))
     return output
 
+def parameterCallTranslator(parameters,scope):
+    output = []
+    for param in parameters:
+        if (param.getName() == "CallParam"):
+            if(param.getChilds()[0].getName()=="Iterable0"):
+                if(param.getChilds()[0].getChilds()[0].getName()=="Identifier0"):
+                    if(not param.getChilds()[0].getChilds()[0].getChilds()[0].getToken() in scope):
+                        outOfScopeError(param.getChilds()[0].getChilds()[0].getChilds()[0].getToken())
+                    output.append(scope[param.getChilds()[0].getChilds()[0].getChilds()[0].getToken()])
+
+                elif(param.getChilds()[0].getChilds()[0].getName()=="Identifier1"):
+                    output.append(list(consultTranslator(param.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],scope).values())[0])
+
+
+            elif(param.getChilds()[0].getName()=="Iterable1"):
+                output.append(int(param.getChilds()[0].getChilds()[0].getToken()))
+
+        elif (param.getName() == "Param0"):
+            output.extend(parameterCallTranslator(param.getChilds(),scope))
+
+        elif (param.getName() == "Param1"):
+            output.extend(parameterCallTranslator(param.getChilds(),scope))
+    return output
 def processBodyTranslator(procLines):
    queue=[]
    for valor in procLines:
@@ -401,6 +424,34 @@ def matrixDeleter(type,ind,mat):
                     line.pop(ind)
 
     return mat
+
+def blockSplitter(block):
+    statementQueue=[]
+    if(block.isNull()):
+        return statementQueue
+    statementQueue.append(block.getChilds()[0])
+    statementQueue.extend(blockSplitter(block.getChilds()[1]))
+    return statementQueue
+
+def procNameFetcher(procedures):
+    procs=[]
+    for procedure in procedures:
+        procs.append(procedure[0])
+    return procs
+
+def procParamsFetcher(procName,procedures):
+    params=[]
+    for proc in procedures:
+        if(proc[0]==procName):
+            params.append(proc[1])
+    return params
+
+def noneVerifier(varName,scope):
+    if(scope[varName]==None):
+        return True
+    return False
+
+
 def outOfBoundsError(index,iterable):
     print(colorama.Fore.RED + "SEMANTIC ERROR: Index "+str(index)+" in "+ str(iterable)+" out of bounds ")
     sys.exit()
@@ -513,4 +564,14 @@ def boolOnTempError(consult):
 
 def deleteOnMatrixInside3DMatError(consult):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in " + consult + " is a matrix inside a 3Dmatrix object, therefore the deletion of one of it's lists would alter it's integrity")
+    sys.exit()
+
+def notDefinedProcedureCallError(procName):
+    print(colorama.Fore.RED + "SEMANTIC ERROR: Procedure "+procName+" hasn't been defined with the used firm")
+    sys.exit()
+def paramWithSameNameError(name,param):
+    print(colorama.Fore.RED + "SEMANTIC ERROR: Procedure "+name+" has 2 or more parameters labeled as "+param+" .All parameters must be labelled with different names")
+    sys.exit()
+def paramInGlobalsError(proc,param):
+    print(colorama.Fore.RED + "SEMANTIC ERROR: Parameter "+param+" in procedure "+proc+" has already been defined as a global variable")
     sys.exit()
