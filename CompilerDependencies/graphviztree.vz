@@ -883,138 +883,94 @@ digraph G {
 	449[label= AltBlock]
 	450[label= AltContent0]
 	451[label= Instruction0]
-	452[label= Function1]
-	453[label= InsertF]
+	452[label= Function2]
+	453[label= DelF]
 	454[label= Identifier0]
 	455[label= l]
 	454->455
 	453->454
 	456[label= DOT]
 	453->456
-	457[label= INSERT]
+	457[label= DEL]
 	453->457
 	458[label= LPARENT]
 	453->458
-	459[label= Fcont6]
-	460[label= Iterable0]
-	461[label= Identifier0]
-	462[label= t]
-	461->462
+	459[label= Iterable0]
+	460[label= Identifier0]
+	461[label= param1]
 	460->461
 	459->460
-	463[label= COMMA]
-	459->463
-	464[label= Insertable1]
-	465[label= Identifier1]
-	466[label= Consult2]
-	467[label= ThreeDMatConsult]
-	468[label= r]
-	467->468
-	469[label= ThreeDMatConsultT1]
-	470[label= PARENTCL]
-	469->470
-	471[label= Indice0]
-	472[label= 0]
-	471->472
-	469->471
-	473[label= PARENTCR]
-	469->473
-	474[label= MatConsultT3]
-	475[label= PARENTCL]
-	474->475
-	476[label= Indice0]
-	477[label= 0]
-	476->477
-	474->476
-	478[label= PARENTCR]
-	474->478
-	479[label= ListConsultT0]
-	480[label= PARENTCL]
-	479->480
-	481[label= Indice0]
-	482[label= 0]
-	481->482
-	479->481
-	483[label= PARENTCR]
-	479->483
-	474->479
-	469->474
-	467->469
-	466->467
-	465->466
-	464->465
-	459->464
 	453->459
-	484[label= RPARENT]
-	453->484
+	462[label= RPARENT]
+	453->462
 	452->453
 	451->452
 	450->451
 	449->450
-	485[label= Null]
-	449->485
+	463[label= Null]
+	449->463
 	440->449
 	414->440
-	486[label= END]
-	414->486
+	464[label= END]
+	414->464
 	395->414
-	487[label= RCORCH]
-	395->487
+	465[label= RCORCH]
+	395->465
 	394->395
-	488[label= Block0]
-	489[label= ProcedureP]
-	490[label= PROCEDURE]
-	489->490
-	491[label= ProcDec]
-	492[label= ProcName]
-	493[label= test]
-	492->493
-	491->492
-	494[label= LPARENT]
-	491->494
-	495[label= Parameter1]
-	496[label= ProcParam]
-	497[label= param1]
-	496->497
-	495->496
-	498[label= COMMA]
-	495->498
-	499[label= Parameter0]
-	500[label= ProcParam]
-	501[label= param2]
-	500->501
-	499->500
-	495->499
-	491->495
-	502[label= RPARENT]
-	491->502
-	489->491
-	503[label= LCORCH]
-	489->503
-	504[label= Body]
-	505[label= GlobalCall]
-	506[label= GLOBAL]
-	505->506
-	507[label= GlobalTerm1]
-	508[label= b]
-	507->508
-	505->507
-	509[label= Null]
-	505->509
-	504->505
-	510[label= BEGIN]
-	504->510
-	511[label= Null]
-	504->511
-	512[label= END]
-	504->512
-	489->504
-	513[label= RCORCH]
-	489->513
-	488->489
-	514[label= Null]
-	488->514
-	394->488
+	466[label= Block0]
+	467[label= ProcedureP]
+	468[label= PROCEDURE]
+	467->468
+	469[label= ProcDec]
+	470[label= ProcName]
+	471[label= test]
+	470->471
+	469->470
+	472[label= LPARENT]
+	469->472
+	473[label= Parameter1]
+	474[label= ProcParam]
+	475[label= param1]
+	474->475
+	473->474
+	476[label= COMMA]
+	473->476
+	477[label= Parameter0]
+	478[label= ProcParam]
+	479[label= param2]
+	478->479
+	477->478
+	473->477
+	469->473
+	480[label= RPARENT]
+	469->480
+	467->469
+	481[label= LCORCH]
+	467->481
+	482[label= Body]
+	483[label= GlobalCall]
+	484[label= GLOBAL]
+	483->484
+	485[label= GlobalTerm1]
+	486[label= b]
+	485->486
+	483->485
+	487[label= Null]
+	483->487
+	482->483
+	488[label= BEGIN]
+	482->488
+	489[label= Null]
+	482->489
+	490[label= END]
+	482->490
+	467->482
+	491[label= RCORCH]
+	467->491
+	466->467
+	492[label= Null]
+	466->492
+	394->466
 	372->394
 	168->372
 	134->168
@@ -1026,26 +982,26 @@ digraph G {
 	26->37
 	2->26
 	1->2
-	515[label= MainProc]
-	516[label= MAIN]
-	515->516
-	517[label= LPARENT]
-	515->517
-	518[label= RPARENT]
-	515->518
-	519[label= LCORCH]
-	515->519
-	520[label= MainBody]
-	521[label= BEGIN]
-	520->521
-	522[label= Null]
-	520->522
-	523[label= END]
-	520->523
-	515->520
-	524[label= RCORCH]
-	515->524
-	525[label= Null]
-	515->525
-	1->515
+	493[label= MainProc]
+	494[label= MAIN]
+	493->494
+	495[label= LPARENT]
+	493->495
+	496[label= RPARENT]
+	493->496
+	497[label= LCORCH]
+	493->497
+	498[label= MainBody]
+	499[label= BEGIN]
+	498->499
+	500[label= Null]
+	498->500
+	501[label= END]
+	498->501
+	493->498
+	502[label= RCORCH]
+	493->502
+	503[label= Null]
+	493->503
+	1->493
 	}

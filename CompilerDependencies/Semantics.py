@@ -461,31 +461,34 @@ def functionSem(p):
             varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
             if (not existenceVerifier(varName, local_var)):
                 outOfScopeError(varName)
-            consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var).values())[0]
+            if(not noneVerifier(varName,local_var)):
+                consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var).values())[0]
 
         if (consult!=None):
             if (not isinstance(consult,list)):
                 delOnNotIterableObjectError(varName)
             modifyingOnListInsideMatrixError(varName,"deleting")
-        else:
+
+        elif(not noneVerifier(varName,local_var)):
             if(not isinstance(scope[varName],list)):
                 delOnNotIterableObjectError(varName)
 
             ind=None
             indrep=None
             if(p.getChilds()[0].getChilds()[4].getName()=="Iterable0"):
-                if (indVerifier(p.getChilds()[0].getChilds()[4].getChilds()[0], local_var)):
-                    ind = int(local_var[p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getToken()])
-                    indrep=p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getToken()
-                else:
-                    nonIterableObjectError(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getToken())
+                if (not noneVerifier(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getToken(), local_var)):
+                    if (indVerifier(p.getChilds()[0].getChilds()[4].getChilds()[0], local_var)):
+                        ind = int(local_var[p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getToken()])
+                        indrep=p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getToken()
+                    else:
+                        nonIterableObjectError(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getToken())
             elif((p.getChilds()[0].getChilds()[4].getName()=="Iterable1")):
                 ind=int(p.getChilds()[0].getChilds()[4].getChilds()[0].getToken())
                 indrep=ind
-            #TODO:Añadir error para indices negativos
-            if(ind>=len(structure)):
-                outOfBoundsError(ind,varName+".del("+str(indrep)+")")
-            structure.pop(ind)
+            if(ind!=None):
+                if(ind>=len(structure)):
+                    outOfBoundsError(ind,varName+".del("+str(indrep)+")")
+                structure.pop(ind)
 
 
 
