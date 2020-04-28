@@ -556,7 +556,7 @@ def p_Fcont6(p):
    
 
 def p_Fcont7(p):
-    '''i_content : list COMMA INT i_ind'''
+    '''i_content : iterable COMMA INT i_ind'''
     p[0]=NonTerminalNode("Fcont7",[p[1],TerminalNode("Comma","COMMA"),TerminalNode("Int",p[3]),p[4]])
     
 
@@ -885,7 +885,11 @@ def p_iterable0(p):
 def p_iterable1(p):
     '''iterable : INT'''
     p[0]=NonTerminalNode("Iterable1",[TerminalNode("Int",p[1])])
-    
+
+def p_iterable2(p):
+    '''iterable : list'''
+    p[0]=NonTerminalNode("Iterable2",[p[1]])
+
 
 
 

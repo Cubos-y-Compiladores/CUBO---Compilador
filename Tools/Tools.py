@@ -87,7 +87,7 @@ def arithmeticTranslator(operacion,dictionary):
             token = valor.getToken()
             if(valor.getName()=="Id"):
                 if(token in dictionary):
-                    if(str(type(dictionary[token]))=="<class 'int'>"):
+                    if(isinstance(dictionary[token],int)and not isinstance(dictionary[token],bool)):
                         result+=str(dictionary[token])+" "
                     else:
                         nonArithmeticVariableError(token)
@@ -291,7 +291,7 @@ def matBoundsVerifier(mat):
 
 def indVerifier(ind,scope):
     if(ind.getChilds()[0].getToken() in scope):
-        if(isinstance(scope[ind.getChilds()[0].getToken()],int)):
+        if(isinstance(scope[ind.getChilds()[0].getToken()],int) and not isinstance(scope[ind.getChilds()[0].getToken()],bool)):
             return True
         return False
     outOfScopeError(ind.getChilds()[0].getChilds()[0].getToken())
@@ -320,7 +320,7 @@ def matrixInserter(type,listed,mat,ind):
         for valor in mat:
             valor.insert(ind,listed[index])
             index+=1
-
+    return mat
 
 def globalUpdater(globalD,localD,localList):
     for valor in localD:
@@ -447,11 +447,29 @@ def procParamsFetcher(procName,procedures):
     return params
 
 def noneVerifier(varName,scope):
+    if (not varName in scope):
+        return False
     if(scope[varName]==None):
         return True
     return False
 
-
+def valueValidator(value,scope):
+    value = value.getChilds()
+    output=True
+    for valor in value:
+        if (not valor.isToken()):
+            output= valueValidator(valor,scope)
+            if(not output):
+                break
+        else:
+            token = valor.getToken()
+            if (valor.getName() == "Id"):
+                if (token in scope):
+                    if (noneVerifier(token,scope)):
+                        output=False
+                else:
+                    outOfScopeError(token)
+    return output
 def outOfBoundsError(index,iterable):
     print(colorama.Fore.RED + "SEMANTIC ERROR: Index "+str(index)+" in "+ str(iterable)+" out of bounds ")
     sys.exit()
@@ -465,7 +483,7 @@ def outOfScopeError(var):
     sys.exit()
 
 def nonIterableObjectError(var):
-    print(colorama.Fore.RED + "SEMANTIC ERROR: The variable " + str(var) + " is not an iterable object")
+    print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in " + str(var) + " is not an iterable object")
     sys.exit()
 
 def alreadyDefinedVarError(var,varContent):
@@ -503,7 +521,7 @@ def outOfAnyScopeError(var):
     sys.exit()
 
 def insertOnNotIterableObjectError(var):
-    print(colorama.Fore.RED + "SEMANTIC ERROR: The variable " + var + " is not an iterable object, therefore insertion operations can't be performed on it")
+    print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in " + var + " is not an iterable object, therefore insertion operations can't be performed on it")
     sys.exit()
 
 def insertingBoolOnMatObjectError(var):
@@ -554,10 +572,6 @@ def modifyingOnListInsideMatrixError(var,operation):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in "+var+" is a Matrix or a 3DMatrix object and "+operation+" an element in one of it's Lists would alter it's integrity ")
     sys.exit()
 
-def notIterableIndError(var,operation):
-    print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in the variable "+var+" used in the "+operation+" function is not an integer, therefore it can't be used as an index")
-    sys.exit()
-
 def boolOnTempError(consult):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in " + consult + " is either a list or a boolean and both of this data types are forbiden in the delay time index")
     sys.exit()
@@ -574,4 +588,12 @@ def paramWithSameNameError(name,param):
     sys.exit()
 def paramInGlobalsError(proc,param):
     print(colorama.Fore.RED + "SEMANTIC ERROR: Parameter "+param+" in procedure "+proc+" has already been defined as a global variable")
+    sys.exit()
+
+def consultOnIndError(operation):
+    print(colorama.Fore.RED + "SEMANTIC ERROR: Non integer values are forbidden on the index value of "+operation+" operations")
+    sys.exit()
+
+def insertingNotListError(var):
+    print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in "+var+" is not a List object and insertion operations only support list objects " )
     sys.exit()

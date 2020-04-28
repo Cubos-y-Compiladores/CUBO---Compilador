@@ -55,21 +55,23 @@ def assignmentSem(p,scope):
                    alreadyDefinedVarError(varName,scope[varName])
 
             elif (p.getChilds()[2].getName() == "Acont1"):
-                value=""
+                value=None
                 temp =p.getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0]
                 if (temp.getName() == "Factor1"):
                     var=temp.getChilds()[0].getToken()
-                    if(var in scope):
-                        value=scope[var]
+                    if(not noneVerifier(var,scope)):
+                        if(var in scope):
+                            value=scope[var]
+                        else:
+                            outOfScopeError(var)
+                else:
+                    if(valueValidator(p.getChilds()[2].getChilds()[0],scope)):
+                        value=tokenTranslator(arithmeticTranslator(p.getChilds()[2].getChilds()[0],scope))
+                if(value!=None):
+                    if (typeVerifier(varType, value)):
+                       scope[varName] = value
                     else:
-                        outOfScopeError(var)
-                else:
-                    value=tokenTranslator(arithmeticTranslator(p.getChilds()[2].getChilds()[0],scope))
-
-                if (typeVerifier(varType, value)):
-                   scope[varName] = value
-                else:
-                   alreadyDefinedVarError(varName,scope[varName])
+                       alreadyDefinedVarError(varName,scope[varName])
 
 
             elif (p.getChilds()[2].getName() == "Acont2"):
@@ -260,15 +262,18 @@ def functionSem(p):
         varName=""
         if(p.getChilds()[0].getChilds()[2].getName()=="Identifier0"):
             varName=p.getChilds()[0].getChilds()[2].getChilds()[0].getToken()
+            if (not existenceVerifier(varName, local_var)):
+                outOfScopeError(varName)
 
         elif(p.getChilds()[0].getChilds()[2].getName()=="Identifier1"):
             varName=p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
-            consultTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0],local_var)
+            if (not existenceVerifier(varName, local_var)):
+                outOfScopeError(varName)
+            if(not noneVerifier(varName,scope)):
+                consultTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0],local_var)
 
-        if(not existenceVerifier(varName,local_var)):
-            outOfScopeError(varName)
     elif(p.getName()=="Function1"):
-        #TODO: Actualizar las variables modificadas
+        #TODO:Hacer que el valor de insercion en una lista pueda ser una variable
         varName = ""
         consult=""
         structure=None
@@ -280,15 +285,15 @@ def functionSem(p):
             varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
             if (not existenceVerifier(varName, local_var)):
                 outOfScopeError(varName)
-            consult=list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var).values())[0]
+            if (not noneVerifier(varName, scope)):
+                consult=list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var).values())[0]
 
 
-        if(consult!=""):
+        if(consult!="" and not noneVerifier(varName,scope)):
 
-            if (type(consult) != type([])):
-                insertOnNotIterableObjectError(varName)
+            if (not isinstance(consult,list)):
+                insertOnNotIterableObjectError(list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var).keys())[0])
             if (p.getChilds()[0].getChilds()[4].getName() == "Fcont6"):
-
                 if(matVerifier(consult)):
                     consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var).keys())[0]
                     insertingBoolOnMatObjectError(consult)
@@ -298,7 +303,7 @@ def functionSem(p):
                 structure=consult
                 varName=list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var).keys())[0]
 
-        else:
+        elif(not noneVerifier(varName,scope)):
             structure = scope[varName]
             if (not typeVerifier(type([]),scope[varName])):
                 insertOnNotIterableObjectError(varName)
@@ -307,70 +312,121 @@ def functionSem(p):
                     insertingBoolOnMatObjectError(varName)
                 ind=None
                 if(p.getChilds()[0].getChilds()[4].getChilds()[0].getName()=="Iterable0"):
-
-                    if(indVerifier(p.getChilds()[0].getChilds()[4].getChilds()[0],local_var)):
-                        ind=local_var[p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getToken()]
-                    else:
-                        notIterableIndError(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getToken(), "Insert")
+                    if(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getName()=="Identifier1"):
+                        consultOnIndError("Insert")
+                    if(not noneVerifier(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getToken(),scope)):
+                        if(indVerifier(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0],local_var)):
+                            ind=local_var[p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getToken()]
+                        else:
+                            nonIterableObjectError(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getToken())
 
                 elif (p.getChilds()[0].getChilds()[4].getChilds()[0].getName() == "Iterable1"):
                     ind=int(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getToken())
 
+                elif (p.getChilds()[0].getChilds()[4].getChilds()[0].getName() == "Iterable2"):
+                    consultOnIndError("Insert")
 
-                value = tokenTranslator(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getToken())
-                if (ind > len(structure)):
-                    outOfBoundsError(ind, varName + ".insert(" + str(ind) + "," + str(value) + ")")
-                else:
-                    structure.insert(ind, value)
-                    scope[varName] = structure
+                if(ind!=None):
+                    value = tokenTranslator(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getToken())
+                    if (ind > len(structure)):
+                        outOfBoundsError(ind, varName + ".insert(" + str(ind) + "," + str(value) + ")")
+                    else:
+                        structure.insert(ind, value)
+                        scope[varName] = structure
 
 
-        if (p.getChilds()[0].getChilds()[4].getName() == "Fcont7"):
+        if (p.getChilds()[0].getChilds()[4].getName() == "Fcont7" and (consult!="" or not noneVerifier(varName,scope))):
                 if (matrixVerifier(structure)):
                     colSize = len(structure)
                     lineSize = len(structure[0])
                     ind = p.getChilds()[0].getChilds()[4].getChilds()[3]
-                    lista = listTranslator(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds())
-                    if (not ind.isNull()):
-                        ind = None
-                        if (p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getName()=="Iterable0"):
+                    lista=None
+                    if(p.getChilds()[0].getChilds()[4].getChilds()[0].getName()=="Iterable0"):
+                        if(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getName()=="Identifier0"):
+                            if (not existenceVerifier(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getToken(), local_var)):
+                                outOfScopeError(varName)
+                            elif(not noneVerifier(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getToken(), local_var)):
+                                lista=local_var[p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getToken()]
+                                if(matVerifier(lista) or not isinstance(lista,list)):
+                                    insertingNotListError(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getToken())
 
-                            if (indVerifier(p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1], local_var)):
-                                ind = local_var[p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getChilds()[0].getChilds()[0].getToken()]
+                        elif(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getName()=="Identifier1"):
+                            var=p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
+                            if (not existenceVerifier(var, local_var)):
+                                outOfScopeError(var)
+                            elif (not noneVerifier(var,local_var)):
+                                structure_consult = list(consultTranslator(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var).values())[0]
+                                expr=list(consultTranslator(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var).keys())[0]
+                                if(matVerifier(structure_consult)or not isinstance(structure_consult,list)):
+                                    insertingNotListError(expr)
+                                lista=structure_consult
 
+                    elif(p.getChilds()[0].getChilds()[4].getChilds()[0].getName()=="Iterable1"):
+                        insertingNotListError((p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getToken()))
+
+                    elif (p.getChilds()[0].getChilds()[4].getChilds()[0].getName() == "Iterable2"):
+                        lista = listTranslator(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds())
+                    if(not lista==None):
+                        if (not ind.isNull()):
+                            ind = None
+                            if (p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getName()=="Iterable0"):
+                                if(p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getChilds()[0].getName()=="Identifier0"):
+                                    if (indVerifier(p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getChilds()[0], local_var)):
+                                        if(not noneVerifier(p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getChilds()[0].getChilds()[0].getToken(),local_var)):
+                                            ind = local_var[p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getChilds()[0].getChilds()[0].getToken()]
+                                    else:
+                                        nonIterableObjectError(p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getChilds()[0].getChilds()[0].getToken())
+
+                                elif (p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getChilds()[0].getName() == "Identifier1"):
+                                    var = p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
+                                    if (not existenceVerifier(var, local_var)):
+                                        outOfScopeError(var)
+                                    elif (not noneVerifier(var, local_var)):
+                                        expr = list(consultTranslator(p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getChilds()[0].getChilds()[0], local_var).keys())[0]
+                                        nonIterableObjectError(expr)
+
+
+                            elif (p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getName()=="Iterable1"):
+                                ind = int(p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getChilds()[0].getToken())
+
+                            elif(p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getName()=="Iterable2"):
+                                consultOnIndError("Insert")
+
+                            if(ind!=None):
+                                if (int(p.getChilds()[0].getChilds()[4].getChilds()[2].getToken()) == 0):
+                                    if (len(lista) != lineSize):
+
+                                        differentSizeInsertion(str(lista), varName + ".insert(" + str(lista) + ",0,"+str(ind)+")")
+                                    elif (ind > colSize):
+                                        outOfBoundsError(ind, varName + ".insert(" + str(lista) + ",0," + str(ind) + ")")
+                                    else:
+                                        matrixInserter(0,lista,structure,ind)
+                                        print("Test")
+
+                                elif (int(p.getChilds()[0].getChilds()[4].getChilds()[2].getToken()) == 1):
+                                    if (len(lista) != colSize):
+                                        differentSizeInsertion(str(lista), varName + ".insert(" + str(lista) + ",1,"+str(ind)+")")
+                                    elif (ind > lineSize):
+                                        outOfBoundsError(ind, varName + ".insert(" + str(lista) + ",1," + str(ind) + ")")
+                                    else:
+                                        matrixInserter(1,lista,structure,ind)
+                                        print("Test")
+                                else:
+                                    wrongOperationNumberError("Insertion")
+
+                        elif (int(p.getChilds()[0].getChilds()[4].getChilds()[2].getToken()) == 0):
+                            if (len(lista) != lineSize):
+                                differentSizeInsertion(str(lista), varName + ".insert(" + str(lista) + ",0)")
                             else:
-                                notIterableIndError(p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getChilds()[0].getChilds()[0].getToken(), "Insert")
-
-                        elif (p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getName()=="Iterable1"):
-                            ind = int(p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getChilds()[0].getToken())
-
-                        if (int(p.getChilds()[0].getChilds()[4].getChilds()[2].getToken()) == 0):
-                            if (ind > colSize):
-                                outOfBoundsError(ind, varName + ".insert(" + str(lista) + ",0," + str(ind) + ")")
-                            else:
-                                matrixInserter(0,lista,structure,ind)
+                                matrixInserter(0, lista,structure,colSize)
 
                         elif (int(p.getChilds()[0].getChilds()[4].getChilds()[2].getToken()) == 1):
-                            if (ind > lineSize):
-                                outOfBoundsError(ind, varName + ".insert(" + str(lista) + ",1," + str(ind) + ")")
+                            if (len(lista) != colSize):
+                                differentSizeInsertion(str(lista), varName + ".insert(" + str(lista) + ",1)")
                             else:
-                                matrixInserter(1,lista,structure,ind)
+                                matrixInserter(1, lista,structure,lineSize)
                         else:
                             wrongOperationNumberError("Insertion")
-
-                    elif (int(p.getChilds()[0].getChilds()[4].getChilds()[2].getToken()) == 0):
-                        if (len(lista) != lineSize):
-                            differentSizeInsertion(str(lista), varName + ".insert(" + str(lista) + ",0)")
-                        else:
-                            matrixInserter(0, lista,structure,colSize)
-
-                    elif (int(p.getChilds()[0].getChilds()[4].getChilds()[2].getToken()) == 1):
-                        if (len(lista) != colSize):
-                            differentSizeInsertion(str(lista), varName + ".insert(" + str(lista) + ",1)")
-                        else:
-                            matrixInserter(1, lista,structure,lineSize)
-                    else:
-                        wrongOperationNumberError("Insertion")
                 else:
                     insertingListOnNoMatObjectError(varName)
 
@@ -405,7 +461,7 @@ def functionSem(p):
                     ind = int(local_var[p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getToken()])
                     indrep=p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getToken()
                 else:
-                    notIterableIndError(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getToken(),"Del")
+                    nonIterableObjectError(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getToken())
             elif((p.getChilds()[0].getChilds()[4].getName()=="Iterable1")):
                 ind=int(p.getChilds()[0].getChilds()[4].getChilds()[0].getToken())
                 indrep=ind
@@ -456,7 +512,7 @@ def functionSem(p):
     elif (p.getName() == "Function5"):
         varName = None
         consult = None
-        type=p.getChilds()[0].getChilds()[2].getChilds()[0].getToken()
+        typeTF=p.getChilds()[0].getChilds()[2].getChilds()[0].getToken()
         if (p.getChilds()[0].getChilds()[0].getName() == "Identifier0"):
             varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getToken()
             if (not existenceVerifier(varName, local_var)):
@@ -468,12 +524,12 @@ def functionSem(p):
             consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var).values())[0]
         if(consult!=None):
             expresion =list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var).keys())[0]
-            local_var[varName] = structureUpdater(tF(consult,type), local_var[varName], expresion)
+            local_var[varName] = structureUpdater(tF(consult,typeTF), local_var[varName], expresion)
 
         else:
             if(not(isinstance(local_var[varName],list) or isinstance(local_var[varName],bool))):
                 tfOnNotBooleanError(varName)
-            local_var[varName] = tF(local_var[varName],type)
+            local_var[varName] = tF(local_var[varName],typeTF)
 
     elif (p.getName() == "Function6"):
         varName = ""
