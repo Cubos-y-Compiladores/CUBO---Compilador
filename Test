@@ -3,7 +3,7 @@ Dim_Filas=6;
 Dim_Columnas = 5;
 Timer=15;
 Cubo = 6;
-t=15;
+t=3;
 var = False;
 l=[True,False,True];
 b=True;
@@ -19,9 +19,9 @@ w,x=True,range(10,True);
 	global r,t,z,l,b;
 	global var,l;
 		begin
-		var1=(10*15)/5+t;
+		var1=True;
 		--r[0].insert(l,1,t);
-		--l.insert(var1,True);
+		l.insert(t,r[0][0][0]);
 		end;	
 	};
 	Procedure test (param1,param2)

@@ -551,7 +551,7 @@ def p_Fcont5(p):
     
 
 def p_Fcont6(p):
-    '''i_content : iterable COMMA value'''
+    '''i_content : iterable COMMA insertable'''
     p[0]=NonTerminalNode("Fcont6",[p[1],TerminalNode("Comma","COMMA"),p[3]])
    
 
@@ -891,6 +891,14 @@ def p_iterable2(p):
     p[0]=NonTerminalNode("Iterable2",[p[1]])
 
 
+##########---INSERTABLES---#########
+def p_insertable0(p):
+    '''insertable : value'''
+    p[0]=NonTerminalNode("Insertable0",[p[1]])
+
+def p_insertable1(p):
+    '''insertable : identifier'''
+    p[0]=NonTerminalNode("Insertable1",[p[1]])
 
 
 

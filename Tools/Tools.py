@@ -597,3 +597,7 @@ def consultOnIndError(operation):
 def insertingNotListError(var):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in "+var+" is not a List object and insertion operations only support list objects " )
     sys.exit()
+
+def insertingNotBoolOnList(var):
+    print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in " + var + " is not a Bool object, therefore it can't be inserted on a List object")
+    sys.exit()

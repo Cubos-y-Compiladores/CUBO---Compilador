@@ -327,7 +327,24 @@ def functionSem(p):
                     consultOnIndError("Insert")
 
                 if(ind!=None):
-                    value = tokenTranslator(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getToken())
+                    value=None
+                    if (p.getChilds()[0].getChilds()[4].getChilds()[2].getName() == "Insertable0"):
+                        value=tokenTranslator(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getChilds()[0].getToken())
+
+                    elif(p.getChilds()[0].getChilds()[4].getChilds()[2].getName()=="Insertable1"):
+                        if(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getName()=="Identifier0"):
+                            if(existenceVerifier(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getChilds()[0].getToken(),local_var)):
+                                value=local_var[p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getChilds()[0].getToken()]
+                                if(not isinstance(value,bool)):
+                                    insertingNotBoolOnList(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getChilds()[0].getToken())
+                            else:
+                                outOfScopeError(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getChilds()[0].getToken())
+
+                        elif(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getName()=="Identifier1"):
+                            value=list(consultTranslator(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0],local_var).values())[0]
+                            if(not isinstance(value,bool)):
+                                insertingNotListError(list(consultTranslator(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0],local_var).keys())[0])
+
                     if (ind > len(structure)):
                         outOfBoundsError(ind, varName + ".insert(" + str(ind) + "," + str(value) + ")")
                     else:
