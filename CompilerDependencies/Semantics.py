@@ -70,8 +70,6 @@ def assignmentSem(p,scope):
                    alreadyDefinedVarError(list(consult.keys())[0],list(consult.values())[0])
 
             elif (p.getChilds()[2].getName() == "Acont1"):
-                if(consult!=None):
-                    insertingNotBoolOnList()
                 value=None
                 temp =p.getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0]
                 if (temp.getName() == "Factor1"):
@@ -86,9 +84,14 @@ def assignmentSem(p,scope):
                         value=tokenTranslator(arithmeticTranslator(p.getChilds()[2].getChilds()[0],scope))
                 if(value!=None):
                     if (typeVerifier(varType, value)):
-                       scope[varName] = value
+                        if (consult == None):
+                            scope[varName] = value
+                        else:
+                            scope[varName] = structureUpdater(value, scope[varName], list(consult.keys())[0])
                     else:
-                       alreadyDefinedVarError(varName,scope[varName])
+                        if (consult == None):
+                            alreadyDefinedVarError(varName, scope[varName])
+                        alreadyDefinedVarError(list(consult.keys())[0], list(consult.values())[0])
 
 
             elif (p.getChilds()[2].getName() == "Acont2"):
@@ -97,7 +100,10 @@ def assignmentSem(p,scope):
                    if(consult==None):
                        scope[varName] = value
                    else:
-                       scope[varName]=structureUpdater(value,scope[varName],list(consult.keys())[0])
+                       val=structureUpdater(value,scope[varName],list(consult.keys())[0])
+                       if( not matBoundVerifier(val)):
+                           modifyingMatrixWithDifferentSizeLineError(str(list(consult.keys())[0]),value,varName)
+                       scope[varName]=value
                else:
                    if (consult == None):
                        alreadyDefinedVarError(varName, scope[varName])
@@ -105,6 +111,9 @@ def assignmentSem(p,scope):
 
             elif (p.getChilds()[2].getName() == "Acont3"):
                value=matTranslator(p.getChilds()[2].getChilds()[0].getChilds()[1].getChilds())
+               if(not matBoundVerifier(value)):
+                   differentDimensionsMatError(value)
+
                if (typeVerifier(varType, value)):
                    if (consult == None):
                        scope[varName] = value
@@ -117,6 +126,8 @@ def assignmentSem(p,scope):
 
             elif (p.getChilds()[2].getName() == "Acont4"):
                value=threeDmatTranslator(p.getChilds()[2].getChilds()[0].getChilds()[1].getChilds())
+               if (not matBoundVerifier(value)):
+                   differentDimensionsMatError(value)
                if (typeVerifier(varType, value)):
                    if (consult == None):
                        scope[varName] = value
@@ -215,7 +226,7 @@ def assignmentSem(p,scope):
                 if(typeVerifier(typeList[ind],valueList[ind])):
                     scope[varName]=structureUpdater(valueList[ind],scope[varName],varList[ind])
                 else:
-                    alreadyDefinedVarError(varList[ind], scope[varList[ind]])
+                    alreadyDefinedVarError(varList[ind],typeList[ind])
 
             elif(scopeType=="global" or not noneVerifier(varList[ind],scope)):
                 if(typeVerifier(typeList[ind],valueList[ind])):
@@ -383,9 +394,10 @@ def functionSem(p):
                     elif(p.getChilds()[0].getChilds()[4].getChilds()[2].getName()=="Insertable1"):
                         if(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getName()=="Identifier0"):
                             if(existenceVerifier(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getChilds()[0].getToken(),local_var)):
-                                value=local_var[p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getChilds()[0].getToken()]
-                                if(not isinstance(value,bool)):
-                                    insertingNotBoolOnList(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getChilds()[0].getToken())
+                                if(not noneVerifier(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getChilds()[0].getToken(),local_var)):
+                                    value=local_var[p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getChilds()[0].getToken()]
+                                    if(not isinstance(value,bool)):
+                                        insertingNotBoolOnListError(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getChilds()[0].getToken())
                             else:
                                 outOfScopeError(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getChilds()[0].getToken())
 
@@ -396,7 +408,7 @@ def functionSem(p):
 
                     if (ind > len(structure)):
                         outOfBoundsError(ind, varName + ".insert(" + str(ind) + "," + str(value) + ")")
-                    else:
+                    elif(value!=None):
                         structure.insert(ind, value)
                         scope[varName] = structure
 
@@ -683,7 +695,7 @@ def functionSem(p):
             if(not matVerifier(local_var[varName])):
                 deleteOnNotMatrixError(varName)
             mat=local_var[varName]
-            bounds = matBoundsVerifier(mat)
+            bounds = matBoundsFetcher(mat)
             ind=None
             if(p.getChilds()[0].getChilds()[4].getName()=="Indice0"):
                 ind=int(p.getChilds()[0].getChilds()[4].getChilds()[0].getToken())

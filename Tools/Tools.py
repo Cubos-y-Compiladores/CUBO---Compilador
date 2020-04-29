@@ -257,7 +257,7 @@ def typeVerifier(varType,value):
         return True
     if(isinstance(varType,bool) and isinstance(value,bool)):
         return True
-    elif(isinstance(varType,int) and isinstance(value,int)):
+    elif(isinstance(varType,int) and isinstance(value,int) and not(isinstance(varType,bool) or isinstance(value,bool))):
         return True
     elif (isinstance(varType,list) and isinstance(value,list)):
         if(matVerifier(varType) and matVerifier(value)):
@@ -301,7 +301,7 @@ def threeDMatrixVerifier(var):
             return False
     return False
 
-def matBoundsVerifier(mat):
+def matBoundsFetcher(mat):
     if(matrixVerifier(mat)):
         return[len(mat),len(mat[0])]
 
@@ -499,6 +499,24 @@ def nameFetcher(consult):
             break
         output+=valor
     return output
+def matBoundVerifier(mat):
+    struct=None
+    if(matrixVerifier(mat)):
+        struct="Mat"
+    elif(threeDMatrixVerifier(mat)):
+        struct="3dMat"
+
+    if(struct=="Mat"):
+        line=len(mat[0])
+        for valor in mat:
+            if(len(valor)!=line):
+                return False
+    elif(struct=="3dMat"):
+        for valor in mat:
+            if(not matBoundVerifier(valor)):
+                return False
+    return True
+
 def outOfBoundsError(index,iterable):
     print(colorama.Fore.RED + "SEMANTIC ERROR: Index "+str(index)+" in "+ str(iterable)+" out of bounds ")
     sys.exit()
@@ -627,10 +645,18 @@ def insertingNotListError(var):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in "+var+" is not a List object and insertion operations only support list objects " )
     sys.exit()
 
-def insertingNotBoolOnList(var):
+def insertingNotBoolOnListError(var):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in " + var + " is not a Bool object, therefore it can't be inserted on a List object")
     sys.exit()
 
-def insertingNotBoolOnList():
+def insertingNotBoolOnListError1():
     print(colorama.Fore.RED + "SEMANTIC ERROR: Inserting non-Boolean values on lists is forbidden")
+    sys.exit()
+
+def differentDimensionsMatError(value):
+    print(colorama.Fore.RED + "SEMANTIC ERROR: The matrix "+str(value)+" has lines with different sizes, therefore it's not a valid matrix")
+    sys.exit()
+
+def modifyingMatrixWithDifferentSizeLineError(expr,value,varName):
+    print(colorama.Fore.RED + "SEMANTIC ERROR: Modifying "+varName+" by changing "+expr+" with "+str(value)+" would alter it's integrity")
     sys.exit()
