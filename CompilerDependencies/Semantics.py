@@ -2,6 +2,7 @@ import sys
 from Tools.Tools import *
 from pip._vendor import colorama
 global global_var,global_temp,regular_var,procedures
+#TODO: Agregar estructuras vacias
 global_var={}
 global_temp=[]
 local_var={}
@@ -40,21 +41,37 @@ def assignmentSem(p,scope):
         scope=local_var
 
     if(p.getName()=="SimpleAssignment"):
-        varName = p.getChilds()[0].getChilds()[0].getToken()
-        varType = ""
-        if (varName in scope):
-            varType = type(scope[varName])
-        elif(scopeType=="local"):
+        varName=None
+        varType=None
+        consult=None
+        if(p.getChilds()[0].getName()=="Identifier0"):
+            varName = p.getChilds()[0].getChilds()[0].getToken()
+        elif(p.getChilds()[0].getName()=="Identifier1"):
+            varName=p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
+            if(not existenceVerifier(varName,scope)):
+                outOfScopeError(varName)
+            consult=consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0],scope)
+            varType=list(consult.values())[0]
+        if (consult==None and varName in scope):
+            varType = scope[varName]
+        elif(scopeType=="local" and consult==None):
             local_only.append(varName)
         if(scopeType=="global" or not noneVerifier(varName,scope)):
             if(p.getChilds()[2].getName()=="Acont0"):
                value=tokenTranslator(p.getChilds()[2].getChilds()[0].getChilds()[0].getToken())
                if(typeVerifier(varType,value)):
-                    scope[varName]=value
+                   if(consult==None):
+                        scope[varName]=value
+                   else:
+                       scope[varName]=structureUpdater(value,scope[varName],list(consult.keys())[0])
                else:
-                   alreadyDefinedVarError(varName,scope[varName])
+                   if(consult==None):
+                       alreadyDefinedVarError(varName,scope[varName])
+                   alreadyDefinedVarError(list(consult.keys())[0],list(consult.values())[0])
 
             elif (p.getChilds()[2].getName() == "Acont1"):
+                if(consult!=None):
+                    insertingNotBoolOnList()
                 value=None
                 temp =p.getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0]
                 if (temp.getName() == "Factor1"):
@@ -77,39 +94,64 @@ def assignmentSem(p,scope):
             elif (p.getChilds()[2].getName() == "Acont2"):
                value=listTranslator(p.getChilds()[2].getChilds()[0].getChilds()[1].getChilds())
                if (typeVerifier(varType, value)):
-                   scope[varName] = value
+                   if(consult==None):
+                       scope[varName] = value
+                   else:
+                       scope[varName]=structureUpdater(value,scope[varName],list(consult.keys())[0])
                else:
-                   alreadyDefinedVarError(varName,scope[varName])
+                   if (consult == None):
+                       alreadyDefinedVarError(varName, scope[varName])
+                   alreadyDefinedVarError(list(consult.keys())[0], list(consult.values())[0])
 
             elif (p.getChilds()[2].getName() == "Acont3"):
                value=matTranslator(p.getChilds()[2].getChilds()[0].getChilds()[1].getChilds())
                if (typeVerifier(varType, value)):
-                   scope[varName] = value
+                   if (consult == None):
+                       scope[varName] = value
+                   else:
+                       scope[varName] = structureUpdater(value, scope[varName], list(consult.keys())[0])
                else:
-                  alreadyDefinedVarError(varName,scope[varName])
+                   if (consult == None):
+                       alreadyDefinedVarError(varName, scope[varName])
+                   alreadyDefinedVarError(list(consult.keys())[0], list(consult.values())[0])
 
             elif (p.getChilds()[2].getName() == "Acont4"):
                value=threeDmatTranslator(p.getChilds()[2].getChilds()[0].getChilds()[1].getChilds())
                if (typeVerifier(varType, value)):
-                   scope[varName] = value
+                   if (consult == None):
+                       scope[varName] = value
+                   else:
+                       scope[varName] = structureUpdater(value, scope[varName], list(consult.keys())[0])
                else:
-                  alreadyDefinedVarError(varName,scope[varName])
+                   if (consult == None):
+                       alreadyDefinedVarError(varName, scope[varName])
+                   alreadyDefinedVarError(list(consult.keys())[0], list(consult.values())[0])
 
 
             elif (p.getChilds()[2].getName() == "Acont5"):
                value=list(consultTranslator(p.getChilds()[2].getChilds()[0].getChilds()[0],scope).values())[0]
                if (typeVerifier(varType, value)):
-                   scope[varName] = value
+                   if (consult == None):
+                       scope[varName] = value
+                   else:
+                       scope[varName] = structureUpdater(value, scope[varName], list(consult.keys())[0])
                else:
-                  alreadyDefinedVarError(varName,scope[varName])
+                   if (consult == None):
+                       alreadyDefinedVarError(varName, scope[varName])
+                   alreadyDefinedVarError(list(consult.keys())[0], list(consult.values())[0])
 
             elif(p.getChilds()[2].getName() == "RangeF"):
                 value = functionTranslator(p.getChilds()[2],scope)
                 if (typeVerifier(varType, value)):
-                    scope[varName] = value
+                    if (consult == None):
+                        scope[varName] = value
+                    else:
+                        scope[varName] = structureUpdater(value, scope[varName], list(consult.keys())[0])
 
                 else:
-                   alreadyDefinedVarError(varName,scope[varName])
+                    if (consult == None):
+                        alreadyDefinedVarError(varName, scope[varName])
+                    alreadyDefinedVarError(list(consult.keys())[0], list(consult.values())[0])
 
     elif (p.getName() == "DoubleAssignment"):
         varList=[]
@@ -118,9 +160,9 @@ def assignmentSem(p,scope):
         for child in p.getChilds():
             if(child.getName()=="Identifier0"):
                 var=str(child.getChilds()[0].getToken())
-                varType = ""
+                varType = None
                 if (var in scope):
-                    varType = type(scope[var])
+                    varType = scope[var]
                 varList.append(var)
                 typeList.append(varType)
 
@@ -129,7 +171,7 @@ def assignmentSem(p,scope):
                     globalConsultError()
                 expr = consultTranslator(str(child.getChilds()[0].getToken()),scope)
                 var=str(expr.keys()[0])
-                varType =type(expr.values()[0])
+                varType =expr.values()[0]
                 varList.append(var)
                 typeList.append(varType)
 
@@ -305,7 +347,7 @@ def functionSem(p):
 
         elif(not noneVerifier(varName,scope)):
             structure = scope[varName]
-            if (not typeVerifier(type([]),scope[varName])):
+            if (not isinstance(scope[varName],list)):
                 insertOnNotIterableObjectError(varName)
             if (p.getChilds()[0].getChilds()[4].getName() == "Fcont6"):
                 if (matVerifier(structure)):
@@ -382,7 +424,7 @@ def functionSem(p):
                         insertingNotListError((p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getToken()))
 
                     elif (p.getChilds()[0].getChilds()[4].getChilds()[0].getName() == "Iterable2"):
-                        lista = listTranslator(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds())
+                        lista = listTranslator(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds())
                     if(not lista==None):
                         if (not ind.isNull()):
                             ind = None
@@ -503,7 +545,8 @@ def functionSem(p):
             varName = p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
             if (not existenceVerifier(varName, local_var)):
                 outOfScopeError(varName)
-            consultTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0], local_var)
+            if(noneVerifier(varName,local_var)):
+                consultTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0], local_var)
 
 
 
@@ -580,6 +623,8 @@ def functionSem(p):
                     if (not existenceVerifier(varName, local_var)):
                         outOfScopeError(varName)
                     ind=local_var[varName]
+                    if (not isinstance(local_var[varName], int)):
+                        boolOnTempError(varName)
                 elif (p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getName()=="Identifier1"):
                     consult = list(consultTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var).keys())[0]
                     boolOnTempError(consult)
@@ -587,8 +632,6 @@ def functionSem(p):
             elif (p.getChilds()[0].getChilds()[2].getChilds()[0].getName() == "Iterable1"):
                 ind= int(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getToken())
 
-            if(not isinstance(local_var[varName],int)):
-                    boolOnTempError(varName)
 
     elif (p.getName() == "Function8"):
         varName = None

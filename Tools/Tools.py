@@ -152,7 +152,7 @@ def functionTranslator(function,scope):
             if (indVerifier(function.getChilds()[2].getChilds()[0], scope)):
                 size = scope[function.getChilds()[2].getChilds()[0].getChilds()[0].getToken()]
             else:
-                notIterableIndError()
+                nonIterableObjectError("Test")
         elif(function.getChilds()[2].getName() == "Iterable1"):
             size = int(function.getChilds()[2].getChilds()[0].getToken())
 
@@ -253,12 +253,31 @@ def dimensionVerifier(var,dictionary,consultType):
         incompatibleConsultError(var, consultType, types[ind])
 
 def typeVerifier(varType,value):
-    if (varType == "" or varType == type(value)):
+    if(varType==None):
         return True
+    if(isinstance(varType,bool) and isinstance(value,bool)):
+        return True
+    elif(isinstance(varType,int) and isinstance(value,int)):
+        return True
+    elif (isinstance(varType,list) and isinstance(value,list)):
+        if(matVerifier(varType) and matVerifier(value)):
+            if(matrixVerifier(varType) and matrixVerifier(value)):
+                return True
+            elif(threeDMatrixVerifier(varType) and threeDMatrixVerifier(value)):
+                return True
+        if(listVerifier(varType) and listVerifier(value)):
+            return True
     return False
+
+
 def existenceVerifier(var,scope):
     if(var in scope):
         return True
+    return False
+def listVerifier(var):
+    if(isinstance(var,list)):
+        if(isinstance(var[0],bool)):
+            return True
     return False
 def matVerifier(var):
     if (type(var) == type([])):
@@ -361,8 +380,11 @@ def nope(structure):
     return structure
 def structureUpdater(value,structure,expresion):
     inds=[]
+    check=False
     for valor in expresion:
-        if(valor.isdigit()):
+        if(valor=="["):
+            check=True
+        elif(valor.isdigit() and check):
             inds.append(eval(valor))
     if(len(inds)==1):
         structure[inds[0]]=value
@@ -487,11 +509,11 @@ def nonIterableObjectError(var):
     sys.exit()
 
 def alreadyDefinedVarError(var,varContent):
-    if(str(type(varContent))=="<class 'int'>"):
-        varType="INT"
-    elif (str(type(varContent))=="<class 'bool'>"):
+    if(isinstance(varContent,bool)):
         varType="BOOL"
-    elif (str(type(varContent))=="<class 'list'>"):
+    elif (isinstance(varContent,int)):
+        varType="INT"
+    elif (isinstance(varContent,list)):
         if(threeDMatrixVerifier(varContent)):
             varType = "3DMATRIX"
         elif(matrixVerifier(varContent)):
@@ -600,4 +622,8 @@ def insertingNotListError(var):
 
 def insertingNotBoolOnList(var):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in " + var + " is not a Bool object, therefore it can't be inserted on a List object")
+    sys.exit()
+
+def insertingNotBoolOnList():
+    print(colorama.Fore.RED + "SEMANTIC ERROR: Inserting non-Boolean values on lists is forbidden")
     sys.exit()
