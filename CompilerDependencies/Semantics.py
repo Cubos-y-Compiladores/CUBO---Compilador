@@ -169,9 +169,9 @@ def assignmentSem(p,scope):
             elif(child.getName()=="Identifier1"):
                 if(scopeType=="global"):
                     globalConsultError()
-                expr = consultTranslator(str(child.getChilds()[0].getToken()),scope)
-                var=str(expr.keys()[0])
-                varType =expr.values()[0]
+                expr = consultTranslator(child.getChilds()[0].getChilds()[0],scope)
+                var=list(expr.keys())[0]
+                varType =list(expr.values())[0]
                 varList.append(var)
                 typeList.append(varType)
 
@@ -210,7 +210,14 @@ def assignmentSem(p,scope):
 
         ind=0
         while(ind<len(varList)):
-            if(scopeType=="global" or not noneVerifier(varList[ind],scope)):
+            if("[" in varList[ind]):
+                varName=nameFetcher(varList[ind])
+                if(typeVerifier(typeList[ind],valueList[ind])):
+                    scope[varName]=structureUpdater(valueList[ind],scope[varName],varList[ind])
+                else:
+                    alreadyDefinedVarError(varList[ind], scope[varList[ind]])
+
+            elif(scopeType=="global" or not noneVerifier(varList[ind],scope)):
                 if(typeVerifier(typeList[ind],valueList[ind])):
                     scope[varList[ind]]=valueList[ind]
                 else:

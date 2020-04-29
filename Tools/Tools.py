@@ -492,6 +492,13 @@ def valueValidator(value,scope):
                 else:
                     outOfScopeError(token)
     return output
+def nameFetcher(consult):
+    output=""
+    for valor in consult:
+        if(valor=="["):
+            break
+        output+=valor
+    return output
 def outOfBoundsError(index,iterable):
     print(colorama.Fore.RED + "SEMANTIC ERROR: Index "+str(index)+" in "+ str(iterable)+" out of bounds ")
     sys.exit()

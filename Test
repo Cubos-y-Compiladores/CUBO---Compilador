@@ -22,7 +22,7 @@ w,x=True,range(10,True);
 		var1=range(t,True);
 		var2=[True];
 		var2.insert(0,var1[0]);
-		z[1]=range(2,True);
+		z[1],q=range(2,True),2;
 		end;	
 	};
 	Procedure test (param1,param2)
