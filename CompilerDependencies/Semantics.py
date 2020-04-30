@@ -63,7 +63,7 @@ def assignmentSem(p,scope):
                    if(consult==None):
                         scope[varName]=value
                    else:
-                       scope[varName]=structureUpdater(value,scope[varName],list(consult.keys())[0])
+                       scope[varName]=structureUpdater(value,scope[varName],consult["Aux"])
                else:
                    if(consult==None):
                        alreadyDefinedVarError(varName,scope[varName])
@@ -87,7 +87,7 @@ def assignmentSem(p,scope):
                         if (consult == None):
                             scope[varName] = value
                         else:
-                            scope[varName] = structureUpdater(value, scope[varName], list(consult.keys())[0])
+                            scope[varName] = structureUpdater(value, scope[varName],consult["Aux"])
                     else:
                         if (consult == None):
                             alreadyDefinedVarError(varName, scope[varName])
@@ -100,7 +100,7 @@ def assignmentSem(p,scope):
                    if(consult==None):
                        scope[varName] = value
                    else:
-                       val=structureUpdater(value,scope[varName],list(consult.keys())[0])
+                       val=structureUpdater(value,scope[varName],consult["Aux"])
                        if( not matBoundVerifier(val)):
                            modifyingMatrixWithDifferentSizeLineError(str(list(consult.keys())[0]),value,varName)
                        scope[varName]=value
@@ -118,7 +118,7 @@ def assignmentSem(p,scope):
                    if (consult == None):
                        scope[varName] = value
                    else:
-                       scope[varName] = structureUpdater(value, scope[varName], list(consult.keys())[0])
+                       scope[varName] = structureUpdater(value, scope[varName], consult["Aux"])
                else:
                    if (consult == None):
                        alreadyDefinedVarError(varName, scope[varName])
@@ -132,7 +132,7 @@ def assignmentSem(p,scope):
                    if (consult == None):
                        scope[varName] = value
                    else:
-                       scope[varName] = structureUpdater(value, scope[varName], list(consult.keys())[0])
+                       scope[varName] = structureUpdater(value, scope[varName], consult["Aux"])
                else:
                    if (consult == None):
                        alreadyDefinedVarError(varName, scope[varName])
@@ -145,7 +145,7 @@ def assignmentSem(p,scope):
                    if (consult == None):
                        scope[varName] = value
                    else:
-                       scope[varName] = structureUpdater(value, scope[varName], list(consult.keys())[0])
+                       scope[varName] = structureUpdater(value, scope[varName], consult["Aux"])
                else:
                    if (consult == None):
                        alreadyDefinedVarError(varName, scope[varName])
@@ -157,7 +157,7 @@ def assignmentSem(p,scope):
                     if (consult == None):
                         scope[varName] = value
                     else:
-                        scope[varName] = structureUpdater(value, scope[varName], list(consult.keys())[0])
+                        scope[varName] = structureUpdater(value, scope[varName], consult["Aux"])
 
                 else:
                     if (consult == None):
@@ -223,8 +223,9 @@ def assignmentSem(p,scope):
         while(ind<len(varList)):
             if("[" in varList[ind]):
                 varName=nameFetcher(varList[ind])
+                expr=exprFetcher(varList[ind])
                 if(typeVerifier(typeList[ind],valueList[ind])):
-                    scope[varName]=structureUpdater(valueList[ind],scope[varName],varList[ind])
+                    scope[varName]=structureUpdater(valueList[ind],scope[varName],expr)
                 else:
                     alreadyDefinedVarError(varList[ind],typeList[ind])
 
@@ -622,8 +623,8 @@ def functionSem(p):
             consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])).values())[0]
 
         if(consult!=None):
-            expresion= list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])).keys())[0]
-            local_var[varName]=structureUpdater(nope(consult),local_var[varName],expresion)
+            expresion= consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0]))
+            local_var[varName]=structureUpdater(nope(consult),local_var[varName],expresion["Aux"])
 
         else:
             if(not(isinstance(local_var[varName],list) or isinstance(local_var[varName],bool))):
@@ -644,8 +645,8 @@ def functionSem(p):
                 outOfScopeError(varName)
             consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])).values())[0]
         if(consult!=None):
-            expresion =list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])).keys())[0]
-            local_var[varName] = structureUpdater(tF(consult,typeTF), local_var[varName], expresion)
+            expresion =consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0]))
+            local_var[varName] = structureUpdater(tF(consult,typeTF), local_var[varName], expresion["Aux"])
 
         else:
             if(not(isinstance(local_var[varName],list) or isinstance(local_var[varName],bool))):

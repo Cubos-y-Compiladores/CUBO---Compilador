@@ -125,6 +125,7 @@ def consultTranslator(consult,dictionary,expr):
             if(abs(ind)>=len(dictionary[var])):
                 outOfBoundsError(indExpr,expr)
             translation[expr]=dictionary[var][ind]
+            translation["Aux"]="["+str(ind)+"]"
             return translation
         elif(consult.getChilds()[1].getName()=="ListConsultT1"):
             inf=None
@@ -144,6 +145,7 @@ def consultTranslator(consult,dictionary,expr):
                     nonIterableObjectError(consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken())
                 sup= dictionary[consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken()]
             translation[expr]=dictionary[var][inf:sup]
+            translation["Aux"]="["+str(inf)+":"+str(sup)+"]"
             return translation
 
     elif (consult.getName() == "MatConsult"):
@@ -177,6 +179,7 @@ def consultTranslator(consult,dictionary,expr):
             elif(ind2>= len(dictionary[var][ind1])):
                 outOfBoundsError(ind2Expr,expr)
             translation[expr]=dictionary[var][ind1][ind2]
+            translation["Aux"]="["+str(ind1)+","+str(ind2)+"]"
             return translation
 
         elif (consult.getChilds()[1].getName() == "MatConsultT1"):
@@ -193,6 +196,7 @@ def consultTranslator(consult,dictionary,expr):
             if(ind1>=len(dictionary[var][0])):
                 outOfBoundsError(indExpr,expr)
             translation[expr]=colFetcher(dictionary[var],ind1)
+            translation["Aux"]="[:,"+str(ind1)+"]"
             return translation
 
         elif (consult.getChilds()[1].getName() == "MatConsultT2"):
@@ -214,6 +218,12 @@ def consultTranslator(consult,dictionary,expr):
             tempConsult = consultTranslator(NonTerminalNode("ListConsult", [TerminalNode("Id", "Temp"), consult.getChilds()[1].getChilds()[5]]),dictionary,expr)
             del dictionary["Temp"]
             translation[expr] = list(tempConsult.values())[0]
+            ind=0
+            for valor in expr:
+                if(valor=="["):
+                    expr=expr[ind,:]
+                    break
+            translation["Aux"]=expr
             return translation
 
         elif(consult.getChilds()[1].getName()=="MatConsultT3"):
@@ -231,6 +241,12 @@ def consultTranslator(consult,dictionary,expr):
             tempConsult=consultTranslator(NonTerminalNode("ListConsult",[TerminalNode("Id","Temp"),consult.getChilds()[1].getChilds()[3]]),dictionary,expr)
             del dictionary["Temp"]
             translation[expr]=list(tempConsult.values())[0]
+            ind = 0
+            for valor in expr:
+                if (valor == "["):
+                    expr = expr[ind, :]
+                    break
+            translation["Aux"] = expr
             return translation
 
     elif (consult.getName() == "ThreeDMatConsult"):
@@ -280,6 +296,7 @@ def consultTranslator(consult,dictionary,expr):
                 outOfBoundsError(ind3Expr,expr)
 
             translation[expr]=dictionary[var][ind1][ind2][ind3]
+            translation["Aux"]="["+str(ind1)+"]["+str(ind2)+"]["+str(ind3)+"]"
 
         elif(consult.getChilds()[1].getName()=="ThreeDMatConsultT1"):
             ind1 = None
@@ -301,6 +318,12 @@ def consultTranslator(consult,dictionary,expr):
             if("Temp" in dictionary):
                 del dictionary["Temp"]
             translation[expr] = list(tempConsult.values())[0]
+            ind = 0
+            for valor in expr:
+                if (valor == "["):
+                    expr = expr[ind, :]
+                    break
+            translation["Aux"] = expr
             return translation
 def expresionTranslator(consult):
     varName = consult.getChilds()[0].getToken()
@@ -607,20 +630,17 @@ def nope(structure):
         structure=not structure
     return structure
 def structureUpdater(value,structure,expresion):
-    inds=[]
-    check=False
-    for valor in expresion:
-        if(valor=="["):
-            check=True
-        elif(valor.isdigit() and check):
-            inds.append(eval(valor))
-    if(len(inds)==1):
-        structure[inds[0]]=value
-    elif(len(inds)==2):
-        structure[inds[0]][inds[1]] = value
-    elif(len(inds)==3):
-        structure[inds[0]][inds[1]][inds[2]] = value
+    exec("structure"+str(expresion)+"="+str(value))
     return structure
+
+def exprFetcher(expr):
+    ind=0
+    for valor in expr:
+        if(valor=="["):
+            expr=expr[ind,:]
+            break
+        ind+=1
+    return expr
 def tF(structure,type):
     finalValue=None
     if(type=="T"):

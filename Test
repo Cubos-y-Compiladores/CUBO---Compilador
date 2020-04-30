@@ -3,9 +3,9 @@ Dim_Filas=6;
 Dim_Columnas = 5;
 Timer=15;
 Cubo = 6;
-t=15;
+t=3;
 var = False;
-l=[True,False];
+l=[True,False,False,False];
 b=True;
 z=[[False,True,True],[True,False,True],[True,True,True]];
 k=range(t,True);
@@ -19,7 +19,7 @@ w,x=True,range(10,True);
 	global r,t,z,l,b;
 	global var,l;
 		begin
-		var1=r[1][:,1][t];
+		l[0:t].Neg;
 		end;	
 	};
 	Procedure test (param1,param2)
