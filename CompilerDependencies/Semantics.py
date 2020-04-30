@@ -333,7 +333,6 @@ def functionSem(p):
                 consultTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0],local_var)
 
     elif(p.getName()=="Function1"):
-        #TODO:Hacer que el valor de insercion en una lista pueda ser una variable
         varName = ""
         consult=""
         structure=None
@@ -361,6 +360,8 @@ def functionSem(p):
 
             elif (p.getChilds()[0].getChilds()[4].getName() == "Fcont7"):
                 structure=consult
+                if (threeDMatrixVerifier(local_var[varName])):
+                    insertingListOnMatInside3DMatError(varName,list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var).keys())[0])
                 varName=list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var).keys())[0]
 
         elif(not noneVerifier(varName,scope)):
@@ -384,6 +385,8 @@ def functionSem(p):
                     ind=int(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getToken())
 
                 elif (p.getChilds()[0].getChilds()[4].getChilds()[0].getName() == "Iterable2"):
+                    consultOnIndError("Insert")
+                elif (p.getChilds()[0].getChilds()[4].getChilds()[0].getName() == "Iterable3"):
                     consultOnIndError("Insert")
 
                 if(ind!=None):
@@ -414,18 +417,18 @@ def functionSem(p):
 
 
         if (p.getChilds()[0].getChilds()[4].getName() == "Fcont7" and (consult!="" or not noneVerifier(varName,scope))):
-                if (matrixVerifier(structure)):
+                if (matVerifier(structure)):
                     colSize = len(structure)
                     lineSize = len(structure[0])
                     ind = p.getChilds()[0].getChilds()[4].getChilds()[3]
-                    lista=None
+                    struct=None
                     if(p.getChilds()[0].getChilds()[4].getChilds()[0].getName()=="Iterable0"):
                         if(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getName()=="Identifier0"):
                             if (not existenceVerifier(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getToken(), local_var)):
                                 outOfScopeError(varName)
                             elif(not noneVerifier(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getToken(), local_var)):
-                                lista=local_var[p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getToken()]
-                                if(matVerifier(lista) or not isinstance(lista,list)):
+                                struct=local_var[p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getToken()]
+                                if(threeDMatrixVerifier(struct) or not isinstance(struct,list)):
                                     insertingNotListError(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getToken())
 
                         elif(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getName()=="Identifier1"):
@@ -435,16 +438,33 @@ def functionSem(p):
                             elif (not noneVerifier(var,local_var)):
                                 structure_consult = list(consultTranslator(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var).values())[0]
                                 expr=list(consultTranslator(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var).keys())[0]
-                                if(matVerifier(structure_consult)or not isinstance(structure_consult,list)):
+                                if(threeDMatrixVerifier(structure_consult)or not isinstance(structure_consult,list)):
                                     insertingNotListError(expr)
-                                lista=structure_consult
+                                struct=structure_consult
 
                     elif(p.getChilds()[0].getChilds()[4].getChilds()[0].getName()=="Iterable1"):
                         insertingNotListError((p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getToken()))
 
                     elif (p.getChilds()[0].getChilds()[4].getChilds()[0].getName() == "Iterable2"):
-                        lista = listTranslator(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds())
-                    if(not lista==None):
+                        if(consult!=""):
+                            if(not matrixVerifier(consult)):
+                                insertingNotListError(list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var).keys())[0])
+                        else:
+                            if(not matrixVerifier(scope[varName])):
+                                insertingNotListError(varName)
+                        struct = listTranslator(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds())
+
+                    elif (p.getChilds()[0].getChilds()[4].getChilds()[0].getName() == "Iterable3"):
+                        if (consult != ""):
+                            if (not threeDMatrixVerifier(consult)):
+                                insertingNotMatrixError(list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var).keys())[0])
+                        else:
+                            if (not threeDMatrixVerifier(scope[varName])):
+                                insertingNotMatrixError(varName)
+                        struct = matTranslator(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds())
+
+
+                    if(not struct==None):
                         if (not ind.isNull()):
                             ind = None
                             if (p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getName()=="Iterable0"):
@@ -469,40 +489,59 @@ def functionSem(p):
 
                             elif(p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getName()=="Iterable2"):
                                 consultOnIndError("Insert")
+                            elif (p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getName() == "Iterable3 "):
+                                consultOnIndError("Insert")
 
                             if(ind!=None):
                                 if (int(p.getChilds()[0].getChilds()[4].getChilds()[2].getToken()) == 0):
-                                    if (len(lista) != lineSize):
+                                    if(listVerifier(struct)):
+                                        if (len(struct) != lineSize):
+                                            differentSizeInsertion(str(struct), varName + ".insert(" + str(struct) + ",0,"+str(ind)+")")
+                                        elif (ind > colSize):
+                                            outOfBoundsError(ind, varName + ".insert(" + str(struct) + ",0," + str(ind) + ")")
+                                        matrixInserter(0,struct,structure,ind)
 
-                                        differentSizeInsertion(str(lista), varName + ".insert(" + str(lista) + ",0,"+str(ind)+")")
-                                    elif (ind > colSize):
-                                        outOfBoundsError(ind, varName + ".insert(" + str(lista) + ",0," + str(ind) + ")")
-                                    else:
-                                        matrixInserter(0,lista,structure,ind)
-                                        print("Test")
+                                    elif(matrixVerifier(struct)):
+                                        lineSize=len(structure[0][0])
+                                        colSize=len(structure[0])
+                                        heightSize=len(structure)
+                                        if (len(struct) != colSize or len(struct[0])!=lineSize):
+                                            differentSizeInsertion(str(struct),varName + ".insert(" + str(struct) + ",0," + str(ind) + ")")
+                                        elif (ind > heightSize):
+                                            outOfBoundsError(ind, varName + ".insert(" + str(struct) + ",0," + str(ind) + ")")
+                                        matrixInserter(0, struct, structure, ind)
 
                                 elif (int(p.getChilds()[0].getChilds()[4].getChilds()[2].getToken()) == 1):
-                                    if (len(lista) != colSize):
-                                        differentSizeInsertion(str(lista), varName + ".insert(" + str(lista) + ",1,"+str(ind)+")")
-                                    elif (ind > lineSize):
-                                        outOfBoundsError(ind, varName + ".insert(" + str(lista) + ",1," + str(ind) + ")")
-                                    else:
-                                        matrixInserter(1,lista,structure,ind)
-                                        print("Test")
+                                    if(listVerifier(struct)):
+                                        if (len(struct) != colSize):
+                                            differentSizeInsertion(str(struct), varName + ".insert(" + str(struct) + ",1,"+str(ind)+")")
+                                        elif (ind > lineSize):
+                                            outOfBoundsError(ind, varName + ".insert(" + str(struct) + ",1," + str(ind) + ")")
+
+                                        matrixInserter(1,struct,structure,ind)
+                                    elif (matrixVerifier(struct)):
+                                        lineSize = len(structure[0][0])
+                                        colSize = len(structure[0])
+                                        heightSize = len(structure)
+                                        if (len(struct[0]) != lineSize or len(struct) != heightSize):
+                                            differentSizeInsertion(str(struct),varName + ".insert(" + str(struct) + ",1," + str(ind) + ")")
+                                        elif (ind > colSize):
+                                            outOfBoundsError(ind, varName + ".insert(" + str(struct) + ",0," + str(ind) + ")")
+                                        matrixInserter(1, struct, structure, ind)
                                 else:
                                     wrongOperationNumberError("Insertion")
 
                         elif (int(p.getChilds()[0].getChilds()[4].getChilds()[2].getToken()) == 0):
-                            if (len(lista) != lineSize):
-                                differentSizeInsertion(str(lista), varName + ".insert(" + str(lista) + ",0)")
+                            if (len(struct) != lineSize):
+                                differentSizeInsertion(str(struct), varName + ".insert(" + str(struct) + ",0)")
                             else:
-                                matrixInserter(0, lista,structure,colSize)
+                                matrixInserter(0, struct,structure,colSize)
 
                         elif (int(p.getChilds()[0].getChilds()[4].getChilds()[2].getToken()) == 1):
-                            if (len(lista) != colSize):
-                                differentSizeInsertion(str(lista), varName + ".insert(" + str(lista) + ",1)")
+                            if (len(struct) != colSize):
+                                differentSizeInsertion(str(struct), varName + ".insert(" + str(struct) + ",1)")
                             else:
-                                matrixInserter(1, lista,structure,lineSize)
+                                matrixInserter(1, struct,structure,lineSize)
                         else:
                             wrongOperationNumberError("Insertion")
                 else:

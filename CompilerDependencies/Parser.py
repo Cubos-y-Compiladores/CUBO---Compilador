@@ -1,5 +1,5 @@
 import ply.yacc as yacc
-import codecs, sys
+import codecs,sys
 from CompilerDependencies.Lexer import *
 from CompilerDependencies.TreeGen import *
 from CompilerDependencies.Semantics import *
@@ -890,6 +890,10 @@ def p_iterable2(p):
     '''iterable : list'''
     p[0]=NonTerminalNode("Iterable2",[p[1]])
 
+def p_iterable3(p):
+    '''iterable : mat'''
+    p[0]=NonTerminalNode("Iterable3",[p[1]])
+
 
 ##########---INSERTABLES---#########
 def p_insertable0(p):
@@ -922,6 +926,7 @@ def p_error(p):
         print(colorama.Fore.RED + "SYNTACTIC ERROR: line:", p.lexer.lineno, "position:", p.lexpos, "Syntax error:", p.value, colorama.Fore.RESET)
     else:
         print(colorama.Fore.RED + "SYNTACTIC ERROR: Unknown syntax error" + colorama.Fore.RESET)
+    sys.exit()
 
 test = 'C:/Users/dcama/Desktop/Compilador/Test'
 fp = codecs.open(test, "r", "utf-8")

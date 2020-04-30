@@ -3,11 +3,11 @@ Dim_Filas=6;
 Dim_Columnas = 5;
 Timer=15;
 Cubo = 6;
-t=3;
+t=1;
 var = False;
-l=[True,False,True];
+l=[True,False];
 b=True;
-z=[[False,True],[False,False]];
+z=[[False,True,True],[True,False,True],[True,True,True]];
 k=range(t,True);
 y=[True,True,True,False,True];
 r=[[[False,True,False],[True,False,True],[False,True,False]],[[True,False,True],[False,True,False],[True,False,True]],[[False,True,False],[True,False,True],[False,True,False]]];
@@ -19,7 +19,8 @@ w,x=True,range(10,True);
 	global r,t,z,l,b;
 	global var,l;
 		begin
-		l[0]=t;
+		cubo1=[[[True,True],[True,True]],[[True,True],[True,True]]];
+		cubo1.insert([[False,False],[False,False]],0,0);
 		end;	
 	};
 	Procedure test (param1,param2)

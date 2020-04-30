@@ -107,41 +107,105 @@ def consultTranslator(consult,dictionary):
 
     elif(consult.getName()=="ListConsult"):
         var = consult.getChilds()[0].getToken()
+        ind=None
+        indExpr=None
         dimensionVerifier(var,dictionary,"ListConsult")
-        ind=int(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken())
-        expr=var+"["+str(ind)+"]"
+        if(consult.getChilds()[1].getChilds()[1].getName()=="Indice0"):
+            ind=int(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken())
+            indExpr=consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()
+
+        elif(consult.getChilds()[1].getChilds()[1].getName()=="Indice1"):
+            if(indVerifier(consult.getChilds()[1].getChilds()[1],dictionary)):
+                ind=dictionary[consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()]
+                indExpr=consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()
+            else:
+                nonIterableObjectError(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken())
+
+        expr=var+"["+indExpr+"]"
         if(abs(ind)>=len(dictionary[var])):
-            outOfBoundsError(ind,expr)
+            outOfBoundsError(indExpr,expr)
         translation[expr]=dictionary[var][ind]
         return translation
 
     elif (consult.getName() == "MatConsult"):
         var = consult.getChilds()[0].getToken()
+        ind1=None
+        ind2=None
+        ind1Expr=None
+        ind2Expr=None
         dimensionVerifier(var, dictionary, "MatConsult")
-        ind1=int(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken())
-        ind2=int(consult.getChilds()[1].getChilds()[3].getChilds()[1].getChilds()[0].getToken())
-        expr=var+"["+str(ind1)+"]"+"["+str(ind2)+"]"
+        if(consult.getChilds()[1].getChilds()[1].getName()=="Indice0"):
+            ind1=int(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken())
+            ind1Expr=consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()
+        elif (consult.getChilds()[1].getChilds()[1].getName() == "Indice1"):
+            if (indVerifier(consult.getChilds()[1].getChilds()[1], dictionary)):
+                ind1 = dictionary[consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()]
+                ind1Expr=consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()
+            else:
+                nonIterableObjectError(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken())
+        if (consult.getChilds()[1].getChilds()[3].getChilds()[1].getName() == "Indice0"):
+            ind2=int(consult.getChilds()[1].getChilds()[3].getChilds()[1].getChilds()[0].getToken())
+            ind2Expr=consult.getChilds()[1].getChilds()[3].getChilds()[1].getChilds()[0].getToken()
+        elif (consult.getChilds()[1].getChilds()[3].getChilds()[1].getName() == "Indice1"):
+            if(indVerifier(consult.getChilds()[1].getChilds()[3].getChilds()[1],dictionary)):
+                ind2=dictionary[consult.getChilds()[1].getChilds()[3].getChilds()[1].getChilds()[0].getToken()]
+                ind2Expr=consult.getChilds()[1].getChilds()[3].getChilds()[1].getChilds()[0].getToken()
+            else:
+                nonIterableObjectError(consult.getChilds()[1].getChilds()[3].getChilds()[1].getChilds()[0].getToken())
+        expr=var+"["+ind1Expr+"]"+"["+ind2Expr+"]"
         if(ind1>=len(dictionary[var]) ):
-            outOfBoundsError(ind1,expr)
+            outOfBoundsError(ind1Expr,expr)
         elif(ind2>=len(dictionary[var][ind1])):
-            outOfBoundsError(ind2,expr)
+            outOfBoundsError(ind2Expr,expr)
 
         translation[expr]=dictionary[var][ind1][ind2]
         return translation
 
     elif (consult.getName() == "ThreeDMatConsult"):
         var = consult.getChilds()[0].getToken()
+        ind1=None
+        ind2=None
+        ind3=None
+        ind1Expr=None
+        ind2Expr=None
+        ind3Expr=None
         dimensionVerifier(var, dictionary, "ThreeDMatConsult")
-        ind1=int(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken())
-        ind2=int(consult.getChilds()[1].getChilds()[3].getChilds()[1].getChilds()[0].getToken())
-        ind3=int(consult.getChilds()[1].getChilds()[3].getChilds()[3].getChilds()[1].getChilds()[0].getToken())
-        expr=var+"["+str(ind1)+"]"+"["+str(ind2)+"]"+"["+str(ind3)+"]"
+        if (consult.getChilds()[1].getChilds()[1].getName() == "Indice0"):
+            ind1 = int(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken())
+            ind1Expr=consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()
+        elif (consult.getChilds()[1].getChilds()[1].getName() == "Indice1"):
+            if (indVerifier(consult.getChilds()[1].getChilds()[1], dictionary)):
+                ind1 = dictionary[consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()]
+                ind1Expr=consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()
+            else:
+                nonIterableObjectError(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken())
+        if (consult.getChilds()[1].getChilds()[3].getChilds()[1].getName() == "Indice0"):
+            ind2 = int(consult.getChilds()[1].getChilds()[3].getChilds()[1].getChilds()[0].getToken())
+            ind2Expr=consult.getChilds()[1].getChilds()[3].getChilds()[1].getChilds()[0].getToken()
+        elif (consult.getChilds()[1].getChilds()[3].getChilds()[1].getName() == "Indice1"):
+            if (indVerifier(consult.getChilds()[1].getChilds()[3].getChilds()[1], dictionary)):
+                ind2 = dictionary[consult.getChilds()[1].getChilds()[3].getChilds()[1].getChilds()[0].getToken()]
+                ind2Expr=consult.getChilds()[1].getChilds()[3].getChilds()[1].getChilds()[0].getToken()
+            else:
+                nonIterableObjectError(consult.getChilds()[1].getChilds()[3].getChilds()[1].getChilds()[0].getToken())
+        if(consult.getChilds()[1].getChilds()[3].getChilds()[3].getChilds()[1].getName()=="Indice0"):
+            ind3=int(consult.getChilds()[1].getChilds()[3].getChilds()[3].getChilds()[1].getChilds()[0].getToken())
+            ind3Expr=consult.getChilds()[1].getChilds()[3].getChilds()[3].getChilds()[1].getChilds()[0].getToken()
+        elif(consult.getChilds()[1].getChilds()[3].getChilds()[3].getChilds()[1].getName()=="Indice1"):
+            if (indVerifier(consult.getChilds()[1].getChilds()[3].getChilds()[3].getChilds()[1], dictionary)):
+                ind3=dictionary[consult.getChilds()[1].getChilds()[3].getChilds()[3].getChilds()[1].getChilds()[0].getToken()]
+                ind3Expr=consult.getChilds()[1].getChilds()[3].getChilds()[3].getChilds()[1].getChilds()[0].getToken()
+            else:
+                nonIterableObjectError(consult.getChilds()[1].getChilds()[3].getChilds()[3].getChilds()[1].getChilds()[0].getToken())
+
+
+        expr=var+"["+ind1Expr+"]"+"["+ind2Expr+"]"+"["+ind3Expr+"]"
         if (ind1 >= len(dictionary[var])):
-            outOfBoundsError(ind1, expr)
+            outOfBoundsError(ind1Expr, expr)
         elif (ind2 >= len(dictionary[var][ind1])):
-            outOfBoundsError(ind2, expr)
+            outOfBoundsError(ind2Expr, expr)
         elif (ind3 >= len(dictionary[var][ind1][ind2])):
-            outOfBoundsError(ind3, expr)
+            outOfBoundsError(ind3Expr, expr)
         translation[expr]=dictionary[var][ind1][ind2][ind3]
         return translation
 
@@ -340,6 +404,7 @@ def matrixInserter(type,listed,mat,ind):
             valor.insert(ind,listed[index])
             index+=1
     return mat
+
 
 def globalUpdater(globalD,localD,localList):
     for valor in localD:
@@ -642,7 +707,11 @@ def consultOnIndError(operation):
     sys.exit()
 
 def insertingNotListError(var):
-    print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in "+var+" is not a List object and insertion operations only support list objects " )
+    print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in "+var+" is not a List object and insertion operations on a Matrix only support list objects " )
+    sys.exit()
+
+def insertingNotMatrixError(var):
+    print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in "+var+" is not a Matrix object and insertion operations on a 3DMatrix only support list objects " )
     sys.exit()
 
 def insertingNotBoolOnListError(var):
@@ -659,4 +728,8 @@ def differentDimensionsMatError(value):
 
 def modifyingMatrixWithDifferentSizeLineError(expr,value,varName):
     print(colorama.Fore.RED + "SEMANTIC ERROR: Modifying "+varName+" by changing "+expr+" with "+str(value)+" would alter it's integrity")
+    sys.exit()
+
+def insertingListOnMatInside3DMatError(varName,expr):
+    print(colorama.Fore.RED + "SEMANTIC ERROR: "+expr+" is a Matrix object and inserting a list on it would alter "+varName+"'s integrity")
     sys.exit()
