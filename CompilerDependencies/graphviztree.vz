@@ -923,94 +923,118 @@ digraph G {
 	470[label= ASSIGN]
 	467->470
 	471[label= Acont5]
-	472[label= Consult0]
-	473[label= ListConsult]
-	474[label= l]
+	472[label= Consult2]
+	473[label= ThreeDMatConsult]
+	474[label= r]
 	473->474
-	475[label= ListConsultT1]
+	475[label= ThreeDMatConsultT1]
 	476[label= PARENTCL]
 	475->476
 	477[label= Indice0]
-	478[label= 0]
+	478[label= 1]
 	477->478
 	475->477
-	479[label= TP]
+	479[label= PARENTCR]
 	475->479
-	480[label= Indice0]
-	481[label= 6]
+	480[label= MatConsultT2]
+	481[label= PARENTCL]
 	480->481
+	482[label= TP]
+	480->482
+	483[label= COMMA]
+	480->483
+	484[label= Indice0]
+	485[label= 1]
+	484->485
+	480->484
+	486[label= PARENTCR]
+	480->486
+	487[label= ListConsultT1]
+	488[label= PARENTCL]
+	487->488
+	489[label= Indice0]
+	490[label= 0]
+	489->490
+	487->489
+	491[label= TP]
+	487->491
+	492[label= Indice0]
+	493[label= 3]
+	492->493
+	487->492
+	494[label= PARENTCR]
+	487->494
+	480->487
 	475->480
-	482[label= PARENTCR]
-	475->482
 	473->475
 	472->473
 	471->472
 	467->471
 	466->467
 	465->466
-	483[label= Null]
-	465->483
+	495[label= Null]
+	465->495
 	439->465
-	484[label= END]
-	439->484
+	496[label= END]
+	439->496
 	420->439
-	485[label= RCORCH]
-	420->485
+	497[label= RCORCH]
+	420->497
 	419->420
-	486[label= Block0]
-	487[label= ProcedureP]
-	488[label= PROCEDURE]
-	487->488
-	489[label= ProcDec]
-	490[label= ProcName]
-	491[label= test]
-	490->491
-	489->490
-	492[label= LPARENT]
-	489->492
-	493[label= Parameter1]
-	494[label= ProcParam]
-	495[label= param1]
-	494->495
-	493->494
-	496[label= COMMA]
-	493->496
-	497[label= Parameter0]
-	498[label= ProcParam]
-	499[label= param2]
-	498->499
-	497->498
-	493->497
-	489->493
-	500[label= RPARENT]
-	489->500
-	487->489
-	501[label= LCORCH]
-	487->501
-	502[label= Body]
-	503[label= GlobalCall]
-	504[label= GLOBAL]
-	503->504
-	505[label= GlobalTerm1]
-	506[label= b]
-	505->506
-	503->505
-	507[label= Null]
-	503->507
+	498[label= Block0]
+	499[label= ProcedureP]
+	500[label= PROCEDURE]
+	499->500
+	501[label= ProcDec]
+	502[label= ProcName]
+	503[label= test]
 	502->503
-	508[label= BEGIN]
-	502->508
-	509[label= Null]
-	502->509
-	510[label= END]
-	502->510
-	487->502
-	511[label= RCORCH]
-	487->511
-	486->487
-	512[label= Null]
-	486->512
-	419->486
+	501->502
+	504[label= LPARENT]
+	501->504
+	505[label= Parameter1]
+	506[label= ProcParam]
+	507[label= param1]
+	506->507
+	505->506
+	508[label= COMMA]
+	505->508
+	509[label= Parameter0]
+	510[label= ProcParam]
+	511[label= param2]
+	510->511
+	509->510
+	505->509
+	501->505
+	512[label= RPARENT]
+	501->512
+	499->501
+	513[label= LCORCH]
+	499->513
+	514[label= Body]
+	515[label= GlobalCall]
+	516[label= GLOBAL]
+	515->516
+	517[label= GlobalTerm1]
+	518[label= b]
+	517->518
+	515->517
+	519[label= Null]
+	515->519
+	514->515
+	520[label= BEGIN]
+	514->520
+	521[label= Null]
+	514->521
+	522[label= END]
+	514->522
+	499->514
+	523[label= RCORCH]
+	499->523
+	498->499
+	524[label= Null]
+	498->524
+	419->498
 	397->419
 	193->397
 	159->193
@@ -1022,26 +1046,26 @@ digraph G {
 	26->37
 	2->26
 	1->2
-	513[label= MainProc]
-	514[label= MAIN]
-	513->514
-	515[label= LPARENT]
-	513->515
-	516[label= RPARENT]
-	513->516
-	517[label= LCORCH]
-	513->517
-	518[label= MainBody]
-	519[label= BEGIN]
-	518->519
-	520[label= Null]
-	518->520
-	521[label= END]
-	518->521
-	513->518
-	522[label= RCORCH]
-	513->522
-	523[label= Null]
-	513->523
-	1->513
+	525[label= MainProc]
+	526[label= MAIN]
+	525->526
+	527[label= LPARENT]
+	525->527
+	528[label= RPARENT]
+	525->528
+	529[label= LCORCH]
+	525->529
+	530[label= MainBody]
+	531[label= BEGIN]
+	530->531
+	532[label= Null]
+	530->532
+	533[label= END]
+	530->533
+	525->530
+	534[label= RCORCH]
+	525->534
+	535[label= Null]
+	525->535
+	1->525
 	}

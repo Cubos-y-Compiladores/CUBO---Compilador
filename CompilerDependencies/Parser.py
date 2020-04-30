@@ -676,8 +676,8 @@ def p_MatconsultT1(p):
     
 
 def p_MatconsultT2(p):
-    '''mat_consultT : PARENTCL TP PARENTCR list_consultT '''
-    p[0]=NonTerminalNode("MatConsultT2",[TerminalNode("Parentcl","PARENTCL"),TerminalNode("Tp","TP"),TerminalNode("Parentcr","PARENTCR"),p[4]])
+    '''mat_consultT : PARENTCL TP COMMA indice PARENTCR list_consultT'''
+    p[0]=NonTerminalNode("MatConsultT2",[TerminalNode("Parentcl","PARENTCL"),TerminalNode("Tp","TP"),TerminalNode("Coma","COMMA"),p[4],TerminalNode("Parentcr","PARENTCR"),p[6]])
     
 
 def p_MatconsultT3(p):

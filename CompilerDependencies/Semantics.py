@@ -50,7 +50,7 @@ def assignmentSem(p,scope):
             varName=p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
             if(not existenceVerifier(varName,scope)):
                 outOfScopeError(varName)
-            consult=consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0],scope)
+            consult=consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0],scope,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0]))
             varType=list(consult.values())[0]
         if (consult==None and varName in scope):
             varType = scope[varName]
@@ -140,7 +140,7 @@ def assignmentSem(p,scope):
 
 
             elif (p.getChilds()[2].getName() == "Acont5"):
-               value=list(consultTranslator(p.getChilds()[2].getChilds()[0].getChilds()[0],scope).values())[0]
+               value=list(consultTranslator(p.getChilds()[2].getChilds()[0].getChilds()[0],scope,expresionTranslator(p.getChilds()[2].getChilds()[0].getChilds()[0])).values())[0]
                if (typeVerifier(varType, value)):
                    if (consult == None):
                        scope[varName] = value
@@ -180,7 +180,7 @@ def assignmentSem(p,scope):
             elif(child.getName()=="Identifier1"):
                 if(scopeType=="global"):
                     globalConsultError()
-                expr = consultTranslator(child.getChilds()[0].getChilds()[0],scope)
+                expr = consultTranslator(child.getChilds()[0].getChilds()[0],scope,expresionTranslator(child.getChilds()[0].getChilds()[0]))
                 var=list(expr.keys())[0]
                 varType =list(expr.values())[0]
                 varList.append(var)
@@ -213,7 +213,7 @@ def assignmentSem(p,scope):
                 valueList.append(threeDmatTranslator(child.getChilds()[0].getChilds()[1].getChilds()))
 
             elif(child.getName()=="Acont5"):
-                valueList.append(list(consultTranslator(child.getChilds()[0].getChilds()[0],scope).values())[0])
+                valueList.append(list(consultTranslator(child.getChilds()[0].getChilds()[0],scope,expresionTranslator(child.getChilds()[0].getChilds()[0])).values())[0])
 
             elif (child.getName()=="RangeF"):
                 valueList.append(functionTranslator(child,scope))
@@ -330,7 +330,7 @@ def functionSem(p):
             if (not existenceVerifier(varName, local_var)):
                 outOfScopeError(varName)
             if(not noneVerifier(varName,scope)):
-                consultTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0],local_var)
+                consultTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0],local_var,expresionTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0]))
 
     elif(p.getName()=="Function1"):
         varName = ""
@@ -345,24 +345,24 @@ def functionSem(p):
             if (not existenceVerifier(varName, local_var)):
                 outOfScopeError(varName)
             if (not noneVerifier(varName, scope)):
-                consult=list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var).values())[0]
+                consult=list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])).values())[0]
 
 
         if(consult!="" and not noneVerifier(varName,scope)):
 
             if (not isinstance(consult,list)):
-                insertOnNotIterableObjectError(list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var).keys())[0])
+                insertOnNotIterableObjectError(list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])).keys())[0])
             if (p.getChilds()[0].getChilds()[4].getName() == "Fcont6"):
                 if(matVerifier(consult)):
-                    consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var).keys())[0]
+                    consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])).keys())[0]
                     insertingBoolOnMatObjectError(consult)
                 modifyingOnListInsideMatrixError(varName,"inserting")
 
             elif (p.getChilds()[0].getChilds()[4].getName() == "Fcont7"):
                 structure=consult
                 if (threeDMatrixVerifier(local_var[varName])):
-                    insertingListOnMatInside3DMatError(varName,list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var).keys())[0])
-                varName=list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var).keys())[0]
+                    insertingListOnMatInside3DMatError(varName,list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])).keys())[0])
+                varName=list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])).keys())[0]
 
         elif(not noneVerifier(varName,scope)):
             structure = scope[varName]
@@ -405,9 +405,9 @@ def functionSem(p):
                                 outOfScopeError(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getChilds()[0].getToken())
 
                         elif(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getName()=="Identifier1"):
-                            value=list(consultTranslator(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0],local_var).values())[0]
+                            value=list(consultTranslator(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0],local_var,expresionTranslator(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0])).values())[0]
                             if(not isinstance(value,bool)):
-                                insertingNotListError(list(consultTranslator(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0],local_var).keys())[0])
+                                insertingNotListError(list(consultTranslator(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0],local_var,expresionTranslator(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0])).keys())[0])
 
                     if (ind > len(structure)):
                         outOfBoundsError(ind, varName + ".insert(" + str(ind) + "," + str(value) + ")")
@@ -436,8 +436,8 @@ def functionSem(p):
                             if (not existenceVerifier(var, local_var)):
                                 outOfScopeError(var)
                             elif (not noneVerifier(var,local_var)):
-                                structure_consult = list(consultTranslator(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var).values())[0]
-                                expr=list(consultTranslator(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var).keys())[0]
+                                structure_consult = list(consultTranslator(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var,expresionTranslator(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])).values())[0]
+                                expr=list(consultTranslator(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var,expresionTranslator(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])).keys())[0]
                                 if(threeDMatrixVerifier(structure_consult)or not isinstance(structure_consult,list)):
                                     insertingNotListError(expr)
                                 struct=structure_consult
@@ -448,7 +448,7 @@ def functionSem(p):
                     elif (p.getChilds()[0].getChilds()[4].getChilds()[0].getName() == "Iterable2"):
                         if(consult!=""):
                             if(not matrixVerifier(consult)):
-                                insertingNotListError(list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var).keys())[0])
+                                insertingNotListError(list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])).keys())[0])
                         else:
                             if(not matrixVerifier(scope[varName])):
                                 insertingNotListError(varName)
@@ -457,7 +457,7 @@ def functionSem(p):
                     elif (p.getChilds()[0].getChilds()[4].getChilds()[0].getName() == "Iterable3"):
                         if (consult != ""):
                             if (not threeDMatrixVerifier(consult)):
-                                insertingNotMatrixError(list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var).keys())[0])
+                                insertingNotMatrixError(list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])).keys())[0])
                         else:
                             if (not threeDMatrixVerifier(scope[varName])):
                                 insertingNotMatrixError(varName)
@@ -480,7 +480,7 @@ def functionSem(p):
                                     if (not existenceVerifier(var, local_var)):
                                         outOfScopeError(var)
                                     elif (not noneVerifier(var, local_var)):
-                                        expr = list(consultTranslator(p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getChilds()[0].getChilds()[0], local_var).keys())[0]
+                                        expr = list(consultTranslator(p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getChilds()[0].getChilds()[0], local_var,expresionTranslator(p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getChilds()[0].getChilds()[0])).keys())[0]
                                         nonIterableObjectError(expr)
 
 
@@ -562,7 +562,7 @@ def functionSem(p):
             if (not existenceVerifier(varName, local_var)):
                 outOfScopeError(varName)
             if(not noneVerifier(varName,local_var)):
-                consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var).values())[0]
+                consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])).values())[0]
 
         if (consult!=None):
             if (not isinstance(consult,list)):
@@ -604,7 +604,7 @@ def functionSem(p):
             if (not existenceVerifier(varName, local_var)):
                 outOfScopeError(varName)
             if(noneVerifier(varName,local_var)):
-                consultTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0], local_var)
+                consultTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0], local_var,expresionTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0]))
 
 
 
@@ -619,10 +619,10 @@ def functionSem(p):
             varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
             if (not existenceVerifier(varName, local_var)):
                 outOfScopeError(varName)
-            consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var).values())[0]
+            consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])).values())[0]
 
         if(consult!=None):
-            expresion= list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var).keys())[0]
+            expresion= list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])).keys())[0]
             local_var[varName]=structureUpdater(nope(consult),local_var[varName],expresion)
 
         else:
@@ -642,9 +642,9 @@ def functionSem(p):
             varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
             if (not existenceVerifier(varName, local_var)):
                 outOfScopeError(varName)
-            consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var).values())[0]
+            consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])).values())[0]
         if(consult!=None):
-            expresion =list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var).keys())[0]
+            expresion =list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])).keys())[0]
             local_var[varName] = structureUpdater(tF(consult,typeTF), local_var[varName], expresion)
 
         else:
@@ -663,7 +663,7 @@ def functionSem(p):
             varName = p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
             if (not existenceVerifier(varName, local_var)):
                 outOfScopeError(varName)
-            consult = list(consultTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0], local_var).values())[0]
+            consult = list(consultTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0], local_var,expresionTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0])).values())[0]
 
         if (consult != ""):
             print("Test")
@@ -684,7 +684,7 @@ def functionSem(p):
                     if (not isinstance(local_var[varName], int)):
                         boolOnTempError(varName)
                 elif (p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getName()=="Identifier1"):
-                    consult = list(consultTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var).keys())[0]
+                    consult = list(consultTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var,expresionTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])).keys())[0]
                     boolOnTempError(consult)
 
             elif (p.getChilds()[0].getChilds()[2].getChilds()[0].getName() == "Iterable1"):
@@ -702,12 +702,12 @@ def functionSem(p):
             varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
             if (not existenceVerifier(varName, local_var)):
                 outOfScopeError(varName)
-            consult =list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var).values())[0]
+            consult =list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])).values())[0]
 
 
         if (consult!=None):
             if (not matVerifier(consult)):
-                shapeOnNotMatrixError(list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var).keys())[0])
+                shapeOnNotMatrixError(list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])).keys())[0])
         else:
             if (not matVerifier(local_var[varName])):
                 shapeOnNotMatrixError(varName)
@@ -723,7 +723,7 @@ def functionSem(p):
             varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
             if (not existenceVerifier(varName, local_var)):
                 outOfScopeError(varName)
-            consult =consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var)
+            consult =consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0]))
 
         if (consult != None):
             if (not matrixVerifier(list(consult.values())[0])):

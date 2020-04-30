@@ -3,7 +3,7 @@ Dim_Filas=6;
 Dim_Columnas = 5;
 Timer=15;
 Cubo = 6;
-t=0;
+t=15;
 var = False;
 l=[True,False];
 b=True;
@@ -19,7 +19,7 @@ w,x=True,range(10,True);
 	global r,t,z,l,b;
 	global var,l;
 		begin
-		var1=l[0:6];
+		var1=r[1][:,1][t];
 		end;	
 	};
 	Procedure test (param1,param2)
