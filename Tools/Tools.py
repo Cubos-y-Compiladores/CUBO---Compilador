@@ -227,6 +227,7 @@ def consultTranslator(consult,dictionary,expr):
                 if(valor=="["):
                     expr=expr[ind:]
                     break
+                ind+=1
             translation["Aux"]=expr
             ind=0
             for valor in expr:

@@ -20,7 +20,7 @@ w,x=True,range(10,True);
 	global var,l;
 		begin
 		mierda=[[True,True,False],[True,True,False],[True,True,False]];
-		r[0][:,t][0]=True;
+		mierda[1][0]=False;
 		end;	
 	};
 	Procedure test (param1,param2)
