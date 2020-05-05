@@ -63,7 +63,7 @@ def assignmentSem(p,scope):
                    if(consult==None):
                         scope[varName]=value
                    else:
-                       scope[varName]=structureUpdater(value,scope[varName],consult["Aux"])
+                       scope[varName]=structureUpdater(value,scope[varName],consult["Aux"],consult["Flipped"])
                else:
                    if(consult==None):
                        alreadyDefinedVarError(varName,scope[varName])
@@ -87,7 +87,7 @@ def assignmentSem(p,scope):
                         if (consult == None):
                             scope[varName] = value
                         else:
-                            scope[varName] = structureUpdater(value, scope[varName],consult["Aux"])
+                            scope[varName] = structureUpdater(value, scope[varName],consult["Aux"],consult["Flipped"])
                     else:
                         if (consult == None):
                             alreadyDefinedVarError(varName, scope[varName])
@@ -100,10 +100,10 @@ def assignmentSem(p,scope):
                    if(consult==None):
                        scope[varName] = value
                    else:
-                       val=structureUpdater(value,scope[varName],consult["Aux"])
+                       val=structureUpdater(value,scope[varName],consult["Aux"],consult["Flipped"])
                        if( not matBoundVerifier(val)):
                            modifyingMatrixWithDifferentSizeLineError(str(list(consult.keys())[0]),value,varName)
-                       scope[varName]=value
+                       scope[varName]=val
                else:
                    if (consult == None):
                        alreadyDefinedVarError(varName, scope[varName])
@@ -118,7 +118,11 @@ def assignmentSem(p,scope):
                    if (consult == None):
                        scope[varName] = value
                    else:
-                       scope[varName] = structureUpdater(value, scope[varName], consult["Aux"])
+                       if(threeDMatrixVerifier(scope[varName])):
+                           if(len(list(consult.values())[0])==len(value)):
+                                scope[varName] = structureUpdater(value, scope[varName],consult["Aux"],consult["Flipped"])
+                           else:
+                               differentMatOnThreeDMatError(list(consult.keys())[0], value)
                else:
                    if (consult == None):
                        alreadyDefinedVarError(varName, scope[varName])
@@ -132,7 +136,7 @@ def assignmentSem(p,scope):
                    if (consult == None):
                        scope[varName] = value
                    else:
-                       scope[varName] = structureUpdater(value, scope[varName], consult["Aux"])
+                       scope[varName] = structureUpdater(value, scope[varName], consult["Aux"],consult["Flipped"])
                else:
                    if (consult == None):
                        alreadyDefinedVarError(varName, scope[varName])
@@ -145,7 +149,7 @@ def assignmentSem(p,scope):
                    if (consult == None):
                        scope[varName] = value
                    else:
-                       scope[varName] = structureUpdater(value, scope[varName], consult["Aux"])
+                       scope[varName] = structureUpdater(value, scope[varName], consult["Aux"],consult["Flipped"])
                else:
                    if (consult == None):
                        alreadyDefinedVarError(varName, scope[varName])
@@ -157,7 +161,7 @@ def assignmentSem(p,scope):
                     if (consult == None):
                         scope[varName] = value
                     else:
-                        scope[varName] = structureUpdater(value, scope[varName], consult["Aux"])
+                        scope[varName] = structureUpdater(value, scope[varName], consult["Aux"],consult["Flipped"])
 
                 else:
                     if (consult == None):
@@ -224,8 +228,13 @@ def assignmentSem(p,scope):
             if("[" in varList[ind]):
                 varName=nameFetcher(varList[ind])
                 expr=exprFetcher(varList[ind])
+                flipped=None
+                if(":," in expr):
+                    flipped=expr
+                    flipped.replace(":,","")
+
                 if(typeVerifier(typeList[ind],valueList[ind])):
-                    scope[varName]=structureUpdater(valueList[ind],scope[varName],expr)
+                    scope[varName]=structureUpdater(valueList[ind],scope[varName],expr,flipped)
                 else:
                     alreadyDefinedVarError(varList[ind],typeList[ind])
 
@@ -624,7 +633,7 @@ def functionSem(p):
 
         if(consult!=None):
             expresion= consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0]))
-            local_var[varName]=structureUpdater(nope(consult),local_var[varName],expresion["Aux"])
+            local_var[varName]=structureUpdater(nope(consult),local_var[varName],expresion["Aux"],expresion["Flipped"])
 
         else:
             if(not(isinstance(local_var[varName],list) or isinstance(local_var[varName],bool))):
@@ -646,7 +655,7 @@ def functionSem(p):
             consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])).values())[0]
         if(consult!=None):
             expresion =consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0]))
-            local_var[varName] = structureUpdater(tF(consult,typeTF), local_var[varName], expresion["Aux"])
+            local_var[varName] = structureUpdater(tF(consult,typeTF), local_var[varName], expresion["Aux"],consult["Flipped"])
 
         else:
             if(not(isinstance(local_var[varName],list) or isinstance(local_var[varName],bool))):

@@ -126,6 +126,7 @@ def consultTranslator(consult,dictionary,expr):
                 outOfBoundsError(indExpr,expr)
             translation[expr]=dictionary[var][ind]
             translation["Aux"]="["+str(ind)+"]"
+            translation["Flipped"]=None
             return translation
         elif(consult.getChilds()[1].getName()=="ListConsultT1"):
             inf=None
@@ -146,6 +147,7 @@ def consultTranslator(consult,dictionary,expr):
                 sup= dictionary[consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken()]
             translation[expr]=dictionary[var][inf:sup]
             translation["Aux"]="["+str(inf)+":"+str(sup)+"]"
+            translation["Flipped"]=None
             return translation
 
     elif (consult.getName() == "MatConsult"):
@@ -180,6 +182,7 @@ def consultTranslator(consult,dictionary,expr):
                 outOfBoundsError(ind2Expr,expr)
             translation[expr]=dictionary[var][ind1][ind2]
             translation["Aux"]="["+str(ind1)+","+str(ind2)+"]"
+            translation["Flipped"] = None
             return translation
 
         elif (consult.getChilds()[1].getName() == "MatConsultT1"):
@@ -197,6 +200,7 @@ def consultTranslator(consult,dictionary,expr):
                 outOfBoundsError(indExpr,expr)
             translation[expr]=colFetcher(dictionary[var],ind1)
             translation["Aux"]="[:,"+str(ind1)+"]"
+            translation["Flipped"]="["+str(-(ind1+1))+"]"
             return translation
 
         elif (consult.getChilds()[1].getName() == "MatConsultT2"):
@@ -221,9 +225,16 @@ def consultTranslator(consult,dictionary,expr):
             ind=0
             for valor in expr:
                 if(valor=="["):
-                    expr=expr[ind,:]
+                    expr=expr[ind:]
                     break
             translation["Aux"]=expr
+            ind=0
+            for valor in expr:
+                if(valor=="]"):
+                    expr=expr[ind:]
+                    break
+                ind+=1
+            translation["Flipped"]="["+str(-(ind1+1))+expr
             return translation
 
         elif(consult.getChilds()[1].getName()=="MatConsultT3"):
@@ -244,9 +255,11 @@ def consultTranslator(consult,dictionary,expr):
             ind = 0
             for valor in expr:
                 if (valor == "["):
-                    expr = expr[ind, :]
+                    expr = expr[ind: ]
                     break
+                ind+=1
             translation["Aux"] = expr
+            translation["Flipped"] = None
             return translation
 
     elif (consult.getName() == "ThreeDMatConsult"):
@@ -277,12 +290,12 @@ def consultTranslator(consult,dictionary,expr):
                 else:
                     nonIterableObjectError(consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken())
 
-            if (consult.getChilds()[1].getChilds()[3].getName() == "Indice0"):
-                ind2 = int(consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken())
+            if (consult.getChilds()[1].getChilds()[5].getName() == "Indice0"):
+                ind3 = int(consult.getChilds()[1].getChilds()[5].getChilds()[0].getToken())
 
             elif (consult.getChilds()[1].getChilds()[5].getName() == "Indice1"):
                 if (indVerifier(consult.getChilds()[1].getChilds()[5], dictionary)):
-                    ind2 = dictionary[consult.getChilds()[1].getChilds()[5].getChilds()[0].getToken()]
+                    ind3 = dictionary[consult.getChilds()[1].getChilds()[5].getChilds()[0].getToken()]
                 else:
                     nonIterableObjectError(consult.getChilds()[1].getChilds()[5].getChilds()[0].getToken())
 
@@ -297,6 +310,8 @@ def consultTranslator(consult,dictionary,expr):
 
             translation[expr]=dictionary[var][ind1][ind2][ind3]
             translation["Aux"]="["+str(ind1)+"]["+str(ind2)+"]["+str(ind3)+"]"
+            translation["Flipped"] = None
+            return translation
 
         elif(consult.getChilds()[1].getName()=="ThreeDMatConsultT1"):
             ind1 = None
@@ -321,9 +336,147 @@ def consultTranslator(consult,dictionary,expr):
             ind = 0
             for valor in expr:
                 if (valor == "["):
-                    expr = expr[ind, :]
+                    expr = expr[ind:]
                     break
-            translation["Aux"] = expr
+                ind += 1
+            if(":," in expr):
+                expr=expr.replace(":,","")
+                expr=expr.split("][")
+                if(len(expr)==2):
+                    flip=""
+                    altern=""
+                    expr[0]=expr[0].replace("[","")
+                    expr[1]=expr[1].replace("]","")
+                    if(expr[0].isdigit()):
+                        flip+="["+expr[0]+"]"
+                        altern+="["+expr[0]+"]"
+                    else:
+                        flip+="["+dictionary[expr[0]]+"]"
+                        altern+="["+dictionary[expr[0]]+"]"
+                    if (expr[1].isdigit()):
+                        flip +="["+str(-(int(expr[1])+1))+"]"
+                        altern+="["+str(-(int(expr[1])+1))+"]"
+                    else:
+                        flip +="["+str(-(int(dictionary[expr[1]])+1))+"]"
+                        altern +="["+str(-(int(dictionary[expr[1]])+1))+"]"
+                    translation["Aux"]=altern
+                    translation["Flipped"]=flip
+                elif(len(expr)==3):
+                    altern=""
+                    flip=""
+                    if(":" in expr[2]):
+                        expr[0]=expr[0].replace("[","")
+                        expr[2]=expr[2].replace("]","")
+                        expr.append(expr[2].split(":"))
+                        expr.pop(2)
+
+                        if(expr[0].isdigit()):
+                            altern+="["+expr[0]+"]"
+                            flip +="["+expr[0]+"]"
+                        else:
+                            altern+="["+str(dictionary[expr[0]])+"]"
+                            flip+="["+str(dictionary[expr[0]])+"]"
+
+                        if (expr[1].isdigit()):
+                            altern += "[:,"+str(expr[1])+"]"
+                            flip += "["+str(-(int(expr[1])+1))+"]"
+                        else:
+                            altern += "[:,"+str(dictionary[expr[1]])+"]"
+                            flip += "["+str(-(dictionary[expr[1]]+1))+"]"
+
+                        if(expr[2][0].isdigit()):
+                            altern+="["+expr[2][0]+":"
+                            flip+="["+expr[2][0]+":"
+                        else:
+                            altern += "["+str(dictionary[expr[2][0]])+":"
+                            flip+= "["+str(dictionary[expr[2][0]])+":"
+                        if (expr[2][1].isdigit()):
+                            altern +=expr[2][1] + "]"
+                            flip+=expr[2][1] + "]"
+                        else:
+                            altern +=str(dictionary[expr[2][0]])+"]"
+                            flip+=str(dictionary[expr[2][0]])+"]"
+                        translation["Aux"]=altern
+                        translation["Flipped"]=flip
+                    else:
+                        expr[0]=expr[0].replace("[","")
+                        expr[2]=expr[2].replace("]","")
+
+                        if(expr[0].isdigit()):
+                            altern+="["+expr[0]+"]"
+                            flip+="["+expr[0]+"]"
+                        else:
+                            altern+="["+str(dictionary[expr[0]])+"]"
+                            flip +="["+str(dictionary[expr[0]])+"]"
+
+                        if (expr[1].isdigit()):
+                            altern += "[:,"+expr[1]+"]"
+                            flip += "["+str(-(int(expr[1])+1))+"]"
+                        else:
+                            altern += "[:,"+str(dictionary[expr[1]])+"]"
+                            flip += "["+str(-(dictionary[expr[1]]+1))+"]"
+
+                        if (expr[2].isdigit()):
+                            altern+="["+expr[2]+"]"
+                            flip+="["+expr[2]+"]"
+                        else:
+                            altern+="["+str(dictionary[expr[2]])+"]"
+                            flip+="["+str(dictionary[expr[2]])+"]"
+                        translation["Aux"]=altern
+                        translation["Flipped"]=flip
+
+
+                    return translation
+
+            else:
+                translation["Flipped"] = None
+
+            if("," in expr):
+                expr=expr.split("][")
+                expr[0]=expr[0].replace("[","")
+                expr[1]=expr[1].replace("]","")
+                expr.extend(expr[1].split(","))
+                expr.pop(1)
+                altern=""
+                for valor in expr:
+                    if(valor.isdigit()):
+                        altern+="["+valor+"]"
+                    else:
+                        altern+="["+str(dictionary[valor])+"]"
+                translation["Aux"]=altern
+            elif(":" in expr):
+                expr = expr.split("][")
+                expr[0] = expr[0].replace("[", "")
+                expr[2] = expr[2].replace("]", "")
+                expr.append(expr[2].split(":"))
+                expr.pop(2)
+                altern = ""
+                for valor in expr:
+                    if (len(valor) == 2):
+                        if (valor[0].isdigit()):
+                            altern += "[" + valor[0] + ":"
+                        else:
+                            altern += "[" + str(dictionary[valor[0]]) + ":"
+                        if (valor[1].isdigit()):
+                            altern += valor[1] + "]"
+                        else:
+                            altern += str(dictionary[valor[1]]) + "]"
+                    elif (valor.isdigit()):
+                        altern += "[" + valor + "]"
+                    else:
+                        altern += "[" + str(dictionary[valor]) + "]"
+                translation["Aux"] = altern
+            else:
+                altern=""
+                expr=expr.split("][")
+                expr[0]=expr[0].replace("[","")
+                expr[2]=expr[2].replace("]","")
+                for valor in expr:
+                    if(valor.isdigit()):
+                        altern+="["+valor+"]"
+                    else:
+                        altern +="["+str(dictionary[valor])+"]"
+                translation["Aux"]=altern
             return translation
 def expresionTranslator(consult):
     varName = consult.getChilds()[0].getToken()
@@ -629,9 +782,43 @@ def nope(structure):
     else:
         structure=not structure
     return structure
-def structureUpdater(value,structure,expresion):
-    exec("structure"+str(expresion)+"="+str(value))
+def structureUpdater(value,structure,expresion,flipped):
+    if(":," in expresion):
+        structure=matrixFliper(structure,"L")
+        exec("structure"+str(flipped)+"="+str(value))
+        structure=matrixFliper(structure,"R")
+    else:
+        temp="structure"+str(expresion)+"="+str(value)
+        exec("structure"+str(expresion)+"="+str(value))
     return structure
+def matrixFliper(structure,type):
+    output=[]
+    if(type=="L"):
+        if(matrixVerifier(structure)):
+            ind = -1
+            for valor in range(len(structure)):
+                newList=[]
+                for line in structure:
+                    newList.append(line[ind])
+                ind-=1
+                output.append(newList)
+        elif(threeDMatrixVerifier(structure)):
+            for valor in structure:
+                output.append(matrixFliper(valor,type))
+    elif(type=="R"):
+        if (matrixVerifier(structure)):
+            ind =0
+            for valor in range(len(structure)):
+                newList = []
+                for line in structure:
+                    newList.insert(0,line[ind])
+                ind += 1
+                output.append(newList)
+        elif (threeDMatrixVerifier(structure)):
+            for valor in structure:
+                output.append(matrixFliper(valor, type))
+    return output
+
 
 def exprFetcher(expr):
     ind=0
@@ -907,6 +1094,9 @@ def insertingNotBoolOnListError1():
 
 def differentDimensionsMatError(value):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The matrix "+str(value)+" has lines with different sizes, therefore it's not a valid matrix")
+    sys.exit()
+def differentMatOnThreeDMatError(value,value1):
+    print(colorama.Fore.RED + "SEMANTIC ERROR: The matrix stored in "+value+" has a different size than "+str(value1)+", so it can't be replaced since it is inside a 3DMatrix")
     sys.exit()
 
 def modifyingMatrixWithDifferentSizeLineError(expr,value,varName):
