@@ -16,11 +16,14 @@ w,x=True,range(10,True);
 
 	Procedure test (param1,param2,param3)
 	{
-	global r,t,z,l,b;
-	global var,l;
+	global r,t,z,b;
+	global var;
 		begin
-		mierda=[[True,True,False],[True,True,False],[True,True,False]];
-		mierda[1][0]=False;
+		m=[[[]],[[]],[[]]];
+		r[0][:,1]=range(4,False);
+		l=[[True,True,True],[False,False,False],[True,True,True]];
+		--mierda=[[],[True,True,False],[True,True,False]];
+		--mierda[1][0]=False;
 		end;	
 	};
 	Procedure test (param1,param2)

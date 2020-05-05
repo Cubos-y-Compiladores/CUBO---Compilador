@@ -63,7 +63,7 @@ def assignmentSem(p,scope):
                    if(consult==None):
                         scope[varName]=value
                    else:
-                       scope[varName]=structureUpdater(value,scope[varName],consult["Aux"],consult["Flipped"])
+                       scope[varName]=structureUpdater(value,scope[varName],consult["Aux"],consult["Flipped"],varName,list(consult.keys())[0])
                else:
                    if(consult==None):
                        alreadyDefinedVarError(varName,scope[varName])
@@ -87,7 +87,7 @@ def assignmentSem(p,scope):
                         if (consult == None):
                             scope[varName] = value
                         else:
-                            scope[varName] = structureUpdater(value, scope[varName],consult["Aux"],consult["Flipped"])
+                            scope[varName] = structureUpdater(value, scope[varName],consult["Aux"],consult["Flipped"],varName,list(consult.keys())[0])
                     else:
                         if (consult == None):
                             alreadyDefinedVarError(varName, scope[varName])
@@ -95,7 +95,12 @@ def assignmentSem(p,scope):
 
 
             elif (p.getChilds()[2].getName() == "Acont2"):
-               value=listTranslator(p.getChilds()[2].getChilds()[0].getChilds()[1].getChilds())
+               value=None
+               if(not p.getChilds()[2].getChilds()[0].getName()=="EmptyList"):
+                   value=listTranslator(p.getChilds()[2].getChilds()[0].getChilds()[1].getChilds())
+               else:
+                   value=[]
+
                if (typeVerifier(varType, value)):
                    if(consult==None):
                        scope[varName] = value
@@ -120,7 +125,7 @@ def assignmentSem(p,scope):
                    else:
                        if(threeDMatrixVerifier(scope[varName])):
                            if(len(list(consult.values())[0])==len(value)):
-                                scope[varName] = structureUpdater(value, scope[varName],consult["Aux"],consult["Flipped"])
+                                scope[varName] = structureUpdater(value, scope[varName],consult["Aux"],consult["Flipped"],varName,list(consult.keys())[0])
                            else:
                                differentMatOnThreeDMatError(list(consult.keys())[0], value)
                else:
@@ -136,7 +141,7 @@ def assignmentSem(p,scope):
                    if (consult == None):
                        scope[varName] = value
                    else:
-                       scope[varName] = structureUpdater(value, scope[varName], consult["Aux"],consult["Flipped"])
+                       scope[varName] = structureUpdater(value, scope[varName], consult["Aux"],consult["Flipped"],varName,list(consult.keys())[0])
                else:
                    if (consult == None):
                        alreadyDefinedVarError(varName, scope[varName])
@@ -161,7 +166,7 @@ def assignmentSem(p,scope):
                     if (consult == None):
                         scope[varName] = value
                     else:
-                        scope[varName] = structureUpdater(value, scope[varName], consult["Aux"],consult["Flipped"])
+                        scope[varName] = structureUpdater(value, scope[varName], consult["Aux"],consult["Flipped"],varName,list(consult.keys())[0])
 
                 else:
                     if (consult == None):
@@ -652,10 +657,9 @@ def functionSem(p):
             varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
             if (not existenceVerifier(varName, local_var)):
                 outOfScopeError(varName)
-            consult = list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])).values())[0]
+            consult =consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0]))
         if(consult!=None):
-            expresion =consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0]))
-            local_var[varName] = structureUpdater(tF(consult,typeTF), local_var[varName], expresion["Aux"],consult["Flipped"])
+            local_var[varName] = structureUpdater(tF(consult,typeTF), local_var[varName], consult["Aux"],consult["Flipped"])
 
         else:
             if(not(isinstance(local_var[varName],list) or isinstance(local_var[varName],bool))):

@@ -55,7 +55,10 @@ def matTranslator(valores):
     matriz=[]
     for valor in valores:
         if (valor.getName() == "MatV"):
-            matriz.append(listTranslator(valor.getChilds()[0].getChilds()[1].getChilds()))
+            if(not valor.getChilds()[0].getName()=="EmptyList"):
+                matriz.append(listTranslator(valor.getChilds()[0].getChilds()[1].getChilds()))
+            else:
+                matriz.append([])
 
         elif (valor.getName() == "MatT0"):
             matriz.extend(matTranslator(valor.getChilds()))
@@ -104,6 +107,8 @@ def arithmeticTranslator(operacion,dictionary):
 def consultTranslator(consult,dictionary,expr):
     translation={}
     var = consult.getChilds()[0].getToken()
+    if(emptyVerifier(dictionary[var])):
+        consult
     if(not isinstance(dictionary[consult.getChilds()[0].getToken()],list)):
         nonIterableObjectError(consult.getChilds()[0].getToken())
 
@@ -181,7 +186,7 @@ def consultTranslator(consult,dictionary,expr):
             elif(ind2>= len(dictionary[var][ind1])):
                 outOfBoundsError(ind2Expr,expr)
             translation[expr]=dictionary[var][ind1][ind2]
-            translation["Aux"]="["+str(ind1)+","+str(ind2)+"]"
+            translation["Aux"]="["+str(ind1)+"]["+str(ind2)+"]"
             translation["Flipped"] = None
             return translation
 
@@ -222,20 +227,8 @@ def consultTranslator(consult,dictionary,expr):
             tempConsult = consultTranslator(NonTerminalNode("ListConsult", [TerminalNode("Id", "Temp"), consult.getChilds()[1].getChilds()[5]]),dictionary,expr)
             del dictionary["Temp"]
             translation[expr] = list(tempConsult.values())[0]
-            ind=0
-            for valor in expr:
-                if(valor=="["):
-                    expr=expr[ind:]
-                    break
-                ind+=1
-            translation["Aux"]=expr
-            ind=0
-            for valor in expr:
-                if(valor=="]"):
-                    expr=expr[ind:]
-                    break
-                ind+=1
-            translation["Flipped"]="["+str(-(ind1+1))+expr
+            translation["Aux"]="[:,"+str(ind1)+"]"+tempConsult["Aux"]
+            translation["Flipped"]="["+str(-(ind1+1))+"]"+tempConsult["Aux"]
             return translation
 
         elif(consult.getChilds()[1].getName()=="MatConsultT3"):
@@ -259,7 +252,7 @@ def consultTranslator(consult,dictionary,expr):
                     expr = expr[ind: ]
                     break
                 ind+=1
-            translation["Aux"] = expr
+            translation["Aux"] = "["+str(ind1)+"]"+tempConsult["Aux"]
             translation["Flipped"] = None
             return translation
 
@@ -334,150 +327,11 @@ def consultTranslator(consult,dictionary,expr):
             if("Temp" in dictionary):
                 del dictionary["Temp"]
             translation[expr] = list(tempConsult.values())[0]
-            ind = 0
-            for valor in expr:
-                if (valor == "["):
-                    expr = expr[ind:]
-                    break
-                ind += 1
-            if(":," in expr):
-                expr=expr.replace(":,","")
-                expr=expr.split("][")
-                if(len(expr)==2):
-                    flip=""
-                    altern=""
-                    expr[0]=expr[0].replace("[","")
-                    expr[1]=expr[1].replace("]","")
-                    if(expr[0].isdigit()):
-                        flip+="["+expr[0]+"]"
-                        altern+="["+expr[0]+"]"
-                    else:
-                        flip+="["+dictionary[expr[0]]+"]"
-                        altern+="["+dictionary[expr[0]]+"]"
-                    if (expr[1].isdigit()):
-                        flip +="["+str(-(int(expr[1])+1))+"]"
-                        altern+="["+str(-(int(expr[1])+1))+"]"
-                    else:
-                        flip +="["+str(-(int(dictionary[expr[1]])+1))+"]"
-                        altern +="["+str(-(int(dictionary[expr[1]])+1))+"]"
-                    translation["Aux"]=altern
-                    translation["Flipped"]=flip
-                elif(len(expr)==3):
-                    altern=""
-                    flip=""
-                    if(":" in expr[2]):
-                        expr[0]=expr[0].replace("[","")
-                        expr[2]=expr[2].replace("]","")
-                        expr.append(expr[2].split(":"))
-                        expr.pop(2)
-
-                        if(expr[0].isdigit()):
-                            altern+="["+expr[0]+"]"
-                            flip +="["+expr[0]+"]"
-                        else:
-                            altern+="["+str(dictionary[expr[0]])+"]"
-                            flip+="["+str(dictionary[expr[0]])+"]"
-
-                        if (expr[1].isdigit()):
-                            altern += "[:,"+str(expr[1])+"]"
-                            flip += "["+str(-(int(expr[1])+1))+"]"
-                        else:
-                            altern += "[:,"+str(dictionary[expr[1]])+"]"
-                            flip += "["+str(-(dictionary[expr[1]]+1))+"]"
-
-                        if(expr[2][0].isdigit()):
-                            altern+="["+expr[2][0]+":"
-                            flip+="["+expr[2][0]+":"
-                        else:
-                            altern += "["+str(dictionary[expr[2][0]])+":"
-                            flip+= "["+str(dictionary[expr[2][0]])+":"
-                        if (expr[2][1].isdigit()):
-                            altern +=expr[2][1] + "]"
-                            flip+=expr[2][1] + "]"
-                        else:
-                            altern +=str(dictionary[expr[2][0]])+"]"
-                            flip+=str(dictionary[expr[2][0]])+"]"
-                        translation["Aux"]=altern
-                        translation["Flipped"]=flip
-                    else:
-                        expr[0]=expr[0].replace("[","")
-                        expr[2]=expr[2].replace("]","")
-
-                        if(expr[0].isdigit()):
-                            altern+="["+expr[0]+"]"
-                            flip+="["+expr[0]+"]"
-                        else:
-                            altern+="["+str(dictionary[expr[0]])+"]"
-                            flip +="["+str(dictionary[expr[0]])+"]"
-
-                        if (expr[1].isdigit()):
-                            altern += "[:,"+expr[1]+"]"
-                            flip += "["+str(-(int(expr[1])+1))+"]"
-                        else:
-                            altern += "[:,"+str(dictionary[expr[1]])+"]"
-                            flip += "["+str(-(dictionary[expr[1]]+1))+"]"
-
-                        if (expr[2].isdigit()):
-                            altern+="["+expr[2]+"]"
-                            flip+="["+expr[2]+"]"
-                        else:
-                            altern+="["+str(dictionary[expr[2]])+"]"
-                            flip+="["+str(dictionary[expr[2]])+"]"
-                        translation["Aux"]=altern
-                        translation["Flipped"]=flip
-
-
-                    return translation
-
+            translation["Aux"]="["+str(ind1)+"]"+tempConsult["Aux"]
+            if(not tempConsult["Flipped"]==None):
+                translation["Flipped"]="["+str(ind1)+"]"+tempConsult["Flipped"]
             else:
-                translation["Flipped"] = None
-
-            if("," in expr):
-                expr=expr.split("][")
-                expr[0]=expr[0].replace("[","")
-                expr[1]=expr[1].replace("]","")
-                expr.extend(expr[1].split(","))
-                expr.pop(1)
-                altern=""
-                for valor in expr:
-                    if(valor.isdigit()):
-                        altern+="["+valor+"]"
-                    else:
-                        altern+="["+str(dictionary[valor])+"]"
-                translation["Aux"]=altern
-            elif(":" in expr):
-                expr = expr.split("][")
-                expr[0] = expr[0].replace("[", "")
-                expr[2] = expr[2].replace("]", "")
-                expr.append(expr[2].split(":"))
-                expr.pop(2)
-                altern = ""
-                for valor in expr:
-                    if (len(valor) == 2):
-                        if (valor[0].isdigit()):
-                            altern += "[" + valor[0] + ":"
-                        else:
-                            altern += "[" + str(dictionary[valor[0]]) + ":"
-                        if (valor[1].isdigit()):
-                            altern += valor[1] + "]"
-                        else:
-                            altern += str(dictionary[valor[1]]) + "]"
-                    elif (valor.isdigit()):
-                        altern += "[" + valor + "]"
-                    else:
-                        altern += "[" + str(dictionary[valor]) + "]"
-                translation["Aux"] = altern
-            else:
-                altern=""
-                expr=expr.split("][")
-                expr[0]=expr[0].replace("[","")
-                expr[2]=expr[2].replace("]","")
-                for valor in expr:
-                    if(valor.isdigit()):
-                        altern+="["+valor+"]"
-                    else:
-                        altern +="["+str(dictionary[valor])+"]"
-                translation["Aux"]=altern
+                translation["Flipped"]="["+str(ind1)+"]"+tempConsult["Aux"]
             return translation
 def expresionTranslator(consult):
     varName = consult.getChilds()[0].getToken()
@@ -566,6 +420,13 @@ def functionTranslator(function,scope):
         for v in range(size):
             output.append(boolValue)
         return output
+def emptyVerifier(structure):
+    if(listVerifier(structure)):
+        if(len(structure)==0):
+            return True
+    elif(matVerifier(structure)):
+        return emptyVerifier(structure[0])
+
 
 def parameterTranslator(parameters):
     output=[]
@@ -630,16 +491,14 @@ def dimensionVerifier(var,dictionary,consultType):
     estructure=dictionary[var]
     output=[]
     types=["List","Matrix","3D Matrix"]
-    temp=type(estructure)
-    temp2=type(True)
     if(not isinstance(estructure,list)):
         nonIterableObjectError(var)
 
-    elif(type(estructure[0])==type(True)):
+    if(len(estructure)==0 or isinstance(estructure[0],bool)):
         output=[True,False,False]
 
-    elif (type(estructure[0]) == type([])):
-        if(type(estructure[0][0])==type([])):
+    elif (isinstance(estructure[0],list)):
+        if(not len(estructure[0])==0 and isinstance(estructure[0][0],list)):
             output=[True,True,True]
         else:
             output = [True, True, False]
@@ -680,27 +539,27 @@ def existenceVerifier(var,scope):
     return False
 def listVerifier(var):
     if(isinstance(var,list)):
-        if(isinstance(var[0],bool)):
+        if(len(var)==0 or isinstance(var[0],bool)):
             return True
     return False
 def matVerifier(var):
-    if (type(var) == type([])):
-        if (type(var[0]) == type([])):
+    if (isinstance(var,list)):
+        if (len(var)!=0 and isinstance(var[0],list)):
             return True
     return False
 
 def matrixVerifier(var):
-    if(type(var)==type([])):
-        if(type(var[0])==type([])):
-            if (type(var[0][0]) == type([])):
+    if(isinstance(var,list)):
+        if(len(var)!=0 and isinstance(var[0],list)):
+            if (len(var[0])!=0 and isinstance(var[0][0],list)):
                 return False
             return True
     return False
 
 def threeDMatrixVerifier(var):
-    if (type(var) == type([])):
-        if (type(var[0]) == type([])):
-            if (type(var[0][0]) == type([])):
+    if (isinstance(var,list)):
+        if (len(var)!=0 and isinstance(var[0],list)):
+            if (len(var[0])!=0 and isinstance(var[0][0],list)):
                 return True
             return False
     return False
@@ -717,7 +576,7 @@ def indVerifier(ind,scope):
         if(isinstance(scope[ind.getChilds()[0].getToken()],int) and not isinstance(scope[ind.getChilds()[0].getToken()],bool)):
             return True
         return False
-    outOfScopeError(ind.getChilds()[0].getChilds()[0].getToken())
+    outOfScopeError(ind.getChilds()[0].getToken())
 
 def globalFetch(globalScope,varList):
     output={}
@@ -783,14 +642,21 @@ def nope(structure):
     else:
         structure=not structure
     return structure
-def structureUpdater(value,structure,expresion,flipped):
+def structureUpdater(value,structure,expresion,flipped,varName,originalExpr):
     if(":," in expresion):
         structure=matrixFliper(structure,"L")
-        exec("structure"+str(flipped)+"="+str(value))
-        structure=matrixFliper(structure,"R")
+        temp=eval("structure"+str(flipped))
+        if(isinstance(value,int) or len(temp)==len(value)):
+            exec("structure"+str(flipped)+"="+str(value))
+            structure=matrixFliper(structure,"R")
+        else:
+            modifyingMatrixWithDifferentSizeLineError(originalExpr,value,varName)
     else:
-        temp="structure"+str(expresion)+"="+str(value)
-        exec("structure"+str(expresion)+"="+str(value))
+        temp=eval("structure"+str(expresion))
+        if (isinstance(value,int) or len(temp) == len(value)):
+            exec("structure"+str(expresion)+"="+str(value))
+        else:
+            modifyingMatrixWithDifferentSizeLineError(originalExpr,value, varName)
     return structure
 def matrixFliper(structure,type):
     output=[]
@@ -1101,7 +967,7 @@ def differentMatOnThreeDMatError(value,value1):
     sys.exit()
 
 def modifyingMatrixWithDifferentSizeLineError(expr,value,varName):
-    print(colorama.Fore.RED + "SEMANTIC ERROR: Modifying "+varName+" by changing "+expr+" with "+str(value)+" would alter it's integrity")
+    print(colorama.Fore.RED + "SEMANTIC ERROR: Modifying "+str(varName)+" by changing "+str(expr)+" with "+str(value)+" would alter it's integrity")
     sys.exit()
 
 def insertingListOnMatInside3DMatError(varName,expr):
