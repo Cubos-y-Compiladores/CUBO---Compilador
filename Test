@@ -19,11 +19,10 @@ w,x=True,range(10,True);
 	global r,t,z,b;
 	global var;
 		begin
-		m=[[[]],[[]],[[]]];
-		r[0][:,1]=range(4,False);
-		l=[[True,True,True],[False,False,False],[True,True,True]];
-		--mierda=[[],[True,True,False],[True,True,False]];
-		--mierda[1][0]=False;
+
+		l=[True,False,True,False,True];
+		z.insert(l,0);
+		
 		end;	
 	};
 	Procedure test (param1,param2)
