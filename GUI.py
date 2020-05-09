@@ -150,6 +150,8 @@ class MyApp(wx.Frame):
         self.textRestauration = ""
         self.currentLineNumber = self.textMain.PositionToXY(self.textMain.GetInsertionPoint())[2]
         self.pasPosxyList = self.textMain.PositionToXY(self.textMain.GetInsertionPoint())
+        self.plusNumberLine = 0
+        self.pastRowLen = 0
 
         # Lista de archivos
 
@@ -630,7 +632,7 @@ class MyApp(wx.Frame):
     def changeReservedWords2(self):
         curpos = self.textMain.GetInsertionPoint()
         lxy = self.textMain.PositionToXY(curpos)
-        print(lxy[2])
+        # print(lxy[2])
 
         if lxy[1] != self.pasPosxyList[1] or lxy[2] != self.pasPosxyList[2]:
             self.pasPosxyList = lxy
@@ -640,13 +642,25 @@ class MyApp(wx.Frame):
             self.changeTextColorWithoutClear()
 
         if lxy[2] != self.pastLabelNumberPosition :
+            self.plusNumberLine = lxy[2]-20
+            print("plusnumber",self.plusNumberLine)
+
 
             self.pastLabelNumberPosition = lxy[2]
             text = ""
-            for i in range(1, lxy[2]+2):
-                text += str(i) + "\n"
 
-            self.lblLineNumber.SetLabel(""+text)
+            newRowLen = len(self.textMain.GetValue().split("\n"))
+
+            if newRowLen != self.pastRowLen:
+                self.pastRowLen = newRowLen
+                if lxy[2] + 1  > 20:
+
+                    for i in range(self.plusNumberLine + 2, lxy[2] +2):
+                        text += str(i) + "\n"
+                else:
+                    for i in range(1, lxy[2]+2 ):
+                        text += str(i) + "\n"
+                self.lblLineNumber.SetLabel("" + text)
 
 
         if self.textMain.GetValue() != self.currenttext or len(self.textMain.GetValue()) != len(self.currenttext):
