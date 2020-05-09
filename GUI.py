@@ -642,6 +642,8 @@ class MyApp(wx.Frame):
             self.changeTextColorWithoutClear()
 
         if lxy[2] != self.pastLabelNumberPosition :
+            newRowLen = len(self.textMain.GetValue().split("\n"))
+
             self.plusNumberLine = lxy[2]-20
             print("plusnumber",self.plusNumberLine)
 
@@ -649,17 +651,26 @@ class MyApp(wx.Frame):
             self.pastLabelNumberPosition = lxy[2]
             text = ""
 
-            newRowLen = len(self.textMain.GetValue().split("\n"))
+
 
             if newRowLen != self.pastRowLen:
                 self.pastRowLen = newRowLen
-                if lxy[2] + 1  > 20:
+                if lxy[2] + 1 > 20:
+                    cont = 0
 
-                    for i in range(self.plusNumberLine + 2, lxy[2] +2):
+                    for i in range(self.plusNumberLine + 2, newRowLen+2):
+                        cont+=1
                         text += str(i) + "\n"
+                        if cont == 20:
+                            break
+
                 else:
-                    for i in range(1, lxy[2]+2 ):
+                    cont = 0
+                    for i in range(1, newRowLen + 1 ):
+                        cont += 1
                         text += str(i) + "\n"
+                        if cont == 20:
+                            break
                 self.lblLineNumber.SetLabel("" + text)
 
 
