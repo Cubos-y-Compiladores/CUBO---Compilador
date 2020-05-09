@@ -142,9 +142,14 @@ class MyApp(wx.Frame):
         self.currentFile = ""
         self.currenttext = ""
         self.pastLabelFileName = ""
+        self.pastLabelNumberPosition = -1
         self.currentLabelFileName = ""
         self.flagSlider = False
+        self.startEnd = [0,0]
+        self.flagBgError = False
+        self.textRestauration = ""
         self.currentLineNumber = self.textMain.PositionToXY(self.textMain.GetInsertionPoint())[2]
+        self.pasPosxyList = self.textMain.PositionToXY(self.textMain.GetInsertionPoint())
 
         # Lista de archivos
 
@@ -176,6 +181,7 @@ class MyApp(wx.Frame):
         self.colorOrange2 = (251, 139, 36)
         self.colorBG = (54,72,101)
         self.colorLabel = (38, 216, 205)
+        self.colorErrorBg = (255,145,164)
 
 
         # Main File
@@ -291,14 +297,26 @@ class MyApp(wx.Frame):
         # Labels
 
         self.lblFileName = wx.StaticText(self,-1,"",(35,0))
+        self.lblLineNumber = wx.StaticText(self,-1,"1",(2,24))
+
+        # Set Size to a label
+        self.fontNumberLabel = self.lblLineNumber.GetFont()
+        self.fontNumberLabel.SetPointSize(12)
+        self.lblLineNumber.SetFont(self.fontNumberLabel)
+
+
+
+        self.lblPosXY = wx.StaticText(self,-1,"0,0",(1100,4))
+        self.lblLine = wx.StaticText(self,-1,"line : ",(1070,4))
+
         self.resetLabel("","")
 
         # Sliders
 
-        self.slideFont = wx.Slider(self,-1,12,12,28,(1000,0),(150,20))
-        self.Bind(wx.EVT_SLIDER,self.onSlider)
-        self.slideFont.Bind(wx.EVT_SET_FOCUS,self.focusOnSlider)
-        self.textConsole.Bind(wx.EVT_SET_CURSOR,self.focusOnTextCtrl)
+        # self.slideFont = wx.Slider(self,-1,12,12,28,(1000,0),(150,20))
+        # self.Bind(wx.EVT_SLIDER,self.onSlider)
+        # self.slideFont.Bind(wx.EVT_SET_FOCUS,self.focusOnSlider)
+        # self.textConsole.Bind(wx.EVT_SET_CURSOR,self.focusOnTextCtrl)
 
         # Fuentes de Texto
 
@@ -357,10 +375,20 @@ class MyApp(wx.Frame):
         while 1:
             # self.changeReservedWords()
             self.changeReservedWords2()
+
     def click1(self,event):
-        list1 = ['"', ",", "{", "}", "=", "--", "(", ")", "[", "]"]
-        self.textMain.SetStyle(0,1,wx.TextAttr(wx.GREEN))
-        print(self.textMain.GetLineText(0)[0] in list1)
+        # list1 = ['"', ",", "{", "}", "=", "--", "(", ")", "[", "]"]
+        # self.textMain.SetStyle(0,1,wx.TextAttr(wx.GREEN))
+        # print(self.textMain.GetLineText(0)[0] in list1)
+        # line = len(self.textMain.GetRange(0, self.textMain.GetInsertionPoint()).split("\n"))
+        self.setErrorBackground(1)
+        pixelpos = self.textMain.PositionToXY(self.textMain.GetInsertionPoint())
+        print("pixelpos: ",pixelpos)
+        text = ""
+        for i in range(1,self.textMain.GetInsertionPoint()):
+            text += str(i) + "\n"
+        print(text)
+
 
     def insertList(self,event):
         self.textMain.AppendText("list" + str(self.contList) +"= [];\n")
@@ -454,11 +482,14 @@ class MyApp(wx.Frame):
     def resetLabel(self, number, newLabel):
 
         lbls = [widget for widget in self.GetChildren() if isinstance(widget, wx.StaticText)]
+        print("LABELSList",lbls)
         for lbl in lbls:
+
             if number in lbl.GetLabel():
                 lbl.SetLabel("File -> " + newLabel)
                 lbl.SetForegroundColour(self.colorLabel)
                 break
+
     def saveFile(self,event):
         if  self.currentLabelFileName in self.filesList:
             print(self.currentDirectory)
@@ -513,6 +544,7 @@ class MyApp(wx.Frame):
         self.resetLabel(self.pastLabelFileName,self.currentLabelFileName)
         self.pastLabelFileName = self.currentLabelFileName
     def runFile(self,event):
+
         print("Running")
     def setFontSize(self,size):
         font = self.textMain.GetFont()
@@ -534,6 +566,30 @@ class MyApp(wx.Frame):
     def setStyleText(self,start,end,color):
         self.textMain.SetStyle(start, end, wx.TextAttr(color))
         self.textMain.SetDefaultStyle(wx.TextAttr(self.colorWhite))
+
+    def setErrorBackground(self,line):
+        text = self.textMain.GetValue()
+        print(text)
+        lista = text.split("\n")
+        print(lista)
+        start = 1
+        for i in range(0,line):
+            start += len(lista[i])
+        end = len(lista[line])
+        self.startEnd = [start,end]
+        self.flagBgError = not self.flagBgError
+
+        self.textRestauration = lista[line]
+
+        self.textMain.SetStyle(start,start + end,wx.TextAttr(self.colorWhite,self.colorErrorBg))
+        self.textMain.SetDefaultStyle(wx.TextAttr(self.colorWhite,self.colorBG))
+
+    def resetErrorBackground(self):
+
+        self.textMain.SetStyle(self.startEnd[0],self.startEnd[1]+self.startEnd[0]+1,wx.TextAttr(self.colorWhite,self.colorBG))
+        self.changeReservedWords(self.startEnd[0],self.textRestauration)
+        self.textMain.SetDefaultStyle(wx.TextAttr(self.colorWhite,self.colorBG))
+
 
     def changeReservedWords(self,pos,text):
 
@@ -570,18 +626,38 @@ class MyApp(wx.Frame):
                     elif tok.type == "INT":
                         self.setStyleText(tok.lexpos + posInit, tok.lexpos + len(str(tok.value)) + posInit, self.colorWhite)
 
-    def changeReservedWords2(self):
 
-       
+    def changeReservedWords2(self):
+        curpos = self.textMain.GetInsertionPoint()
+        lxy = self.textMain.PositionToXY(curpos)
+        print(lxy[2])
+
+        if lxy[1] != self.pasPosxyList[1] or lxy[2] != self.pasPosxyList[2]:
+            self.pasPosxyList = lxy
+            self.lblPosXY.SetLabel(str(lxy[2]+1)+","+str(lxy[1]))
 
         if self.flagSlider:
             self.changeTextColorWithoutClear()
 
+        if lxy[2] != self.pastLabelNumberPosition :
+
+            self.pastLabelNumberPosition = lxy[2]
+            text = ""
+            for i in range(1, lxy[2]+2):
+                text += str(i) + "\n"
+
+            self.lblLineNumber.SetLabel(""+text)
+
+
         if self.textMain.GetValue() != self.currenttext or len(self.textMain.GetValue()) != len(self.currenttext):
+            if self.flagBgError:
+                self.flagBgError = not self.flagBgError
+                self.resetErrorBackground()
+
             if self.textMain.GetValue() != "":
 
                 curPos = self.textMain.GetInsertionPoint()
-                # print("curpos: "+ str(curPos))
+                print("curpos: "+ str(curPos))
                 linenumber = self.textMain.PositionToXY(curPos)
                 lineText = self.textMain.GetLineText(linenumber[2])
 
@@ -598,15 +674,16 @@ class MyApp(wx.Frame):
 
                     list1 = ['"',",","{","}","=","--","(",")","[","]"," "]
                     listNum = "1234567890"
-                    list2 = "abcdefghijklmnñopqrstuvwxyz"
+                    list2 = "abcdefghijklmnñopqrstuvwxyzCALL"
+
                     pack = []
 
 
                     # print(len(lineText))
                     if len(lineText) != 0:
                         if lineText[linenumber[1]-1] in list1 or lineText[linenumber[1]-1] in listNum:
-
                             pack = (linenumber[1]-1,linenumber[1],lineText[linenumber[1]-1:linenumber[1]],posInit)
+                        
                         else:
                             print("LINENUMBER[1]",linenumber[1])
                             s = linenumber[1] -1
