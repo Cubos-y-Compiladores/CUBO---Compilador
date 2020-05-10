@@ -20,27 +20,17 @@ w,x=True,range(10,True);
 	global var,t;
 		begin
 		x=10;
-		if(t>0)
+		for valor in r[0] Step 4
 		{
-			x=x+10;
-			if(x>10)
+			if(t==0)
 			{
-				w=False;
-				l=[True];
-				if(x>10)
+				if(l==False)
 				{
-					w=True;
-					l=param1;
+					x=15;
 				};
+				l=[True];
 			};
-
-		};
-		else
-		{
-			w=[True,False];
-			w.insert(2,True);
-		};
-		w=20;
+		}; 
 		end;	
 	};
 	Procedure test (param1,param2)

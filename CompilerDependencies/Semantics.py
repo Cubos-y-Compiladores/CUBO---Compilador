@@ -382,9 +382,66 @@ def instructionSem(p,local_var,local_only):
     if(p.getName()=="Instruction0"):
         return functionSem(p.getChilds()[0],local_var,local_only)
 
+    elif (p.getName()=="Instruction1"):
+       varName=p.getChilds()[0].getChilds()[0].getChilds()[0].getToken()
+       if(not existenceVerifier(varName,local_var)):
+           outOfScopeError(varName)
+
+    elif (p.getName() == "Instruction2"):
+        cycleSem(p.getChilds()[0].getChilds()[0],local_var,local_only)
+
     elif(p.getName()=="Instruction3"):
         statementSem(p.getChilds()[0],local_var,local_only)
     return (local_var,local_only)
+def cycleSem(p,local_var,local_only):
+    iterable=None
+    if(p.getChilds()[3].getName()=="Iterable0"):
+        if(p.getChilds()[3].getChilds()[0].getName()=="Identifier0"):
+            varName=p.getChilds()[3].getChilds()[0].getChilds()[0].getToken()
+            if(not existenceVerifier(varName,local_var)):
+                outOfScopeError(varName)
+            elif(not (listVerifier(local_var[varName]) or isinstance(local_var[varName],int))):
+                notIterableObjectOnFor(varName)
+            iterable=(varName,local_var[varName])
+
+        elif(p.getChilds()[3].getChilds()[0].getName()=="Identifier1"):
+            varName=p.getChilds()[3].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
+            if(not existenceVerifier(varName,local_var)):
+                outOfScopeError(varName)
+            consult=consultTranslator(p.getChilds()[3].getChilds()[0].getChilds()[0].getChilds()[0],local_var,expresionTranslator(p.getChilds()[3].getChilds()[0].getChilds()[0].getChilds()[0]))
+            iterable=(list(consult.keys())[0],list(consult.values())[0])
+
+    elif(p.getChilds()[3].getName()=="Iterable1"):
+        iterable=("INT",int(p.getChilds()[3].getChilds()[0].getToken()))
+
+    elif(p.getChilds()[3].getName()=="Iterable2"):
+        iterable=("LIST",listTranslator(p.getChilds()[3].getChilds()[0].getChilds()))
+        print("Test")
+
+    exec(p.getChilds()[1].getToken()+"=0")
+    step=None
+    if(p.getChilds()[4].isNull()):
+        step=1
+    else:
+        step=int(p.getChilds()[4].getChilds()[1].getToken())
+    if(p.getChilds()[6].isNull()):
+        if(iterable[0]=="INT" or iterable[0]=="LIST"):
+            nullCycleBody("for "+p.getChilds()[1].getToken()+" in "+str(iterable[1])+" Step "+str(eval(p.getChilds()[1].getToken())))
+        nullCycleBody("for "+p.getChilds()[1].getToken()+" in "+str(iterable[0])+" Step "+str(eval(p.getChilds()[1].getToken())))
+    if(iterable[1]!=None):
+        lineQueue = processBodyTranslator(p.getChilds()[6].getChilds())
+        for line in lineQueue:
+            if ("SimpleAssignment" in line.getName() or "DoubleAssignment" in line.getName()):
+                assignmentSem(line, "local", local_var, local_only)
+            elif (line.getName() == "Instruction3"):
+                backup = (local_var.copy(), local_only.copy())
+                instructionSem(line, local_var, local_only)
+                localsUpdater(backup, local_var, global_var)
+                local_var = backup[0]
+                local_only = backup[1]
+
+            elif ("Instruction" in line.getName()):
+                instructionSem(line, local_var, local_only)
 def statementSem(p,local_var,local_only):
     iterable=None
     consult=None
@@ -495,23 +552,23 @@ def statementSem(p,local_var,local_only):
                elif("Instruction" in line.getName()):
                    instructionSem(line,local_var,local_only)
 
-        elif(not p.getChilds()[9].isNull()):
-            if(not p.getChilds()[9].getChilds()[2].isNull()):
-                lineQueue = processBodyTranslator(p.getChilds()[9].getChilds()[2].getChilds())
-                for line in lineQueue:
-                    if ("SimpleAssignment" in line.getName() or "DoubleAssignment" in line.getName()):
-                        assignmentSem(line, "local", local_var, local_only)
-                    elif (line.getName() == "Instruction3"):
-                        backup = (local_var.copy(), local_only.copy())
-                        instructionSem(line, local_var, local_only)
-                        localsUpdater(backup, local_var, global_var)
-                        local_var = backup[0]
-                        local_only = backup[1]
+    if(not p.getChilds()[9].isNull()):
+        if(not p.getChilds()[9].getChilds()[2].isNull()):
+            lineQueue = processBodyTranslator(p.getChilds()[9].getChilds()[2].getChilds())
+            for line in lineQueue:
+                if ("SimpleAssignment" in line.getName() or "DoubleAssignment" in line.getName()):
+                    assignmentSem(line, "local", local_var, local_only)
+                elif (line.getName() == "Instruction3"):
+                    backup = (local_var.copy(), local_only.copy())
+                    instructionSem(line, local_var, local_only)
+                    localsUpdater(backup, local_var, global_var)
+                    local_var = backup[0]
+                    local_only = backup[1]
 
-                    elif ("Instruction" in line.getName()):
-                        instructionSem(line, local_var, local_only)
-            else:
-                nullStatementBody("ELSE")
+                elif ("Instruction" in line.getName()):
+                    instructionSem(line, local_var, local_only)
+        else:
+            nullStatementBody("ELSE")
     return (local_var,local_only)
 
 

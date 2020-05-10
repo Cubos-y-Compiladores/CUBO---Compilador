@@ -1074,3 +1074,11 @@ def insertingListOnMatInside3DMatError(varName,expr):
 def nullStatementBody(statement):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The body in statement "+statement+" can't be Null")
     sys.exit()
+
+def nullCycleBody(statement):
+    print(colorama.Fore.RED + "SEMANTIC ERROR: The body in cycle "+statement+" can't be Null")
+    sys.exit()
+
+def notIterableObjectOnFor(varName):
+    print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in "+varName+" is not an iterable object, therefore it can't be used for iterations in FOR cycles")
+    sys.exit()
