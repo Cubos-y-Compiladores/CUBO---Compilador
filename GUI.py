@@ -152,6 +152,7 @@ class MyApp(wx.Frame):
         self.pasPosxyList = self.textMain.PositionToXY(self.textMain.GetInsertionPoint())
         self.plusNumberLine = 0
         self.pastRowLen = 0
+        self.maxNumberLine = 0
 
         # Lista de archivos
 
@@ -308,7 +309,7 @@ class MyApp(wx.Frame):
 
 
 
-        self.lblPosXY = wx.StaticText(self,-1,"0,0",(1100,4))
+        self.lblPosXY = wx.StaticText(self,-1,"1,0",(1100,4))
         self.lblLine = wx.StaticText(self,-1,"line : ",(1070,4))
 
         self.resetLabel("","")
@@ -651,22 +652,41 @@ class MyApp(wx.Frame):
             self.pastLabelNumberPosition = lxy[2]
             text = ""
 
-
-
             if newRowLen != self.pastRowLen:
                 self.pastRowLen = newRowLen
-                if lxy[2] + 1 > 20:
+
+                if lxy[2] < 20 and newRowLen > 20:
+
+                    print("maxnumberline",self.maxNumberLine)
+                    posInit = self.maxNumberLine - 20
+                    posInit2 = self.maxNumberLine - lxy[2]
+
+                    print("posinit1",posInit)
+                    print("posInit2",posInit2)
+
+                    cont = 0
+                    for i in range(posInit +1, newRowLen):
+                        cont+=1
+                        text += str(i) + "\n"
+
+                        if cont == 20:
+                            self.maxNumberLine = i
+                            break
+
+                elif lxy[2] + 1 > 20:
                     cont = 0
 
                     for i in range(self.plusNumberLine + 2, newRowLen+2):
                         cont+=1
                         text += str(i) + "\n"
+
                         if cont == 20:
+                            self.maxNumberLine = i
                             break
 
                 else:
                     cont = 0
-                    for i in range(1, newRowLen + 1 ):
+                    for i in range(1, newRowLen + 1):
                         cont += 1
                         text += str(i) + "\n"
                         if cont == 20:
