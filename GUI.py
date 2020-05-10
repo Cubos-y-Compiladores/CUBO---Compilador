@@ -153,6 +153,7 @@ class MyApp(wx.Frame):
         self.plusNumberLine = 0
         self.pastRowLen = 0
         self.maxNumberLine = 0
+        self.pasScrollPosition = -1
 
         # Lista de archivos
 
@@ -631,9 +632,10 @@ class MyApp(wx.Frame):
 
 
     def changeReservedWords2(self):
+
+        scrollPos = self.textMain.GetScrollPos(1)//20
         curpos = self.textMain.GetInsertionPoint()
         lxy = self.textMain.PositionToXY(curpos)
-        # print(lxy[2])
 
         if lxy[1] != self.pasPosxyList[1] or lxy[2] != self.pasPosxyList[2]:
             self.pasPosxyList = lxy
@@ -679,6 +681,15 @@ class MyApp(wx.Frame):
                         if cont == 20:
                             break
                 self.lblLineNumber.SetLabel("" + text)
+
+            # Aca entra solo en el movimiento del scrol pero sin cambio de posicion del mouse
+
+        if scrollPos != self.pasScrollPosition:
+            self.pasScrollPosition = scrollPos
+            times = scrollPos//3
+            print("Times",times)
+            print("SCROLLPOS",scrollPos)
+
 
         if self.textMain.GetValue() != self.currenttext or len(self.textMain.GetValue()) != len(self.currenttext):
             if self.flagBgError:
