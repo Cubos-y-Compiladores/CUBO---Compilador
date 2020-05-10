@@ -51,6 +51,7 @@ def assignmentSem(p,scope,local_var,local_only):
             if(noneVerifier(varName,scope)):
                 return None
             consult=consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0],scope,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0]))
+            varType = list(consult.values())[0]
         if (consult==None and varName in scope):
             varType = scope[varName]
         elif(scopeType=="local" and consult==None):
@@ -77,7 +78,7 @@ def assignmentSem(p,scope,local_var,local_only):
                     if(not noneVerifier(var,scope)):
 
                         if(var in scope):
-                            value=scope[var].copy()
+                            value =scope[var]
                             if(matVerifier(value)):
                                 if(not matBoundVerifier(value)):
                                     if(matrixVerifier(value)):
@@ -701,7 +702,7 @@ def functionSem(p,local_var,local_only):
                     return None
 
         if(consult!=None):
-            local_var[varName]=structureUpdater(nope(list(consult.values()))[0],local_var[varName],consult["Aux"],consult["Flipped"],varName,list(consult.keys())[0])
+            local_var[varName]=structureUpdater(nope(list(consult.values())[0]),local_var[varName],consult["Aux"],consult["Flipped"],varName,list(consult.keys())[0])
 
         elif(not noneVerifier(varName, local_var)):
             if(not(isinstance(local_var[varName],list) or isinstance(local_var[varName],bool))):
@@ -726,7 +727,7 @@ def functionSem(p,local_var,local_only):
                     return None
 
         if(consult!=None):
-            local_var[varName] = structureUpdater(tF(consult,typeTF), local_var[varName], consult["Aux"],consult["Flipped"],varName,list(consult.keys())[0])
+            local_var[varName] = structureUpdater(tF(list(consult.values())[0],typeTF), local_var[varName], consult["Aux"],consult["Flipped"],varName,list(consult.keys())[0])
 
         elif(not noneVerifier(varName, local_var)):
             if(not(isinstance(local_var[varName],list) or isinstance(local_var[varName],bool))):

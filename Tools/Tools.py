@@ -40,6 +40,8 @@ def tokenTranslator(token):
 def listTranslator(valores):
     lista = []
     for valor in valores:
+        if (valor.isNull()):
+            return []
         if (valor.getName() == "ListV"):
             lista.append(tokenTranslator(valor.getChilds()[0].getChilds()[0].getToken()))
 
@@ -109,6 +111,9 @@ def arithmeticTranslator(operacion,dictionary):
 def consultTranslator(consult,dictionary,expr):
     translation={}
     var = consult.getChilds()[0].getToken()
+    if (not existenceVerifier(var, dictionary)):
+        outOfScopeError(var)
+
     if(emptyVerifier(dictionary[var])):
         consult
     if(not isinstance(dictionary[consult.getChilds()[0].getToken()],list)):
@@ -118,7 +123,7 @@ def consultTranslator(consult,dictionary,expr):
         ind=None
         indExpr=None
         dimensionVerifier(var,dictionary,"ListConsult")
-        if consult.getChilds()[1].getName()== "ListConsultT0":
+        if(consult.getChilds()[1].getName()=="ListConsultT0"):
             if(consult.getChilds()[1].getChilds()[1].getName()=="Indice0"):
                 ind=int(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken())
                 indExpr=consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()
@@ -199,11 +204,11 @@ def consultTranslator(consult,dictionary,expr):
                     outOfBoundsError(ind1Expr, expr)
                 elif(ind2>= len(dictionary[var][ind1])):
                     outOfBoundsError(ind2Expr,expr)
+                translation[expr] = dictionary[var][ind1][ind2]
                 translation["Aux"]="[" + str(ind1) + "][" + str(ind2) + "]"
             else:
                 translation["Aux"]=None
 
-            translation[expr]=dictionary[var][ind1][ind2]
             translation["Flipped"] = None
             return translation
 
@@ -219,6 +224,7 @@ def consultTranslator(consult,dictionary,expr):
                         indExpr=consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken()
                     else:
                         nonIterableObjectError(consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken())
+            translation[expr] = colFetcher(dictionary[var], ind1)
             if(ind1!=None):
                 if(ind1>=len(dictionary[var][0])):
                     outOfBoundsError(indExpr,expr)
@@ -227,7 +233,6 @@ def consultTranslator(consult,dictionary,expr):
             else:
                 translation["Aux"]=None
                 translation["Flipped"]=None
-            translation[expr]=colFetcher(dictionary[var],ind1)
             return translation
 
         elif (consult.getChilds()[1].getName() == "MatConsultT2"):
@@ -249,12 +254,12 @@ def consultTranslator(consult,dictionary,expr):
                 dictionary["Temp"] =colFetcher(dictionary[var],ind1)
                 tempConsult = consultTranslator(NonTerminalNode("ListConsult", [TerminalNode("Id", "Temp"), consult.getChilds()[1].getChilds()[5]]),dictionary,expr)
                 del dictionary["Temp"]
+                translation[expr] = list(tempConsult.values())[0]
                 if(tempConsult["Aux"]==None):
                     translation["Aux"] = None
                     translation["Flipped"] = None
                     return translation
 
-                translation[expr] = list(tempConsult.values())[0]
                 translation["Aux"]="[:,"+str(ind1)+"]"+tempConsult["Aux"]
                 translation["Flipped"]="["+str(-(ind1+1))+"]"+tempConsult["Aux"]
             else:
@@ -363,7 +368,7 @@ def consultTranslator(consult,dictionary,expr):
             if (consult.getChilds()[1].getChilds()[1].getName() == "Indice0"):
                 ind1 = int(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken())
             elif (consult.getChilds()[1].getChilds()[1].getName() == "Indice1"):
-                if (not noneVerifier(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken())):
+                if (not noneVerifier(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken(),dictionary)):
                     if (indVerifier(consult.getChilds()[1].getChilds()[1], dictionary)):
                         ind1 = dictionary[consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()]
                     else:
@@ -686,7 +691,6 @@ def globalUpdater(globalD,localD,localList):
 def nope(structure):
     if(isinstance(structure,list)):
         if(matVerifier(structure)):
-            col = 0
             lin = 0
             if(matrixVerifier(structure)):
                 for line in structure:
