@@ -436,7 +436,7 @@ class MyApp(wx.Frame):
         text += "[]"
         text += "]"
         textFinal += text+"];\n"
-        print(textFinal)
+
 
         self.textMain.AppendText("matriz3D" + str(self.contMatriz3) +"= "+ textFinal)
         self.contMatriz3 += 1
@@ -485,7 +485,7 @@ class MyApp(wx.Frame):
     def resetLabel(self, number, newLabel):
 
         lbls = [widget for widget in self.GetChildren() if isinstance(widget, wx.StaticText)]
-        print("LABELSList",lbls)
+
         for lbl in lbls:
 
             if number in lbl.GetLabel():
@@ -495,7 +495,7 @@ class MyApp(wx.Frame):
 
     def saveFile(self,event):
         if  self.currentLabelFileName in self.filesList:
-            print(self.currentDirectory)
+
             f = open(self.currentDirectory +"/" + self.currentLabelFileName,"w")
             f.write(self.textMain.GetValue())
             f.close()
@@ -547,7 +547,7 @@ class MyApp(wx.Frame):
         self.resetLabel(self.pastLabelFileName,self.currentLabelFileName)
         self.pastLabelFileName = self.currentLabelFileName
     def runFile(self,event):
-
+        # TODO aqui se inserta la logica del compilador
         print("Running")
     def setFontSize(self,size):
         font = self.textMain.GetFont()
@@ -572,9 +572,9 @@ class MyApp(wx.Frame):
 
     def setErrorBackground(self,line):
         text = self.textMain.GetValue()
-        print(text)
+
         lista = text.split("\n")
-        print(lista)
+
         start = 1
         for i in range(0,line):
             start += len(lista[i])
@@ -646,8 +646,6 @@ class MyApp(wx.Frame):
             newRowLen = len(self.textMain.GetValue().split("\n"))
 
             self.plusNumberLine = lxy[2]-20
-            print("plusnumber",self.plusNumberLine)
-
 
             self.pastLabelNumberPosition = lxy[2]
             text = ""
@@ -655,44 +653,32 @@ class MyApp(wx.Frame):
             if newRowLen != self.pastRowLen:
                 self.pastRowLen = newRowLen
 
-                if lxy[2] < 20 and newRowLen > 20:
-
-                    print("maxnumberline",self.maxNumberLine)
+                if lxy[2] != self.maxNumberLine and self.maxNumberLine > 20:
                     posInit = self.maxNumberLine - 20
-                    posInit2 = self.maxNumberLine - lxy[2]
-
-                    print("posinit1",posInit)
-                    print("posInit2",posInit2)
-
                     cont = 0
-                    for i in range(posInit +1, newRowLen):
+                    for i in range(posInit + 1, newRowLen):
                         cont+=1
                         text += str(i) + "\n"
-
                         if cont == 20:
                             self.maxNumberLine = i
                             break
-
                 elif lxy[2] + 1 > 20:
                     cont = 0
-
                     for i in range(self.plusNumberLine + 2, newRowLen+2):
                         cont+=1
                         text += str(i) + "\n"
-
                         if cont == 20:
                             self.maxNumberLine = i
                             break
-
                 else:
                     cont = 0
                     for i in range(1, newRowLen + 1):
                         cont += 1
                         text += str(i) + "\n"
+                        self.maxNumberLine = i
                         if cont == 20:
                             break
                 self.lblLineNumber.SetLabel("" + text)
-
 
         if self.textMain.GetValue() != self.currenttext or len(self.textMain.GetValue()) != len(self.currenttext):
             if self.flagBgError:
@@ -702,10 +688,8 @@ class MyApp(wx.Frame):
             if self.textMain.GetValue() != "":
 
                 curPos = self.textMain.GetInsertionPoint()
-                print("curpos: "+ str(curPos))
                 linenumber = self.textMain.PositionToXY(curPos)
                 lineText = self.textMain.GetLineText(linenumber[2])
-
 
                 text = self.textMain.GetValue()
                 lexer = lex.lex()
@@ -723,16 +707,14 @@ class MyApp(wx.Frame):
 
                     pack = []
 
-
-                    # print(len(lineText))
                     if len(lineText) != 0:
                         if lineText[linenumber[1]-1] in list1 or lineText[linenumber[1]-1] in listNum:
                             pack = (linenumber[1]-1,linenumber[1],lineText[linenumber[1]-1:linenumber[1]],posInit)
                         
                         else:
-                            print("LINENUMBER[1]",linenumber[1])
+
                             s = linenumber[1] -1
-                            print("S",s)
+
                             e = linenumber[1]
                             if s <= 0:
                                 s = 0
@@ -747,6 +729,8 @@ class MyApp(wx.Frame):
 
 
                         self.changeWordColor(pack)
+
+        # Test when an enter has inserted
 
         # if self.textMain.PositionToXY(self.textMain.GetInsertionPoint())[2] != self.currentLineNumber:
           #  curPos = self.textMain.GetInsertionPoint()
@@ -765,9 +749,7 @@ class MyApp(wx.Frame):
                     #self.textMain.Refresh()
 
 
-
     def changeWordColor(self,tuple):
-        print("tuple: ",tuple)
 
         lexer = lex.lex()
         lexer.input(tuple[2])
