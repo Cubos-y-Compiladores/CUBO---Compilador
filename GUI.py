@@ -153,7 +153,8 @@ class MyApp(wx.Frame):
         self.plusNumberLine = 0
         self.pastRowLen = 0
         self.maxNumberLine = 0
-        self.pasScrollPosition = -1
+        self.minNumberLine = 0
+        self.pasScrollPosition = 0
 
         # Lista de archivos
 
@@ -292,7 +293,7 @@ class MyApp(wx.Frame):
 
         # Botones
 
-        btn1 = wx.Button(self,-1,u"B",pos=(0,4),size=(20,20))
+        # btn1 = wx.Button(self,-1,u"B",pos=(0,4),size=(20,20))
 
         # Funcion boton
 
@@ -301,7 +302,7 @@ class MyApp(wx.Frame):
         # Labels
 
         self.lblFileName = wx.StaticText(self,-1,"",(35,0))
-        self.lblLineNumber = wx.StaticText(self,-1,"1",(2,24))
+        self.lblLineNumber = wx.StaticText(self,-1,"1",(2,21))
 
         # Set Size to a label
         self.fontNumberLabel = self.lblLineNumber.GetFont()
@@ -495,11 +496,12 @@ class MyApp(wx.Frame):
                 break
 
     def saveFile(self,event):
-        if  self.currentLabelFileName in self.filesList:
+        if  self.currentLabelFileName in self.filesList and self.currentLabelFileName != "":
 
             f = open(self.currentDirectory +"/" + self.currentLabelFileName,"w")
             f.write(self.textMain.GetValue())
             f.close()
+
         else:
             self.onSaveFile()
     def saveFileAs(self,event):
@@ -644,7 +646,7 @@ class MyApp(wx.Frame):
         if self.flagSlider:
             self.changeTextColorWithoutClear()
 
-        if lxy[2] != self.pastLabelNumberPosition :
+        if lxy[2] != self.pastLabelNumberPosition:
             newRowLen = len(self.textMain.GetValue().split("\n"))
 
             self.plusNumberLine = lxy[2]-20
@@ -658,7 +660,8 @@ class MyApp(wx.Frame):
                 if lxy[2] != self.maxNumberLine and self.maxNumberLine > 20:
                     posInit = self.maxNumberLine - 20
                     cont = 0
-                    for i in range(posInit + 1, newRowLen):
+                    self.minNumberLine = posInit +1
+                    for i in range(self.minNumberLine, newRowLen):
                         cont+=1
                         text += str(i) + "\n"
                         if cont == 20:
@@ -666,7 +669,8 @@ class MyApp(wx.Frame):
                             break
                 elif lxy[2] + 1 > 20:
                     cont = 0
-                    for i in range(self.plusNumberLine + 2, newRowLen+2):
+                    self.minNumberLine = self.plusNumberLine + 2
+                    for i in range(self.minNumberLine, newRowLen+2):
                         cont+=1
                         text += str(i) + "\n"
                         if cont == 20:
@@ -674,7 +678,8 @@ class MyApp(wx.Frame):
                             break
                 else:
                     cont = 0
-                    for i in range(1, newRowLen + 1):
+                    self.minNumberLine = 1
+                    for i in range(self.minNumberLine, newRowLen + 1):
                         cont += 1
                         text += str(i) + "\n"
                         self.maxNumberLine = i
@@ -684,12 +689,41 @@ class MyApp(wx.Frame):
 
             # Aca entra solo en el movimiento del scrol pero sin cambio de posicion del mouse
 
-        if scrollPos != self.pasScrollPosition:
-            self.pasScrollPosition = scrollPos
-            times = scrollPos//3
-            print("Times",times)
-            print("SCROLLPOS",scrollPos)
+        elif lxy[2] == self.pastLabelNumberPosition and scrollPos != self.pasScrollPosition:
+            text = ""
+            if scrollPos > self.pasScrollPosition:
+                dif = scrollPos - self.pasScrollPosition
+                self.minNumberLine += dif
+                cont = 0
+                for i in range(self.minNumberLine , len(self.textMain.GetValue().split("\n")) + 2 ):
+                    cont+=1
+                    text += str(i) + "\n"
 
+                    if cont == 20:
+                        self.maxNumberLine = i
+                        break
+
+                print("down")
+            elif scrollPos < self.pasScrollPosition:
+                print("up")
+
+                dif = self.pasScrollPosition - scrollPos
+                print("DIF", dif)
+                self.minNumberLine -= dif
+
+                if scrollPos == 0:
+                    self.minNumberLine = 1
+
+                cont = 0
+                for i in range(self.minNumberLine , len(self.textMain.GetValue().split("\n")) + 2):
+                    cont += 1
+                    text += str(i) + "\n"
+                    if cont == 20:
+                        self.maxNumberLine = i
+                        break
+
+            self.pasScrollPosition = scrollPos
+            self.lblLineNumber.SetLabel("" + text)
 
         if self.textMain.GetValue() != self.currenttext or len(self.textMain.GetValue()) != len(self.currenttext):
             if self.flagBgError:
