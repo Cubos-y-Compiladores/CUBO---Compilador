@@ -29,7 +29,7 @@ def semantics(p):
                 paramWithSameNameError(proc[0],param[0])
         procedureSem(proc)
 def assignmentSem(p,scope,local_var,local_only):
-    global global_var
+    global global_var,consts
     scopeType=scope
 
     if(scope=="global"):
@@ -108,7 +108,7 @@ def assignmentSem(p,scope,local_var,local_only):
                    value=listTranslator(p.getChilds()[2].getChilds()[0].getChilds()[1].getChilds())
                else:
                    value=[]
-
+               dimensionConstVerifier(value,consts)
                if (typeVerifier(varType, value)):
                    if(consult==None):
                        scope[varName] = value
@@ -128,7 +128,7 @@ def assignmentSem(p,scope,local_var,local_only):
                value=matTranslator(p.getChilds()[2].getChilds()[0].getChilds()[1].getChilds())
                if(not matBoundVerifier(value)):
                    differentDimensionsMatError(value)
-
+               dimensionConstVerifier(value,consts)
                if (typeVerifier(varType, value)):
                    if (consult == None):
                        scope[varName] = value
@@ -149,6 +149,7 @@ def assignmentSem(p,scope,local_var,local_only):
                value=threeDmatTranslator(p.getChilds()[2].getChilds()[0].getChilds()[1].getChilds())
                if (not matBoundVerifier(value)):
                    differentDimensionsMatError(value)
+               dimensionConstVerifier(value,consts)
                if (typeVerifier(varType, value)):
                    if (consult == None):
                        scope[varName] = value
@@ -239,13 +240,23 @@ def assignmentSem(p,scope,local_var,local_only):
                 valueList.append(value)
 
             elif (child.getName()=="Acont2"):
-                valueList.append(listTranslator(child.getChilds()[0].getChilds()[1].getChilds()))
+                value=listTranslator(child.getChilds()[0].getChilds()[1].getChilds())
+                dimensionConstVerifier(value,consts)
+                valueList.append(value)
 
             elif (child.getName()=="Acont3"):
-                valueList.append(matTranslator(child.getChilds()[0].getChilds()[1].getChilds()))
+                value=matTranslator(child.getChilds()[0].getChilds()[1].getChilds())
+                if(not matBoundVerifier(value)):
+                    differentDimensionsMatError(value)
+                dimensionConstVerifier(value,consts)
+                valueList.append(value)
 
             elif (child.getName()=="Acont4"):
-                valueList.append(threeDmatTranslator(child.getChilds()[0].getChilds()[1].getChilds()))
+                value=threeDmatTranslator(child.getChilds()[0].getChilds()[1].getChilds())
+                if (not matBoundVerifier(value)):
+                    differentDimensionsMatError(value)
+                dimensionConstVerifier(value, consts)
+                valueList.append(value)
 
             elif(child.getName()=="Acont5"):
                 value=consultTranslator(child.getChilds()[0].getChilds()[0],scope,expresionTranslator(child.getChilds()[0].getChilds()[0]))

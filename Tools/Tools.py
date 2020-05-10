@@ -911,6 +911,25 @@ def localsUpdater(backup,local_var,global_var):
             backup[0][key]=local_var[key]
     globalUpdater(backup[0],global_var,backup[1])
     return backup
+
+def dimensionConstVerifier(value,consts):
+    if(listVerifier(value)):
+        if(len(value)>consts["Dim1"]):
+            constDifferentDimensionError(value)
+
+    elif(matrixVerifier(value)):
+        if(len(value)>consts["Dim0"] or len(value[0])>consts["Dim1"]):
+            constDifferentDimensionError(value)
+
+    elif(threeDMatrixVerifier(value)):
+        if(len(value)>consts["Cubo"] or len(value[0])>consts["Dim0"] or len(value[0][0])>consts["Dim1"]):
+            constDifferentDimensionError(value)
+
+
+def constDifferentDimensionError(value):
+    print(colorama.Fore.RED + "SEMANTIC ERROR: The structure "+str(value)+" was defined without following the dimension constants specs, therefore it's forbidden")
+    sys.exit()
+
 def outOfBoundsError(index,iterable):
     print(colorama.Fore.RED + "SEMANTIC ERROR: Index "+str(index)+" in "+ str(iterable)+" out of bounds ")
     sys.exit()
