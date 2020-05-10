@@ -25,6 +25,18 @@ def tokenTranslator(token):
         return"("
     elif (token == "RPARENT"):
         return")"
+    elif(token=="NE"):
+        return "!="
+    elif(token=="LT"):
+        return "<"
+    elif(token=="GT"):
+        return ">"
+    elif (token=="LTE"):
+        return "<="
+    elif(token=="GTE"):
+        return ">="
+    elif(token=="COMPARE"):
+        return "=="
 
     else:
         token=token.split()
@@ -546,7 +558,6 @@ def processBodyTranslator(procLines):
    for valor in procLines:
        if(valor.isNull()):
            break
-
        elif("AltContent" in valor.getName()):
            queue.append(valor.getChilds()[0])
 
@@ -894,7 +905,12 @@ def matBoundVerifier(mat):
             if(not matBoundVerifier(valor)):
                 return False
     return True
-
+def localsUpdater(backup,local_var,global_var):
+    for key in list(backup[0].keys()):
+        if(key in local_var):
+            backup[0][key]=local_var[key]
+    globalUpdater(backup[0],global_var,backup[1])
+    return backup
 def outOfBoundsError(index,iterable):
     print(colorama.Fore.RED + "SEMANTIC ERROR: Index "+str(index)+" in "+ str(iterable)+" out of bounds ")
     sys.exit()
@@ -1053,4 +1069,8 @@ def modifyingMatrixWithDifferentSizeLineError(expr,value,varName):
 
 def insertingListOnMatInside3DMatError(varName,expr):
     print(colorama.Fore.RED + "SEMANTIC ERROR: "+expr+" is a Matrix object and inserting a list on it would alter "+varName+"'s integrity")
+    sys.exit()
+
+def nullStatementBody(statement):
+    print(colorama.Fore.RED + "SEMANTIC ERROR: The body in statement "+statement+" can't be Null")
     sys.exit()

@@ -282,6 +282,7 @@ def assignmentSem(p,scope,local_var,local_only):
                         alreadyDefinedVarError(varList[ind],scope[varList[ind]])
             ind+=1
     globalUpdater(global_var,local_var,local_only)
+    return(local_var,local_only)
 
 
 def constBSem(p):
@@ -367,15 +368,138 @@ def procedureSem(p):
                 assignmentSem(statement,"local",local_var,local_only)
 
             elif ("Instruction" in statement.getName()):
-                instructionSem(statement,local_var,local_only)
+                dicts=instructionSem(statement,local_var,local_only)
+                local_var=dicts[0]
+                local_only=dicts[1]
     globalUpdater(local_var, global_var, local_only)
     if(call):
         varViewer(local_var,"Procedure Call: "+str(p[0])+" "+str(tempParams))
     else:
         varViewer(local_var,"Procedure Revision: "+str(p[0])+" "+str(tempParams))
 def instructionSem(p,local_var,local_only):
+    dicts=None
     if(p.getName()=="Instruction0"):
-        functionSem(p.getChilds()[0],local_var,local_only)
+        return functionSem(p.getChilds()[0],local_var,local_only)
+
+    elif(p.getName()=="Instruction3"):
+        dicts=statementSem(p.getChilds()[0],local_var,local_only)
+        local_var=dicts[0]
+        local_only=dicts[1]
+    return (local_var,local_only)
+def statementSem(p,local_var,local_only):
+    iterable=None
+    consult=None
+    bifValue=None
+    if(p.getChilds()[2].getName()=="Iterable0"):
+        if(p.getChilds()[2].getChilds()[0].getName()=="Identifier0"):
+            varName=p.getChilds()[2].getChilds()[0].getChilds()[0].getToken()
+            if(not existenceVerifier(varName,local_var)):
+                outOfScopeError(varName)
+            iterable=(varName,local_var[varName])
+
+        elif(p.getChilds()[2].getChilds()[0].getName()=="Identifier1"):
+            varName=p.getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
+            if(not existenceVerifier(varName,local_var)):
+                outOfScopeError(varName)
+            expr=expresionTranslator(p.getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0])
+            if(not noneVerifier(varName,local_var)):
+                consult=consultTranslator(p.getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0],local_var,expr)
+                iterable=(expr,consult[expr])
+            else:
+                iterable=(expr,None)
+
+    elif(p.getChilds()[2].getName()=="Iterable1"):
+        print("Test")
+        iterable=("Iterable",int(p.getChilds()[2].getChilds()[0].getToken()))
+
+    elif(p.getChilds()[2].getName()=="Iterable2"):
+        iterable=("List",listTranslator(p.getChilds()[2].getChilds()[0].getChilds()))
+
+    operator=tokenTranslator(p.getChilds()[3].getChilds()[0].getToken())
+
+    if(p.getChilds()[4].getName()=="BifValue0"):
+        bifValue=("Bool",tokenTranslator(p.getChilds()[4].getChilds()[0].getChilds()[0].getToken()))
+
+    elif(p.getChilds()[4].getName()=="BifValue1"):
+        arithmetic=None
+        if(p.getChilds()[4].getChilds()[0].getName()=="Arithmetic0"):
+            if(p.getChilds()[4].getChilds()[0].getChilds()[0].getName()=="Term0"):
+                if(p.getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getName()=="Factor1"):
+                    varName=p.getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
+                    if(not existenceVerifier(varName,local_var)):
+                        outOfScopeError(varName)
+                    bifValue=(varName,local_var[varName])
+                elif(valueValidator(p.getChilds()[4].getChilds()[0],local_var)):
+                    arithmetic=arithmeticTranslator(p.getChilds()[4].getChilds()[0],local_var)
+            elif(valueValidator(p.getChilds()[4].getChilds()[0],local_var)):
+                arithmetic = arithmeticTranslator(p.getChilds()[4].getChilds()[0], local_var)
+        elif(valueValidator(p.getChilds()[4].getChilds()[0],local_var)):
+            arithmetic = arithmeticTranslator(p.getChilds()[4].getChilds()[0], local_var)
+
+        if(arithmetic!=None):
+            bifValue=("Arithmetic",tokenTranslator(arithmetic))
+        elif(bifValue==None):
+            bifValue=("Arithmetic",None)
+    if(iterable[1]!=None and bifValue[1]!=None):
+        statement=False
+        if(not isinstance(iterable[1],list)):
+            statement=eval(str(iterable[1])+str(operator)+str(bifValue[1]))
+        else:
+            if(listVerifier(iterable[1])):
+                for valor in iterable[1]:
+                    if(eval(str(valor)+str(operator)+str(bifValue[1]))):
+                        statement=True
+                        break
+            elif(matrixVerifier(iterable[1])):
+                breaker=False
+                for line in iterable[1]:
+                    for col in line:
+                        if (eval(str(col) + str(operator) + str(bifValue[1]))):
+                            statement=True
+                            breaker=True
+                            break;
+                    if(breaker):
+                        break
+            elif (threeDMatrixVerifier(iterable[1])):
+                breaker=False
+                for mat in iterable[1]:
+                    for line in mat:
+                        for col in line:
+                            if (eval(str(col) + str(operator) + str(bifValue[1]))):
+                                statement = True
+                                breaker = True
+                                break;
+                        if (breaker):
+                            break
+                    if(breaker):
+                        break
+        if(statement):
+            if(p.getChilds()[7].isNull()):
+                if("Arithmetic" in bifValue[0] or "Bool" in bifValue[0]):
+                    if (not ("Iterable" in iterable[0] or "List" in iterable[0])):
+                        nullStatementBody("if("+str(iterable[0]+str(operator)+str(bifValue[1])+")"))
+                    nullStatementBody("if(" + str(iterable[1] + str(operator) + str(bifValue[1]) + ")"))
+                if (not ("Iterable" in iterable[0] or "List" in iterable[0])):
+                    nullStatementBody("if(" + str(iterable[0]) + str(operator) + str(bifValue[0]) + ")")
+                nullStatementBody("if(" + str(iterable[1]) + str(operator) + str(bifValue[0]) + ")")
+
+            lineQueue=processBodyTranslator(p.getChilds()[7].getChilds())
+            for line in lineQueue:
+               if("SimpleAssignment" in line.getName() or "DoubleAssignment" in line.getName()):
+                   assignmentSem(line,"local",local_var,local_only)
+               elif(line.getName()=="Instruction3"):
+                   backup=(local_var.copy(),local_only.copy())
+                   instructionSem(line,local_var,local_only)
+                   localsUpdater(backup,local_var,global_var)
+                   local_var=backup[0]
+                   local_only=backup[1]
+
+               elif("Instruction" in line.getName()):
+                   instructionSem(line,local_var,local_only)
+
+    return (local_var,local_only)
+
+
 
 def functionSem(p,local_var,local_only):
     global global_var,procedures
@@ -884,7 +1008,7 @@ def functionSem(p,local_var,local_only):
 
     if(not called):
         globalUpdater(global_var,local_var,local_only)
-
+    return(local_var,local_only)
 
 
 

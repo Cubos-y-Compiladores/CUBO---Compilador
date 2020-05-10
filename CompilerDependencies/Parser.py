@@ -300,8 +300,8 @@ def p_stepEmp(p):
 
 ##########---BIFURCACIONES---##########
 def p_statement(p):
-    '''statement : IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement '''
-    p[0]=NonTerminalNode("Statement",[TerminalNode("If","IF"),TerminalNode("Lparent","LPARENT"),p[3],p[4],p[5],TerminalNode("Rparent","RPARENT"),TerminalNode("Lcorch","LCORCH"),p[8],TerminalNode("Rcorch","RCORCH"),p[11]])
+    '''statement : IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement alt_block '''
+    p[0]=NonTerminalNode("Statement",[TerminalNode("If","IF"),TerminalNode("Lparent","LPARENT"),p[3],p[4],p[5],TerminalNode("Rparent","RPARENT"),TerminalNode("Lcorch","LCORCH"),p[8],TerminalNode("Rcorch","RCORCH"),p[11],p[12]])
     
 
 def p_optStatment(p):
@@ -842,38 +842,33 @@ def p_Bifvalue1(p):
 
 ##########---RELACIONES---##########
 def p_relation0(p):
-    '''relation : ASSIGN'''
-    p[0]=NonTerminalNode("Relation0",[TerminalNode("Assign","ASSIGN")])
+    '''relation : NE'''
+    p[0]=NonTerminalNode("Relation0",[TerminalNode("Ne","NE")])
     
 
 def p_relation1(p):
-    '''relation : NE'''
-    p[0]=NonTerminalNode("Relation1",[TerminalNode("Ne","NE")])
+    '''relation : LT'''
+    p[0]=NonTerminalNode("Relation1",[TerminalNode("Lt","LT")])
     
 
 def p_relation2(p):
-    '''relation : LT'''
-    p[0]=NonTerminalNode("Relation2",[TerminalNode("Lt","LT")])
+    '''relation : GT'''
+    p[0]=NonTerminalNode("Relation2",[TerminalNode("Gt","GT")])
     
 
 def p_relation3(p):
-    '''relation : GT'''
-    p[0]=NonTerminalNode("Relation3",[TerminalNode("Gt","GT")])
+    '''relation : LTE'''
+    p[0]=NonTerminalNode("Relation3",[TerminalNode("Lte","LTE")])
     
 
 def p_relation4(p):
-    '''relation : LTE'''
-    p[0]=NonTerminalNode("Relation0",[TerminalNode("Lte","LTE")])
+    '''relation : GTE'''
+    p[0]=NonTerminalNode("Relation4",[TerminalNode("Gte","GTE")])
     
 
 def p_relation5(p):
-    '''relation : GTE'''
-    p[0]=NonTerminalNode("Relation5",[TerminalNode("Gte","GTE")])
-    
-
-def p_relation6(p):
     '''relation : COMPARE'''
-    p[0]=NonTerminalNode("Relation6",[TerminalNode("Compare","COMPARE")])
+    p[0]=NonTerminalNode("Relation5",[TerminalNode("Compare","COMPARE")])
     
 
 

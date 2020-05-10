@@ -10,7 +10,7 @@ b=True;
 z=[[False,True,True],[True,False,True],[True,True,True]];
 k=range(t,True);
 y=[True,True,True,False,True];
-r=[[[False,True,False],[True,False,True],[False,True,False]],[[True,False,True],[False,True,False],[True,False,True]],[[False,True,False],[True,False,True],[False,True,False]]];
+r=[[[False,False,False],[False,False,False],[False,True,False]],[[False,False,False],[False,False,False],[False,False,False]],[[False,False,False],[False,False,False],[False,False,False]]];
 --k=(z*y)/10;
 w,x=True,range(10,True);
 
@@ -19,22 +19,29 @@ w,x=True,range(10,True);
 	global r,z,b,l;
 	global var,t;
 		begin
-		Call test([True],[True]);
-		l[0]=False;
-		t=512;		
+		x=10;
+		if(r>0)
+		{
+			x=x+10;
+			if(x>10)
+			{
+				w=False;
+				l=[True];
+				if(x>10)
+				{
+					w=True;
+					l=param1;
+				};
+			};
+
+		};
 		end;	
 	};
 	Procedure test (param1,param2)
 	{
 	global l;
 		begin
-		r=param1[0];
-		param1[0]=False;
-		l=param2;
-		--k.insert(1,False);
-		--var1=5;
-		--var=True;
-		--type(var);
+		
 		end;	
 	};
 
