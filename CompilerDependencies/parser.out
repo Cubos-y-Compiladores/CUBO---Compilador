@@ -61,7 +61,7 @@ Rule 47    cycle -> for
 Rule 48    for -> FOR ID IN iterable step LCORCH alt_block RCORCH SEMICOLON
 Rule 49    step -> STEP INT
 Rule 50    step -> empty
-Rule 51    statement -> IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement alt_block
+Rule 51    statement -> IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement
 Rule 52    opt_statement -> ELSE LCORCH alt_block RCORCH SEMICOLON
 Rule 53    opt_statement -> empty
 Rule 54    procedure -> PROCEDURE proc_dec LCORCH body RCORCH SEMICOLON
@@ -253,7 +253,7 @@ Nonterminals, with rules where they appear
 3dmat_value          : 111 112
 a_content            : 19 20 20
 adding_operator      : 76 77
-alt_block            : 6 48 51 51 52 70
+alt_block            : 6 48 51 52 70
 alt_content          : 6
 arithmetic           : 77 82 88 147
 ass_param            : 65
@@ -763,7 +763,7 @@ state 39
     (115) consult -> . mat_consult
     (116) consult -> . 3dmat_consult
     (47) cycle -> . for
-    (51) statement -> . IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement alt_block
+    (51) statement -> . IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement
     (32) type -> . TYPE LPARENT identifier RPARENT SEMICOLON
     (34) insert -> . identifier DOT INSERT LPARENT i_content RPARENT SEMICOLON
     (35) del -> . identifier DOT DEL LPARENT iterable RPARENT SEMICOLON
@@ -1079,7 +1079,7 @@ state 54
     (115) consult -> . mat_consult
     (116) consult -> . 3dmat_consult
     (47) cycle -> . for
-    (51) statement -> . IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement alt_block
+    (51) statement -> . IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement
     (32) type -> . TYPE LPARENT identifier RPARENT SEMICOLON
     (34) insert -> . identifier DOT INSERT LPARENT i_content RPARENT SEMICOLON
     (35) del -> . identifier DOT DEL LPARENT iterable RPARENT SEMICOLON
@@ -1392,7 +1392,7 @@ state 71
 
 state 72
 
-    (51) statement -> IF . LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement alt_block
+    (51) statement -> IF . LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement
 
     LPARENT         shift and go to state 96
 
@@ -1734,7 +1734,7 @@ state 95
 
 state 96
 
-    (51) statement -> IF LPARENT . iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement alt_block
+    (51) statement -> IF LPARENT . iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement
     (156) iterable -> . identifier
     (157) iterable -> . INT
     (158) iterable -> . list
@@ -2271,7 +2271,7 @@ state 132
 
 state 133
 
-    (51) statement -> IF LPARENT iterable . relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement alt_block
+    (51) statement -> IF LPARENT iterable . relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement
     (148) relation -> . NE
     (149) relation -> . LT
     (150) relation -> . GT
@@ -3049,7 +3049,7 @@ state 194
 
 state 195
 
-    (51) statement -> IF LPARENT iterable relation . bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement alt_block
+    (51) statement -> IF LPARENT iterable relation . bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement
     (146) bif_value -> . value
     (147) bif_value -> . arithmetic
     (144) value -> . FALSE
@@ -3480,7 +3480,7 @@ state 225
     (115) consult -> . mat_consult
     (116) consult -> . 3dmat_consult
     (47) cycle -> . for
-    (51) statement -> . IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement alt_block
+    (51) statement -> . IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement
     (154) identifier -> . ID
     (155) identifier -> . consult
     (32) type -> . TYPE LPARENT identifier RPARENT SEMICOLON
@@ -3824,7 +3824,7 @@ state 247
 
 state 248
 
-    (51) statement -> IF LPARENT iterable relation bif_value . RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement alt_block
+    (51) statement -> IF LPARENT iterable relation bif_value . RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement
 
     RPARENT         shift and go to state 288
 
@@ -4089,7 +4089,7 @@ state 269
     (115) consult -> . mat_consult
     (116) consult -> . 3dmat_consult
     (47) cycle -> . for
-    (51) statement -> . IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement alt_block
+    (51) statement -> . IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement
     (154) identifier -> . ID
     (155) identifier -> . consult
     (32) type -> . TYPE LPARENT identifier RPARENT SEMICOLON
@@ -4108,14 +4108,6 @@ state 269
     (125) 3dmat_consult -> . ID 3dmat_consultT
     (48) for -> . FOR ID IN iterable step LCORCH alt_block RCORCH SEMICOLON
 
-  ! shift/reduce conflict for IF resolved as shift
-  ! shift/reduce conflict for ID resolved as shift
-  ! shift/reduce conflict for TYPE resolved as shift
-  ! shift/reduce conflict for LEN resolved as shift
-  ! shift/reduce conflict for BLINK resolved as shift
-  ! shift/reduce conflict for DELAY resolved as shift
-  ! shift/reduce conflict for CALL resolved as shift
-  ! shift/reduce conflict for FOR resolved as shift
     END             reduce using rule 161 (empty -> .)
     RCORCH          reduce using rule 161 (empty -> .)
     IF              shift and go to state 72
@@ -4126,15 +4118,6 @@ state 269
     DELAY           shift and go to state 77
     CALL            shift and go to state 78
     FOR             shift and go to state 80
-
-  ! IF              [ reduce using rule 161 (empty -> .) ]
-  ! TYPE            [ reduce using rule 161 (empty -> .) ]
-  ! LEN             [ reduce using rule 161 (empty -> .) ]
-  ! BLINK           [ reduce using rule 161 (empty -> .) ]
-  ! DELAY           [ reduce using rule 161 (empty -> .) ]
-  ! CALL            [ reduce using rule 161 (empty -> .) ]
-  ! ID              [ reduce using rule 161 (empty -> .) ]
-  ! FOR             [ reduce using rule 161 (empty -> .) ]
 
     alt_content                    shift and go to state 269
     alt_block                      shift and go to state 298
@@ -4168,14 +4151,6 @@ state 270
 
     END             reduce using rule 7 (alt_block -> empty .)
     RCORCH          reduce using rule 7 (alt_block -> empty .)
-    IF              reduce using rule 7 (alt_block -> empty .)
-    TYPE            reduce using rule 7 (alt_block -> empty .)
-    LEN             reduce using rule 7 (alt_block -> empty .)
-    BLINK           reduce using rule 7 (alt_block -> empty .)
-    DELAY           reduce using rule 7 (alt_block -> empty .)
-    CALL            reduce using rule 7 (alt_block -> empty .)
-    ID              reduce using rule 7 (alt_block -> empty .)
-    FOR             reduce using rule 7 (alt_block -> empty .)
 
 
 state 271
@@ -4447,7 +4422,7 @@ state 287
 
 state 288
 
-    (51) statement -> IF LPARENT iterable relation bif_value RPARENT . LCORCH alt_block RCORCH SEMICOLON opt_statement alt_block
+    (51) statement -> IF LPARENT iterable relation bif_value RPARENT . LCORCH alt_block RCORCH SEMICOLON opt_statement
 
     LCORCH          shift and go to state 308
 
@@ -4550,7 +4525,7 @@ state 295
     (115) consult -> . mat_consult
     (116) consult -> . 3dmat_consult
     (47) cycle -> . for
-    (51) statement -> . IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement alt_block
+    (51) statement -> . IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement
     (154) identifier -> . ID
     (155) identifier -> . consult
     (32) type -> . TYPE LPARENT identifier RPARENT SEMICOLON
@@ -4625,14 +4600,6 @@ state 298
 
     END             reduce using rule 6 (alt_block -> alt_content alt_block .)
     RCORCH          reduce using rule 6 (alt_block -> alt_content alt_block .)
-    IF              reduce using rule 6 (alt_block -> alt_content alt_block .)
-    TYPE            reduce using rule 6 (alt_block -> alt_content alt_block .)
-    LEN             reduce using rule 6 (alt_block -> alt_content alt_block .)
-    BLINK           reduce using rule 6 (alt_block -> alt_content alt_block .)
-    DELAY           reduce using rule 6 (alt_block -> alt_content alt_block .)
-    CALL            reduce using rule 6 (alt_block -> alt_content alt_block .)
-    ID              reduce using rule 6 (alt_block -> alt_content alt_block .)
-    FOR             reduce using rule 6 (alt_block -> alt_content alt_block .)
 
 
 state 299
@@ -4738,7 +4705,7 @@ state 307
 
 state 308
 
-    (51) statement -> IF LPARENT iterable relation bif_value RPARENT LCORCH . alt_block RCORCH SEMICOLON opt_statement alt_block
+    (51) statement -> IF LPARENT iterable relation bif_value RPARENT LCORCH . alt_block RCORCH SEMICOLON opt_statement
     (6) alt_block -> . alt_content alt_block
     (7) alt_block -> . empty
     (8) alt_content -> . instruction
@@ -4765,7 +4732,7 @@ state 308
     (115) consult -> . mat_consult
     (116) consult -> . 3dmat_consult
     (47) cycle -> . for
-    (51) statement -> . IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement alt_block
+    (51) statement -> . IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement
     (154) identifier -> . ID
     (155) identifier -> . consult
     (32) type -> . TYPE LPARENT identifier RPARENT SEMICOLON
@@ -4978,7 +4945,7 @@ state 323
 
 state 324
 
-    (51) statement -> IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block . RCORCH SEMICOLON opt_statement alt_block
+    (51) statement -> IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block . RCORCH SEMICOLON opt_statement
 
     RCORCH          shift and go to state 332
 
@@ -5072,7 +5039,7 @@ state 331
 
 state 332
 
-    (51) statement -> IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH . SEMICOLON opt_statement alt_block
+    (51) statement -> IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH . SEMICOLON opt_statement
 
     SEMICOLON       shift and go to state 337
 
@@ -5125,19 +5092,19 @@ state 336
 
 state 337
 
-    (51) statement -> IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON . opt_statement alt_block
+    (51) statement -> IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON . opt_statement
     (52) opt_statement -> . ELSE LCORCH alt_block RCORCH SEMICOLON
     (53) opt_statement -> . empty
     (161) empty -> .
 
     ELSE            shift and go to state 339
     IF              reduce using rule 161 (empty -> .)
-    ID              reduce using rule 161 (empty -> .)
     TYPE            reduce using rule 161 (empty -> .)
     LEN             reduce using rule 161 (empty -> .)
     BLINK           reduce using rule 161 (empty -> .)
     DELAY           reduce using rule 161 (empty -> .)
     CALL            reduce using rule 161 (empty -> .)
+    ID              reduce using rule 161 (empty -> .)
     FOR             reduce using rule 161 (empty -> .)
     END             reduce using rule 161 (empty -> .)
     RCORCH          reduce using rule 161 (empty -> .)
@@ -5147,111 +5114,25 @@ state 337
 
 state 338
 
-    (51) statement -> IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement . alt_block
-    (6) alt_block -> . alt_content alt_block
-    (7) alt_block -> . empty
-    (8) alt_content -> . instruction
-    (9) alt_content -> . assignment
-    (161) empty -> .
-    (10) instruction -> . function
-    (11) instruction -> . consult SEMICOLON
-    (12) instruction -> . cycle
-    (13) instruction -> . statement
-    (19) assignment -> . identifier ASSIGN a_content SEMICOLON
-    (20) assignment -> . identifier COMMA identifier ASSIGN a_content COMMA a_content SEMICOLON
-    (21) function -> . type
-    (22) function -> . insert
-    (23) function -> . del
-    (24) function -> . len
-    (25) function -> . neg
-    (26) function -> . t_f
-    (27) function -> . blink
-    (28) function -> . delay
-    (29) function -> . shape
-    (30) function -> . delete
-    (31) function -> . call
-    (114) consult -> . list_consult
-    (115) consult -> . mat_consult
-    (116) consult -> . 3dmat_consult
-    (47) cycle -> . for
-    (51) statement -> . IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement alt_block
-    (154) identifier -> . ID
-    (155) identifier -> . consult
-    (32) type -> . TYPE LPARENT identifier RPARENT SEMICOLON
-    (34) insert -> . identifier DOT INSERT LPARENT i_content RPARENT SEMICOLON
-    (35) del -> . identifier DOT DEL LPARENT iterable RPARENT SEMICOLON
-    (36) len -> . LEN LPARENT identifier RPARENT SEMICOLON
-    (37) neg -> . identifier DOT NEG SEMICOLON
-    (38) t_f -> . identifier DOT tf SEMICOLON
-    (39) blink -> . BLINK LPARENT b_content RPARENT SEMICOLON
-    (40) delay -> . DELAY LPARENT d_content RPARENT SEMICOLON
-    (44) shape -> . identifier DOT shape_arg SEMICOLON
-    (45) delete -> . identifier DOT DELETE LPARENT indice COMMA INT RPARENT SEMICOLON
-    (46) call -> . CALL proc_call SEMICOLON
-    (117) list_consult -> . ID list_consultT
-    (120) mat_consult -> . ID mat_consultT
-    (125) 3dmat_consult -> . ID 3dmat_consultT
-    (48) for -> . FOR ID IN iterable step LCORCH alt_block RCORCH SEMICOLON
+    (51) statement -> IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement .
 
-  ! shift/reduce conflict for IF resolved as shift
-  ! shift/reduce conflict for ID resolved as shift
-  ! shift/reduce conflict for TYPE resolved as shift
-  ! shift/reduce conflict for LEN resolved as shift
-  ! shift/reduce conflict for BLINK resolved as shift
-  ! shift/reduce conflict for DELAY resolved as shift
-  ! shift/reduce conflict for CALL resolved as shift
-  ! shift/reduce conflict for FOR resolved as shift
-    END             reduce using rule 161 (empty -> .)
-    RCORCH          reduce using rule 161 (empty -> .)
-    IF              shift and go to state 72
-    ID              shift and go to state 47
-    TYPE            shift and go to state 73
-    LEN             shift and go to state 75
-    BLINK           shift and go to state 76
-    DELAY           shift and go to state 77
-    CALL            shift and go to state 78
-    FOR             shift and go to state 80
+    IF              reduce using rule 51 (statement -> IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement .)
+    TYPE            reduce using rule 51 (statement -> IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement .)
+    LEN             reduce using rule 51 (statement -> IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement .)
+    BLINK           reduce using rule 51 (statement -> IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement .)
+    DELAY           reduce using rule 51 (statement -> IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement .)
+    CALL            reduce using rule 51 (statement -> IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement .)
+    ID              reduce using rule 51 (statement -> IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement .)
+    FOR             reduce using rule 51 (statement -> IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement .)
+    END             reduce using rule 51 (statement -> IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement .)
+    RCORCH          reduce using rule 51 (statement -> IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement .)
 
-  ! IF              [ reduce using rule 161 (empty -> .) ]
-  ! TYPE            [ reduce using rule 161 (empty -> .) ]
-  ! LEN             [ reduce using rule 161 (empty -> .) ]
-  ! BLINK           [ reduce using rule 161 (empty -> .) ]
-  ! DELAY           [ reduce using rule 161 (empty -> .) ]
-  ! CALL            [ reduce using rule 161 (empty -> .) ]
-  ! ID              [ reduce using rule 161 (empty -> .) ]
-  ! FOR             [ reduce using rule 161 (empty -> .) ]
-
-    alt_block                      shift and go to state 341
-    alt_content                    shift and go to state 269
-    empty                          shift and go to state 270
-    instruction                    shift and go to state 271
-    assignment                     shift and go to state 272
-    function                       shift and go to state 56
-    consult                        shift and go to state 57
-    cycle                          shift and go to state 58
-    statement                      shift and go to state 59
-    identifier                     shift and go to state 273
-    type                           shift and go to state 60
-    insert                         shift and go to state 61
-    del                            shift and go to state 62
-    len                            shift and go to state 63
-    neg                            shift and go to state 64
-    t_f                            shift and go to state 65
-    blink                          shift and go to state 66
-    delay                          shift and go to state 67
-    shape                          shift and go to state 68
-    delete                         shift and go to state 69
-    call                           shift and go to state 70
-    list_consult                   shift and go to state 49
-    mat_consult                    shift and go to state 50
-    3dmat_consult                  shift and go to state 51
-    for                            shift and go to state 71
 
 state 339
 
     (52) opt_statement -> ELSE . LCORCH alt_block RCORCH SEMICOLON
 
-    LCORCH          shift and go to state 342
+    LCORCH          shift and go to state 341
 
 
 state 340
@@ -5259,34 +5140,18 @@ state 340
     (53) opt_statement -> empty .
 
     IF              reduce using rule 53 (opt_statement -> empty .)
-    ID              reduce using rule 53 (opt_statement -> empty .)
     TYPE            reduce using rule 53 (opt_statement -> empty .)
     LEN             reduce using rule 53 (opt_statement -> empty .)
     BLINK           reduce using rule 53 (opt_statement -> empty .)
     DELAY           reduce using rule 53 (opt_statement -> empty .)
     CALL            reduce using rule 53 (opt_statement -> empty .)
+    ID              reduce using rule 53 (opt_statement -> empty .)
     FOR             reduce using rule 53 (opt_statement -> empty .)
     END             reduce using rule 53 (opt_statement -> empty .)
     RCORCH          reduce using rule 53 (opt_statement -> empty .)
 
 
 state 341
-
-    (51) statement -> IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement alt_block .
-
-    IF              reduce using rule 51 (statement -> IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement alt_block .)
-    TYPE            reduce using rule 51 (statement -> IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement alt_block .)
-    LEN             reduce using rule 51 (statement -> IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement alt_block .)
-    BLINK           reduce using rule 51 (statement -> IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement alt_block .)
-    DELAY           reduce using rule 51 (statement -> IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement alt_block .)
-    CALL            reduce using rule 51 (statement -> IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement alt_block .)
-    ID              reduce using rule 51 (statement -> IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement alt_block .)
-    FOR             reduce using rule 51 (statement -> IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement alt_block .)
-    END             reduce using rule 51 (statement -> IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement alt_block .)
-    RCORCH          reduce using rule 51 (statement -> IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement alt_block .)
-
-
-state 342
 
     (52) opt_statement -> ELSE LCORCH . alt_block RCORCH SEMICOLON
     (6) alt_block -> . alt_content alt_block
@@ -5315,7 +5180,7 @@ state 342
     (115) consult -> . mat_consult
     (116) consult -> . 3dmat_consult
     (47) cycle -> . for
-    (51) statement -> . IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement alt_block
+    (51) statement -> . IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement
     (154) identifier -> . ID
     (155) identifier -> . consult
     (32) type -> . TYPE LPARENT identifier RPARENT SEMICOLON
@@ -5344,7 +5209,7 @@ state 342
     CALL            shift and go to state 78
     FOR             shift and go to state 80
 
-    alt_block                      shift and go to state 343
+    alt_block                      shift and go to state 342
     alt_content                    shift and go to state 269
     empty                          shift and go to state 270
     instruction                    shift and go to state 271
@@ -5370,51 +5235,32 @@ state 342
     3dmat_consult                  shift and go to state 51
     for                            shift and go to state 71
 
-state 343
+state 342
 
     (52) opt_statement -> ELSE LCORCH alt_block . RCORCH SEMICOLON
 
-    RCORCH          shift and go to state 344
+    RCORCH          shift and go to state 343
+
+
+state 343
+
+    (52) opt_statement -> ELSE LCORCH alt_block RCORCH . SEMICOLON
+
+    SEMICOLON       shift and go to state 344
 
 
 state 344
 
-    (52) opt_statement -> ELSE LCORCH alt_block RCORCH . SEMICOLON
-
-    SEMICOLON       shift and go to state 345
-
-
-state 345
-
     (52) opt_statement -> ELSE LCORCH alt_block RCORCH SEMICOLON .
 
     IF              reduce using rule 52 (opt_statement -> ELSE LCORCH alt_block RCORCH SEMICOLON .)
-    ID              reduce using rule 52 (opt_statement -> ELSE LCORCH alt_block RCORCH SEMICOLON .)
     TYPE            reduce using rule 52 (opt_statement -> ELSE LCORCH alt_block RCORCH SEMICOLON .)
     LEN             reduce using rule 52 (opt_statement -> ELSE LCORCH alt_block RCORCH SEMICOLON .)
     BLINK           reduce using rule 52 (opt_statement -> ELSE LCORCH alt_block RCORCH SEMICOLON .)
     DELAY           reduce using rule 52 (opt_statement -> ELSE LCORCH alt_block RCORCH SEMICOLON .)
     CALL            reduce using rule 52 (opt_statement -> ELSE LCORCH alt_block RCORCH SEMICOLON .)
+    ID              reduce using rule 52 (opt_statement -> ELSE LCORCH alt_block RCORCH SEMICOLON .)
     FOR             reduce using rule 52 (opt_statement -> ELSE LCORCH alt_block RCORCH SEMICOLON .)
     END             reduce using rule 52 (opt_statement -> ELSE LCORCH alt_block RCORCH SEMICOLON .)
     RCORCH          reduce using rule 52 (opt_statement -> ELSE LCORCH alt_block RCORCH SEMICOLON .)
 
-WARNING: 
-WARNING: Conflicts:
-WARNING: 
-WARNING: shift/reduce conflict for IF in state 269 resolved as shift
-WARNING: shift/reduce conflict for ID in state 269 resolved as shift
-WARNING: shift/reduce conflict for TYPE in state 269 resolved as shift
-WARNING: shift/reduce conflict for LEN in state 269 resolved as shift
-WARNING: shift/reduce conflict for BLINK in state 269 resolved as shift
-WARNING: shift/reduce conflict for DELAY in state 269 resolved as shift
-WARNING: shift/reduce conflict for CALL in state 269 resolved as shift
-WARNING: shift/reduce conflict for FOR in state 269 resolved as shift
-WARNING: shift/reduce conflict for IF in state 338 resolved as shift
-WARNING: shift/reduce conflict for ID in state 338 resolved as shift
-WARNING: shift/reduce conflict for TYPE in state 338 resolved as shift
-WARNING: shift/reduce conflict for LEN in state 338 resolved as shift
-WARNING: shift/reduce conflict for BLINK in state 338 resolved as shift
-WARNING: shift/reduce conflict for DELAY in state 338 resolved as shift
-WARNING: shift/reduce conflict for CALL in state 338 resolved as shift
-WARNING: shift/reduce conflict for FOR in state 338 resolved as shift

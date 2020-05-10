@@ -28,7 +28,6 @@ def semantics(p):
             else:
                 paramWithSameNameError(proc[0],param[0])
         procedureSem(proc)
-    print("Test")
 def assignmentSem(p,scope,local_var,local_only):
     global global_var
     scopeType=scope
@@ -368,9 +367,11 @@ def procedureSem(p):
                 assignmentSem(statement,"local",local_var,local_only)
 
             elif ("Instruction" in statement.getName()):
-                dicts=instructionSem(statement,local_var,local_only)
-                local_var=dicts[0]
-                local_only=dicts[1]
+                backup =(local_var.copy(), local_only.copy())
+                instructionSem(statement, local_var, local_only)
+                localsUpdater(backup, local_var, global_var)
+                local_var = backup[0]
+                local_only = backup[1]
     globalUpdater(local_var, global_var, local_only)
     if(call):
         varViewer(local_var,"Procedure Call: "+str(p[0])+" "+str(tempParams))
@@ -382,9 +383,7 @@ def instructionSem(p,local_var,local_only):
         return functionSem(p.getChilds()[0],local_var,local_only)
 
     elif(p.getName()=="Instruction3"):
-        dicts=statementSem(p.getChilds()[0],local_var,local_only)
-        local_var=dicts[0]
-        local_only=dicts[1]
+        statementSem(p.getChilds()[0],local_var,local_only)
     return (local_var,local_only)
 def statementSem(p,local_var,local_only):
     iterable=None
@@ -409,7 +408,6 @@ def statementSem(p,local_var,local_only):
                 iterable=(expr,None)
 
     elif(p.getChilds()[2].getName()=="Iterable1"):
-        print("Test")
         iterable=("Iterable",int(p.getChilds()[2].getChilds()[0].getToken()))
 
     elif(p.getChilds()[2].getName()=="Iterable2"):
@@ -497,6 +495,23 @@ def statementSem(p,local_var,local_only):
                elif("Instruction" in line.getName()):
                    instructionSem(line,local_var,local_only)
 
+        elif(not p.getChilds()[9].isNull()):
+            if(not p.getChilds()[9].getChilds()[2].isNull()):
+                lineQueue = processBodyTranslator(p.getChilds()[9].getChilds()[2].getChilds())
+                for line in lineQueue:
+                    if ("SimpleAssignment" in line.getName() or "DoubleAssignment" in line.getName()):
+                        assignmentSem(line, "local", local_var, local_only)
+                    elif (line.getName() == "Instruction3"):
+                        backup = (local_var.copy(), local_only.copy())
+                        instructionSem(line, local_var, local_only)
+                        localsUpdater(backup, local_var, global_var)
+                        local_var = backup[0]
+                        local_only = backup[1]
+
+                    elif ("Instruction" in line.getName()):
+                        instructionSem(line, local_var, local_only)
+            else:
+                nullStatementBody("ELSE")
     return (local_var,local_only)
 
 
@@ -1003,7 +1018,6 @@ def functionSem(p,local_var,local_only):
             called=True
         else:
             notDefinedProcedureCallError(procName)
-        print("Test")
 
 
     if(not called):

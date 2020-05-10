@@ -300,8 +300,8 @@ def p_stepEmp(p):
 
 ##########---BIFURCACIONES---##########
 def p_statement(p):
-    '''statement : IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement alt_block '''
-    p[0]=NonTerminalNode("Statement",[TerminalNode("If","IF"),TerminalNode("Lparent","LPARENT"),p[3],p[4],p[5],TerminalNode("Rparent","RPARENT"),TerminalNode("Lcorch","LCORCH"),p[8],TerminalNode("Rcorch","RCORCH"),p[11],p[12]])
+    '''statement : IF LPARENT iterable relation bif_value RPARENT LCORCH alt_block RCORCH SEMICOLON opt_statement '''
+    p[0]=NonTerminalNode("Statement",[TerminalNode("If","IF"),TerminalNode("Lparent","LPARENT"),p[3],p[4],p[5],TerminalNode("Rparent","RPARENT"),TerminalNode("Lcorch","LCORCH"),p[8],TerminalNode("Rcorch","RCORCH"),p[11]])
     
 
 def p_optStatment(p):
