@@ -372,8 +372,25 @@ def p_emptyParam(p):
     
 
 def p_callParam(p):
-    '''call_param : iterable'''
+    '''call_param : ass_param'''
     p[0]=NonTerminalNode("CallParam",[p[1]])
+
+def p_assginParam0(p):
+    '''ass_param : iterable'''
+    p[0]=NonTerminalNode("AssignableParam0",[p[1]])
+
+def p_assginParam1(p):
+    '''ass_param : mat'''
+    p[0]=NonTerminalNode("AssignableParam1",[p[1]])
+
+def p_assginParam2(p):
+    '''ass_param : 3dmat'''
+    p[0]=NonTerminalNode("AssignableParam2",[p[1]])
+
+def p_assginParam3(p):
+    '''ass_param : value'''
+    p[0]=NonTerminalNode("AssignableParam3",[p[1]])
+
 
 def p_body(p):
     '''body : global_call BEGIN alt_block END SEMICOLON '''
@@ -880,7 +897,7 @@ def p_identifier1(p):
 def p_iterable0(p):
     '''iterable : identifier'''
     p[0]=NonTerminalNode("Iterable0",[p[1]])
-    
+
 
 def p_iterable1(p):
     '''iterable : INT'''
@@ -889,10 +906,6 @@ def p_iterable1(p):
 def p_iterable2(p):
     '''iterable : list'''
     p[0]=NonTerminalNode("Iterable2",[p[1]])
-
-def p_iterable3(p):
-    '''iterable : mat'''
-    p[0]=NonTerminalNode("Iterable3",[p[1]])
 
 
 ##########---INSERTABLES---#########

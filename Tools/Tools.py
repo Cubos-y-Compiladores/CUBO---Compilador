@@ -49,6 +49,8 @@ def listTranslator(valores):
         elif (valor.getName() == "ListT1"):
             lista.extend(listTranslator(valor.getChilds()))
             return lista
+        elif(valor.getName()=="EmptyList"):
+            return []
     return lista
 
 def matTranslator(valores):
@@ -116,21 +118,25 @@ def consultTranslator(consult,dictionary,expr):
         ind=None
         indExpr=None
         dimensionVerifier(var,dictionary,"ListConsult")
-        if(consult.getChilds()[1].getName()=="ListConsultT0"):
+        if consult.getChilds()[1].getName()== "ListConsultT0":
             if(consult.getChilds()[1].getChilds()[1].getName()=="Indice0"):
                 ind=int(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken())
                 indExpr=consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()
 
             elif(consult.getChilds()[1].getChilds()[1].getName()=="Indice1"):
                 if(indVerifier(consult.getChilds()[1].getChilds()[1],dictionary)):
-                    ind=dictionary[consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()]
-                    indExpr=consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()
+                    if(not noneVerifier(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken(),dictionary)):
+                        ind=dictionary[consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()]
+                        indExpr=consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()
                 else:
                     nonIterableObjectError(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken())
             if(abs(ind)>=len(dictionary[var])):
                 outOfBoundsError(indExpr,expr)
             translation[expr]=dictionary[var][ind]
-            translation["Aux"]="["+str(ind)+"]"
+            if(ind !=None):
+                translation["Aux"]="["+str(ind)+"]"
+            else:
+                translation["Aux"]=None
             translation["Flipped"]=None
             return translation
         elif(consult.getChilds()[1].getName()=="ListConsultT1"):
@@ -140,18 +146,23 @@ def consultTranslator(consult,dictionary,expr):
                 inf=int(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken())
 
             elif(consult.getChilds()[1].getChilds()[1].getName()=="Indice1"):
-                if(not indVerifier(consult.getChilds()[1].getChilds()[1],dictionary)):
-                    nonIterableObjectError(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken())
-                inf=dictionary[consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()]
+                if (not noneVerifier(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken(), dictionary)):
+                    if (not indVerifier(consult.getChilds()[1].getChilds()[1], dictionary)):
+                        nonIterableObjectError(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken())
+                    inf = dictionary[consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()]
 
             if (consult.getChilds()[1].getChilds()[3].getName() == "Indice0"):
                 sup=int(consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken())
             elif (consult.getChilds()[1].getChilds()[3].getName()=="Indice1"):
-                if (not indVerifier(consult.getChilds()[1].getChilds()[3], dictionary)):
-                    nonIterableObjectError(consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken())
-                sup= dictionary[consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken()]
+                if(not noneVerifier(consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken(),dictionary)):
+                    if (not indVerifier(consult.getChilds()[1].getChilds()[1], dictionary)):
+                        nonIterableObjectError(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken())
+                    sup= dictionary[consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken()]
             translation[expr]=dictionary[var][inf:sup]
-            translation["Aux"]="["+str(inf)+":"+str(sup)+"]"
+            if(inf!=None):
+                translation["Aux"]="["+str(inf)+":"+str(sup)+"]"
+            else:
+                translation["Aux"] =None
             translation["Flipped"]=None
             return translation
 
@@ -166,27 +177,33 @@ def consultTranslator(consult,dictionary,expr):
                 ind1 = int(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken())
                 ind1Expr=consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()
             elif (consult.getChilds()[1].getChilds()[1].getName() == "Indice1"):
-                if (indVerifier(consult.getChilds()[1].getChilds()[1], dictionary)):
-                    ind1 = dictionary[consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()]
-                    ind1Expr=consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()
-                else:
-                    nonIterableObjectError(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken())
+                if (not noneVerifier(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken(), dictionary)):
+                    if (indVerifier(consult.getChilds()[1].getChilds()[1], dictionary)):
+                        ind1 = dictionary[consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()]
+                        ind1Expr=consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()
+                    else:
+                        nonIterableObjectError(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken())
 
             if (consult.getChilds()[1].getChilds()[3].getName() == "Indice0"):
                 ind2 = int(consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken())
                 ind2Expr=consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken()
             elif (consult.getChilds()[1].getChilds()[3].getName() == "Indice1"):
-                if (indVerifier(consult.getChilds()[1].getChilds()[3], dictionary)):
-                    ind2 = dictionary[consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken()]
-                    ind2Expr=consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken()
-                else:
-                    nonIterableObjectError(consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken())
-            if (ind1 >= len(dictionary[var])):
-                outOfBoundsError(ind1Expr, expr)
-            elif(ind2>= len(dictionary[var][ind1])):
-                outOfBoundsError(ind2Expr,expr)
+                if (not noneVerifier(consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken(), dictionary)):
+                    if (indVerifier(consult.getChilds()[1].getChilds()[3], dictionary)):
+                        ind2 = dictionary[consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken()]
+                        ind2Expr=consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken()
+                    else:
+                        nonIterableObjectError(consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken())
+            if(ind1!=None):
+                if (ind1 >= len(dictionary[var])):
+                    outOfBoundsError(ind1Expr, expr)
+                elif(ind2>= len(dictionary[var][ind1])):
+                    outOfBoundsError(ind2Expr,expr)
+                translation["Aux"]="[" + str(ind1) + "][" + str(ind2) + "]"
+            else:
+                translation["Aux"]=None
+
             translation[expr]=dictionary[var][ind1][ind2]
-            translation["Aux"]="["+str(ind1)+"]["+str(ind2)+"]"
             translation["Flipped"] = None
             return translation
 
@@ -196,16 +213,21 @@ def consultTranslator(consult,dictionary,expr):
                 ind1 = int(consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken())
                 indExpr=consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken()
             elif (consult.getChilds()[1].getChilds()[3].getName() == "Indice1"):
-                if (indVerifier(consult.getChilds()[1].getChilds()[3], dictionary)):
-                    ind1 = dictionary[consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken()]
-                    indExpr=consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken()
-                else:
-                    nonIterableObjectError(consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken())
-            if(ind1>=len(dictionary[var][0])):
-                outOfBoundsError(indExpr,expr)
+                if (not noneVerifier(consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken(), dictionary)):
+                    if (indVerifier(consult.getChilds()[1].getChilds()[3], dictionary)):
+                        ind1 = int(dictionary[consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken()])
+                        indExpr=consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken()
+                    else:
+                        nonIterableObjectError(consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken())
+            if(ind1!=None):
+                if(ind1>=len(dictionary[var][0])):
+                    outOfBoundsError(indExpr,expr)
+                translation["Aux"] = "[:," + str(ind1) + "]"
+                translation["Flipped"] = "[" + str(-(ind1 + 1)) + "]"
+            else:
+                translation["Aux"]=None
+                translation["Flipped"]=None
             translation[expr]=colFetcher(dictionary[var],ind1)
-            translation["Aux"]="[:,"+str(ind1)+"]"
-            translation["Flipped"]="["+str(-(ind1+1))+"]"
             return translation
 
         elif (consult.getChilds()[1].getName() == "MatConsultT2"):
@@ -214,46 +236,65 @@ def consultTranslator(consult,dictionary,expr):
                 ind1 = int(consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken())
                 indExpr = consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken()
             elif (consult.getChilds()[1].getChilds()[3].getName() == "Indice1"):
-                if (indVerifier(consult.getChilds()[1].getChilds()[3], dictionary)):
-                    ind1 = dictionary[consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken()]
-                    indExpr = consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken()
-                else:
-                    nonIterableObjectError(consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken())
+                if (not noneVerifier(consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken(), dictionary)):
+                    if (indVerifier(consult.getChilds()[1].getChilds()[3], dictionary)):
+                        ind1 = dictionary[consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken()]
+                        indExpr = consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken()
+                    else:
+                        nonIterableObjectError(consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken())
 
-            if (ind1 >= len(dictionary[var][0])):
-                outOfBoundsError(indExpr, expr)
+            if(ind1!=None):
+                if (ind1 >= len(dictionary[var][0])):
+                    outOfBoundsError(indExpr, expr)
+                dictionary["Temp"] =colFetcher(dictionary[var],ind1)
+                tempConsult = consultTranslator(NonTerminalNode("ListConsult", [TerminalNode("Id", "Temp"), consult.getChilds()[1].getChilds()[5]]),dictionary,expr)
+                del dictionary["Temp"]
+                if(tempConsult["Aux"]==None):
+                    translation["Aux"] = None
+                    translation["Flipped"] = None
+                    return translation
 
-            dictionary["Temp"] =colFetcher(dictionary[var],ind1)
-            tempConsult = consultTranslator(NonTerminalNode("ListConsult", [TerminalNode("Id", "Temp"), consult.getChilds()[1].getChilds()[5]]),dictionary,expr)
-            del dictionary["Temp"]
-            translation[expr] = list(tempConsult.values())[0]
-            translation["Aux"]="[:,"+str(ind1)+"]"+tempConsult["Aux"]
-            translation["Flipped"]="["+str(-(ind1+1))+"]"+tempConsult["Aux"]
+                translation[expr] = list(tempConsult.values())[0]
+                translation["Aux"]="[:,"+str(ind1)+"]"+tempConsult["Aux"]
+                translation["Flipped"]="["+str(-(ind1+1))+"]"+tempConsult["Aux"]
+            else:
+                translation["Aux"]=None
+                translation["Flipped"]=None
             return translation
 
         elif(consult.getChilds()[1].getName()=="MatConsultT3"):
             if(consult.getChilds()[1].getChilds()[1].getName()=="Indice0"):
                 ind1=int(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken())
             elif (consult.getChilds()[1].getChilds()[1].getName() == "Indice1"):
-                if (indVerifier(consult.getChilds()[1].getChilds()[1], dictionary)):
-                    ind1 = dictionary[consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()]
-                else:
-                    nonIterableObjectError(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken())
-            ind1Expr = consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()
-            if (ind1 >= len(dictionary[var])):
-                outOfBoundsError(ind1Expr, expr)
-            dictionary["Temp"]=dictionary[var][ind1]
-            tempConsult=consultTranslator(NonTerminalNode("ListConsult",[TerminalNode("Id","Temp"),consult.getChilds()[1].getChilds()[3]]),dictionary,expr)
-            del dictionary["Temp"]
-            translation[expr]=list(tempConsult.values())[0]
-            ind = 0
-            for valor in expr:
-                if (valor == "["):
-                    expr = expr[ind: ]
-                    break
-                ind+=1
-            translation["Aux"] = "["+str(ind1)+"]"+tempConsult["Aux"]
-            translation["Flipped"] = None
+                if (not noneVerifier(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken(), dictionary)):
+                    if (indVerifier(consult.getChilds()[1].getChilds()[1], dictionary)):
+                        ind1 = dictionary[consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()]
+                    else:
+                        nonIterableObjectError(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken())
+            if(ind1!=None):
+                ind1Expr = consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()
+                if (ind1 >= len(dictionary[var])):
+                    outOfBoundsError(ind1Expr, expr)
+                dictionary["Temp"]=dictionary[var][ind1]
+                tempConsult=consultTranslator(NonTerminalNode("ListConsult",[TerminalNode("Id","Temp"),consult.getChilds()[1].getChilds()[3]]),dictionary,expr)
+                del dictionary["Temp"]
+                if(tempConsult["Aux"]==None):
+                    translation["Aux"]=None
+                    translation["Flipped"]=None
+                    return translation
+
+                translation[expr]=list(tempConsult.values())[0]
+                ind = 0
+                for valor in expr:
+                    if (valor == "["):
+                        expr = expr[ind: ]
+                        break
+                    ind+=1
+                translation["Aux"] = "["+str(ind1)+"]"+tempConsult["Aux"]
+                translation["Flipped"] = None
+            else:
+                translation["Aux"]=None
+                translation["Flipped"]=None
             return translation
 
     elif (consult.getName() == "ThreeDMatConsult"):
@@ -270,41 +311,48 @@ def consultTranslator(consult,dictionary,expr):
 
 
             elif(consult.getChilds()[1].getChilds()[1].getName()=="Indice1"):
-                if (indVerifier(consult.getChilds()[1].getChilds()[1], dictionary)):
-                    ind1 = dictionary[consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()]
-                else:
-                    nonIterableObjectError(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken())
+                if (not noneVerifier(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken(), dictionary)):
+                    if (indVerifier(consult.getChilds()[1].getChilds()[1], dictionary)):
+                        ind1 = dictionary[consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()]
+                    else:
+                        nonIterableObjectError(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken())
 
             if (consult.getChilds()[1].getChilds()[3].getName() == "Indice0"):
                 ind2 = int(consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken())
 
             elif (consult.getChilds()[1].getChilds()[3].getName() == "Indice1"):
-                if (indVerifier(consult.getChilds()[1].getChilds()[3], dictionary)):
-                    ind2 = dictionary[consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken()]
-                else:
-                    nonIterableObjectError(consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken())
+                if (not noneVerifier(consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken(), dictionary)):
+                    if (indVerifier(consult.getChilds()[1].getChilds()[3], dictionary)):
+                        ind2 = dictionary[consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken()]
+                    else:
+                        nonIterableObjectError(consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken())
 
             if (consult.getChilds()[1].getChilds()[5].getName() == "Indice0"):
                 ind3 = int(consult.getChilds()[1].getChilds()[5].getChilds()[0].getToken())
 
             elif (consult.getChilds()[1].getChilds()[5].getName() == "Indice1"):
-                if (indVerifier(consult.getChilds()[1].getChilds()[5], dictionary)):
-                    ind3 = dictionary[consult.getChilds()[1].getChilds()[5].getChilds()[0].getToken()]
-                else:
-                    nonIterableObjectError(consult.getChilds()[1].getChilds()[5].getChilds()[0].getToken())
+                if (not noneVerifier(consult.getChilds()[1].getChilds()[5].getChilds()[0].getToken(), dictionary)):
+                    if (indVerifier(consult.getChilds()[1].getChilds()[5], dictionary)):
+                        ind3 = dictionary[consult.getChilds()[1].getChilds()[5].getChilds()[0].getToken()]
+                    else:
+                        nonIterableObjectError(consult.getChilds()[1].getChilds()[5].getChilds()[0].getToken())
 
-            if(ind1>=len(dictionary[var])):
-                outOfBoundsError(ind1Expr,expr)
+            if(ind1!=None):
+                if(ind1>=len(dictionary[var])):
+                    outOfBoundsError(ind1Expr,expr)
 
-            elif(ind2>=len(dictionary[var][ind1])):
-                outOfBoundsError(ind2Expr,expr)
+                elif(ind2>=len(dictionary[var][ind1])):
+                    outOfBoundsError(ind2Expr,expr)
 
-            elif(ind3>=len(dictionary[var][ind2])):
-                outOfBoundsError(ind3Expr,expr)
+                elif(ind3>=len(dictionary[var][ind2])):
+                    outOfBoundsError(ind3Expr,expr)
 
-            translation[expr]=dictionary[var][ind1][ind2][ind3]
-            translation["Aux"]="["+str(ind1)+"]["+str(ind2)+"]["+str(ind3)+"]"
-            translation["Flipped"] = None
+                translation[expr]=dictionary[var][ind1][ind2][ind3]
+                translation["Aux"]="["+str(ind1)+"]["+str(ind2)+"]["+str(ind3)+"]"
+                translation["Flipped"] = None
+            else:
+                translation["Aux"]=None
+                translation["Flipped"]=None
             return translation
 
         elif(consult.getChilds()[1].getName()=="ThreeDMatConsultT1"):
@@ -315,23 +363,32 @@ def consultTranslator(consult,dictionary,expr):
             if (consult.getChilds()[1].getChilds()[1].getName() == "Indice0"):
                 ind1 = int(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken())
             elif (consult.getChilds()[1].getChilds()[1].getName() == "Indice1"):
-                if (indVerifier(consult.getChilds()[1].getChilds()[1], dictionary)):
-                    ind1 = dictionary[consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()]
-                else:
-                    nonIterableObjectError(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken())
-            if (ind1 >= len(dictionary[var])):
-                outOfBoundsError(ind1Expr, expr)
+                if (not noneVerifier(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken())):
+                    if (indVerifier(consult.getChilds()[1].getChilds()[1], dictionary)):
+                        ind1 = dictionary[consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()]
+                    else:
+                        nonIterableObjectError(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken())
+            if(ind1!=None):
+                if (ind1 >= len(dictionary[var])):
+                    outOfBoundsError(ind1Expr, expr)
 
-            dictionary["Temp"] = dictionary[var][ind1]
-            tempConsult = consultTranslator(NonTerminalNode("MatConsult", [TerminalNode("Id", "Temp"), consult.getChilds()[1].getChilds()[3]]),dictionary,expr)
-            if("Temp" in dictionary):
-                del dictionary["Temp"]
-            translation[expr] = list(tempConsult.values())[0]
-            translation["Aux"]="["+str(ind1)+"]"+tempConsult["Aux"]
-            if(not tempConsult["Flipped"]==None):
-                translation["Flipped"]="["+str(ind1)+"]"+tempConsult["Flipped"]
+                dictionary["Temp"] = dictionary[var][ind1]
+                tempConsult = consultTranslator(NonTerminalNode("MatConsult", [TerminalNode("Id", "Temp"), consult.getChilds()[1].getChilds()[3]]),dictionary,expr)
+                if("Temp" in dictionary):
+                    del dictionary["Temp"]
+                if(tempConsult["Aux"]==None):
+                    translation["Aux"]=None
+                    translation["Flipped"]=None
+                    return translation
+                translation[expr] = list(tempConsult.values())[0]
+                translation["Aux"]="["+str(ind1)+"]"+tempConsult["Aux"]
+                if(not tempConsult["Flipped"]==None):
+                    translation["Flipped"]="["+str(ind1)+"]"+tempConsult["Flipped"]
+                else:
+                    translation["Flipped"]="["+str(ind1)+"]"+tempConsult["Aux"]
             else:
-                translation["Flipped"]="["+str(ind1)+"]"+tempConsult["Aux"]
+                translation["Aux"]=None
+                translation["Flipped"]=None
             return translation
 def expresionTranslator(consult):
     varName = consult.getChilds()[0].getToken()
@@ -445,18 +502,33 @@ def parameterCallTranslator(parameters,scope):
     output = []
     for param in parameters:
         if (param.getName() == "CallParam"):
-            if(param.getChilds()[0].getName()=="Iterable0"):
-                if(param.getChilds()[0].getChilds()[0].getName()=="Identifier0"):
-                    if(not param.getChilds()[0].getChilds()[0].getChilds()[0].getToken() in scope):
-                        outOfScopeError(param.getChilds()[0].getChilds()[0].getChilds()[0].getToken())
-                    output.append(scope[param.getChilds()[0].getChilds()[0].getChilds()[0].getToken()])
+            if(param.getChilds()[0].getChilds()[0].getName()=="Iterable0"):
+                if(param.getChilds()[0].getChilds()[0].getChilds()[0].getName()=="Identifier0"):
+                    if(not param.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken() in scope):
+                        outOfScopeError(param.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken())
+                    output.append(scope[param.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()])
 
-                elif(param.getChilds()[0].getChilds()[0].getName()=="Identifier1"):
-                    output.append(list(consultTranslator(param.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],scope).values())[0])
+                elif(param.getChilds()[0].getChilds()[0].getChilds()[0].getName()=="Identifier1"):
+                    output.append(list(consultTranslator(param.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],scope,expresionTranslator(param.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])).values())[0])
 
 
-            elif(param.getChilds()[0].getName()=="Iterable1"):
-                output.append(int(param.getChilds()[0].getChilds()[0].getToken()))
+            elif(param.getChilds()[0].getChilds()[0].getName()=="Iterable1"):
+                output.append(int(param.getChilds()[0].getChilds()[0].getChilds()[0].getToken()))
+
+            elif (param.getChilds()[0].getChilds()[0].getName() == "Iterable2"):
+                if(param.getChilds()[0].getChilds()[0].getChilds()[0].getName()=="EmptyList"):
+                    output.append([])
+                else:
+                    output.append(listTranslator(param.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()))
+
+            elif (param.getChilds()[0].getName() == "AssignableParam1"):
+               output.append(matTranslator(param.getChilds()[0].getChilds()[0].getChilds()))
+
+            elif (param.getChilds()[0].getName() == "AssignableParam2"):
+               output.append(threeDmatTranslator(param.getChilds()[0].getChilds()[0].getChilds()))
+
+            elif (param.getChilds()[0].getName() == "AssignableParam3"):
+                output.append(tokenTranslator(param.getChilds()[0].getChilds()[0].getChilds()[0].getToken()))
 
         elif (param.getName() == "Param0"):
             output.extend(parameterCallTranslator(param.getChilds(),scope))
@@ -962,6 +1034,11 @@ def insertingNotBoolOnListError1():
 def differentDimensionsMatError(value):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The matrix "+str(value)+" has lines with different sizes, therefore it's not a valid matrix")
     sys.exit()
+
+def differentDimensionsThreeDMatError(value):
+    print(colorama.Fore.RED + "SEMANTIC ERROR: The 3Dmatrix "+str(value)+" has invalid matrixes within, therefore it's not a valid matrix")
+    sys.exit()
+
 def differentMatOnThreeDMatError(value,value1):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The matrix stored in "+value+" has a different size than "+str(value1)+", so it can't be replaced since it is inside a 3DMatrix")
     sys.exit()

@@ -60,7 +60,7 @@ digraph G {
 	33[label= Arithmetic0]
 	34[label= Term0]
 	35[label= Factor0]
-	36[label= 2]
+	36[label= 0]
 	35->36
 	34->35
 	33->34
@@ -892,17 +892,17 @@ digraph G {
 	454[label= COMMA]
 	452->454
 	455[label= GlobalTerm0]
-	456[label= t]
+	456[label= z]
 	455->456
 	457[label= COMMA]
 	455->457
 	458[label= GlobalTerm0]
-	459[label= z]
+	459[label= b]
 	458->459
 	460[label= COMMA]
 	458->460
 	461[label= GlobalTerm1]
-	462[label= b]
+	462[label= l]
 	461->462
 	458->461
 	455->458
@@ -911,182 +911,290 @@ digraph G {
 	463[label= GlobalCall]
 	464[label= GLOBAL]
 	463->464
-	465[label= GlobalTerm1]
+	465[label= GlobalTerm0]
 	466[label= var]
 	465->466
+	467[label= COMMA]
+	465->467
+	468[label= GlobalTerm1]
+	469[label= t]
+	468->469
+	465->468
 	463->465
-	467[label= Null]
-	463->467
+	470[label= Null]
+	463->470
 	450->463
 	449->450
-	468[label= BEGIN]
-	449->468
-	469[label= AltBlock]
-	470[label= AltContent1]
-	471[label= SimpleAssignment]
-	472[label= Identifier0]
-	473[label= l]
-	472->473
-	471->472
-	474[label= ASSIGN]
-	471->474
-	475[label= Acont2]
-	476[label= List]
-	477[label= PARENTCL]
+	471[label= BEGIN]
+	449->471
+	472[label= AltBlock]
+	473[label= AltContent0]
+	474[label= Instruction0]
+	475[label= Function10]
+	476[label= CallF]
+	477[label= CALL]
 	476->477
-	478[label= ListT0]
-	479[label= ListV]
-	480[label= Value1]
-	481[label= TRUE]
-	480->481
+	478[label= ProcCall]
+	479[label= ProcName]
+	480[label= test]
 	479->480
 	478->479
-	482[label= COMMA]
-	478->482
-	483[label= ListT0]
-	484[label= ListV]
-	485[label= Value0]
-	486[label= FALSE]
-	485->486
-	484->485
-	483->484
-	487[label= COMMA]
-	483->487
-	488[label= ListT0]
+	481[label= LPARENT]
+	478->481
+	482[label= Param1]
+	483[label= CallParam]
+	484[label= AssignableParam0]
+	485[label= Iterable2]
+	486[label= List]
+	487[label= PARENTCL]
+	486->487
+	488[label= ListT1]
 	489[label= ListV]
 	490[label= Value1]
 	491[label= TRUE]
 	490->491
 	489->490
 	488->489
-	492[label= COMMA]
-	488->492
-	493[label= ListT0]
-	494[label= ListV]
-	495[label= Value0]
-	496[label= FALSE]
+	486->488
+	492[label= PARENTCR]
+	486->492
+	485->486
+	484->485
+	483->484
+	482->483
+	493[label= COMMA]
+	482->493
+	494[label= Param0]
+	495[label= CallParam]
+	496[label= AssignableParam0]
+	497[label= Iterable2]
+	498[label= List]
+	499[label= PARENTCL]
+	498->499
+	500[label= ListT1]
+	501[label= ListV]
+	502[label= Value1]
+	503[label= TRUE]
+	502->503
+	501->502
+	500->501
+	498->500
+	504[label= PARENTCR]
+	498->504
+	497->498
+	496->497
 	495->496
 	494->495
-	493->494
-	497[label= COMMA]
-	493->497
-	498[label= ListT1]
-	499[label= ListV]
-	500[label= Value1]
-	501[label= TRUE]
-	500->501
-	499->500
-	498->499
-	493->498
-	488->493
-	483->488
-	478->483
+	482->494
+	478->482
+	505[label= RPARENT]
+	478->505
 	476->478
-	502[label= PARENTCR]
-	476->502
 	475->476
-	471->475
-	470->471
-	469->470
-	503[label= AltBlock]
-	504[label= AltContent0]
-	505[label= Instruction0]
-	506[label= Function1]
-	507[label= InsertF]
-	508[label= Identifier0]
-	509[label= z]
-	508->509
-	507->508
-	510[label= DOT]
-	507->510
-	511[label= INSERT]
-	507->511
-	512[label= LPARENT]
-	507->512
-	513[label= Fcont7]
-	514[label= Iterable0]
-	515[label= Identifier0]
-	516[label= param2]
-	515->516
-	514->515
+	474->475
+	473->474
+	472->473
+	506[label= AltBlock]
+	507[label= AltContent1]
+	508[label= SimpleAssignment]
+	509[label= Identifier1]
+	510[label= Consult0]
+	511[label= ListConsult]
+	512[label= l]
+	511->512
+	513[label= ListConsultT0]
+	514[label= PARENTCL]
 	513->514
-	517[label= COMMA]
+	515[label= Indice0]
+	516[label= 0]
+	515->516
+	513->515
+	517[label= PARENTCR]
 	513->517
-	518[label= 0]
-	513->518
-	519[label= Null]
-	513->519
-	507->513
-	520[label= RPARENT]
-	507->520
+	511->513
+	510->511
+	509->510
+	508->509
+	518[label= ASSIGN]
+	508->518
+	519[label= Acont0]
+	520[label= Value0]
+	521[label= FALSE]
+	520->521
+	519->520
+	508->519
+	507->508
 	506->507
-	505->506
-	504->505
-	503->504
-	521[label= Null]
-	503->521
-	469->503
-	449->469
-	522[label= END]
-	449->522
-	430->449
-	523[label= RCORCH]
-	430->523
-	429->430
-	524[label= Block0]
-	525[label= ProcedureP]
-	526[label= PROCEDURE]
+	522[label= AltBlock]
+	523[label= AltContent1]
+	524[label= SimpleAssignment]
+	525[label= Identifier0]
+	526[label= t]
 	525->526
-	527[label= ProcDec]
-	528[label= ProcName]
-	529[label= test]
-	528->529
-	527->528
-	530[label= LPARENT]
-	527->530
-	531[label= Parameter1]
-	532[label= ProcParam]
-	533[label= param1]
-	532->533
-	531->532
-	534[label= COMMA]
-	531->534
-	535[label= Parameter0]
-	536[label= ProcParam]
-	537[label= param2]
-	536->537
-	535->536
-	531->535
-	527->531
-	538[label= RPARENT]
-	527->538
-	525->527
-	539[label= LCORCH]
-	525->539
-	540[label= Body]
-	541[label= GlobalCall]
-	542[label= GLOBAL]
-	541->542
-	543[label= GlobalTerm1]
-	544[label= b]
-	543->544
-	541->543
-	545[label= Null]
-	541->545
-	540->541
-	546[label= BEGIN]
-	540->546
-	547[label= Null]
-	540->547
-	548[label= END]
-	540->548
-	525->540
-	549[label= RCORCH]
-	525->549
 	524->525
-	550[label= Null]
-	524->550
-	429->524
+	527[label= ASSIGN]
+	524->527
+	528[label= Acont1]
+	529[label= Arithmetic0]
+	530[label= Term0]
+	531[label= Factor0]
+	532[label= 512]
+	531->532
+	530->531
+	529->530
+	528->529
+	524->528
+	523->524
+	522->523
+	533[label= Null]
+	522->533
+	506->522
+	472->506
+	449->472
+	534[label= END]
+	449->534
+	430->449
+	535[label= RCORCH]
+	430->535
+	429->430
+	536[label= Block0]
+	537[label= ProcedureP]
+	538[label= PROCEDURE]
+	537->538
+	539[label= ProcDec]
+	540[label= ProcName]
+	541[label= test]
+	540->541
+	539->540
+	542[label= LPARENT]
+	539->542
+	543[label= Parameter1]
+	544[label= ProcParam]
+	545[label= param1]
+	544->545
+	543->544
+	546[label= COMMA]
+	543->546
+	547[label= Parameter0]
+	548[label= ProcParam]
+	549[label= param2]
+	548->549
+	547->548
+	543->547
+	539->543
+	550[label= RPARENT]
+	539->550
+	537->539
+	551[label= LCORCH]
+	537->551
+	552[label= Body]
+	553[label= GlobalCall]
+	554[label= GLOBAL]
+	553->554
+	555[label= GlobalTerm1]
+	556[label= l]
+	555->556
+	553->555
+	557[label= Null]
+	553->557
+	552->553
+	558[label= BEGIN]
+	552->558
+	559[label= AltBlock]
+	560[label= AltContent1]
+	561[label= SimpleAssignment]
+	562[label= Identifier0]
+	563[label= r]
+	562->563
+	561->562
+	564[label= ASSIGN]
+	561->564
+	565[label= Acont5]
+	566[label= Consult0]
+	567[label= ListConsult]
+	568[label= param1]
+	567->568
+	569[label= ListConsultT0]
+	570[label= PARENTCL]
+	569->570
+	571[label= Indice0]
+	572[label= 0]
+	571->572
+	569->571
+	573[label= PARENTCR]
+	569->573
+	567->569
+	566->567
+	565->566
+	561->565
+	560->561
+	559->560
+	574[label= AltBlock]
+	575[label= AltContent1]
+	576[label= SimpleAssignment]
+	577[label= Identifier1]
+	578[label= Consult0]
+	579[label= ListConsult]
+	580[label= param1]
+	579->580
+	581[label= ListConsultT0]
+	582[label= PARENTCL]
+	581->582
+	583[label= Indice0]
+	584[label= 0]
+	583->584
+	581->583
+	585[label= PARENTCR]
+	581->585
+	579->581
+	578->579
+	577->578
+	576->577
+	586[label= ASSIGN]
+	576->586
+	587[label= Acont0]
+	588[label= Value0]
+	589[label= FALSE]
+	588->589
+	587->588
+	576->587
+	575->576
+	574->575
+	590[label= AltBlock]
+	591[label= AltContent1]
+	592[label= SimpleAssignment]
+	593[label= Identifier0]
+	594[label= l]
+	593->594
+	592->593
+	595[label= ASSIGN]
+	592->595
+	596[label= Acont1]
+	597[label= Arithmetic0]
+	598[label= Term0]
+	599[label= Factor1]
+	600[label= param2]
+	599->600
+	598->599
+	597->598
+	596->597
+	592->596
+	591->592
+	590->591
+	601[label= Null]
+	590->601
+	574->590
+	559->574
+	552->559
+	602[label= END]
+	552->602
+	537->552
+	603[label= RCORCH]
+	537->603
+	536->537
+	604[label= Null]
+	536->604
+	429->536
 	407->429
 	203->407
 	169->203
@@ -1098,26 +1206,26 @@ digraph G {
 	26->37
 	2->26
 	1->2
-	551[label= MainProc]
-	552[label= MAIN]
-	551->552
-	553[label= LPARENT]
-	551->553
-	554[label= RPARENT]
-	551->554
-	555[label= LCORCH]
-	551->555
-	556[label= MainBody]
-	557[label= BEGIN]
-	556->557
-	558[label= Null]
-	556->558
-	559[label= END]
-	556->559
-	551->556
-	560[label= RCORCH]
-	551->560
-	561[label= Null]
-	551->561
-	1->551
+	605[label= MainProc]
+	606[label= MAIN]
+	605->606
+	607[label= LPARENT]
+	605->607
+	608[label= RPARENT]
+	605->608
+	609[label= LCORCH]
+	605->609
+	610[label= MainBody]
+	611[label= BEGIN]
+	610->611
+	612[label= Null]
+	610->612
+	613[label= END]
+	610->613
+	605->610
+	614[label= RCORCH]
+	605->614
+	615[label= Null]
+	605->615
+	1->605
 	}
