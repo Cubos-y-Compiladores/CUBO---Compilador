@@ -96,7 +96,8 @@
       <workItem from="1589049351066" duration="21419000" />
       <workItem from="1589085786428" duration="5950000" />
       <workItem from="1589127996733" duration="14341000" />
-      <workItem from="1589145782491" duration="4186000" />
+      <workItem from="1589145782491" duration="9556000" />
+      <workItem from="1589156666593" duration="602000" />
     </task>
     <servers />
   </component>
@@ -116,38 +117,38 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1588547068681" />
-    <state width="914" height="339" key="GridCell.Tab.0.bottom" timestamp="1589149964049">
+    <state width="914" height="880" key="GridCell.Tab.0.bottom" timestamp="1589157303441">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="914" height="339" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1589149964049" />
-    <state width="914" height="339" key="GridCell.Tab.0.center" timestamp="1589149964049">
+    <state width="914" height="880" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1589157303441" />
+    <state width="914" height="880" key="GridCell.Tab.0.center" timestamp="1589157303440">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="914" height="339" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1589149964049" />
-    <state width="914" height="339" key="GridCell.Tab.0.left" timestamp="1589149964049">
+    <state width="914" height="880" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1589157303440" />
+    <state width="914" height="880" key="GridCell.Tab.0.left" timestamp="1589157303440">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="914" height="339" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1589149964049" />
-    <state width="914" height="339" key="GridCell.Tab.0.right" timestamp="1589149964049">
+    <state width="914" height="880" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1589157303440" />
+    <state width="914" height="880" key="GridCell.Tab.0.right" timestamp="1589157303441">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="914" height="339" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1589149964049" />
-    <state width="914" height="296" key="GridCell.Tab.1.bottom" timestamp="1589149666544">
+    <state width="914" height="880" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1589157303441" />
+    <state width="914" height="298" key="GridCell.Tab.1.bottom" timestamp="1589157202870">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="914" height="296" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1589149666544" />
-    <state width="914" height="296" key="GridCell.Tab.1.center" timestamp="1589149666544">
+    <state width="914" height="298" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1589157202870" />
+    <state width="914" height="298" key="GridCell.Tab.1.center" timestamp="1589157202870">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="914" height="296" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1589149666544" />
-    <state width="914" height="296" key="GridCell.Tab.1.left" timestamp="1589149666543">
+    <state width="914" height="298" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1589157202870" />
+    <state width="914" height="298" key="GridCell.Tab.1.left" timestamp="1589157202870">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="914" height="296" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1589149666543" />
-    <state width="914" height="296" key="GridCell.Tab.1.right" timestamp="1589149666544">
+    <state width="914" height="298" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1589157202870" />
+    <state width="914" height="298" key="GridCell.Tab.1.right" timestamp="1589157202870">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="914" height="296" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1589149666544" />
+    <state width="914" height="298" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1589157202870" />
     <state x="461" y="162" key="SettingsEditor" timestamp="1588204837766">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -166,7 +167,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/CompilerDependencies/Semantics.py</url>
-          <line>695</line>
+          <line>711</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -176,48 +177,68 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/CompilerDependencies/Semantics.py</url>
-          <line>744</line>
+          <line>763</line>
           <option name="timeStamp" value="82" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/CompilerDependencies/Semantics.py</url>
-          <line>895</line>
+          <line>917</line>
           <option name="timeStamp" value="84" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Tools/Tools.py</url>
-          <line>528</line>
+          <line>549</line>
           <option name="timeStamp" value="116" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Tools/Tools.py</url>
-          <line>544</line>
+          <line>565</line>
           <option name="timeStamp" value="118" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/CompilerDependencies/Semantics.py</url>
-          <line>567</line>
+          <line>580</line>
           <option name="timeStamp" value="151" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/CompilerDependencies/Semantics.py</url>
-          <line>579</line>
+          <line>592</line>
           <option name="timeStamp" value="152" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/CompilerDependencies/Semantics.py</url>
-          <line>442</line>
-          <option name="timeStamp" value="166" />
+          <line>1086</line>
+          <option name="timeStamp" value="168" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Tools/Tools.py</url>
-          <line>916</line>
-          <option name="timeStamp" value="167" />
+          <url>file://$PROJECT_DIR$/CompilerDependencies/Semantics.py</url>
+          <line>416</line>
+          <option name="timeStamp" value="169" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/CompilerDependencies/Semantics.py</url>
+          <line>459</line>
+          <option name="timeStamp" value="170" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/CompilerDependencies/Semantics.py</url>
+          <line>467</line>
+          <option name="timeStamp" value="171" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/CompilerDependencies/Semantics.py</url>
+          <line>204</line>
+          <option name="timeStamp" value="172" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/CompilerDependencies/Semantics.py</url>
+          <line>386</line>
+          <option name="timeStamp" value="173" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Compilador$Parser.coverage" NAME="Parser Coverage Results" MODIFIED="1589149964042" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CompilerDependencies" />
+    <SUITE FILE_PATH="coverage/Compilador$Parser.coverage" NAME="Parser Coverage Results" MODIFIED="1589157303434" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CompilerDependencies" />
   </component>
 </project>

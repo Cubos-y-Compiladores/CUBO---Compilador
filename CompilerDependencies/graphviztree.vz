@@ -18,7 +18,7 @@ digraph G {
 	8->9
 	11[label= ASSIGN]
 	8->11
-	12[label= 2]
+	12[label= 10]
 	8->12
 	2->8
 	13[label= Const2]
@@ -28,7 +28,7 @@ digraph G {
 	13->14
 	16[label= ASSIGN]
 	13->16
-	17[label= 2]
+	17[label= 10]
 	13->17
 	2->13
 	18[label= Const0]
@@ -44,7 +44,7 @@ digraph G {
 	22->23
 	24[label= ASSIGN]
 	22->24
-	25[label= 2]
+	25[label= 10]
 	22->25
 	2->22
 	26[label= Block1]
@@ -1009,8 +1009,8 @@ digraph G {
 	520[label= Acont1]
 	521[label= Arithmetic0]
 	522[label= Term0]
-	523[label= Factor0]
-	524[label= 15]
+	523[label= Factor1]
+	524[label= param1]
 	523->524
 	522->523
 	521->522
@@ -1028,117 +1028,145 @@ digraph G {
 	500->501
 	499->500
 	498->499
-	528[label= AltBlock]
-	529[label= AltContent1]
-	530[label= SimpleAssignment]
-	531[label= Identifier0]
-	532[label= l]
-	531->532
-	530->531
-	533[label= ASSIGN]
-	530->533
-	534[label= Acont2]
-	535[label= List]
-	536[label= PARENTCL]
-	535->536
-	537[label= ListT1]
-	538[label= ListV]
-	539[label= Value1]
-	540[label= TRUE]
-	539->540
-	538->539
-	537->538
-	535->537
-	541[label= PARENTCR]
-	535->541
-	534->535
-	530->534
-	529->530
-	528->529
-	542[label= Null]
-	528->542
+	528[label= Null]
 	498->528
 	483->498
-	543[label= RCORCH]
-	483->543
-	544[label= Null]
-	483->544
+	529[label= RCORCH]
+	483->529
+	530[label= Null]
+	483->530
 	482->483
 	481->482
 	480->481
-	545[label= Null]
-	480->545
+	531[label= Null]
+	480->531
 	462->480
-	546[label= RCORCH]
-	462->546
+	532[label= RCORCH]
+	462->532
 	461->462
 	460->461
 	459->460
 	458->459
-	547[label= Null]
-	458->547
+	533[label= Null]
+	458->533
 	447->458
 	424->447
-	548[label= END]
-	424->548
+	534[label= END]
+	424->534
 	405->424
-	549[label= RCORCH]
-	405->549
+	535[label= RCORCH]
+	405->535
 	404->405
-	550[label= Block0]
-	551[label= ProcedureP]
-	552[label= PROCEDURE]
-	551->552
-	553[label= ProcDec]
-	554[label= ProcName]
-	555[label= test]
-	554->555
+	536[label= Block0]
+	537[label= ProcedureP]
+	538[label= PROCEDURE]
+	537->538
+	539[label= ProcDec]
+	540[label= ProcName]
+	541[label= test]
+	540->541
+	539->540
+	542[label= LPARENT]
+	539->542
+	543[label= Parameter1]
+	544[label= ProcParam]
+	545[label= param1]
+	544->545
+	543->544
+	546[label= COMMA]
+	543->546
+	547[label= Parameter0]
+	548[label= ProcParam]
+	549[label= param2]
+	548->549
+	547->548
+	543->547
+	539->543
+	550[label= RPARENT]
+	539->550
+	537->539
+	551[label= LCORCH]
+	537->551
+	552[label= Body]
+	553[label= GlobalCall]
+	554[label= GLOBAL]
 	553->554
-	556[label= LPARENT]
-	553->556
-	557[label= Parameter1]
-	558[label= ProcParam]
-	559[label= param1]
-	558->559
-	557->558
-	560[label= COMMA]
-	557->560
-	561[label= Parameter0]
-	562[label= ProcParam]
-	563[label= param2]
+	555[label= GlobalTerm1]
+	556[label= l]
+	555->556
+	553->555
+	557[label= Null]
+	553->557
+	552->553
+	558[label= BEGIN]
+	552->558
+	559[label= AltBlock]
+	560[label= AltContent0]
+	561[label= Instruction0]
+	562[label= Function10]
+	563[label= CallF]
+	564[label= CALL]
+	563->564
+	565[label= ProcCall]
+	566[label= ProcName]
+	567[label= test]
+	566->567
+	565->566
+	568[label= LPARENT]
+	565->568
+	569[label= Param1]
+	570[label= CallParam]
+	571[label= AssignableParam0]
+	572[label= Iterable1]
+	573[label= 1]
+	572->573
+	571->572
+	570->571
+	569->570
+	574[label= COMMA]
+	569->574
+	575[label= Param1]
+	576[label= CallParam]
+	577[label= AssignableParam0]
+	578[label= Iterable1]
+	579[label= 2]
+	578->579
+	577->578
+	576->577
+	575->576
+	580[label= COMMA]
+	575->580
+	581[label= Param0]
+	582[label= CallParam]
+	583[label= AssignableParam0]
+	584[label= Iterable1]
+	585[label= 3]
+	584->585
+	583->584
+	582->583
+	581->582
+	575->581
+	569->575
+	565->569
+	586[label= RPARENT]
+	565->586
+	563->565
 	562->563
 	561->562
-	557->561
-	553->557
-	564[label= RPARENT]
-	553->564
-	551->553
-	565[label= LCORCH]
-	551->565
-	566[label= Body]
-	567[label= GlobalCall]
-	568[label= GLOBAL]
-	567->568
-	569[label= GlobalTerm1]
-	570[label= l]
-	569->570
-	567->569
-	571[label= Null]
-	567->571
-	566->567
-	572[label= BEGIN]
-	566->572
-	573[label= Null]
-	566->573
-	574[label= END]
-	566->574
-	551->566
-	575[label= RCORCH]
-	551->575
-	550->551
-	576[label= Null]
-	550->576
-	404->550
+	560->561
+	559->560
+	587[label= Null]
+	559->587
+	552->559
+	588[label= END]
+	552->588
+	537->552
+	589[label= RCORCH]
+	537->589
+	536->537
+	590[label= Null]
+	536->590
+	404->536
 	382->404
 	178->382
 	159->178
@@ -1150,26 +1178,26 @@ digraph G {
 	26->37
 	2->26
 	1->2
-	577[label= MainProc]
-	578[label= MAIN]
-	577->578
-	579[label= LPARENT]
-	577->579
-	580[label= RPARENT]
-	577->580
-	581[label= LCORCH]
-	577->581
-	582[label= MainBody]
-	583[label= BEGIN]
-	582->583
-	584[label= Null]
-	582->584
-	585[label= END]
-	582->585
-	577->582
-	586[label= RCORCH]
-	577->586
-	587[label= Null]
-	577->587
-	1->577
+	591[label= MainProc]
+	592[label= MAIN]
+	591->592
+	593[label= LPARENT]
+	591->593
+	594[label= RPARENT]
+	591->594
+	595[label= LCORCH]
+	591->595
+	596[label= MainBody]
+	597[label= BEGIN]
+	596->597
+	598[label= Null]
+	596->598
+	599[label= END]
+	596->599
+	591->596
+	600[label= RCORCH]
+	591->600
+	601[label= Null]
+	591->601
+	1->591
 	}

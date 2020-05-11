@@ -1,8 +1,8 @@
 Rango_Timer = "Seg";
-Dim_Filas=2;
-Dim_Columnas = 2;
+Dim_Filas=10;
+Dim_Columnas=10;
 Timer=15;
-Cubo = 2;
+Cubo=10;
 t=0;
 var = False;
 l=[True,False];
@@ -16,19 +16,18 @@ w,x=True,range(10,True);
 
 	Procedure test (param1,param2,param3)
 	{
-	global r,z,b,l;
+	global r,z,b,l,x;
 	global var,t;
 		begin
-		x=10;
+		x=l[10];
 		for valor in r[0] Step 4
 		{
 			if(t==0)
 			{
 				if(l==False)
 				{
-					x=15;
+					x=param1;
 				};
-				l=[True];
 			};
 		}; 
 		end;	
@@ -37,7 +36,7 @@ w,x=True,range(10,True);
 	{
 	global l;
 		begin
-		
+		Call test(1,2,3);
 		end;	
 	};
 

@@ -120,7 +120,7 @@ def arithmeticTranslator(operacion,dictionary):
 
     return result
 
-def consultTranslator(consult,dictionary,expr):
+def consultTranslator(consult,dictionary,expr,called):
     translation={}
     var = consult.getChilds()[0].getToken()
     if (not existenceVerifier(var, dictionary)):
@@ -148,7 +148,10 @@ def consultTranslator(consult,dictionary,expr):
                 else:
                     nonIterableObjectError(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken())
             if(abs(ind)>=len(dictionary[var])):
-                outOfBoundsError(indExpr,expr)
+                if(called):
+                    outOfBoundsError(indExpr,expr)
+                else:
+                    return None
             translation[expr]=dictionary[var][ind]
             if(ind !=None):
                 translation["Aux"]="["+str(ind)+"]"
@@ -213,9 +216,13 @@ def consultTranslator(consult,dictionary,expr):
                         nonIterableObjectError(consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken())
             if(ind1!=None):
                 if (ind1 >= len(dictionary[var])):
-                    outOfBoundsError(ind1Expr, expr)
+                    if(called):
+                        outOfBoundsError(ind1Expr, expr)
+                    return None
                 elif(ind2>= len(dictionary[var][ind1])):
-                    outOfBoundsError(ind2Expr,expr)
+                    if(called):
+                        outOfBoundsError(ind2Expr,expr)
+                    return None
                 translation[expr] = dictionary[var][ind1][ind2]
                 translation["Aux"]="[" + str(ind1) + "][" + str(ind2) + "]"
             else:
@@ -239,7 +246,9 @@ def consultTranslator(consult,dictionary,expr):
             translation[expr] = colFetcher(dictionary[var], ind1)
             if(ind1!=None):
                 if(ind1>=len(dictionary[var][0])):
-                    outOfBoundsError(indExpr,expr)
+                    if(called):
+                        outOfBoundsError(indExpr,expr)
+                    return None
                 translation["Aux"] = "[:," + str(ind1) + "]"
                 translation["Flipped"] = "[" + str(-(ind1 + 1)) + "]"
             else:
@@ -262,7 +271,9 @@ def consultTranslator(consult,dictionary,expr):
 
             if(ind1!=None):
                 if (ind1 >= len(dictionary[var][0])):
-                    outOfBoundsError(indExpr, expr)
+                    if(called):
+                        outOfBoundsError(indExpr, expr)
+                    return None
                 dictionary["Temp"] =colFetcher(dictionary[var],ind1)
                 tempConsult = consultTranslator(NonTerminalNode("ListConsult", [TerminalNode("Id", "Temp"), consult.getChilds()[1].getChilds()[5]]),dictionary,expr)
                 del dictionary["Temp"]
@@ -291,7 +302,9 @@ def consultTranslator(consult,dictionary,expr):
             if(ind1!=None):
                 ind1Expr = consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()
                 if (ind1 >= len(dictionary[var])):
-                    outOfBoundsError(ind1Expr, expr)
+                    if(called):
+                        outOfBoundsError(ind1Expr, expr)
+                    return None
                 dictionary["Temp"]=dictionary[var][ind1]
                 tempConsult=consultTranslator(NonTerminalNode("ListConsult",[TerminalNode("Id","Temp"),consult.getChilds()[1].getChilds()[3]]),dictionary,expr)
                 del dictionary["Temp"]
@@ -356,13 +369,19 @@ def consultTranslator(consult,dictionary,expr):
 
             if(ind1!=None):
                 if(ind1>=len(dictionary[var])):
-                    outOfBoundsError(ind1Expr,expr)
+                    if(called):
+                        outOfBoundsError(ind1Expr,expr)
+                    return None
 
                 elif(ind2>=len(dictionary[var][ind1])):
-                    outOfBoundsError(ind2Expr,expr)
+                    if(called):
+                        outOfBoundsError(ind2Expr,expr)
+                    return None
 
                 elif(ind3>=len(dictionary[var][ind2])):
-                    outOfBoundsError(ind3Expr,expr)
+                    if(called):
+                        outOfBoundsError(ind3Expr,expr)
+                    return None
 
                 translation[expr]=dictionary[var][ind1][ind2][ind3]
                 translation["Aux"]="["+str(ind1)+"]["+str(ind2)+"]["+str(ind3)+"]"
@@ -387,7 +406,9 @@ def consultTranslator(consult,dictionary,expr):
                         nonIterableObjectError(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken())
             if(ind1!=None):
                 if (ind1 >= len(dictionary[var])):
-                    outOfBoundsError(ind1Expr, expr)
+                    if(called):
+                        outOfBoundsError(ind1Expr, expr)
+                    return None
 
                 dictionary["Temp"] = dictionary[var][ind1]
                 tempConsult = consultTranslator(NonTerminalNode("MatConsult", [TerminalNode("Id", "Temp"), consult.getChilds()[1].getChilds()[3]]),dictionary,expr)
