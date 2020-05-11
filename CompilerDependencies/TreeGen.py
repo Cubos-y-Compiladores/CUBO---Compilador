@@ -36,6 +36,8 @@ class ProgramNode(Node):
 
         return "digraph G {\n\t" + output+ "}"
 
+    def getChilds(self):
+        return self.childs
 
 class NonTerminalNode(Node):
     def __init__(self,name,childs):

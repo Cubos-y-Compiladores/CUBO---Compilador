@@ -120,7 +120,7 @@ def arithmeticTranslator(operacion,dictionary):
 
     return result
 
-def consultTranslator(consult,dictionary,expr,called):
+def consultTranslator(consult,dictionary,expr):
     translation={}
     var = consult.getChilds()[0].getToken()
     if (not existenceVerifier(var, dictionary)):
@@ -148,10 +148,7 @@ def consultTranslator(consult,dictionary,expr,called):
                 else:
                     nonIterableObjectError(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken())
             if(abs(ind)>=len(dictionary[var])):
-                if(called):
-                    outOfBoundsError(indExpr,expr)
-                else:
-                    return None
+                outOfBoundsError(indExpr,expr,ind)
             translation[expr]=dictionary[var][ind]
             if(ind !=None):
                 translation["Aux"]="["+str(ind)+"]"
@@ -216,13 +213,9 @@ def consultTranslator(consult,dictionary,expr,called):
                         nonIterableObjectError(consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken())
             if(ind1!=None):
                 if (ind1 >= len(dictionary[var])):
-                    if(called):
-                        outOfBoundsError(ind1Expr, expr)
-                    return None
+                    outOfBoundsError(ind1Expr, expr,ind1)
                 elif(ind2>= len(dictionary[var][ind1])):
-                    if(called):
-                        outOfBoundsError(ind2Expr,expr)
-                    return None
+                    outOfBoundsError(ind2Expr,expr,ind2)
                 translation[expr] = dictionary[var][ind1][ind2]
                 translation["Aux"]="[" + str(ind1) + "][" + str(ind2) + "]"
             else:
@@ -246,9 +239,7 @@ def consultTranslator(consult,dictionary,expr,called):
             translation[expr] = colFetcher(dictionary[var], ind1)
             if(ind1!=None):
                 if(ind1>=len(dictionary[var][0])):
-                    if(called):
-                        outOfBoundsError(indExpr,expr)
-                    return None
+                    outOfBoundsError(indExpr,expr,ind)
                 translation["Aux"] = "[:," + str(ind1) + "]"
                 translation["Flipped"] = "[" + str(-(ind1 + 1)) + "]"
             else:
@@ -271,9 +262,7 @@ def consultTranslator(consult,dictionary,expr,called):
 
             if(ind1!=None):
                 if (ind1 >= len(dictionary[var][0])):
-                    if(called):
-                        outOfBoundsError(indExpr, expr)
-                    return None
+                    outOfBoundsError(indExpr, expr,ind)
                 dictionary["Temp"] =colFetcher(dictionary[var],ind1)
                 tempConsult = consultTranslator(NonTerminalNode("ListConsult", [TerminalNode("Id", "Temp"), consult.getChilds()[1].getChilds()[5]]),dictionary,expr)
                 del dictionary["Temp"]
@@ -302,9 +291,7 @@ def consultTranslator(consult,dictionary,expr,called):
             if(ind1!=None):
                 ind1Expr = consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()
                 if (ind1 >= len(dictionary[var])):
-                    if(called):
-                        outOfBoundsError(ind1Expr, expr)
-                    return None
+                    outOfBoundsError(ind1Expr, expr,ind1)
                 dictionary["Temp"]=dictionary[var][ind1]
                 tempConsult=consultTranslator(NonTerminalNode("ListConsult",[TerminalNode("Id","Temp"),consult.getChilds()[1].getChilds()[3]]),dictionary,expr)
                 del dictionary["Temp"]
@@ -369,19 +356,13 @@ def consultTranslator(consult,dictionary,expr,called):
 
             if(ind1!=None):
                 if(ind1>=len(dictionary[var])):
-                    if(called):
-                        outOfBoundsError(ind1Expr,expr)
-                    return None
+                    outOfBoundsError(ind1Expr,expr,ind1)
 
                 elif(ind2>=len(dictionary[var][ind1])):
-                    if(called):
-                        outOfBoundsError(ind2Expr,expr)
-                    return None
+                    outOfBoundsError(ind2Expr,expr,ind2)
 
                 elif(ind3>=len(dictionary[var][ind2])):
-                    if(called):
-                        outOfBoundsError(ind3Expr,expr)
-                    return None
+                    outOfBoundsError(ind3Expr,expr,ind3)
 
                 translation[expr]=dictionary[var][ind1][ind2][ind3]
                 translation["Aux"]="["+str(ind1)+"]["+str(ind2)+"]["+str(ind3)+"]"
@@ -406,9 +387,7 @@ def consultTranslator(consult,dictionary,expr,called):
                         nonIterableObjectError(consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken())
             if(ind1!=None):
                 if (ind1 >= len(dictionary[var])):
-                    if(called):
-                        outOfBoundsError(ind1Expr, expr)
-                    return None
+                    outOfBoundsError(ind1Expr, expr,ind1)
 
                 dictionary["Temp"] = dictionary[var][ind1]
                 tempConsult = consultTranslator(NonTerminalNode("MatConsult", [TerminalNode("Id", "Temp"), consult.getChilds()[1].getChilds()[3]]),dictionary,expr)
@@ -945,14 +924,40 @@ def dimensionConstVerifier(value,consts):
     elif(threeDMatrixVerifier(value)):
         if(len(value)>consts["Cubo"] or len(value[0])>consts["Dim0"] or len(value[0][0])>consts["Dim1"]):
             constDifferentDimensionError(value)
+def mainBlockSplitter(p):
+    output=[]
+    for line in p:
+        if(line.isNull()):
+            return output
+        elif(line.getName()=="MainBlock"):
+            output.extend(mainBlockSplitter(line.getChilds()))
+        elif("Instruction" in line.getName()):
+            output.append(line)
+
+    return output
+
+
+class CodeGenerator():
+    def __init__(self,fileName):
+        self.fileName=fileName
+        self.directory=self.initializer()
+
+    def initializer(self):
+        print("test")
+
+
+
 
 
 def constDifferentDimensionError(value):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The structure "+str(value)+" was defined without following the dimension constants specs, therefore it's forbidden")
     sys.exit()
 
-def outOfBoundsError(index,iterable):
-    print(colorama.Fore.RED + "SEMANTIC ERROR: Index "+str(index)+" in "+ str(iterable)+" out of bounds ")
+def outOfBoundsError(index,iterable,value):
+    if(not index.isdigit()):
+        print(colorama.Fore.RED + "SEMANTIC ERROR: Index "+str(index)+" in "+ str(iterable)+", where "+str(index)+"="+str(value)+",out of bounds ")
+    else:
+        print(colorama.Fore.RED + "SEMANTIC ERROR: Index " + str(index) + " in " + str(iterable) + " out of bounds ")
     sys.exit()
 
 def outOfGlobalScopeError(var):
@@ -1115,10 +1120,14 @@ def nullStatementBody(statement):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The body in statement "+statement+" can't be Null")
     sys.exit()
 
-def nullCycleBody(statement):
+def nullCycleBodyError(statement):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The body in cycle "+statement+" can't be Null")
     sys.exit()
 
 def notIterableObjectOnFor(varName):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in "+varName+" is not an iterable object, therefore it can't be used for iterations in FOR cycles")
+    sys.exit()
+
+def declaringVariablesOnMainError():
+    print(colorama.Fore.RED + "SEMANTIC ERROR: Declaring any kind of variable inside the main scope is forbidden")
     sys.exit()

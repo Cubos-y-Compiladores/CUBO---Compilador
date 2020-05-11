@@ -18,13 +18,13 @@ precedence = (
 def p_program(p):
     '''program : const_block main_proc'''
     p[0]=ProgramNode([p[1],p[2]])
+    constBSem(p[0].getChilds()[0].getChilds())
+    semantics(p[0])
     print(colorama.Fore.GREEN + "Successful compilation! Generating code...")
 
 
 def p_constB(p):
     '''const_block : const const const const const block'''
-    constBSem(p)
-    semantics(p[6])
     p[0]=NonTerminalNode("ConstB",[p[1],p[2],p[3],p[4],p[5],p[6]])
     
 def p_block0(p):
