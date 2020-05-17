@@ -40,7 +40,7 @@ reserved = {'if': 'IF',
             'shapeF':'SHAPEF',
             'shapeA':'SHAPEA',
             'Main':'MAIN',
-            'CALL':'CALL',
+            'Call':'CALL',
             'Timer':'TIMER',
             'Rango_Timer':'RANGOTIMER',
             'Dim_Filas':'DIMFILAS',
@@ -48,7 +48,9 @@ reserved = {'if': 'IF',
             'Cubo':'CUBO',
             'Mil': 'MIL',
             'Seg': 'SEG',
-            'Min': 'MIN'
+            'Min': 'MIN',
+            'begin':'BEGIN',
+            'end':'END'
             }
 
 tokens = tokens + list(reserved.values())
@@ -130,11 +132,11 @@ def t_DIVENT(t):
 
 class MyApp(wx.Frame):
     def __init__(self,parent,title):
-        wx.Frame.__init__(self,parent = parent , title = title, size = (1200,750))
+        wx.Frame.__init__(self,parent = parent, title = title, size = (1200,750))
 
 
-        self.textMain = wx.TextCtrl(self,style=wx.TE_MULTILINE|wx.TE_RICH,pos=(0,0),size=(1,1))
-        self.textConsole = wx.TextCtrl(self, style=wx.TE_MULTILINE|wx.TE_RICH, pos=(0, 0), size=(1, 1))
+        self.textMain = wx.TextCtrl(self,style=wx.TE_MULTILINE|wx.TE_RICH|wx.BORDER_NONE,pos=(0,0),size=(190,71))
+        self.textConsole = wx.TextCtrl(self, style=wx.TE_MULTILINE|wx.TE_RICH|wx.BORDER_NONE, pos=(0, 0), size=(370, 70))
         self.textMain.SetEvtHandlerEnabled(True)
 
 
@@ -165,28 +167,41 @@ class MyApp(wx.Frame):
         # Reserved words
 
         self.reservedWords1 = ["WHILE","FOR","IF","ELSE","CONST","GLOBAL","IN"]
-        self.reservedWords2 = ["PROCEDURE","MAIN","TIMER","DIMFILAS","DIMCOLUMNAS","RANGOTIMER","CUBO","BEGIN","END"]
+        self.reservedWords2 = ["PROCEDURE","MAIN","TIMER","DIMFILAS","DIMCOLUMNAS","RANGOTIMER","CUBO"]
         self.reservedWords3 = ["RANGE","TYPE","BLINK","DELAY","LEN","STEP","CALL","T","F","DEL","DELETE","SHAPEF","SHAPEC","SHAPEA","NEG","DELETE"]
         self.symbols = ['COMMA', 'LCORCH', 'RCORCH', 'QUOTES', 'ASSIGN']
         self.comment = "COMMENT"
         self.rTrue = "TRUE"
         self.rFalse = ["FALSE"]
         self.parentscorchs = ["PARENTCL","PARENTCR","RPARENT","LPARENT","MIL","SEG","MIN"]
+        self.functions = ["INSERT"]
+
+
 
         # COLORS
 
         self.colorPurple = (224, 71, 158)
         self.colorLightBlue = (79, 200, 218)
-        self.colorCel = (165, 197, 195)
+        self.colorComent = (165, 197, 195)
         self.colorOrange = (252, 163, 17)
         self.colorGreen = (0, 179, 131)
         self.colorRed = (254, 74, 38)
         self.colorGrey = (166, 162, 162)
         self.colorWhite = (255, 255, 255)
         self.colorOrange2 = (251, 139, 36)
-        self.colorBG = (54,72,101)
-        self.colorLabel = (38, 216, 205)
+        self.colorBG = (20,18,18)  #54 72 101
+        self.colorLabel = (93,253,203) # 38,216,205
         self.colorErrorBg = (255,145,164)
+        self.colorLineNumberBorder = (32,32,32)
+        self.colorLime = (222,255,79)
+        self.colorBegin = (128,237,153)
+        self.colorEnd = (87,204,153)
+        self.colorLineNumber = (173,172,181)
+
+        # self.SetBackgroundColour()
+        # ico = wx.Icon('pi.ico',wx.BITMAP_TYPE_ICO)
+        # self.SetIcon(ico)
+
 
 
         # Main File
@@ -254,6 +269,7 @@ class MyApp(wx.Frame):
 
         # Agregando barra al frame
 
+        self.mainMenu.SetBackgroundColour(self.colorLime)
         self.SetMenuBar(self.mainMenu)
 
         # Eventos menu
@@ -301,8 +317,10 @@ class MyApp(wx.Frame):
 
         # Labels
 
-        self.lblFileName = wx.StaticText(self,-1,"",(35,0))
+        self.lblFileName = wx.StaticText(self,-1,"",(5,4))
         self.lblLineNumber = wx.StaticText(self,-1,"1",(2,21))
+        self.lblLineNumber.SetForegroundColour(self.colorLineNumber)
+
 
         # Set Size to a label
         self.fontNumberLabel = self.lblLineNumber.GetFont()
@@ -313,6 +331,10 @@ class MyApp(wx.Frame):
 
         self.lblPosXY = wx.StaticText(self,-1,"1,0",(1100,4))
         self.lblLine = wx.StaticText(self,-1,"line : ",(1070,4))
+
+        self.lblPosXY.SetForegroundColour(self.colorWhite)
+        self.lblLine.SetForegroundColour(self.colorWhite)
+
 
         self.resetLabel("","")
 
@@ -329,14 +351,18 @@ class MyApp(wx.Frame):
         self.textMain.SetOwnBackgroundColour(self.colorBG)
         self.textConsole.SetBackgroundColour(self.colorBG)
         self.textMain.SetForegroundColour(self.colorWhite)
-        self.textConsole.SetForegroundColour(self.colorCel)
+        self.textConsole.SetForegroundColour(self.colorComent)
+
+
 
 
         # Sizer , Proporciona tamaño a los controles
 
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(self.textMain,2,wx.EXPAND|wx.LEFT|wx.UP,20)
-        sizer.Add(self.textConsole, 1, wx.EXPAND|wx.LEFT|wx.UP,10)
+        sizer.Add(self.textMain,2,wx.SHAPED|wx.LEFT|wx.UP|wx.RIGHT,20) # sizer.Add(self.textMain,2,wx.EXPAND|wx.LEFT|wx.UP,20)
+        sizer.Add(self.textConsole, 1, wx.SHAPED|wx.LEFT|wx.UP|wx.DOWN|wx.RIGHT,20)
+
+
         self.SetSizer(sizer)
 
         # AceleratorTable
@@ -348,8 +374,10 @@ class MyApp(wx.Frame):
 
         # Show Frame
 
+
         self.Centre(1)
         self.SetBackgroundColour(self.textMain.GetBackgroundColour())
+        self.SetBackgroundColour(self.colorLineNumberBorder)
         self.Show()
 
         # Thread for reserverd words
@@ -582,6 +610,7 @@ class MyApp(wx.Frame):
         for i in range(0,line):
             start += len(lista[i])
         end = len(lista[line])
+        
         self.startEnd = [start,end]
         self.flagBgError = not self.flagBgError
 
@@ -613,8 +642,10 @@ class MyApp(wx.Frame):
                         self.setStyleText(tok.lexpos+posInit,tok.lexpos + len(tok.value)+posInit, self.colorPurple)
                     elif tok.type in self.reservedWords2:
                         self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorLightBlue)
-                    elif tok.type == self.comment:
-                        self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorCel)
+                    elif tok.type in self.functions:
+                        self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorLime)
+                    elif tok.type == self.comment or tok.type == "BEGIN" or tok.type == "END":
+                        self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorComent)
                     elif tok.type in self.reservedWords3:
                         self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorOrange)
                     elif tok.type == self.rTrue:
@@ -631,6 +662,10 @@ class MyApp(wx.Frame):
                         self.setStyleText(tok.lexpos + posInit, tok.lexpos + len(tok.value) + posInit, self.colorOrange2)
                     elif tok.type == "INT":
                         self.setStyleText(tok.lexpos + posInit, tok.lexpos + len(str(tok.value)) + posInit, self.colorWhite)
+                    #elif tok.type == "BEGIN":
+                     #   self.setStyleText(tok.lexpos + posInit, tok.lexpos + len(tok.value) + posInit, self.colorBegin)
+                    #elif tok.type == "END":
+                     #   self.setStyleText(tok.lexpos + posInit, tok.lexpos + len(tok.value) + posInit, self.colorEnd)
 
 
     def changeReservedWords2(self):
@@ -655,36 +690,54 @@ class MyApp(wx.Frame):
             text = ""
 
             if newRowLen != self.pastRowLen:
-                self.pastRowLen = newRowLen
 
-                if lxy[2] != self.maxNumberLine and self.maxNumberLine > 20:
-                    posInit = self.maxNumberLine - 20
-                    cont = 0
-                    self.minNumberLine = posInit +1
-                    for i in range(self.minNumberLine, newRowLen):
-                        cont+=1
-                        text += str(i) + "\n"
-                        if cont == 20:
+                # TODO crear caso para cuando se borra , self.pasRowLen > newRowLen
+
+                if newRowLen > self.pastRowLen: #or newRowLen <= self.pastRowLen:
+                    if lxy[2] != self.maxNumberLine and self.maxNumberLine > 20:
+                        posInit = self.maxNumberLine - 20
+                        cont = 0
+                        self.minNumberLine = posInit +1
+                        for i in range(self.minNumberLine, newRowLen):
+                            cont+=1
+                            text += str(i) + "\n"
+                            if cont == 20:
+                                self.maxNumberLine = i
+                                break
+                    elif lxy[2] + 1 > 20:
+                        cont = 0
+                        self.minNumberLine = self.plusNumberLine + 1
+                        for i in range(self.minNumberLine + 1, newRowLen+2):
+                            cont+=1
+                            text += str(i) + "\n"
+                            if cont == 20:
+                                self.maxNumberLine = i
+                                break
+                     
+                    else:
+                        cont = 0
+                        self.minNumberLine = 1
+                        for i in range(self.minNumberLine, newRowLen + 1):
+                            cont += 1
+                            text += str(i) + "\n"
                             self.maxNumberLine = i
-                            break
-                elif lxy[2] + 1 > 20:
+                            if cont == 20:
+                                break
+                elif newRowLen < self.pastRowLen:
+                    print("Borrando")
+
+                     # TODO Logica para el borrado
+
                     cont = 0
-                    self.minNumberLine = self.plusNumberLine + 2
-                    for i in range(self.minNumberLine, newRowLen+2):
-                        cont+=1
-                        text += str(i) + "\n"
-                        if cont == 20:
-                            self.maxNumberLine = i
-                            break
-                else:
-                    cont = 0
-                    self.minNumberLine = 1
-                    for i in range(self.minNumberLine, newRowLen + 1):
+                    for i in range(self.minNumberLine , len(self.textMain.GetValue().split("\n")) + 1):
                         cont += 1
                         text += str(i) + "\n"
                         self.maxNumberLine = i
                         if cont == 20:
                             break
+                    print("menor")
+
+                self.pastRowLen = newRowLen
                 self.lblLineNumber.SetLabel("" + text)
 
             # Aca entra solo en el movimiento del scrol pero sin cambio de posicion del mouse
@@ -694,6 +747,7 @@ class MyApp(wx.Frame):
             if scrollPos > self.pasScrollPosition:
                 dif = scrollPos - self.pasScrollPosition
                 self.minNumberLine += dif
+
                 cont = 0
                 for i in range(self.minNumberLine , len(self.textMain.GetValue().split("\n")) + 2 ):
                     cont+=1
@@ -721,7 +775,6 @@ class MyApp(wx.Frame):
                     if cont == 20:
                         self.maxNumberLine = i
                         break
-
             self.pasScrollPosition = scrollPos
             self.lblLineNumber.SetLabel("" + text)
 
@@ -809,8 +862,10 @@ class MyApp(wx.Frame):
                         self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3], self.colorPurple)
                     elif tok.type in self.reservedWords2:
                         self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3],self.colorLightBlue)
-                    elif tok.type == self.comment:
-                        self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3], self.colorCel)
+                    elif tok.type in self.functions:
+                        self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3],self.colorLime)
+                    elif tok.type == self.comment or tok.type == "BEGIN" or tok.type == "END":
+                        self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3], self.colorComent)
                     elif tok.type in self.reservedWords3:
                         self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3], self.colorOrange)
                     elif tok.type == self.rTrue:
@@ -827,6 +882,10 @@ class MyApp(wx.Frame):
                         self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3],self.colorOrange2)
                     elif tok.type == "INT":
                         self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3],self.colorWhite)
+                    #elif tok.type == "BEGIN":
+                     #   self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3],self.colorBegin)
+                    #elif tok.type == "END":
+                     #   self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3],self.colorEnd)
 
 
 # Creando funcion que reconoce solo el texto nuevo para colorearlo
@@ -847,8 +906,10 @@ class MyApp(wx.Frame):
                         self.writeColor(tok.value,self.colorPurple)
                     elif tok.type in self.reservedWords2:
                         self.writeColor(tok.value, self.colorLightBlue)
-                    elif tok.type == self.comment:
-                        self.writeColor(tok.value, self.colorCel)
+                    elif tok.type in self.functions:
+                        self.writeColor(tok.value, self.colorLime)
+                    elif tok.type == self.comment or tok.type == "BEGIN" or tok.type == "END":
+                        self.writeColor(tok.value, self.colorComent)
                     elif tok.type in self.symbols:
                         self.writeColor(tok.value, self.colorOrange2)
                     elif tok.type in self.reservedWords3:
@@ -859,6 +920,10 @@ class MyApp(wx.Frame):
                         self.writeColor(tok.value, self.colorRed)
                     elif tok.type in self.parentscorchs:
                         self.writeColor(tok.value, self.colorGrey)
+                    #elif tok.type == "BEGIN":
+                     #   self.writeColor(tok.value, self.colorBegin)
+                    #elif tok.type == "END":
+                     #   self.writeColor(tok.value, self.colorEnd)
                     else:
                         self.writeColor(tok.value, self.colorWhite)
 
@@ -879,8 +944,10 @@ class MyApp(wx.Frame):
                         self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), self.colorPurple)
                     elif tok.type in self.reservedWords2:
                         self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), self.colorLightBlue)
-                    elif tok.type == self.comment:
-                        self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), self.colorCel)
+                    elif tok.type in self.functions:
+                        self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), self.colorLime)
+                    elif tok.type == self.comment or tok.type == "BEGIN" or tok.type == "END":
+                        self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), self.colorComent)
                     elif tok.type in self.symbols:
                         self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), self.colorOrange2)
                     elif tok.type in self.reservedWords3:
@@ -895,6 +962,10 @@ class MyApp(wx.Frame):
                         self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), self.colorWhite)
                     elif tok.type == "INT":
                         self.setStyleText(tok.lexpos, tok.lexpos + len(str((tok.value))), self.colorWhite)
+                    #elif tok.type == "BEGIN":
+                    #    self.setStyleText(tok.lexpos, tok.lexpos + len((tok.value)), self.colorBegin)
+                    #elif tok.type == "END":
+                     #   self.setStyleText(tok.lexpos, tok.lexpos + len((tok.value)), self.colorEnd)
 
 if __name__ == '__main__':
     app = wx.App()
