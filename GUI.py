@@ -132,12 +132,53 @@ def t_DIVENT(t):
 
 class MyApp(wx.Frame):
     def __init__(self,parent,title):
-        wx.Frame.__init__(self,parent = parent, title = title, size = (1200,750))
+        wx.Frame.__init__(self,parent = parent, title = title, size = (1350,750))
+
+        # COLORS
+
+        self.colorPurple = (224, 71, 158)
+        self.colorLightBlue = (79, 200, 218)
+        self.colorComent = (165, 197, 195)
+        self.colorOrange = (252, 163, 17)
+        self.colorGreen = (0, 179, 131)
+        self.colorRed = (254, 74, 38)
+        self.colorGrey = (166, 162, 162)
+        self.colorWhite = (255, 255, 255)
+        self.colorOrange2 = (251, 139, 36)
+        self.colorBG = (20,18,18)  #54 72 101
+        self.colorLabel = (93,253,203) # 38,216,205
+        self.colorErrorBg = (255,145,164)
+        self.colorLineNumberBorder = (32,32,32)
+        self.colorLime = (222,255,79)
+        self.colorBegin = (128,237,153)
+        self.colorEnd = (87,204,153)
+        self.colorLineNumber = (173,172,181)
+        self.colorBorder = (40,40,40) #57,61,63
 
 
-        self.textMain = wx.TextCtrl(self,style=wx.TE_MULTILINE|wx.TE_RICH|wx.BORDER_NONE,pos=(0,0),size=(190,71))
-        self.textConsole = wx.TextCtrl(self, style=wx.TE_MULTILINE|wx.TE_RICH|wx.BORDER_NONE, pos=(0, 0), size=(370, 70))
+
+
+        # TextControls
+
+        self.textMain = wx.TextCtrl(self,style=wx.TE_MULTILINE|wx.TE_RICH|wx.BORDER_NONE,pos=(0,0),size=(205,71))
+        self.textConsole = wx.TextCtrl(self, style=wx.TE_MULTILINE|wx.TE_RICH|wx.BORDER_NONE, pos=(0, 0), size=(370, 60))
+
         self.textMain.SetEvtHandlerEnabled(True)
+        self.SetMaxSize((1350,750))
+        self.SetMinSize((1350,750))
+
+        # Paneles
+        self.mainPanel = wx.Panel(self,1, pos = (39,39), size = (1250,422))
+        self.mainPanel.SetBackgroundColour(self.colorBG)
+
+        self.panelLine1 = wx.Panel(self,1,pos = (0,38) ,size = (1350,1))
+        self.panelLine1.SetBackgroundColour(self.colorBG)
+
+        self.panelLine2 = wx.Panel(self,1,pos = (0,460) ,size = (1350,1))
+        self.panelLine2.SetBackgroundColour(self.colorBG)
+
+        self.panelLine3 = wx.Panel(self,1,pos = (0,500) ,size = (1350,1))
+        self.panelLine3.SetBackgroundColour(self.colorBG)
 
 
         self.currentDirectory = os.getcwd() + "/Files"
@@ -176,31 +217,6 @@ class MyApp(wx.Frame):
         self.parentscorchs = ["PARENTCL","PARENTCR","RPARENT","LPARENT","MIL","SEG","MIN"]
         self.functions = ["INSERT"]
 
-
-
-        # COLORS
-
-        self.colorPurple = (224, 71, 158)
-        self.colorLightBlue = (79, 200, 218)
-        self.colorComent = (165, 197, 195)
-        self.colorOrange = (252, 163, 17)
-        self.colorGreen = (0, 179, 131)
-        self.colorRed = (254, 74, 38)
-        self.colorGrey = (166, 162, 162)
-        self.colorWhite = (255, 255, 255)
-        self.colorOrange2 = (251, 139, 36)
-        self.colorBG = (20,18,18)  #54 72 101
-        self.colorLabel = (93,253,203) # 38,216,205
-        self.colorErrorBg = (255,145,164)
-        self.colorLineNumberBorder = (32,32,32)
-        self.colorLime = (222,255,79)
-        self.colorBegin = (128,237,153)
-        self.colorEnd = (87,204,153)
-        self.colorLineNumber = (173,172,181)
-
-        # self.SetBackgroundColour()
-        # ico = wx.Icon('pi.ico',wx.BITMAP_TYPE_ICO)
-        # self.SetIcon(ico)
 
 
 
@@ -318,7 +334,7 @@ class MyApp(wx.Frame):
         # Labels
 
         self.lblFileName = wx.StaticText(self,-1,"",(5,4))
-        self.lblLineNumber = wx.StaticText(self,-1,"1",(2,21))
+        self.lblLineNumber = wx.StaticText(self,-1,"1",(1,40)) #38
         self.lblLineNumber.SetForegroundColour(self.colorLineNumber)
 
 
@@ -329,8 +345,8 @@ class MyApp(wx.Frame):
 
 
 
-        self.lblPosXY = wx.StaticText(self,-1,"1,0",(1100,4))
-        self.lblLine = wx.StaticText(self,-1,"line : ",(1070,4))
+        self.lblPosXY = wx.StaticText(self,-1,"1,0",(1150,4))
+        self.lblLine = wx.StaticText(self,-1,"line : ",(1120,4))
 
         self.lblPosXY.SetForegroundColour(self.colorWhite)
         self.lblLine.SetForegroundColour(self.colorWhite)
@@ -345,6 +361,7 @@ class MyApp(wx.Frame):
         # self.slideFont.Bind(wx.EVT_SET_FOCUS,self.focusOnSlider)
         # self.textConsole.Bind(wx.EVT_SET_CURSOR,self.focusOnTextCtrl)
 
+
         # Fuentes de Texto
 
         self.setFontSize(12)
@@ -354,13 +371,11 @@ class MyApp(wx.Frame):
         self.textConsole.SetForegroundColour(self.colorComent)
 
 
-
-
         # Sizer , Proporciona tamaño a los controles
 
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(self.textMain,2,wx.SHAPED|wx.LEFT|wx.UP|wx.RIGHT,20) # sizer.Add(self.textMain,2,wx.EXPAND|wx.LEFT|wx.UP,20)
-        sizer.Add(self.textConsole, 1, wx.SHAPED|wx.LEFT|wx.UP|wx.DOWN|wx.RIGHT,20)
+        sizer.Add(self.textMain,2,wx.SHAPED|wx.LEFT|wx.UP|wx.RIGHT,40)
+        sizer.Add(self.textConsole, 1, wx.SHAPED|wx.LEFT|wx.UP|wx.RIGHT,40)
 
 
         self.SetSizer(sizer)
@@ -682,6 +697,7 @@ class MyApp(wx.Frame):
             self.changeTextColorWithoutClear()
 
         if lxy[2] != self.pastLabelNumberPosition:
+
             newRowLen = len(self.textMain.GetValue().split("\n"))
 
             self.plusNumberLine = lxy[2]-20
@@ -690,6 +706,7 @@ class MyApp(wx.Frame):
             text = ""
 
             if newRowLen != self.pastRowLen:
+
 
                 # TODO crear caso para cuando se borra , self.pasRowLen > newRowLen
 
@@ -700,7 +717,10 @@ class MyApp(wx.Frame):
                         self.minNumberLine = posInit +1
                         for i in range(self.minNumberLine, newRowLen):
                             cont+=1
-                            text += str(i) + "\n"
+                            if text == "":
+                                text += " " * (4 - len(str(i))) + str(i)
+                            else:
+                                text +=  "\n" + " "*(4-len(str(i))) + str(i)
                             if cont == 20:
                                 self.maxNumberLine = i
                                 break
@@ -709,17 +729,24 @@ class MyApp(wx.Frame):
                         self.minNumberLine = self.plusNumberLine + 1
                         for i in range(self.minNumberLine + 1, newRowLen+2):
                             cont+=1
-                            text += str(i) + "\n"
+                            if text == "":
+
+                                text += " "*(4-len(str(i))) + str(i)
+                            else:
+                                text += "\n" + " " * (4 - len(str(i))) + str(i)
                             if cont == 20:
                                 self.maxNumberLine = i
                                 break
-                     
+
                     else:
                         cont = 0
                         self.minNumberLine = 1
                         for i in range(self.minNumberLine, newRowLen + 1):
                             cont += 1
-                            text += str(i) + "\n"
+                            if text == "":
+                                text +=  " "*(4-len(str(i))) + str(i)
+                            else:
+                                text += "\n" + " " * (4 - len(str(i))) + str(i)
                             self.maxNumberLine = i
                             if cont == 20:
                                 break
@@ -731,7 +758,10 @@ class MyApp(wx.Frame):
                     cont = 0
                     for i in range(self.minNumberLine , len(self.textMain.GetValue().split("\n")) + 1):
                         cont += 1
-                        text += str(i) + "\n"
+                        if text == "":
+                            text += " "*(4-len(str(i))) + str(i)
+                        else:
+                            text += "\n" + " " * (4 - len(str(i))) + str(i)
                         self.maxNumberLine = i
                         if cont == 20:
                             break
@@ -751,7 +781,11 @@ class MyApp(wx.Frame):
                 cont = 0
                 for i in range(self.minNumberLine , len(self.textMain.GetValue().split("\n")) + 2 ):
                     cont+=1
-                    text += str(i) + "\n"
+                    if text == "":
+
+                        text += " "*(4-len(str(i))) + str(i)
+                    else:
+                        text += "\n" + " " * (4 - len(str(i))) + str(i)
 
                     if cont == 20:
                         self.maxNumberLine = i
@@ -771,12 +805,18 @@ class MyApp(wx.Frame):
                 cont = 0
                 for i in range(self.minNumberLine , len(self.textMain.GetValue().split("\n")) + 2):
                     cont += 1
-                    text += str(i) + "\n"
+                    if text == "":
+
+                        text +=  " "*(4-len(str(i))) + str(i)
+                    else:
+                        text += "\n" + " " * (4 - len(str(i))) + str(i)
+
                     if cont == 20:
                         self.maxNumberLine = i
                         break
             self.pasScrollPosition = scrollPos
             self.lblLineNumber.SetLabel("" + text)
+
 
         if self.textMain.GetValue() != self.currenttext or len(self.textMain.GetValue()) != len(self.currenttext):
             if self.flagBgError:
