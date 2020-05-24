@@ -14,7 +14,15 @@ Main
 =
 -- comentarios
 
+macho = gay;
+macho = True;
+type(macho)
 
+-- comentario
+while macho == gay{
+
+	macho.Neg();
+}
 
 
 
