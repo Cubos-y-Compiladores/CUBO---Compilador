@@ -160,7 +160,7 @@ class MyApp(wx.Frame):
 
         # TextControls
 
-        self.textMain = wx.TextCtrl(self,style=wx.TE_MULTILINE|wx.TE_RICH|wx.BORDER_NONE,pos=(0,0),size=(205,71))
+        self.textMain = wx.TextCtrl(self,style=wx.TE_MULTILINE|wx.TE_RICH|wx.BORDER_NONE,pos=(0,0),size=(203,71))
         self.textConsole = wx.TextCtrl(self, style=wx.TE_MULTILINE|wx.TE_RICH|wx.BORDER_NONE, pos=(0, 0), size=(370, 60))
 
         self.textMain.SetEvtHandlerEnabled(True)
@@ -168,17 +168,20 @@ class MyApp(wx.Frame):
         self.SetMinSize((1350,750))
 
         # Paneles
-        self.mainPanel = wx.Panel(self,1, pos = (39,39), size = (1250,422))
+        self.mainPanel = wx.Panel(self,1, pos = (39,39), size = (1276,424))
         self.mainPanel.SetBackgroundColour(self.colorBG)
 
         self.panelLine1 = wx.Panel(self,1,pos = (0,38) ,size = (1350,1))
         self.panelLine1.SetBackgroundColour(self.colorBG)
 
-        self.panelLine2 = wx.Panel(self,1,pos = (0,460) ,size = (1350,1))
+        self.panelLine2 = wx.Panel(self,1,pos = (0,462) ,size = (1350,1))
         self.panelLine2.SetBackgroundColour(self.colorBG)
 
-        self.panelLine3 = wx.Panel(self,1,pos = (0,500) ,size = (1350,1))
+        self.panelLine3 = wx.Panel(self,1,pos = (0,477) ,size = (1350,1))
         self.panelLine3.SetBackgroundColour(self.colorBG)
+
+        self.panelLine4 = wx.Panel(self,1,pos = (0,676) ,size = (1350,1))
+        self.panelLine4.SetBackgroundColour(self.colorBG)
 
 
         self.currentDirectory = os.getcwd() + "/Files"
@@ -203,6 +206,8 @@ class MyApp(wx.Frame):
 
         self.filesList = self.readFilesList().split(",")
         self.contNewFiles = self.filesList[0]
+        if self.contNewFiles == "":
+            self.contNewFiles = "0"
         self.actualFontSize = 0
 
         # Reserved words
@@ -374,8 +379,8 @@ class MyApp(wx.Frame):
         # Sizer , Proporciona tamaño a los controles
 
         sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(self.textMain,2,wx.SHAPED|wx.LEFT|wx.UP|wx.RIGHT,40)
-        sizer.Add(self.textConsole, 1, wx.SHAPED|wx.LEFT|wx.UP|wx.RIGHT,40)
+        sizer.Add(self.textMain,2,wx.SHAPED|wx.LEFT|wx.UP,40)
+        sizer.Add(self.textConsole, 1, wx.SHAPED|wx.LEFT|wx.UP|wx.RIGHT,17)
 
 
         self.SetSizer(sizer)
@@ -869,22 +874,17 @@ class MyApp(wx.Frame):
                         self.changeWordColor(pack)
 
         # Test when an enter has inserted
-
-        # if self.textMain.PositionToXY(self.textMain.GetInsertionPoint())[2] != self.currentLineNumber:
-          #  curPos = self.textMain.GetInsertionPoint()
-           # linenumber = self.textMain.PositionToXY(curPos)
+            #curPos = self.textMain.GetInsertionPoint()
+            #linenumber = self.textMain.PositionToXY(curPos)
             #lineText = self.textMain.GetLineText(linenumber[2]-1)
             #print("LENLINTEXTPrevious" + str(len(lineText)))
-
             #if lineText.endswith("{") and self.textMain.PositionToXY(self.textMain.GetInsertionPoint())[2] > self.currentLineNumber :
-             #   self.textMain.AppendText("}")
-              #  self.currentLineNumber = self.textMain.PositionToXY(self.textMain.GetInsertionPoint())[2]
-
-                    #self.textMain.AppendText("\n")# * ((len(lineText)+2)//4))
-                    #self.textMain.AppendText("\t")# *(self.currenttext.count("}")+1) +"}")
+                    #self.textMain.AppendText("\t")
+                    #self.textMain.AppendText("\n}")
+                    #self.currentLineNumber = self.textMain.PositionToXY(self.textMain.GetInsertionPoint())[2]
                     #self.textMain.SetInsertionPoint(len(lineText)+4 + (4*lineText.count("\t")))
-                    #self.textMain.SetInsertionPointEnd()
                     #self.textMain.Refresh()
+                    #self.changeTextColorWithoutClear()
 
 
     def changeWordColor(self,tuple):
