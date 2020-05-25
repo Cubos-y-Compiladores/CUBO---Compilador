@@ -1,0 +1,99 @@
+Rango_Timer = "Seg";
+Dim_Filas=6;
+Dim_Columnas = 5;
+Timer=15;
+Cubo = 6;
+b=True;
+t=1;
+z=[[True,True],[True,True]];
+k,l=range(t,True),[True];
+y=[True];
+r=[[[False,False,False],[False,False,False],[False,False,False]],[[False,False,False],[False,False,False],[False,False,False]],[[False,False,False],[False,False,False],[False,False,False]]];
+--k=(z*y)/10;
+w,x=True,range(10,True);
+Procedure InsertTest (param1,param2,param3)
+    {
+    global r,z,y,k;
+    global t;
+        begin
+        z.insert([True,False,False],1);
+        z.insert(param1,False);
+        z[0].insert(2,True);
+        t.insert(2,True);
+        t.insert([True,False],1);
+        z.insert([True,False,False],1);
+        z.insert([False,False],2,r);
+        z.insert([False,False],0,20);
+        r[0].insert([True,True,True],1,0);
+        z.insert(param1[1],False);
+        param1[1].insert(0,False);
+        l.insert(param1,True);
+        l.insert(r,True);
+        l.insert(t,True);
+        param1.insert(t,True);
+        param1.insert([True,False,True],0);
+        param1.insert(r,0);
+        z.insert(l,0);
+        z.insert(l,1,t);
+        z.insert(r,1,t);
+        r[0].insert(r,1,t);
+        r[0].insert(l,1,t);
+        end;    
+    };
+Procedure delTest (param1,param2,param3)
+    {
+    global t,r,z;
+        begin
+        z.del(1)
+        t.del(0);
+        r.del(1);
+        end;    
+    };
+Procedure negTest (param1,param2,param3)
+    {
+    global y,z,r;
+        begin
+        y.Neg;
+        z.Neg;
+        r.Neg;
+        t.Neg;
+        b.Neg;
+        y[3].Neg;
+        r[2][1][0].Neg;
+        r[0].Neg;
+        z[0].Neg;
+        end;    
+    };
+Procedure tFTest (param1,param2,param3)
+    {
+    global y,z,r;
+        begin
+        z.F;
+        y.T;
+        r.F;
+        t.T;
+        b.F;
+        r[0].T;
+        z[0].F;
+        end;
+    };
+Procedure deleteTest (param1,param2,param3)
+    {
+    global r,z;
+        begin
+	if (x==2){
+	for i in Step 2{
+
+}
+}
+       r[0].delete(0,0);
+       r[0][1].delete(0,0);
+       r[0][1][2].delete(0,0);
+       r.delete(0,5);
+       r.delete(10,1);
+       z.delete(t,0);
+       z.delete(0,1);
+       r.delete(t,0);
+       r.delete(t,1);
+        end;
+    };
