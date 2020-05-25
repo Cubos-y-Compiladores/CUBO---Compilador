@@ -154,31 +154,48 @@ class MyApp(wx.Frame):
         self.colorEnd = (87,204,153)
         self.colorLineNumber = (173,172,181)
         self.colorBorder = (40,40,40) #57,61,63
+        self.colorLineCol = (40,40,40)
 
 
 
 
         # TextControls
 
-        self.textMain = wx.TextCtrl(self,style=wx.TE_MULTILINE|wx.TE_RICH|wx.BORDER_NONE,pos=(0,0),size=(205,71))
-        self.textConsole = wx.TextCtrl(self, style=wx.TE_MULTILINE|wx.TE_RICH|wx.BORDER_NONE, pos=(0, 0), size=(370, 60))
+        self.textMain = wx.TextCtrl(self,style=wx.TE_MULTILINE|wx.TE_RICH|wx.BORDER_NONE,pos=(38,21),size=(1277,425))
+        self.textConsole = wx.TextCtrl(self, style=wx.TE_MULTILINE|wx.TE_RICH|wx.BORDER_NONE|wx.TE_READONLY, pos=(52,465), size=(1259, 209))
+        self.textConsole.AppendText("CubeCompiler [Version 1.0.0.0.1.0.1]\n(c) 2020 DD&D Corporation. All rights reserved.")
+        self.textConsole.AppendText("\n\n")
+
+
+
+
+
 
         self.textMain.SetEvtHandlerEnabled(True)
         self.SetMaxSize((1350,750))
         self.SetMinSize((1350,750))
 
         # Paneles
-        self.mainPanel = wx.Panel(self,1, pos = (39,39), size = (1250,422))
-        self.mainPanel.SetBackgroundColour(self.colorBG)
+        self.mainPanel = wx.Panel(self,1, pos = (39,22), size = (1276,424))
+        self.mainPanel.SetBackgroundColour(self.colorWhite)
 
-        self.panelLine1 = wx.Panel(self,1,pos = (0,38) ,size = (1350,1))
+        self.panelLine1 = wx.Panel(self,1,pos = (0,20) ,size = (1350,1))
         self.panelLine1.SetBackgroundColour(self.colorBG)
 
-        self.panelLine2 = wx.Panel(self,1,pos = (0,460) ,size = (1350,1))
+        self.panelLine2 = wx.Panel(self,1,pos = (0,445) ,size = (1350,1))
         self.panelLine2.SetBackgroundColour(self.colorBG)
 
-        self.panelLine3 = wx.Panel(self,1,pos = (0,500) ,size = (1350,1))
+        self.panelLine3 = wx.Panel(self,1,pos = (0,460) ,size = (1350,1))
         self.panelLine3.SetBackgroundColour(self.colorBG)
+
+        self.panelLine4 = wx.Panel(self,1,pos = (0,674) ,size = (1350,1))
+        self.panelLine4.SetBackgroundColour(self.colorBG)
+
+        self.panelLineVertical1 = wx.Panel(self,1,pos = (18,461) ,size = (1,214))
+        self.panelLineVertical1.SetBackgroundColour(self.colorBG)
+
+        self.panelLineVertical2 = wx.Panel(self,1,pos = (40,461) ,size=(1271, 214))
+        self.panelLineVertical2.SetBackgroundColour(self.colorBG)
 
 
         self.currentDirectory = os.getcwd() + "/Files"
@@ -203,6 +220,8 @@ class MyApp(wx.Frame):
 
         self.filesList = self.readFilesList().split(",")
         self.contNewFiles = self.filesList[0]
+        if self.contNewFiles == "":
+            self.contNewFiles = "0"
         self.actualFontSize = 0
 
         # Reserved words
@@ -323,9 +342,7 @@ class MyApp(wx.Frame):
         self.textMain.Bind(wx.EVT_SET_CURSOR, self.focusOnTextCtrl)
 
 
-        # Botones
 
-        # btn1 = wx.Button(self,-1,u"B",pos=(0,4),size=(20,20))
 
         # Funcion boton
 
@@ -333,8 +350,8 @@ class MyApp(wx.Frame):
 
         # Labels
 
-        self.lblFileName = wx.StaticText(self,-1,"",(5,4))
-        self.lblLineNumber = wx.StaticText(self,-1,"1",(1,40)) #38
+        self.lblFileName = wx.StaticText(self,-1,"",(1076,658))
+        self.lblLineNumber = wx.StaticText(self,-1,"1",(1,21)) #38
         self.lblLineNumber.SetForegroundColour(self.colorLineNumber)
 
 
@@ -342,17 +359,52 @@ class MyApp(wx.Frame):
         self.fontNumberLabel = self.lblLineNumber.GetFont()
         self.fontNumberLabel.SetPointSize(12)
         self.lblLineNumber.SetFont(self.fontNumberLabel)
+        self.fontNumberLabel.SetPointSize(12)
+
+        self.lblBackG = wx.StaticText(self,-1," " + "\t"*15 +" ",(1184,658))
+        self.lblBackG.SetBackgroundColour(self.colorBorder)
+        # self.lblBackG.SetForegroundColour()
+
+
+        self.fontNumberLabel.SetPointSize(9)
+        self.lblLine = wx.StaticText(self, -1, "  line : ", (1184, 658))
+        self.lblPosY = wx.StaticText(self,-1,"1",(1224,658))
+        self.lblCol = wx.StaticText(self, -1, "col : ", (1254, 658))
+        self.lblPosX = wx.StaticText(self, -1, "0", (1284, 658))
+
+
+        self.lblpanel = wx.StaticText(self,-1,"\n......."*13,(19,462))
+        self.lblpanel.SetForegroundColour(self.colorBorder)
+        self.lblpanel.SetBackgroundColour(self.colorBorder)
+
+        # Botones
+        bmpRun = wx.Bitmap(os.getcwd() + "/Resources/buttonPlay.png", wx.BITMAP_TYPE_ANY)
+        buttonRun = wx.BitmapButton(self.lblpanel, id=wx.ID_ANY, bitmap=bmpRun,
+                                 size=(bmpRun.GetWidth() + 10, bmpRun.GetHeight() + 10), style = wx.NO_BORDER, pos = (0,5))
+        buttonRun.SetBackgroundColour(self.colorBorder)
+
+        # btn1 = wx.Button(self.lblpanel,-1,u"B",pos=(0,10),size=(20,20))
+        # btn1.Bind(wx.EVT_BUTTON,self.click1)
+
+        self.lblPosY.SetBackgroundColour(self.colorBorder)
+        self.lblLine.SetBackgroundColour(self.colorBorder)
+        self.lblCol.SetBackgroundColour(self.colorBorder)
+        self.lblPosX.SetBackgroundColour(self.colorBorder)
+
+        self.lblLine.SetFont(self.fontNumberLabel)
+        self.lblPosY.SetFont(self.fontNumberLabel)
+        self.lblCol.SetFont(self.fontNumberLabel)
+        self.lblPosX.SetFont(self.fontNumberLabel)
+
+        self.lblLine.SetForegroundColour(self.colorLabel)
+        self.lblPosY.SetForegroundColour(self.colorLabel)
+        self.lblCol.SetForegroundColour(self.colorLabel)
+        self.lblPosX.SetForegroundColour(self.colorLabel)
+
+        self.resetLabel("","NewFile.cbc")
 
 
 
-        self.lblPosXY = wx.StaticText(self,-1,"1,0",(1150,4))
-        self.lblLine = wx.StaticText(self,-1,"line : ",(1120,4))
-
-        self.lblPosXY.SetForegroundColour(self.colorWhite)
-        self.lblLine.SetForegroundColour(self.colorWhite)
-
-
-        self.resetLabel("","")
 
         # Sliders
 
@@ -368,17 +420,19 @@ class MyApp(wx.Frame):
         self.textMain.SetOwnBackgroundColour(self.colorBG)
         self.textConsole.SetBackgroundColour(self.colorBG)
         self.textMain.SetForegroundColour(self.colorWhite)
-        self.textConsole.SetForegroundColour(self.colorComent)
+        self.textConsole.SetForegroundColour(self.colorLabel)
 
 
         # Sizer , Proporciona tamaño a los controles
 
-        sizer = wx.BoxSizer(wx.VERTICAL)
-        sizer.Add(self.textMain,2,wx.SHAPED|wx.LEFT|wx.UP|wx.RIGHT,40)
-        sizer.Add(self.textConsole, 1, wx.SHAPED|wx.LEFT|wx.UP|wx.RIGHT,40)
+
+        # sizer = wx.BoxSizer(wx.VERTICAL)
+        # sizer.Add(self.textMain,2,wx.SHAPED|wx.LEFT|wx.UP,40)
+        # sizer.Add(self.textConsole, 1, wx.SHAPED|wx.UP|wx.RIGHT|wx.LEFT,17)
 
 
-        self.SetSizer(sizer)
+
+        # self.SetSizer(sizer)
 
         # AceleratorTable
 
@@ -393,6 +447,8 @@ class MyApp(wx.Frame):
         self.Centre(1)
         self.SetBackgroundColour(self.textMain.GetBackgroundColour())
         self.SetBackgroundColour(self.colorLineNumberBorder)
+
+
         self.Show()
 
         # Thread for reserverd words
@@ -534,8 +590,14 @@ class MyApp(wx.Frame):
         for lbl in lbls:
 
             if number in lbl.GetLabel():
-                lbl.SetLabel("File -> " + newLabel)
+                text = "  File -> " + newLabel + "  "
+                lbl.SetLabel(text)
+                lbl.SetPosition((1183 - lbl.Size[0], 658))
+
+
                 lbl.SetForegroundColour(self.colorLabel)
+                lbl.SetBackgroundColour(self.colorBorder)
+
                 break
 
     def saveFile(self,event):
@@ -691,7 +753,8 @@ class MyApp(wx.Frame):
 
         if lxy[1] != self.pasPosxyList[1] or lxy[2] != self.pasPosxyList[2]:
             self.pasPosxyList = lxy
-            self.lblPosXY.SetLabel(str(lxy[2]+1)+","+str(lxy[1]))
+            self.lblPosY.SetLabel(str(lxy[2]+1))
+            self.lblPosX.SetLabel(str(lxy[1]))
 
         if self.flagSlider:
             self.changeTextColorWithoutClear()
@@ -869,22 +932,17 @@ class MyApp(wx.Frame):
                         self.changeWordColor(pack)
 
         # Test when an enter has inserted
-
-        # if self.textMain.PositionToXY(self.textMain.GetInsertionPoint())[2] != self.currentLineNumber:
-          #  curPos = self.textMain.GetInsertionPoint()
-           # linenumber = self.textMain.PositionToXY(curPos)
+            #curPos = self.textMain.GetInsertionPoint()
+            #linenumber = self.textMain.PositionToXY(curPos)
             #lineText = self.textMain.GetLineText(linenumber[2]-1)
             #print("LENLINTEXTPrevious" + str(len(lineText)))
-
             #if lineText.endswith("{") and self.textMain.PositionToXY(self.textMain.GetInsertionPoint())[2] > self.currentLineNumber :
-             #   self.textMain.AppendText("}")
-              #  self.currentLineNumber = self.textMain.PositionToXY(self.textMain.GetInsertionPoint())[2]
-
-                    #self.textMain.AppendText("\n")# * ((len(lineText)+2)//4))
-                    #self.textMain.AppendText("\t")# *(self.currenttext.count("}")+1) +"}")
+                    #self.textMain.AppendText("\t")
+                    #self.textMain.AppendText("\n}")
+                    #self.currentLineNumber = self.textMain.PositionToXY(self.textMain.GetInsertionPoint())[2]
                     #self.textMain.SetInsertionPoint(len(lineText)+4 + (4*lineText.count("\t")))
-                    #self.textMain.SetInsertionPointEnd()
                     #self.textMain.Refresh()
+                    #self.changeTextColorWithoutClear()
 
 
     def changeWordColor(self,tuple):
