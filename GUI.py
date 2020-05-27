@@ -136,8 +136,11 @@ class MyApp(wx.Frame):
         wx.Frame.__init__(self,parent = parent, title = title, size = (1350,750))
 
         icon = wx.Icon()
-        icon.CopyFromBitmap(wx.Bitmap(os.getcwd() + "/Resources/icon.png", wx.BITMAP_TYPE_ANY))
+        icon.CopyFromBitmap(wx.Bitmap(os.getcwd() + "/Resources/icon.ico", wx.BITMAP_TYPE_ANY))
         self.SetIcon(icon)
+
+
+
 
         # COLORS
         # otros colores
