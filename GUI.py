@@ -675,13 +675,13 @@ class MyApp(wx.Frame):
             self.pastLabelFileName = self.currentLabelFileName
 
 
-
             self.filesList += [str(path.split("\\")[-1])]
 
             self.contNewFiles = str(int(self.contNewFiles) + 1)
             self.writeFilesList()
 
         dlg.Destroy()
+
     def newFile(self,event):
 
         if self.currentFile != "":
