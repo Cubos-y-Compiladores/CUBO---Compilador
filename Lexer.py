@@ -42,8 +42,6 @@ def printC(data,color):
         print(colorama.Fore.LIGHTWHITE_EX + str(data) + colorama.Fore.RESET)
 
 
-# TODO pasasrlo posiblemente a orientado a objetos
-
 tokens = ['ID', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE','DIVENT','MOD','EXP', 'ASSIGN', 'COMMA', 'SEMICOLON',
           'LT', 'GT', 'LTE', 'GTE', 'NE', 'LPARENT', 'RPARENT', 'DOT', 'INT', 'LENGHTERROR','VARERROR', 'BOOKED',
           'PARENTCL', 'PARENTCR', 'LCORCH', 'RCORCH', 'TP','QUOTES',"COMPARE"]
@@ -195,7 +193,7 @@ def fun(d):
 def transformData(list1):
     cont = 0
     while cont != len(list1):
-        if "=" in list1[cont] and fun(list1[cont]): # TODO arreglar por las expresiones simples como x = 7;
+        if "=" in list1[cont] and fun(list1[cont]):
 
             list1[cont] = list1[cont].replace("="," = ")
             list1[cont] = list1[cont].replace(" ","@")
@@ -297,9 +295,6 @@ while 1:
         break
     print(tok)
 
-# TODO crear funciones para manejo de archivos para luego incorporarlo al ide
-
-# TODO crear estructura de tabla de signos , posiblemente un objeto variable y una lista
 
 class Var:
     def __init__(self,n,v,t = "null", isG = 0 , r = 1):
@@ -338,7 +333,7 @@ class SymbolTable:
     def getList(self):
         return self.array
     def insertVar(self,var):
-# TODO preguntar al profe que pasa si uno define una variable normal y luego la vuelve global (se puede ? )
+
         self.array += [var]
     def findVar(self,nameVar):
         for i in self.array:

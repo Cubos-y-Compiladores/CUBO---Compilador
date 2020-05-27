@@ -130,6 +130,11 @@ def t_DIVENT(t):
     r'[/][/]'
     return t
 
+class OtherFrame(wx.Frame):
+    def __init__(self, title, parent=None):
+        wx.Frame.__init__(self, parent=parent, title=title)
+        self.Show()
+
 
 class MyApp(wx.Frame):
     def __init__(self,parent,title):
@@ -168,14 +173,14 @@ class MyApp(wx.Frame):
 
         # Paleta de colores para el idle
 
-        self.colorTrue = (0, 179, 131)
-        self.colorFalse = (254, 74, 38)
+        self.colorTrue = (51,255,255)
+        self.colorFalse = (255,87,20)
         self.colorsymbols = (244,140,6) #165,190,0 #244,140,6
-        self.colorcomment = (125,133,151) # 151, 157, 172
-        self.colorfunctions = (0,168,150)
+        self.colorcomment = (2,255,194) # 151, 157, 172
+        self.colorfunctions = (240,246,0)
         self.colorReserverd1 = (192,76,253)
-        self.colorReserved2 = (2,128,144)
-        self.colorReserved3 = (5,102,141)
+        self.colorReserved2 = (175,43,191)
+        self.colorReserved3 = (100,223,223)
 
 
 
@@ -236,6 +241,11 @@ class MyApp(wx.Frame):
         self.maxNumberLine = 0
         self.minNumberLine = 0
         self.pasScrollPosition = 0
+
+        self.loadingPath = None
+        self.flagNeedLoading = False
+        self.flagTemp = False
+
 
         # Lista de archivos
 
@@ -363,9 +373,6 @@ class MyApp(wx.Frame):
 
         self.textMain.Bind(wx.EVT_SET_CURSOR, self.focusOnTextCtrl)
 
-
-
-
         # Funcion boton
 
         self.Bind(wx.EVT_BUTTON,self.click1)
@@ -375,6 +382,10 @@ class MyApp(wx.Frame):
         self.lblFileName = wx.StaticText(self,-1,"",(1076,658))
         self.lblLineNumber = wx.StaticText(self,-1,"1",(1,21)) #38
         self.lblLineNumber.SetForegroundColour(self.colorLineNumber)
+
+        self.lblLoading = wx.StaticText(self,-1,"", (55,500)) #55 500
+        self.lblLoading.SetBackgroundColour(self.colorBG)
+        self.lblLoading.SetForegroundColour(self.colorLime)
 
 
         # Set Size to a label
@@ -399,6 +410,24 @@ class MyApp(wx.Frame):
         self.lblpanel.SetForegroundColour(self.colorBorder)
         self.lblpanel.SetBackgroundColour(self.colorBorder)
 
+
+        self.lblPosY.SetBackgroundColour(self.colorBorder)
+        self.lblLine.SetBackgroundColour(self.colorBorder)
+        self.lblCol.SetBackgroundColour(self.colorBorder)
+        self.lblPosX.SetBackgroundColour(self.colorBorder)
+
+        self.lblLine.SetFont(self.fontNumberLabel)
+        self.lblPosY.SetFont(self.fontNumberLabel)
+        self.lblCol.SetFont(self.fontNumberLabel)
+        self.lblPosX.SetFont(self.fontNumberLabel)
+
+        self.lblLine.SetForegroundColour(self.colorLabel)
+        self.lblPosY.SetForegroundColour(self.colorLabel)
+        self.lblCol.SetForegroundColour(self.colorLabel)
+        self.lblPosX.SetForegroundColour(self.colorLabel)
+
+        self.resetLabel("","NewFile.cbc")
+
         # Botones
 
         self.bmpRun = wx.Bitmap(os.getcwd() + "/Resources/buttonPlay.png", wx.BITMAP_TYPE_ANY)
@@ -418,30 +447,6 @@ class MyApp(wx.Frame):
         self.buttonCube.Bind(wx.EVT_LEAVE_WINDOW, self.buttonCubeLightOff)
 
 
-
-        # btn1 = wx.Button(self.lblpanel,-1,u"B",pos=(0,10),size=(20,20))
-        # btn1.Bind(wx.EVT_BUTTON,self.click1)
-
-        self.lblPosY.SetBackgroundColour(self.colorBorder)
-        self.lblLine.SetBackgroundColour(self.colorBorder)
-        self.lblCol.SetBackgroundColour(self.colorBorder)
-        self.lblPosX.SetBackgroundColour(self.colorBorder)
-
-        self.lblLine.SetFont(self.fontNumberLabel)
-        self.lblPosY.SetFont(self.fontNumberLabel)
-        self.lblCol.SetFont(self.fontNumberLabel)
-        self.lblPosX.SetFont(self.fontNumberLabel)
-
-        self.lblLine.SetForegroundColour(self.colorLabel)
-        self.lblPosY.SetForegroundColour(self.colorLabel)
-        self.lblCol.SetForegroundColour(self.colorLabel)
-        self.lblPosX.SetForegroundColour(self.colorLabel)
-
-        self.resetLabel("","NewFile.cbc")
-
-
-
-
         # Sliders
 
         # self.slideFont = wx.Slider(self,-1,12,12,28,(1000,0),(150,20))
@@ -458,17 +463,6 @@ class MyApp(wx.Frame):
         self.textMain.SetForegroundColour(self.colorWhite)
         self.textConsole.SetForegroundColour(self.colorLabel)
 
-
-        # Sizer , Proporciona tamaño a los controles
-
-
-        # sizer = wx.BoxSizer(wx.VERTICAL)
-        # sizer.Add(self.textMain,2,wx.SHAPED|wx.LEFT|wx.UP,40)
-        # sizer.Add(self.textConsole, 1, wx.SHAPED|wx.UP|wx.RIGHT|wx.LEFT,17)
-
-
-
-        # self.SetSizer(sizer)
 
         # AceleratorTable
 
@@ -502,6 +496,21 @@ class MyApp(wx.Frame):
         self.buttonCube.SetBackgroundColour(self.colorLightOn)
     def buttonCubeLightOff(self,event):
         self.buttonCube.SetBackgroundColour(self.colorBorder)
+    def initLineNumbers(self):
+        newRowLen = len(self.textMain.GetValue().split("\n"))
+        cont = 0
+        text = ""
+        self.minNumberLine = 1
+        for i in range(self.minNumberLine, newRowLen + 1):
+            cont += 1
+            if text == "":
+                text += " " * (4 - len(str(i))) + str(i)
+            else:
+                text += "\n" + " " * (4 - len(str(i))) + str(i)
+            self.maxNumberLine = i
+            if cont == 20:
+                break
+        self.lblLineNumber.SetLabel("" + text)
 
     def test(self,text):
         print("ctrl-v pressed")
@@ -522,6 +531,7 @@ class MyApp(wx.Frame):
     def loop(self):
         while 1:
             # self.changeReservedWords()
+
             self.changeReservedWords2()
 
     def click1(self,event):
@@ -586,6 +596,7 @@ class MyApp(wx.Frame):
         self.textMain.AppendText("matriz3D" + str(self.contMatriz3) +"= "+ textFinal)
         self.contMatriz3 += 1
         self.changeTextColorWithoutClear()
+
     def subExitWindow(self,event):
         self.Close(1)
     def initFILE(self):
@@ -607,26 +618,68 @@ class MyApp(wx.Frame):
             style=wx.FD_OPEN | wx.FD_MULTIPLE | wx.FD_CHANGE_DIR
         )
 
+
         if dlg.ShowModal() == wx.ID_OK:
 
-            paths = dlg.GetPaths()
-            self.currentFile = paths[0]
-            f = open(paths[0],"r")
-            txt = f.read()
-            f.close()
+            # paths = dlg.GetPaths()
+            self.loadingPath = dlg.GetPaths()
 
-            self.textMain.SetValue(txt)
-            self.Disable()
 
-            self.changeTextColor()
 
-            self.Enable()
+            # TODO consultar por qué el thread no se está ejecutando
+            # threadOther = threading.Thread(target=self.loading , args=())
+            # threadOther.start()
 
-            self.currentLabelFileName = paths[0].split("\\")[-1]
-            self.resetLabel(self.pastLabelFileName,self.currentLabelFileName)
-            self.pastLabelFileName = self.currentLabelFileName
+            self.lblLoading.SetLabel("Loading . . .")
+            self.flagNeedLoading = True
 
         dlg.Destroy()
+    def loading(self):
+
+        self.textMain.SetValue("")
+
+        self.currentFile = self.loadingPath[0]
+        f = open(self.loadingPath[0], "r")
+        txt = f.read()
+        f.close()
+
+        self.textMain.Freeze()
+        # self.textConsole.write("Loading . . .")
+        self.textMain.SetValue(txt)
+        self.Disable()
+        self.changeTextColor()
+        self.textMain.Thaw()
+        self.Enable()
+
+        self.textMain.SetInsertionPoint(0)
+        self.initLineNumbers()
+
+        self.currentLabelFileName = self.loadingPath[0].split("\\")[-1]
+        self.resetLabel(self.pastLabelFileName, self.currentLabelFileName)
+        self.pastLabelFileName = self.currentLabelFileName
+
+        self.flagTemp = False
+        self.lblLoading.SetLabel("")
+        self.flagNeedLoading = False
+        self.loadingPath = None
+
+
+
+        # self.changeTextColor()
+        # self.textConsole.AppendText("Loading . . .")
+        # self.lblLoading.SetLabel("Loading . . .")
+        # frame = OtherFrame(title = "title")
+    def loadingPoints(self,loadingText):
+        if loadingText.count(".") == 0:
+            return "Loading ."
+        if loadingText.count(".") == 1:
+            return "Loading . ."
+        if loadingText.count(".") == 2:
+            return "Loading . . ."
+        if loadingText.count(".") == 3:
+            return "Loading"
+
+
     def resetLabel(self, number, newLabel):
 
         lbls = [widget for widget in self.GetChildren() if isinstance(widget, wx.StaticText)]
@@ -745,6 +798,14 @@ class MyApp(wx.Frame):
         self.textMain.SetStyle(self.startEnd[0],self.startEnd[1]+self.startEnd[0]+1,wx.TextAttr(self.colorWhite,self.colorBG))
         self.changeReservedWords(self.startEnd[0],self.textRestauration)
         self.textMain.SetDefaultStyle(wx.TextAttr(self.colorWhite,self.colorBG))
+    def loadingEffect(self):
+        text = "Loading"
+        while self.flagTemp:
+            time.sleep(0.5)
+            text = self.loadingPoints(text)
+            self.lblLoading.SetLabel(text)
+        self.lblLoading.SetLabel("")
+
 
 
     def changeReservedWords(self,pos,text):
@@ -785,9 +846,17 @@ class MyApp(wx.Frame):
 
     def changeReservedWords2(self):
 
-        scrollPos = self.textMain.GetScrollPos(1)//20
+        if self.flagNeedLoading:
+            self.flagTemp = True
+            threading.Thread(target=self.loading).start()
+            self.loadingEffect()
+
+        scrollPos = self.textMain.GetScrollPos(1)//21
+        scrollRange=self.textMain.GetScrollRange(1)
         curpos = self.textMain.GetInsertionPoint()
+
         lxy = self.textMain.PositionToXY(curpos)
+
 
         if lxy[1] != self.pasPosxyList[1] or lxy[2] != self.pasPosxyList[2]:
             self.pasPosxyList = lxy
@@ -798,12 +867,22 @@ class MyApp(wx.Frame):
             self.changeTextColorWithoutClear()
 
         if lxy[2] != self.pastLabelNumberPosition:
+            print("TEST1")
+            print("SCROLLRANGE = " + str(scrollRange ))
+            print("SCROLLPOS = " + str(scrollPos))
+
+            if scrollPos != self.pasScrollPosition:
+                print("TEST3")
+                print("SCROLLRANGE = " + str(scrollRange ))
+                print("SCROLLPOS = " + str(scrollPos))
+                self.pasScrollPosition = scrollPos
 
             newRowLen = len(self.textMain.GetValue().split("\n"))
 
             self.plusNumberLine = lxy[2]-20
 
             self.pastLabelNumberPosition = lxy[2]
+
             text = ""
 
             if newRowLen != self.pastRowLen:
@@ -811,8 +890,12 @@ class MyApp(wx.Frame):
 
                 # TODO crear caso para cuando se borra , self.pasRowLen > newRowLen
 
-                if newRowLen > self.pastRowLen: #or newRowLen <= self.pastRowLen:
+                if newRowLen > self.pastRowLen:
+                    print("new line")
+
+
                     if lxy[2] != self.maxNumberLine and self.maxNumberLine > 20:
+
                         posInit = self.maxNumberLine - 20
                         cont = 0
                         self.minNumberLine = posInit +1
@@ -822,10 +905,11 @@ class MyApp(wx.Frame):
                                 text += " " * (4 - len(str(i))) + str(i)
                             else:
                                 text +=  "\n" + " "*(4-len(str(i))) + str(i)
+                            self.maxNumberLine = i
                             if cont == 20:
-                                self.maxNumberLine = i
                                 break
-                    elif lxy[2] + 1 > 20:
+
+                    if lxy[2] + 1 > 20:
                         cont = 0
                         self.minNumberLine = self.plusNumberLine + 1
                         for i in range(self.minNumberLine + 1, newRowLen+2):
@@ -835,9 +919,11 @@ class MyApp(wx.Frame):
                                 text += " "*(4-len(str(i))) + str(i)
                             else:
                                 text += "\n" + " " * (4 - len(str(i))) + str(i)
+                            self.maxNumberLine = i
                             if cont == 20:
-                                self.maxNumberLine = i
+
                                 break
+
 
                     else:
                         cont = 0
@@ -850,30 +936,52 @@ class MyApp(wx.Frame):
                                 text += "\n" + " " * (4 - len(str(i))) + str(i)
                             self.maxNumberLine = i
                             if cont == 20:
+
                                 break
                 elif newRowLen < self.pastRowLen:
                     print("Borrando")
 
                      # TODO Logica para el borrado
+                    print("max",self.maxNumberLine,"min",self.minNumberLine)
 
-                    cont = 0
-                    for i in range(self.minNumberLine , len(self.textMain.GetValue().split("\n")) + 1):
-                        cont += 1
-                        if text == "":
-                            text += " "*(4-len(str(i))) + str(i)
-                        else:
-                            text += "\n" + " " * (4 - len(str(i))) + str(i)
-                        self.maxNumberLine = i
-                        if cont == 20:
-                            break
-                    print("menor")
+                    self.maxNumberLine-=1
+
+                    if self.maxNumberLine <= 20:
+                        self.minNumberLine = 1
+                        cont = 0
+                        for i in range(self.minNumberLine , self.maxNumberLine+1):
+                            cont += 1
+                            if text == "":
+                                text += " "*(4-len(str(i))) + str(i)
+                            else:
+                                text += "\n" + " " * (4 - len(str(i))) + str(i)
+                            self.maxNumberLine = i
+                            if cont == 20:
+
+                                break
+                    elif self.maxNumberLine > 20:
+
+                        cont = 0
+                        for i in range(self.minNumberLine+1, self.maxNumberLine + 1):
+                            cont += 1
+                            if text == "":
+                                text += " " * (4 - len(str(i))) + str(i)
+                            else:
+                                text += "\n" + " " * (4 - len(str(i))) + str(i)
+                            self.maxNumberLine = i
+                            if cont == 20:
+
+                                break
+
 
                 self.pastRowLen = newRowLen
                 self.lblLineNumber.SetLabel("" + text)
-
             # Aca entra solo en el movimiento del scrol pero sin cambio de posicion del mouse
-
         elif lxy[2] == self.pastLabelNumberPosition and scrollPos != self.pasScrollPosition:
+
+            print("TEST2")
+            print("SCROLLRANGE = " + str(scrollRange ))
+            print("SCROLLPOS = " + str(scrollPos))
             text = ""
             if scrollPos > self.pasScrollPosition:
                 dif = scrollPos - self.pasScrollPosition
@@ -892,12 +1000,12 @@ class MyApp(wx.Frame):
                         self.maxNumberLine = i
                         break
 
-                print("down")
+                print(" scroling down")
             elif scrollPos < self.pasScrollPosition:
-                print("up")
+                print(" scroling up")
 
                 dif = self.pasScrollPosition - scrollPos
-                print("DIF", dif)
+
                 self.minNumberLine -= dif
 
                 if scrollPos == 0:
@@ -919,7 +1027,10 @@ class MyApp(wx.Frame):
             self.lblLineNumber.SetLabel("" + text)
 
 
+
+
         if self.textMain.GetValue() != self.currenttext or len(self.textMain.GetValue()) != len(self.currenttext):
+
             if self.flagBgError:
                 self.flagBgError = not self.flagBgError
                 self.resetErrorBackground()
