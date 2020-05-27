@@ -27,7 +27,7 @@ reserved = {'if': 'IF',
             'global': 'GLOBAL',
             'range': 'RANGE',
             'insert':'INSERT',
-            'del':'DELETE',
+            'del':'DEL',
             'len':'LEN',
             'Neg':'NEG',
             'T':'T',
@@ -50,7 +50,8 @@ reserved = {'if': 'IF',
             'Seg': 'SEG',
             'Min': 'MIN',
             'begin':'BEGIN',
-            'end':'END'
+            'end':'END',
+            'delete':'DELETE'
             }
 
 tokens = tokens + list(reserved.values())
@@ -134,12 +135,16 @@ class MyApp(wx.Frame):
     def __init__(self,parent,title):
         wx.Frame.__init__(self,parent = parent, title = title, size = (1350,750))
 
-        # COLORS
+        icon = wx.Icon()
+        icon.CopyFromBitmap(wx.Bitmap(os.getcwd() + "/Resources/icon.png", wx.BITMAP_TYPE_ANY))
+        self.SetIcon(icon)
 
+        # COLORS
+        # otros colores
         self.colorPurple = (224, 71, 158)
         self.colorLightBlue = (79, 200, 218)
         self.colorComent = (165, 197, 195)
-        self.colorOrange = (252, 163, 17)
+        self.colorOrange = (255, 119, 0)
         self.colorGreen = (0, 179, 131)
         self.colorRed = (254, 74, 38)
         self.colorGrey = (166, 162, 162)
@@ -155,6 +160,19 @@ class MyApp(wx.Frame):
         self.colorLineNumber = (173,172,181)
         self.colorBorder = (40,40,40) #57,61,63
         self.colorLineCol = (40,40,40)
+        self.colorLightOn = (52,58,64)
+
+
+        # Paleta de colores para el idle
+
+        self.colorTrue = (51,255,255)
+        self.colorFalse = (255,87,20)
+        self.colorsymbols = (244,140,6) #165,190,0 #244,140,6
+        self.colorcomment = (2,255,194) # 151, 157, 172
+        self.colorfunctions = (240,246,0)
+        self.colorReserverd1 = (192,76,253)
+        self.colorReserved2 = (175,43,191)
+        self.colorReserved3 = (100,223,223)
 
 
 
@@ -225,16 +243,17 @@ class MyApp(wx.Frame):
         self.actualFontSize = 0
 
         # Reserved words
+        self.rTrue = ["TRUE","T"]
+        self.rFalse = ["FALSE","F"]
+        self.symbols = ['COMMA', 'LCORCH', 'RCORCH', 'QUOTES', 'ASSIGN', "RPARENT", "LPARENT"]
+        self.coment = ["PARENTCL", "PARENTCR", "MIL", "SEG", "MIN", "BEGIN", "END", "COMMENT"]
+        self.functions = ["INSERT","NEG","DEL","DELETE","SHAPEF","SHAPEC","SHAPEA","RANGE","TYPE","BLINK","DELAY","LEN"]
+        self.reservedWords1 = ["GLOBAL", "CALL"]
+        self.reservedWords2 = ["PROCEDURE", "MAIN", "TIMER", "DIMFILAS", "DIMCOLUMNAS", "RANGOTIMER", "CUBO"]
+        self.reservedWords3 = ["FOR","IF","ELSE","STEP","IN"]
 
-        self.reservedWords1 = ["WHILE","FOR","IF","ELSE","CONST","GLOBAL","IN"]
-        self.reservedWords2 = ["PROCEDURE","MAIN","TIMER","DIMFILAS","DIMCOLUMNAS","RANGOTIMER","CUBO"]
-        self.reservedWords3 = ["RANGE","TYPE","BLINK","DELAY","LEN","STEP","CALL","T","F","DEL","DELETE","SHAPEF","SHAPEC","SHAPEA","NEG","DELETE"]
-        self.symbols = ['COMMA', 'LCORCH', 'RCORCH', 'QUOTES', 'ASSIGN']
-        self.comment = "COMMENT"
-        self.rTrue = "TRUE"
-        self.rFalse = ["FALSE"]
-        self.parentscorchs = ["PARENTCL","PARENTCR","RPARENT","LPARENT","MIL","SEG","MIN"]
-        self.functions = ["INSERT"]
+
+
 
 
 
@@ -378,10 +397,24 @@ class MyApp(wx.Frame):
         self.lblpanel.SetBackgroundColour(self.colorBorder)
 
         # Botones
-        bmpRun = wx.Bitmap(os.getcwd() + "/Resources/buttonPlay.png", wx.BITMAP_TYPE_ANY)
-        buttonRun = wx.BitmapButton(self.lblpanel, id=wx.ID_ANY, bitmap=bmpRun,
-                                 size=(bmpRun.GetWidth() + 10, bmpRun.GetHeight() + 10), style = wx.NO_BORDER, pos = (0,5))
-        buttonRun.SetBackgroundColour(self.colorBorder)
+
+        self.bmpRun = wx.Bitmap(os.getcwd() + "/Resources/buttonPlay.png", wx.BITMAP_TYPE_ANY)
+        self.buttonRun = wx.BitmapButton(self.lblpanel, id=wx.ID_ANY, bitmap=self.bmpRun,
+                                 size=(self.bmpRun.GetWidth() + 8, self.bmpRun.GetHeight() + 8), style = wx.NO_BORDER, pos = (0,5))
+        self.buttonRun.SetBackgroundColour(self.colorBorder)
+
+        self.buttonRun.Bind(wx.EVT_ENTER_WINDOW,self.buttonRunLightOn)
+        self.buttonRun.Bind(wx.EVT_LEAVE_WINDOW, self.buttonRunLightOff)
+
+        self.bmpCube = wx.Bitmap(os.getcwd() + "/Resources/cube1.png", wx.BITMAP_TYPE_ANY)
+        self.buttonCube = wx.BitmapButton(self.lblpanel, id=wx.ID_ANY, bitmap=self.bmpCube,
+                                 size=(self.bmpCube.GetWidth() + 8, self.bmpCube.GetHeight() + 8), style = wx.NO_BORDER, pos = (0,40))
+        self.buttonCube.SetBackgroundColour(self.colorBorder)
+
+        self.buttonCube.Bind(wx.EVT_ENTER_WINDOW,self.buttonCubeLightOn)
+        self.buttonCube.Bind(wx.EVT_LEAVE_WINDOW, self.buttonCubeLightOff)
+
+
 
         # btn1 = wx.Button(self.lblpanel,-1,u"B",pos=(0,10),size=(20,20))
         # btn1.Bind(wx.EVT_BUTTON,self.click1)
@@ -458,6 +491,14 @@ class MyApp(wx.Frame):
 
 
     # FUNCTIONS
+    def buttonRunLightOn(self,event):
+        self.buttonRun.SetBackgroundColour(self.colorLightOn)
+    def buttonRunLightOff(self,event):
+        self.buttonRun.SetBackgroundColour(self.colorBorder)
+    def buttonCubeLightOn(self,event):
+        self.buttonCube.SetBackgroundColour(self.colorLightOn)
+    def buttonCubeLightOff(self,event):
+        self.buttonCube.SetBackgroundColour(self.colorBorder)
 
     def test(self,text):
         print("ctrl-v pressed")
@@ -715,34 +756,28 @@ class MyApp(wx.Frame):
                 break
             else:
                 if tok != None:
-                    if tok.type in self.reservedWords1:
-                        self.setStyleText(tok.lexpos+posInit,tok.lexpos + len(tok.value)+posInit, self.colorPurple)
-                    elif tok.type in self.reservedWords2:
-                        self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorLightBlue)
-                    elif tok.type in self.functions:
-                        self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorLime)
-                    elif tok.type == self.comment or tok.type == "BEGIN" or tok.type == "END":
-                        self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorComent)
-                    elif tok.type in self.reservedWords3:
-                        self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorOrange)
-                    elif tok.type == self.rTrue:
-                        self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorGreen)
+                    if tok.type in self.rTrue:
+                        self.setStyleText(tok.lexpos+posInit,tok.lexpos + len(tok.value)+posInit, self.colorTrue)
                     elif tok.type in self.rFalse:
-                        self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorRed)
-                    elif tok.type in self.parentscorchs:
-                        self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorGrey)
+                        self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorFalse)
+                    elif tok.type in self.symbols:
+                        self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorsymbols)
+                    elif tok.type in self.coment:
+                        self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorcomment)
+                    elif tok.type in self.functions:
+                        self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorfunctions)
+                    elif tok.type in self.reservedWords1:
+                        self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorReserverd1)
+                    elif tok.type in self.reservedWords2:
+                        self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorReserved2)
+                    elif tok.type in self.reservedWords3:
+                        self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorReserved3)
                     elif tok.type == "ID":
                         self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorWhite)
                     elif tok.type == "DOT" or tok.type == "SEMICOLON":
                         self.setStyleText(tok.lexpos+posInit, tok.lexpos + len(tok.value)+posInit, self.colorWhite)
-                    elif tok.type in self.symbols:
-                        self.setStyleText(tok.lexpos + posInit, tok.lexpos + len(tok.value) + posInit, self.colorOrange2)
                     elif tok.type == "INT":
                         self.setStyleText(tok.lexpos + posInit, tok.lexpos + len(str(tok.value)) + posInit, self.colorWhite)
-                    #elif tok.type == "BEGIN":
-                     #   self.setStyleText(tok.lexpos + posInit, tok.lexpos + len(tok.value) + posInit, self.colorBegin)
-                    #elif tok.type == "END":
-                     #   self.setStyleText(tok.lexpos + posInit, tok.lexpos + len(tok.value) + posInit, self.colorEnd)
 
 
     def changeReservedWords2(self):
@@ -956,34 +991,28 @@ class MyApp(wx.Frame):
                 break
             else:
                 if tok != None:
-                    if tok.type in self.reservedWords1:
-                        self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3], self.colorPurple)
-                    elif tok.type in self.reservedWords2:
-                        self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3],self.colorLightBlue)
-                    elif tok.type in self.functions:
-                        self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3],self.colorLime)
-                    elif tok.type == self.comment or tok.type == "BEGIN" or tok.type == "END":
-                        self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3], self.colorComent)
-                    elif tok.type in self.reservedWords3:
-                        self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3], self.colorOrange)
-                    elif tok.type == self.rTrue:
-                        self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3], self.colorGreen)
+                    if tok.type in self.rTrue:
+                        self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3], self.colorTrue)
                     elif tok.type in self.rFalse:
-                        self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3], self.colorRed)
-                    elif tok.type in self.parentscorchs:
-                        self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3], self.colorGrey)
+                        self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3],self.colorFalse)
+                    elif tok.type in self.symbols:
+                        self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3],self.colorsymbols)
+                    elif tok.type in self.coment:
+                        self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3], self.colorcomment)
+                    elif tok.type in self.functions:
+                        self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3], self.colorfunctions)
+                    elif tok.type in self.reservedWords1:
+                        self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3], self.colorReserverd1)
+                    elif tok.type in self.reservedWords2:
+                        self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3], self.colorReserved2)
+                    elif tok.type in self.reservedWords3:
+                        self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3], self.colorReserved3)
                     elif tok.type == "ID":
                         self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3], self.colorWhite)
                     elif tok.type == "DOT" or tok.type == "SEMICOLON":
                         self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3], self.colorWhite)
-                    elif tok.type in self.symbols:
-                        self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3],self.colorOrange2)
                     elif tok.type == "INT":
                         self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3],self.colorWhite)
-                    #elif tok.type == "BEGIN":
-                     #   self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3],self.colorBegin)
-                    #elif tok.type == "END":
-                     #   self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3],self.colorEnd)
 
 
 # Creando funcion que reconoce solo el texto nuevo para colorearlo
@@ -1000,28 +1029,22 @@ class MyApp(wx.Frame):
                 break
             else:
                 if tok != None:
-                    if tok.type in self.reservedWords1:
-                        self.writeColor(tok.value,self.colorPurple)
-                    elif tok.type in self.reservedWords2:
-                        self.writeColor(tok.value, self.colorLightBlue)
-                    elif tok.type in self.functions:
-                        self.writeColor(tok.value, self.colorLime)
-                    elif tok.type == self.comment or tok.type == "BEGIN" or tok.type == "END":
-                        self.writeColor(tok.value, self.colorComent)
-                    elif tok.type in self.symbols:
-                        self.writeColor(tok.value, self.colorOrange2)
-                    elif tok.type in self.reservedWords3:
-                        self.writeColor(tok.value, self.colorOrange)
-                    elif tok.type == self.rTrue:
-                        self.writeColor(tok.value, self.colorGreen)
+                    if tok.type in self.rTrue:
+                        self.writeColor(tok.value,self.colorTrue)
                     elif tok.type in self.rFalse:
-                        self.writeColor(tok.value, self.colorRed)
-                    elif tok.type in self.parentscorchs:
-                        self.writeColor(tok.value, self.colorGrey)
-                    #elif tok.type == "BEGIN":
-                     #   self.writeColor(tok.value, self.colorBegin)
-                    #elif tok.type == "END":
-                     #   self.writeColor(tok.value, self.colorEnd)
+                        self.writeColor(tok.value, self.colorFalse)
+                    elif tok.type in self.symbols:
+                        self.writeColor(tok.value, self.colorsymbols)
+                    elif tok.type in self.coment:
+                        self.writeColor(tok.value, self.colorcomment)
+                    elif tok.type in self.functions:
+                        self.writeColor(tok.value, self.colorfunctions)
+                    elif tok.type in self.reservedWords1:
+                        self.writeColor(tok.value, self.colorReserverd1)
+                    elif tok.type in self.reservedWords2:
+                        self.writeColor(tok.value, self.colorReserved2)
+                    elif tok.type in self.reservedWords3:
+                        self.writeColor(tok.value, self.colorReserved3)
                     else:
                         self.writeColor(tok.value, self.colorWhite)
 
@@ -1038,34 +1061,28 @@ class MyApp(wx.Frame):
                 break
             else:
                 if tok != None:
-                    if tok.type in self.reservedWords1:
-                        self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), self.colorPurple)
-                    elif tok.type in self.reservedWords2:
-                        self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), self.colorLightBlue)
-                    elif tok.type in self.functions:
-                        self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), self.colorLime)
-                    elif tok.type == self.comment or tok.type == "BEGIN" or tok.type == "END":
-                        self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), self.colorComent)
-                    elif tok.type in self.symbols:
-                        self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), self.colorOrange2)
-                    elif tok.type in self.reservedWords3:
-                        self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), self.colorOrange)
-                    elif tok.type == self.rTrue:
-                        self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), self.colorGreen)
+                    if tok.type in self.rTrue:
+                        self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), self.colorTrue)
                     elif tok.type in self.rFalse:
-                        self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), self.colorRed)
-                    elif tok.type in self.parentscorchs:
-                        self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), self.colorGrey)
+                        self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), self.colorFalse)
+                    elif tok.type in self.symbols:
+                        self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), self.colorsymbols)
+                    elif tok.type in self.coment:
+                        self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), self.colorcomment)
+                    elif tok.type in self.functions:
+                        self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), self.colorfunctions)
+                    elif tok.type in self.reservedWords1:
+                        self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), self.colorReserverd1)
+                    elif tok.type in self.reservedWords2:
+                        self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), self.colorReserved2)
+                    elif tok.type in self.reservedWords3:
+                        self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), self.colorReserved3)
                     elif tok.type == "ID" or tok.type == "SEMICOLON" or tok.type == "DOT":
                         self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), self.colorWhite)
                     elif tok.type == "INT":
                         self.setStyleText(tok.lexpos, tok.lexpos + len(str((tok.value))), self.colorWhite)
-                    #elif tok.type == "BEGIN":
-                    #    self.setStyleText(tok.lexpos, tok.lexpos + len((tok.value)), self.colorBegin)
-                    #elif tok.type == "END":
-                     #   self.setStyleText(tok.lexpos, tok.lexpos + len((tok.value)), self.colorEnd)
 
 if __name__ == '__main__':
     app = wx.App()
-    frame = MyApp(None,"IDLE")
+    frame = MyApp(None,"CubeCompiler")
     app.MainLoop()
