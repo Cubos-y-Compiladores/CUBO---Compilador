@@ -50,6 +50,7 @@ class matrizFrame(wx.Frame):
 
        # for i in self.cube.getMatrices():
         #    gridSizer1.Add(i[1])
+        self.Show()
 
 
 

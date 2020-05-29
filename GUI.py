@@ -10,6 +10,7 @@ import sys
 import threading
 import wx.lib.agw.multidirdialog as MDD
 import time
+import QuickCube
 
 
 wildcard = "*.cbc"
@@ -185,11 +186,6 @@ class MyApp(wx.Frame):
         self.textConsole.AppendText("CubeCompiler [Version 1.0.0.0.1.0.1]\n(c) 2020 DD&D Corporation. All rights reserved.")
         self.textConsole.AppendText("\n\n")
 
-
-
-
-
-
         self.textMain.SetEvtHandlerEnabled(True)
         self.SetMaxSize((1350,750))
         self.SetMinSize((1350,750))
@@ -221,7 +217,7 @@ class MyApp(wx.Frame):
         self.currentFile = ""
         self.currenttext = ""
         self.pastLabelFileName = ""
-        self.pastLabelNumberPosition = -1
+        self.pastLabelNumberPosition = 1
         self.currentLabelFileName = ""
         self.flagSlider = False
         self.startEnd = [0,0]
@@ -230,9 +226,9 @@ class MyApp(wx.Frame):
         self.currentLineNumber = self.textMain.PositionToXY(self.textMain.GetInsertionPoint())[2]
         self.pasPosxyList = self.textMain.PositionToXY(self.textMain.GetInsertionPoint())
         self.plusNumberLine = 0
-        self.pastRowLen = 0
-        self.maxNumberLine = 0
-        self.minNumberLine = 0
+        self.pastRowLen = 1
+        self.maxNumberLine = 2
+        self.minNumberLine = 1
         self.pasScrollPosition = 0
 
         self.loadingPath = None
@@ -257,12 +253,6 @@ class MyApp(wx.Frame):
         self.reservedWords1 = ["GLOBAL", "CALL"]
         self.reservedWords2 = ["PROCEDURE", "MAIN", "TIMER", "DIMFILAS", "DIMCOLUMNAS", "RANGOTIMER", "CUBO"]
         self.reservedWords3 = ["FOR","IF","ELSE","STEP","IN"]
-
-
-
-
-
-
 
         # Main File
 
@@ -317,23 +307,17 @@ class MyApp(wx.Frame):
         self.sub6x6x6 = self.subMenuMat3D.Append(66, "6x6x6")
         self.sub7x7x7 = self.subMenuMat3D.Append(77, "7x7x7")
         self.sub8x8x8 = self.subMenuMat3D.Append(88, "8x8x8")
+
         self.subInsertM3 = self.subMenuInsert.AppendSubMenu(self.subMenuMat3D,"Matriz3D")
-
         self.subRun = self.subMenuRun.Append(-1,"Run This\tCtrl-F5")
-
         # Agregando al menu principal
-
         self.mainMenu.Append(self.subMenuFile,"File")
         self.mainMenu.Append(self.subMenuInsert,"Insert")
         self.mainMenu.Append(self.subMenuRun,"Run")
-
         # Agregando barra al frame
-
         self.mainMenu.SetBackgroundColour(self.colorLime)
         self.SetMenuBar(self.mainMenu)
-
         # Eventos menu
-
         self.Bind(wx.EVT_MENU, self.insertList, self.subInsertL)
         self.Bind(wx.EVT_MENU, self.subExitWindow, self.subExit)
         self.Bind(wx.EVT_MENU, self.openFileTXT, self.subOpen)
@@ -341,10 +325,7 @@ class MyApp(wx.Frame):
         self.Bind(wx.EVT_MENU, self.saveFileAs, self.subSaveAs)
         self.Bind(wx.EVT_MENU, self.newFile, self.subNew)
         self.Bind(wx.EVT_MENU, self.runFile, self.subRun)
-
-
         # Eventos Submenus de matrices 2D
-
         self.Bind(wx.EVT_MENU, partial(self.insertMatriz2D,1), self.sub1x1)
         self.Bind(wx.EVT_MENU, partial(self.insertMatriz2D,2), self.sub2x2)
         self.Bind(wx.EVT_MENU, partial(self.insertMatriz2D,3), self.sub3x3)
@@ -363,23 +344,17 @@ class MyApp(wx.Frame):
         self.Bind(wx.EVT_MENU, partial(self.insertMatriz3D,77), self.sub7x7x7)
         self.Bind(wx.EVT_MENU, partial(self.insertMatriz3D,88), self.sub8x8x8)
 
-
         self.textMain.Bind(wx.EVT_SET_CURSOR, self.focusOnTextCtrl)
-
         # Funcion boton
-
-        self.Bind(wx.EVT_BUTTON,self.click1)
-
+        # self.Bind(wx.EVT_BUTTON,self.click1)
         # Labels
-
         self.lblFileName = wx.StaticText(self,-1,"",(1076,658))
-        self.lblLineNumber = wx.StaticText(self,-1,"1",(1,21)) #38
+        self.lblLineNumber = wx.StaticText(self,-1," " * (4 - len(str(1))) + str(1),(1,21)) #38
         self.lblLineNumber.SetForegroundColour(self.colorLineNumber)
 
         self.lblLoading = wx.StaticText(self,-1,"", (55,500)) #55 500
         self.lblLoading.SetBackgroundColour(self.colorBG)
         self.lblLoading.SetForegroundColour(self.colorLime)
-
 
         # Set Size to a label
         self.fontNumberLabel = self.lblLineNumber.GetFont()
@@ -391,18 +366,15 @@ class MyApp(wx.Frame):
         self.lblBackG.SetBackgroundColour(self.colorBorder)
         # self.lblBackG.SetForegroundColour()
 
-
         self.fontNumberLabel.SetPointSize(9)
         self.lblLine = wx.StaticText(self, -1, "  line : ", (1184, 658))
         self.lblPosY = wx.StaticText(self,-1,"1",(1224,658))
         self.lblCol = wx.StaticText(self, -1, "col : ", (1254, 658))
         self.lblPosX = wx.StaticText(self, -1, "0", (1284, 658))
 
-
         self.lblpanel = wx.StaticText(self,-1,"\n......."*13,(19,462))
         self.lblpanel.SetForegroundColour(self.colorBorder)
         self.lblpanel.SetBackgroundColour(self.colorBorder)
-
 
         self.lblPosY.SetBackgroundColour(self.colorBorder)
         self.lblLine.SetBackgroundColour(self.colorBorder)
@@ -418,68 +390,45 @@ class MyApp(wx.Frame):
         self.lblPosY.SetForegroundColour(self.colorLabel)
         self.lblCol.SetForegroundColour(self.colorLabel)
         self.lblPosX.SetForegroundColour(self.colorLabel)
-
         self.resetLabel("","NewFile.cbc")
-
         # Botones
-
         self.bmpRun = wx.Bitmap(os.getcwd() + "/Resources/buttonPlay.png", wx.BITMAP_TYPE_ANY)
         self.buttonRun = wx.BitmapButton(self.lblpanel, id=wx.ID_ANY, bitmap=self.bmpRun,
                                  size=(self.bmpRun.GetWidth() + 8, self.bmpRun.GetHeight() + 8), style = wx.NO_BORDER, pos = (0,5))
         self.buttonRun.SetBackgroundColour(self.colorBorder)
-
         self.buttonRun.Bind(wx.EVT_ENTER_WINDOW,self.buttonRunLightOn)
         self.buttonRun.Bind(wx.EVT_LEAVE_WINDOW, self.buttonRunLightOff)
-
         self.bmpCube = wx.Bitmap(os.getcwd() + "/Resources/cube1.png", wx.BITMAP_TYPE_ANY)
         self.buttonCube = wx.BitmapButton(self.lblpanel, id=wx.ID_ANY, bitmap=self.bmpCube,
                                  size=(self.bmpCube.GetWidth() + 8, self.bmpCube.GetHeight() + 8), style = wx.NO_BORDER, pos = (0,40))
         self.buttonCube.SetBackgroundColour(self.colorBorder)
-
         self.buttonCube.Bind(wx.EVT_ENTER_WINDOW,self.buttonCubeLightOn)
         self.buttonCube.Bind(wx.EVT_LEAVE_WINDOW, self.buttonCubeLightOff)
-
-
+        self.buttonCube.Bind(wx.EVT_BUTTON,self.openQuickCube)
         # Sliders
-
         # self.slideFont = wx.Slider(self,-1,12,12,28,(1000,0),(150,20))
         # self.Bind(wx.EVT_SLIDER,self.onSlider)
         # self.slideFont.Bind(wx.EVT_SET_FOCUS,self.focusOnSlider)
         # self.textConsole.Bind(wx.EVT_SET_CURSOR,self.focusOnTextCtrl)
-
-
         # Fuentes de Texto
-
         self.setFontSize(12)
         self.textMain.SetOwnBackgroundColour(self.colorBG)
         self.textConsole.SetBackgroundColour(self.colorBG)
         self.textMain.SetForegroundColour(self.colorWhite)
         self.textConsole.SetForegroundColour(self.colorLabel)
-
-
         # AceleratorTable
-
         randomPaste = wx.NewId()
         self.textMain.Bind(wx.EVT_MENU, self.test , id = randomPaste)
         accel_tbl = wx.AcceleratorTable([(wx.ACCEL_CTRL, ord('Q'), randomPaste)])
         self.textMain.SetAcceleratorTable(accel_tbl)
-
         # Show Frame
-
-
         self.Centre(1)
         self.SetBackgroundColour(self.textMain.GetBackgroundColour())
         self.SetBackgroundColour(self.colorLineNumberBorder)
-
-
         self.Show()
-
         # Thread for reserverd words
-
         self.t = threading.Thread(target = self.loop, args=())
         self.initThread()
-
-
     # FUNCTIONS
     def buttonRunLightOn(self,event):
         self.buttonRun.SetBackgroundColour(self.colorLightOn)
@@ -504,7 +453,6 @@ class MyApp(wx.Frame):
             if cont == 20:
                 break
         self.lblLineNumber.SetLabel("" + text)
-
     def test(self,text):
         print("ctrl-v pressed")
         print("text: " + str(text))
@@ -526,7 +474,6 @@ class MyApp(wx.Frame):
             # self.changeReservedWords()
 
             self.changeReservedWords2()
-
     def click1(self,event):
         # list1 = ['"', ",", "{", "}", "=", "--", "(", ")", "[", "]"]
         # self.textMain.SetStyle(0,1,wx.TextAttr(wx.GREEN))
@@ -539,8 +486,8 @@ class MyApp(wx.Frame):
         for i in range(1,self.textMain.GetInsertionPoint()):
             text += str(i) + "\n"
         print(text)
-
-
+    def openQuickCube(self,event):
+        quickCube = QuickCube.matrizFrame("QuickCube")
     def insertList(self,event):
         self.textMain.AppendText("list" + str(self.contList) +"= [];\n")
         self.contList += 1
@@ -589,7 +536,6 @@ class MyApp(wx.Frame):
         self.textMain.AppendText("matriz3D" + str(self.contMatriz3) +"= "+ textFinal)
         self.contMatriz3 += 1
         self.changeTextColorWithoutClear()
-
     def subExitWindow(self,event):
         self.Close(1)
     def initFILE(self):
@@ -671,8 +617,6 @@ class MyApp(wx.Frame):
             return "Loading . . ."
         if loadingText.count(".") == 3:
             return "Loading"
-
-
     def resetLabel(self, number, newLabel):
 
         lbls = [widget for widget in self.GetChildren() if isinstance(widget, wx.StaticText)]
@@ -689,7 +633,6 @@ class MyApp(wx.Frame):
                 lbl.SetBackgroundColour(self.colorBorder)
 
                 break
-
     def saveFile(self,event):
         if  self.currentLabelFileName in self.filesList and self.currentLabelFileName != "":
 
@@ -727,7 +670,6 @@ class MyApp(wx.Frame):
             self.writeFilesList()
 
         dlg.Destroy()
-
     def newFile(self,event):
 
         if self.currentFile != "":
@@ -767,7 +709,6 @@ class MyApp(wx.Frame):
     def setStyleText(self,start,end,color):
         self.textMain.SetStyle(start, end, wx.TextAttr(color))
         self.textMain.SetDefaultStyle(wx.TextAttr(self.colorWhite))
-
     def setErrorBackground(self,line):
         text = self.textMain.GetValue()
 
@@ -785,7 +726,6 @@ class MyApp(wx.Frame):
 
         self.textMain.SetStyle(start,start + end,wx.TextAttr(self.colorWhite,self.colorErrorBg))
         self.textMain.SetDefaultStyle(wx.TextAttr(self.colorWhite,self.colorBG))
-
     def resetErrorBackground(self):
 
         self.textMain.SetStyle(self.startEnd[0],self.startEnd[1]+self.startEnd[0]+1,wx.TextAttr(self.colorWhite,self.colorBG))
@@ -798,9 +738,6 @@ class MyApp(wx.Frame):
             text = self.loadingPoints(text)
             self.lblLoading.SetLabel(text)
         self.lblLoading.SetLabel("")
-
-
-
     def changeReservedWords(self,pos,text):
 
         lexer = lex.lex()
@@ -838,69 +775,45 @@ class MyApp(wx.Frame):
 
 
     def changeReservedWords2(self):
-
         if self.flagNeedLoading:
             self.flagTemp = True
             threading.Thread(target=self.loading).start()
             self.loadingEffect()
-
         scrollPos = self.textMain.GetScrollPos(1)//21
         scrollRange=self.textMain.GetScrollRange(1)
         curpos = self.textMain.GetInsertionPoint()
-
-
         lxy = self.textMain.PositionToXY(curpos)
-
-
         if lxy[1] != self.pasPosxyList[1] or lxy[2] != self.pasPosxyList[2]:
             self.pasPosxyList = lxy
             self.lblPosY.SetLabel(str(lxy[2]+1))
             self.lblPosX.SetLabel(str(lxy[1]))
-
         if self.flagSlider:
             self.changeTextColorWithoutClear()
-
-
-
-
-
-
         if self.textMain.GetValue() != self.currenttext or len(self.textMain.GetValue()) != len(self.currenttext):
-
             if self.flagBgError:
                 self.flagBgError = not self.flagBgError
                 self.resetErrorBackground()
-
             if self.textMain.GetValue() != "":
-
                 curPos = self.textMain.GetInsertionPoint()
                 linenumber = self.textMain.PositionToXY(curPos)
                 lineText = self.textMain.GetLineText(linenumber[2])
-
                 text = self.textMain.GetValue()
                 lexer = lex.lex()
                 lexer.input(lineText)
                 self.currenttext = text
                 posInit = curPos - linenumber[1]
-
                 if "-" in lineText:
                     self.changeReservedWords(posInit,lineText)
                 else:
-
                     list1 = ['"',",","{","}","=","--","(",")","[","]"," "]
                     listNum = "1234567890"
                     list2 = "abcdefghijklmnñopqrstuvwxyzCALL"
-
                     pack = []
-
                     if len(lineText) != 0:
                         if lineText[linenumber[1]-1] in list1 or lineText[linenumber[1]-1] in listNum:
                             pack = (linenumber[1]-1,linenumber[1],lineText[linenumber[1]-1:linenumber[1]],posInit)
-                        
                         else:
-
                             s = linenumber[1] -1
-
                             e = linenumber[1]
                             if s <= 0:
                                 s = 0
@@ -912,80 +825,161 @@ class MyApp(wx.Frame):
                             while e != len(lineText) and lineText[e] in list2:
                                 e+=1
                             pack = (s,e,lineText[s:e],posInit)
-
-
                         self.changeWordColor(pack)
-
-
         # Logica para los numeros de linea
+        pos = lxy[2] + 1
+        newRowLen = self.textMain.GetNumberOfLines()
 
-        if lxy[2] != self.pastLabelNumberPosition:
-            self.pastLabelNumberPosition = lxy[2]
-            self.minNumberLine = 1
-            self.maxNumberLine = self.textMain.GetNumberOfLines()+1
-            print("lxy[2]",lxy[2]+2)
-            print("pastlabelposition",self.pastLabelNumberPosition)
-            print("newlen",self.textMain.GetNumberOfLines())
-            print("pastlen",self.pastRowLen)
-            print("minnumerline",self.minNumberLine)
-            print("maxnumberline",self.maxNumberLine)
-            newRowLen = self.textMain.GetNumberOfLines()
+        if pos != self.pastLabelNumberPosition and self.pastRowLen != newRowLen:
 
-
-            # Caso para cuando se agrega texto
-            if newRowLen > self.pastRowLen:
-                text = ""
-                self.pastRowLen = newRowLen
-                print("agregando texto")
-
-                if lxy[2] + 2 < self.maxNumberLine and newRowLen > 20:
-                    print("estoy entre lineas y el maximo es mayor a 20")
-
-                elif lxy[2] + 2 == self.maxNumberLine and newRowLen > 20:
-                    print("estoy al final de la linea añadiendo texto")
-
-                    cont = 0
-                    self.minNumberLine = lxy[2] - 18
-                    for i in range(self.minNumberLine , self.maxNumberLine):
-                        cont += 1
-                        if text == "":
-
-                            text += " " * (4 - len(str(i))) + str(i)
-                        else:
-                            text += "\n" + " " * (4 - len(str(i))) + str(i)
-
-                        if cont == 20:
-                            break
+            text = ""
+            flag = True
+            # TODO hacer todos los calculos en los condicionales y al final el for
+            if newRowLen > self.pastLabelNumberPosition:
+                if pos == self.maxNumberLine and self.maxNumberLine > 20:
+                    self.minNumberLine += 1
+                    self.maxNumberLine += 1
+                elif pos < self.maxNumberLine and self.maxNumberLine > 20:
+                    self.maxNumberLine += 0
+                elif pos >= 20 and self.maxNumberLine > 20:
+                    self.minNumberLine += 1
+                    self.maxNumberLine += 1
+                elif pos <= self.maxNumberLine:
+                    self.maxNumberLine = self.textMain.GetNumberOfLines() + 1
+                    print("CASO")
                 else:
-                    print("el mayor es menor a 20 y estoy añadiendo")
-                    cont = 0
-                    self.minNumberLine = 1
-                    for i in range(self.minNumberLine, self.maxNumberLine):
-                        cont += 1
-                        if text == "":
-                            text += " " * (4 - len(str(i))) + str(i)
-                        else:
-                            text += "\n" + " " * (4 - len(str(i))) + str(i)
-
-                        if cont == 20:
-                            break
-
-                self.lblLineNumber.SetLabel("" + text)
-
-            # Caso para cuando se elimina texto
+                    self.maxNumberLine += 1
+            # TODO Logica para el borrado
             elif newRowLen < self.pastRowLen:
-                self.pastRowLen = newRowLen
-                print("borrando texto")
+                self.maxNumberLine = newRowLen + 1
+                print("borrando", "maxline", self.maxNumberLine)
+
+
+
+                if self.maxNumberLine-1 <= 20:
+                    self.minNumberLine = 1
+                elif pos + 1 < self.maxNumberLine:
+                    self.maxNumberLine -= 1
+                    if self.maxNumberLine <= 20:
+                        self.minNumberLine = 1
+
+                #if pos == 20:
+                 #   self.minNumberLine = 1
+                #elif self.maxNumberLine <= 20:
+                  #  self.minNumberLine = 1
+                #elif pos + 1< self.maxNumberLine and self.maxNumberLine > 20 :
+                 #   self.maxNumberLine -= 1
+
+
+                # if self.maxNumberLine - 1 < 20:
+                 #   self.minNumberLine = 1
+
+                # elif self.maxNumberLine > 20:
+                    #self.maxNumberLine -= 0
+                # elif pos < self.maxNumberLine:
+                    #self.maxNumberLine -= 1
+                # elif pos <= 20:
+                    #self.maxNumberLine -= 1
+                # else:
+                    #self.maxNumberLine -= 1
+                # if self.maxNumberLine >= newRowLen:
+                  #  self.maxNumberLine = newRowLen + 1
+
+            for i in range(self.minNumberLine, self.maxNumberLine):
+
+                if text == "":
+                    text += " " * (4 - len(str(i))) + str(i)
+                else:
+                    text += "\n" + " " * (4 - len(str(i))) + str(i)
+
+            print("min",self.minNumberLine)
+            print("max",self.maxNumberLine)
+            print("pastnumberpos",self.pastLabelNumberPosition)
+            print("pos",pos)
+            print("newRowLen",newRowLen)
+
+            self.lblLineNumber.SetLabel("" + text)
+            self.pastLabelNumberPosition = pos
+            self.pastRowLen = newRowLen
+
+
+                    #if lxy[2]+1 != self.maxNumberLine and self.maxNumberLine > 20:
+                     #   posInit = self.maxNumberLine - 20
+                      #  cont = 0
+                       # self.minNumberLine = posInit + 1
+                        #for i in range(self.minNumberLine, newRowLen):
+                         #   cont += 1
+                          #  if text == "":
+                           #     text += " " * (4 - len(str(i))) + str(i)
+                            #else:
+                             #   text += "\n" + " " * (4 - len(str(i))) + str(i)
+                            #self.maxNumberLine = i
+                            #if cont == 20:
+                             #   break
+                    #elif lxy[2] + 1 > 20 and lxy[2] == self.maxNumberLine:
+                     #   cont = 0
+                      #  self.minNumberLine = self.plusNumberLine + 1
+                       # for i in range(self.minNumberLine + 1, newRowLen + 2):
+                        #    cont += 1
+                         #   if text == "":
+                          #      text += " " * (4 - len(str(i))) + str(i)
+                           # else:
+                            #    text += "\n" + " " * (4 - len(str(i))) + str(i)
+                            #self.maxNumberLine = i
+                            #if cont == 20:
+                             #   break
+                    #else:
+                     #   cont = 0
+                       # self.minNumberLine = 1
+                      #  for i in range(self.minNumberLine, newRowLen+1):
+                        #    cont += 1
+                         #   if text == "":
+                          #      text += " " * (4 - len(str(i))) + str(i)
+                           # else:
+                            #    text += "\n" + " " * (4 - len(str(i))) + str(i)
+                            #self.maxNumberLine = i+1
+                            #if cont == 20:
+                             #   break
+
+
+                #elif newRowLen < self.pastRowLen:
+                 #   print("Borrando")
+
+                  #  print("max", self.maxNumberLine, "min", self.minNumberLine)
+                   # self.maxNumberLine -= 1
+                    #if self.maxNumberLine <= 20:
+                     #   self.minNumberLine = 1
+                      #  cont = 0
+                       # for i in range(self.minNumberLine, self.maxNumberLine + 1):
+                        #    cont += 1
+                         #   if text == "":
+                          #      text += " " * (4 - len(str(i))) + str(i)
+                           # else:
+                            #    text += "\n" + " " * (4 - len(str(i))) + str(i)
+                            #self.maxNumberLine = i
+                            #if cont == 20:
+                             #   break
+                  #  elif self.maxNumberLine > 20:
+                   #     cont = 0
+                    #    for i in range(self.minNumberLine + 1, self.textMain.GetNumberOfLines()+1
+                     #                  ): # self.maxNumberLine + 1
+                       #     cont += 1
+                      #      if text == "":
+                        #        text += " " * (4 - len(str(i))) + str(i)
+                         #   else:
+                          #      text += "\n" + " " * (4 - len(str(i))) + str(i)
+                           # self.maxNumberLine = i
+                           # if cont == 20:
+                            #    break
 
 
 
 
-
-        if scrollPos != self.pasScrollPosition:
-            print("scrollPos",scrollPos)
-            print("pastScrollPos",self.pasScrollPosition)
-            print(self.textMain.GetNumberOfLines())
-            self.pasScrollPosition = scrollPos
+        # if scrollPos != self.pasScrollPosition:
+            # print("scrollPos",scrollPos)
+            # print("pastScrollPos",self.pasScrollPosition)
+            # print(self.textMain.GetNumberOfLines())
+            # self.pasScrollPosition = scrollPos
 
 
 
@@ -1001,7 +995,6 @@ class MyApp(wx.Frame):
                     #self.textMain.SetInsertionPoint(len(lineText)+4 + (4*lineText.count("\t")))
                     #self.textMain.Refresh()
                     #self.changeTextColorWithoutClear()
-
 
     def changeWordColor(self,tuple):
 
@@ -1036,8 +1029,6 @@ class MyApp(wx.Frame):
                         self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3], self.colorWhite)
                     elif tok.type == "INT":
                         self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3],self.colorWhite)
-
-
 # Creando funcion que reconoce solo el texto nuevo para colorearlo
     def changeTextColor(self):
 
@@ -1070,7 +1061,6 @@ class MyApp(wx.Frame):
                         self.writeColor(tok.value, self.colorReserved3)
                     else:
                         self.writeColor(tok.value, self.colorWhite)
-
     def changeTextColorWithoutClear(self):
 
         text = self.textMain.GetValue()
@@ -1104,7 +1094,6 @@ class MyApp(wx.Frame):
                         self.setStyleText(tok.lexpos, tok.lexpos + len(tok.value), self.colorWhite)
                     elif tok.type == "INT":
                         self.setStyleText(tok.lexpos, tok.lexpos + len(str((tok.value))), self.colorWhite)
-
 if __name__ == '__main__':
     app = wx.App()
     frame = MyApp(None,"CubeCompiler")
