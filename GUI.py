@@ -786,14 +786,15 @@ class MyApp(wx.Frame):
 
 
     def changeReservedWords2(self):
-        flagInsertando = False
         flagBorrando = False
+        flagcase = True
+        scrollPos = self.textMain.GetScrollPos(1)//21
+
 
         if self.flagNeedLoading:
             self.flagTemp = True
             threading.Thread(target=self.loading).start()
             self.loadingEffect()
-
         curpos = self.textMain.GetInsertionPoint()
         lxy = self.textMain.PositionToXY(curpos)
         if lxy[1] != self.pasPosxyList[1] or lxy[2] != self.pasPosxyList[2]:
@@ -839,23 +840,15 @@ class MyApp(wx.Frame):
                                 e+=1
                             pack = (s,e,lineText[s:e],posInit)
                         self.changeWordColor(pack)
+
         # Logica para los numeros de linea
         pos = self.textMain.PositionToXY(curpos)[2] +1
-
         newRowLen = self.textMain.GetNumberOfLines()
-
-
         if pos != self.pastLabelNumberPosition and self.pastRowLen != newRowLen:
-            print("PRUEBADEBORRADO")
-
+            print("CASE 1")
+            flagcase = False
             text = ""
-            flag = True
-            # TODO hacer todos los calculos en los condicionales y al final el for
-            print("NEW ROW LEN",newRowLen)
-            print("PAST ROW LEN",self.pastRowLen)
             if newRowLen > self.pastRowLen:
-                flagInsertando = True
-                print("MIERDA SERVÍ")
                 if pos == self.maxNumberLine and self.maxNumberLine > 20:
                     self.minNumberLine += 1
                     self.maxNumberLine += 1
@@ -866,74 +859,25 @@ class MyApp(wx.Frame):
                     self.maxNumberLine += 1
                 elif pos <= self.maxNumberLine:
                     self.maxNumberLine = self.textMain.GetNumberOfLines() + 1
-                    print("CASO")
                 else:
                     self.maxNumberLine += 1
-            # TODO Logica para el borrado
-
             elif newRowLen < self.pastRowLen:
                 flagBorrando = True
                 self.maxNumberLine = newRowLen + 1
-                print("borrando", "maxline", self.maxNumberLine)
-                # TODO variar el minimo y el maximo en multiplos de 20
                 if (self.maxNumberLine-1)%20 == 0:
                     self.minNumberLine = self.maxNumberLine//20
                     if self.minNumberLine == 1:
                         self.minNumberLine = 1
                     else:
-
                         self.maxNumberLine = pos +1
                         self.minNumberLine = self.maxNumberLine-20
-
-                    # self.maxNumberLine = self.minNumberLine + 20
                     self.textMain.SetInsertionPointEnd()
-
-
-
-
-
-                #if self.maxNumberLine-1 <= 20:
-                 #   self.minNumberLine = 1
-                #elif pos + 1 < self.maxNumberLine:
-                 #   self.maxNumberLine -= 1
-                  #  if self.maxNumberLine <= 20:
-                   #     self.minNumberLine = 1
-
-                #if pos == 20:
-                 #   self.minNumberLine = 1
-                #elif self.maxNumberLine <= 20:
-                  #  self.minNumberLine = 1
-                #elif pos + 1< self.maxNumberLine and self.maxNumberLine > 20 :
-                 #   self.maxNumberLine -= 1
-
-
-                # if self.maxNumberLine - 1 < 20:
-                 #   self.minNumberLine = 1
-
-                # elif self.maxNumberLine > 20:
-                    #self.maxNumberLine -= 0
-                # elif pos < self.maxNumberLine:
-                    #self.maxNumberLine -= 1
-                # elif pos <= 20:
-                    #self.maxNumberLine -= 1
-                # else:
-                    #self.maxNumberLine -= 1
-                # if self.maxNumberLine >= newRowLen:
-                  #  self.maxNumberLine = newRowLen + 1
             cont = 0
             liner = self.textMain.GetNumberOfLines()
             i = self.minNumberLine
-            print("LINER",liner)
-            print("FLAG",flagBorrando)
             if pos == self.minNumberLine and flagBorrando:
-                print("TEST")
                 if self.minNumberLine != 1:
                     self.minNumberLine = self.minNumberLine-1
-                #else:
-
-
-            #elif pos == self.minNumberLine and flagInsertando:
-
             if (liner - self.minNumberLine) < 20:
                 if liner -self.minNumberLine == 0:
                     cont = 0
@@ -945,113 +889,51 @@ class MyApp(wx.Frame):
                 i = 1
                 cont = 19
                 self.minNumberLine = 1
-
             while cont >= 0:
-
-
-
                 if text == "":
                     text += " " * (4 - len(str(i))) + str(i)
                 else:
                     text += "\n" + " " * (4 - len(str(i))) + str(i)
-
                 cont -= 1
                 i += 1
             if liner%20 == 0:
                 self.textMain.ShowPosition(self.textMain.LastPosition)
 
-
-            print("min",self.minNumberLine)
-            #print("max",self.maxNumberLine)
-            #print("pastnumberpos",self.pastLabelNumberPosition)
-            print("pos",pos)
-            #print("newRowLen",newRowLen)
-            #print("scrollPos",scrollPos)
-            #print("scrollRange",scrollRange)
-            #print("PRIMERA LINEA" + str(len(self.textMain.GetLineText(10))))
-
             self.lblLineNumber.SetLabel("" + text)
             self.pastLabelNumberPosition = pos
             self.pastRowLen = newRowLen
 
+        elif newRowLen == self.pastRowLen and scrollPos != self.pasScrollPosition:
+            print("CASE 2")
+            print("scrollPos",scrollPos)
+            print("pastScrollPos",self.pasScrollPosition)
+            #print(self.textMain.GetNumberOfLines())
+            text = ""
+            if scrollPos > self.pasScrollPosition:
+                print(" scroling down")
+                dif = scrollPos - self.pasScrollPosition
+                self.minNumberLine += dif
+                self.maxNumberLine += 1
+            elif scrollPos < self.pasScrollPosition:
+                print(" scroling up")
+                dif = self.pasScrollPosition - scrollPos
+                self.minNumberLine -= dif
+                self.maxNumberLine -= 1
+                if scrollPos == 0:
+                    self.minNumberLine = 1
 
-                    #if lxy[2]+1 != self.maxNumberLine and self.maxNumberLine > 20:
-                     #   posInit = self.maxNumberLine - 20
-                      #  cont = 0
-                       # self.minNumberLine = posInit + 1
-                        #for i in range(self.minNumberLine, newRowLen):
-                         #   cont += 1
-                          #  if text == "":
-                           #     text += " " * (4 - len(str(i))) + str(i)
-                            #else:
-                             #   text += "\n" + " " * (4 - len(str(i))) + str(i)
-                            #self.maxNumberLine = i
-                            #if cont == 20:
-                             #   break
-                    #elif lxy[2] + 1 > 20 and lxy[2] == self.maxNumberLine:
-                     #   cont = 0
-                      #  self.minNumberLine = self.plusNumberLine + 1
-                       # for i in range(self.minNumberLine + 1, newRowLen + 2):
-                        #    cont += 1
-                         #   if text == "":
-                          #      text += " " * (4 - len(str(i))) + str(i)
-                           # else:
-                            #    text += "\n" + " " * (4 - len(str(i))) + str(i)
-                            #self.maxNumberLine = i
-                            #if cont == 20:
-                             #   break
-                    #else:
-                     #   cont = 0
-                       # self.minNumberLine = 1
-                      #  for i in range(self.minNumberLine, newRowLen+1):
-                        #    cont += 1
-                         #   if text == "":
-                          #      text += " " * (4 - len(str(i))) + str(i)
-                           # else:
-                            #    text += "\n" + " " * (4 - len(str(i))) + str(i)
-                            #self.maxNumberLine = i+1
-                            #if cont == 20:
-                             #   break
+            cont = 0
+            for i in range(self.minNumberLine, self.maxNumberLine+1):
+                cont += 1
+                if text == "":
+                        text += " " * (4 - len(str(i))) + str(i)
+                else:
+                    text += "\n" + " " * (4 - len(str(i))) + str(i)
+                if cont == 20:
+                    break
 
-
-                #elif newRowLen < self.pastRowLen:
-                 #   print("Borrando")
-
-                  #  print("max", self.maxNumberLine, "min", self.minNumberLine)
-                   # self.maxNumberLine -= 1
-                    #if self.maxNumberLine <= 20:
-                     #   self.minNumberLine = 1
-                      #  cont = 0
-                       # for i in range(self.minNumberLine, self.maxNumberLine + 1):
-                        #    cont += 1
-                         #   if text == "":
-                          #      text += " " * (4 - len(str(i))) + str(i)
-                           # else:
-                            #    text += "\n" + " " * (4 - len(str(i))) + str(i)
-                            #self.maxNumberLine = i
-                            #if cont == 20:
-                             #   break
-                  #  elif self.maxNumberLine > 20:
-                   #     cont = 0
-                    #    for i in range(self.minNumberLine + 1, self.textMain.GetNumberOfLines()+1
-                     #                  ): # self.maxNumberLine + 1
-                       #     cont += 1
-                      #      if text == "":
-                        #        text += " " * (4 - len(str(i))) + str(i)
-                         #   else:
-                          #      text += "\n" + " " * (4 - len(str(i))) + str(i)
-                           # self.maxNumberLine = i
-                           # if cont == 20:
-                            #    break
-
-
-
-
-        # if scrollPos != self.pasScrollPosition:
-            # print("scrollPos",scrollPos)
-            # print("pastScrollPos",self.pasScrollPosition)
-            # print(self.textMain.GetNumberOfLines())
-            # self.pasScrollPosition = scrollPos
+            self.pasScrollPosition = scrollPos
+            self.lblLineNumber.SetLabel("" + text)
 
 
 
