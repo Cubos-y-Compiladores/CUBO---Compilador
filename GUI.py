@@ -245,6 +245,8 @@ class MyApp(wx.Frame):
         self.flagNeedLoading = False
         self.flagTemp = False
 
+        self.flagO = False
+
 
         # Lista de archivos
 
@@ -786,9 +788,14 @@ class MyApp(wx.Frame):
 
 
     def changeReservedWords2(self):
+
         flagBorrando = False
         flagcase = True
         scrollPos = self.textMain.GetScrollPos(1)//21
+        if self.flagO:
+            self.pasScrollPosition = scrollPos
+            self.flagO = False
+
 
 
         if self.flagNeedLoading:
@@ -844,8 +851,12 @@ class MyApp(wx.Frame):
         # Logica para los numeros de linea
         pos = self.textMain.PositionToXY(curpos)[2] +1
         newRowLen = self.textMain.GetNumberOfLines()
-        if pos != self.pastLabelNumberPosition and self.pastRowLen != newRowLen:
+        if self.pastRowLen != newRowLen:
             print("CASE 1")
+            self.flagO = True
+            if scrollPos != self.pasScrollPosition:
+                self.pasScrollPosition = scrollPos
+
             flagcase = False
             text = ""
             if newRowLen > self.pastRowLen:
