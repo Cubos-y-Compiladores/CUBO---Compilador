@@ -181,18 +181,28 @@ class MyApp(wx.Frame):
 
         # TextControls
 
-        self.textMain = wx.TextCtrl(self,style=wx.TE_MULTILINE|wx.TE_RICH|wx.BORDER_NONE,pos=(38,21),size=(1277,425))
+
+
+
         self.textConsole = wx.TextCtrl(self, style=wx.TE_MULTILINE|wx.TE_RICH|wx.BORDER_NONE|wx.TE_READONLY, pos=(52,465), size=(1259, 209))
         self.textConsole.AppendText("CubeCompiler [Version 1.0.0.0.1.0.1]\n(c) 2020 DD&D Corporation. All rights reserved.")
         self.textConsole.AppendText("\n\n")
 
-        self.textMain.SetEvtHandlerEnabled(True)
+
         self.SetMaxSize((1350,750))
         self.SetMinSize((1350,750))
 
         # Paneles
-        self.mainPanel = wx.Panel(self,1, pos = (39,22), size = (1276,424))
-        self.mainPanel.SetBackgroundColour(self.colorWhite)
+
+        self.mainPanel = wx.Panel(self,1, pos = (37,21), size = (1278,424))
+        self.mainPanel.SetBackgroundColour(self.colorBG)
+        self.sizerPanel = wx.BoxSizer(wx.HORIZONTAL)
+        self.textMain = wx.TextCtrl(self.mainPanel, style=wx.TE_MULTILINE | wx.TE_RICH | wx.BORDER_NONE, pos=(0, 0),size=(1277, 420))  # 38, 21
+        self.textMain.SetEvtHandlerEnabled(True)
+
+        self.sizerPanel.Add(self.textMain,1,flag = wx.ALL|wx.EXPAND)
+        self.mainPanel.SetSizer(self.sizerPanel)
+
 
         self.panelLine1 = wx.Panel(self,1,pos = (0,20) ,size = (1350,1))
         self.panelLine1.SetBackgroundColour(self.colorBG)
@@ -570,6 +580,7 @@ class MyApp(wx.Frame):
             # threadOther.start()
 
             self.lblLoading.SetLabel("Loading . . .")
+            self.lblLineNumber.SetLabel(" " * (4 - len(str(1))) + str(1))
             self.flagNeedLoading = True
 
         dlg.Destroy()
@@ -775,12 +786,14 @@ class MyApp(wx.Frame):
 
 
     def changeReservedWords2(self):
+        flagInsertando = False
+        flagBorrando = False
+
         if self.flagNeedLoading:
             self.flagTemp = True
             threading.Thread(target=self.loading).start()
             self.loadingEffect()
-        scrollPos = self.textMain.GetScrollPos(1)//21
-        scrollRange=self.textMain.GetScrollRange(1)
+
         curpos = self.textMain.GetInsertionPoint()
         lxy = self.textMain.PositionToXY(curpos)
         if lxy[1] != self.pasPosxyList[1] or lxy[2] != self.pasPosxyList[2]:
@@ -827,15 +840,22 @@ class MyApp(wx.Frame):
                             pack = (s,e,lineText[s:e],posInit)
                         self.changeWordColor(pack)
         # Logica para los numeros de linea
-        pos = lxy[2] + 1
+        pos = self.textMain.PositionToXY(curpos)[2] +1
+
         newRowLen = self.textMain.GetNumberOfLines()
 
+
         if pos != self.pastLabelNumberPosition and self.pastRowLen != newRowLen:
+            print("PRUEBADEBORRADO")
 
             text = ""
             flag = True
             # TODO hacer todos los calculos en los condicionales y al final el for
-            if newRowLen > self.pastLabelNumberPosition:
+            print("NEW ROW LEN",newRowLen)
+            print("PAST ROW LEN",self.pastRowLen)
+            if newRowLen > self.pastRowLen:
+                flagInsertando = True
+                print("MIERDA SERVÍ")
                 if pos == self.maxNumberLine and self.maxNumberLine > 20:
                     self.minNumberLine += 1
                     self.maxNumberLine += 1
@@ -850,18 +870,34 @@ class MyApp(wx.Frame):
                 else:
                     self.maxNumberLine += 1
             # TODO Logica para el borrado
+
             elif newRowLen < self.pastRowLen:
+                flagBorrando = True
                 self.maxNumberLine = newRowLen + 1
                 print("borrando", "maxline", self.maxNumberLine)
-
-
-
-                if self.maxNumberLine-1 <= 20:
-                    self.minNumberLine = 1
-                elif pos + 1 < self.maxNumberLine:
-                    self.maxNumberLine -= 1
-                    if self.maxNumberLine <= 20:
+                # TODO variar el minimo y el maximo en multiplos de 20
+                if (self.maxNumberLine-1)%20 == 0:
+                    self.minNumberLine = self.maxNumberLine//20
+                    if self.minNumberLine == 1:
                         self.minNumberLine = 1
+                    else:
+
+                        self.maxNumberLine = pos +1
+                        self.minNumberLine = self.maxNumberLine-20
+
+                    # self.maxNumberLine = self.minNumberLine + 20
+                    self.textMain.SetInsertionPointEnd()
+
+
+
+
+
+                #if self.maxNumberLine-1 <= 20:
+                 #   self.minNumberLine = 1
+                #elif pos + 1 < self.maxNumberLine:
+                 #   self.maxNumberLine -= 1
+                  #  if self.maxNumberLine <= 20:
+                   #     self.minNumberLine = 1
 
                 #if pos == 20:
                  #   self.minNumberLine = 1
@@ -884,19 +920,55 @@ class MyApp(wx.Frame):
                     #self.maxNumberLine -= 1
                 # if self.maxNumberLine >= newRowLen:
                   #  self.maxNumberLine = newRowLen + 1
+            cont = 0
+            liner = self.textMain.GetNumberOfLines()
+            i = self.minNumberLine
+            print("LINER",liner)
+            print("FLAG",flagBorrando)
+            if pos == self.minNumberLine and flagBorrando:
+                print("TEST")
+                if self.minNumberLine != 1:
+                    self.minNumberLine = self.minNumberLine-1
+                #else:
 
-            for i in range(self.minNumberLine, self.maxNumberLine):
+
+            #elif pos == self.minNumberLine and flagInsertando:
+
+            if (liner - self.minNumberLine) < 20:
+                if liner -self.minNumberLine == 0:
+                    cont = 0
+                else:
+                    cont = liner - self.minNumberLine
+            else:
+                cont = 19
+            if liner == 20:
+                i = 1
+                cont = 19
+                self.minNumberLine = 1
+
+            while cont >= 0:
+
+
 
                 if text == "":
                     text += " " * (4 - len(str(i))) + str(i)
                 else:
                     text += "\n" + " " * (4 - len(str(i))) + str(i)
 
+                cont -= 1
+                i += 1
+            if liner%20 == 0:
+                self.textMain.ShowPosition(self.textMain.LastPosition)
+
+
             print("min",self.minNumberLine)
-            print("max",self.maxNumberLine)
-            print("pastnumberpos",self.pastLabelNumberPosition)
+            #print("max",self.maxNumberLine)
+            #print("pastnumberpos",self.pastLabelNumberPosition)
             print("pos",pos)
-            print("newRowLen",newRowLen)
+            #print("newRowLen",newRowLen)
+            #print("scrollPos",scrollPos)
+            #print("scrollRange",scrollRange)
+            #print("PRIMERA LINEA" + str(len(self.textMain.GetLineText(10))))
 
             self.lblLineNumber.SetLabel("" + text)
             self.pastLabelNumberPosition = pos
