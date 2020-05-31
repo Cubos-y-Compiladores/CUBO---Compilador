@@ -11,6 +11,7 @@ import threading
 import wx.lib.agw.multidirdialog as MDD
 import time
 import QuickCube
+import wx.stc
 
 
 wildcard = "*.cbc"
@@ -53,12 +54,13 @@ reserved = {'if': 'IF',
             'Min': 'MIN',
             'begin':'BEGIN',
             'end':'END',
-            'delete':'DELETE'
+            'delete':'DELETE',
+            ' ':'BLANK'
             }
 
 tokens = tokens + list(reserved.values())
 
-t_ignore = '\r' # t_ignore es usado para ignorar todos los caracteres dentro de esta lista
+t_ignore = '' # t_ignore es usado para ignorar todos los caracteres dentro de esta lista
 t_PLUS = r'\+'
 t_MINUS = r'\-'
 t_TIMES = r'\*'
@@ -87,6 +89,10 @@ t_TAB = r"\t"
 # Reglas para cambios de color
 
 # Reconoce variables y palabras reservadas
+def t_BLANK(t):
+    r"""\r+"""
+    return t
+
 def t_ID(t):
     r"""[a-zA-Z][a-zA-Z0-9_@&]*"""
 
@@ -132,7 +138,8 @@ def t_DIVENT(t):
     r'[/][/]'
     return t
 
-
+global currenttext
+currenttext = ""
 class MyApp(wx.Frame):
     def __init__(self,parent,title):
         wx.Frame.__init__(self,parent = parent, title = title, size = (1350,750))
@@ -176,13 +183,7 @@ class MyApp(wx.Frame):
         self.colorReserved2 = (175,43,191)
         self.colorReserved3 = (100,223,223)
 
-
-
-
         # TextControls
-
-
-
 
         self.textConsole = wx.TextCtrl(self, style=wx.TE_MULTILINE|wx.TE_RICH|wx.BORDER_NONE|wx.TE_READONLY, pos=(52,465), size=(1259, 209))
         self.textConsole.AppendText("CubeCompiler [Version 1.0.0.0.1.0.1]\n(c) 2020 DD&D Corporation. All rights reserved.")
@@ -194,14 +195,43 @@ class MyApp(wx.Frame):
 
         # Paneles
 
-        self.mainPanel = wx.Panel(self,1, pos = (37,21), size = (1278,424))
-        self.mainPanel.SetBackgroundColour(self.colorBG)
-        self.sizerPanel = wx.BoxSizer(wx.HORIZONTAL)
-        self.textMain = wx.TextCtrl(self.mainPanel, style=wx.TE_MULTILINE | wx.TE_RICH | wx.BORDER_NONE, pos=(0, 0),size=(1277, 420))  # 38, 21
-        self.textMain.SetEvtHandlerEnabled(True)
+        #self.mainPanel = wx.Panel(self,1, pos = (37,21), size = (1278,424))
+        #self.mainPanel.SetBackgroundColour(self.colorBG)
+        #self.sizerPanel = wx.BoxSizer(wx.HORIZONTAL)
+        #self.textMain = wx.TextCtrl(self.mainPanel, style=wx.TE_MULTILINE | wx.TE_RICH | wx.BORDER_NONE, pos=(0, 0),size=(1277, 420))  # 38, 21
 
-        self.sizerPanel.Add(self.textMain,1,flag = wx.ALL|wx.EXPAND)
-        self.mainPanel.SetSizer(self.sizerPanel)
+
+
+        self.textNumberLine = wx.stc.StyledTextCtrl(self,1,pos = (20,22),size=(1288, 422), style = wx.TE_MULTILINE | wx.TE_WORDWRAP | wx.BORDER_NONE)
+
+        self.textNumberLine.SetMarginType(1,wx.stc.STC_MARGIN_NUMBER)
+        self.textNumberLine.SetMarginWidth(wx.stc.STC_MARGIN_NUMBER,23)
+        self.textNumberLine.StyleSetSpec(11,'fore:#ffffff,back:#323232')
+        self.textNumberLine.StyleSetBackground(wx.stc.STC_STYLE_DEFAULT,self.colorBG)
+        self.textNumberLine.SetIndent(8)
+        # self.textNumberLine.SetMargins(10,10)
+        self.textNumberLine.SetLexer(wx.stc.STC_LEX_CONTAINER)
+        self.textNumberLine.SetStyleBits(5)
+        self.textNumberLine.Bind(wx.EVT_KEY_UP,self.changeTextColor)
+        # self.changeTextColorThread()
+
+
+
+        #self.textNumberLine.StyleSetForeground(11,wx.Colour(self.colorWhite))
+        # self.textNumberLine.StyleSetBackground(11,wx.Colour(self.colorBG))
+        # self.textNumberLine.Style
+
+        self.textNumberLine.SetIndentationGuides(1)
+
+
+        self.textNumberLine.SetUseHorizontalScrollBar(False)
+        self.textNumberLine.SetUseVerticalScrollBar(False)
+
+
+        #self.textMain.SetEvtHandlerEnabled(True)
+
+        #self.sizerPanel.Add(self.textMain,1,flag = wx.ALL|wx.EXPAND)
+        #self.mainPanel.SetSizer(self.sizerPanel)
 
 
         self.panelLine1 = wx.Panel(self,1,pos = (0,20) ,size = (1350,1))
@@ -225,7 +255,7 @@ class MyApp(wx.Frame):
 
         self.currentDirectory = os.getcwd() + "/Files"
         self.currentFile = ""
-        self.currenttext = ""
+        # self.currenttext = ""
         self.pastLabelFileName = ""
         self.pastLabelNumberPosition = 1
         self.currentLabelFileName = ""
@@ -233,8 +263,10 @@ class MyApp(wx.Frame):
         self.startEnd = [0,0]
         self.flagBgError = False
         self.textRestauration = ""
-        self.currentLineNumber = self.textMain.PositionToXY(self.textMain.GetInsertionPoint())[2]
-        self.pasPosxyList = self.textMain.PositionToXY(self.textMain.GetInsertionPoint())
+        #self.currentLineNumber = self.textMain.PositionToXY(self.textMain.GetInsertionPoint())[2]
+
+
+        #self.pasPosxyList = self.textMain.PositionToXY(self.textMain.GetInsertionPoint())
         self.plusNumberLine = 0
         self.pastRowLen = 1
         self.maxNumberLine = 2
@@ -246,6 +278,8 @@ class MyApp(wx.Frame):
         self.flagTemp = False
 
         self.flagO = False
+
+
 
 
         # Lista de archivos
@@ -356,35 +390,35 @@ class MyApp(wx.Frame):
         self.Bind(wx.EVT_MENU, partial(self.insertMatriz3D,77), self.sub7x7x7)
         self.Bind(wx.EVT_MENU, partial(self.insertMatriz3D,88), self.sub8x8x8)
 
-        self.textMain.Bind(wx.EVT_SET_CURSOR, self.focusOnTextCtrl)
+        #self.textMain.Bind(wx.EVT_SET_CURSOR, self.focusOnTextCtrl)
         # Funcion boton
         # self.Bind(wx.EVT_BUTTON,self.click1)
         # Labels
         self.lblFileName = wx.StaticText(self,-1,"",(1076,658))
-        self.lblLineNumber = wx.StaticText(self,-1," " * (4 - len(str(1))) + str(1),(1,21)) #38
-        self.lblLineNumber.SetForegroundColour(self.colorLineNumber)
+        # self.lblLineNumber = wx.StaticText(self,-1," " * (4 - len(str(1))) + str(1),(1,21)) #38
+        # self.lblLineNumber.SetForegroundColour(self.colorLineNumber)
 
         self.lblLoading = wx.StaticText(self,-1,"", (55,500)) #55 500
         self.lblLoading.SetBackgroundColour(self.colorBG)
         self.lblLoading.SetForegroundColour(self.colorLime)
 
         # Set Size to a label
-        self.fontNumberLabel = self.lblLineNumber.GetFont()
-        self.fontNumberLabel.SetPointSize(12)
-        self.lblLineNumber.SetFont(self.fontNumberLabel)
-        self.fontNumberLabel.SetPointSize(12)
+        #elf.fontNumberLabel = self.lblLineNumber.GetFont()
+        #self.fontNumberLabel.SetPointSize(12)
+        #self.lblLineNumber.SetFont(self.fontNumberLabel)
+        #self.fontNumberLabel.SetPointSize(12)
 
         self.lblBackG = wx.StaticText(self,-1," " + "\t"*15 +" ",(1184,658))
         self.lblBackG.SetBackgroundColour(self.colorBorder)
         # self.lblBackG.SetForegroundColour()
 
-        self.fontNumberLabel.SetPointSize(9)
+        #self.fontNumberLabel.SetPointSize(9)
         self.lblLine = wx.StaticText(self, -1, "  line : ", (1184, 658))
         self.lblPosY = wx.StaticText(self,-1,"1",(1224,658))
         self.lblCol = wx.StaticText(self, -1, "col : ", (1254, 658))
         self.lblPosX = wx.StaticText(self, -1, "0", (1284, 658))
 
-        self.lblpanel = wx.StaticText(self,-1,"\n......."*13,(19,462))
+        self.lblpanel = wx.StaticText(self,-1,"\n........"*13,(19,462))
         self.lblpanel.SetForegroundColour(self.colorBorder)
         self.lblpanel.SetBackgroundColour(self.colorBorder)
 
@@ -393,10 +427,10 @@ class MyApp(wx.Frame):
         self.lblCol.SetBackgroundColour(self.colorBorder)
         self.lblPosX.SetBackgroundColour(self.colorBorder)
 
-        self.lblLine.SetFont(self.fontNumberLabel)
-        self.lblPosY.SetFont(self.fontNumberLabel)
-        self.lblCol.SetFont(self.fontNumberLabel)
-        self.lblPosX.SetFont(self.fontNumberLabel)
+      #  self.lblLine.SetFont(self.fontNumberLabel)
+       # self.lblPosY.SetFont(self.fontNumberLabel)
+        #self.lblCol.SetFont(self.fontNumberLabel)
+        #self.lblPosX.SetFont(self.fontNumberLabel)
 
         self.lblLine.SetForegroundColour(self.colorLabel)
         self.lblPosY.SetForegroundColour(self.colorLabel)
@@ -424,23 +458,23 @@ class MyApp(wx.Frame):
         # self.textConsole.Bind(wx.EVT_SET_CURSOR,self.focusOnTextCtrl)
         # Fuentes de Texto
         self.setFontSize(12)
-        self.textMain.SetOwnBackgroundColour(self.colorBG)
+        #self.textMain.SetOwnBackgroundColour(self.colorBG)
         self.textConsole.SetBackgroundColour(self.colorBG)
-        self.textMain.SetForegroundColour(self.colorWhite)
+        #self.textMain.SetForegroundColour(self.colorWhite)
         self.textConsole.SetForegroundColour(self.colorLabel)
         # AceleratorTable
         randomPaste = wx.NewId()
-        self.textMain.Bind(wx.EVT_MENU, self.test , id = randomPaste)
+        #self.textMain.Bind(wx.EVT_MENU, self.test , id = randomPaste)
         accel_tbl = wx.AcceleratorTable([(wx.ACCEL_CTRL, ord('Q'), randomPaste)])
-        self.textMain.SetAcceleratorTable(accel_tbl)
+        #self.textMain.SetAcceleratorTable(accel_tbl)
         # Show Frame
         self.Centre(1)
-        self.SetBackgroundColour(self.textMain.GetBackgroundColour())
+        #self.SetBackgroundColour(self.textMain.GetBackgroundColour())
         self.SetBackgroundColour(self.colorLineNumberBorder)
         self.Show()
         # Thread for reserverd words
-        self.t = threading.Thread(target = self.loop, args=())
-        self.initThread()
+        #self.t = threading.Thread(target = self.loop, args=())
+        #self.initThread()
     # FUNCTIONS
     def buttonRunLightOn(self,event):
         self.buttonRun.SetBackgroundColour(self.colorLightOn)
@@ -450,21 +484,7 @@ class MyApp(wx.Frame):
         self.buttonCube.SetBackgroundColour(self.colorLightOn)
     def buttonCubeLightOff(self,event):
         self.buttonCube.SetBackgroundColour(self.colorBorder)
-    def initLineNumbers(self):
-        newRowLen = len(self.textMain.GetValue().split("\n"))
-        cont = 0
-        text = ""
-        self.minNumberLine = 1
-        for i in range(self.minNumberLine, newRowLen + 1):
-            cont += 1
-            if text == "":
-                text += " " * (4 - len(str(i))) + str(i)
-            else:
-                text += "\n" + " " * (4 - len(str(i))) + str(i)
-            self.maxNumberLine = i
-            if cont == 20:
-                break
-        self.lblLineNumber.SetLabel("" + text)
+
     def test(self,text):
         print("ctrl-v pressed")
         print("text: " + str(text))
@@ -481,27 +501,16 @@ class MyApp(wx.Frame):
     # Funcion para boton1, imprime lo que esté escrito en las entradas de texto
     def initThread(self):
         self.t.start()
-    def loop(self):
-        while 1:
+    #def loop(self):
+        #while 1:
             # self.changeReservedWords()
 
-            self.changeReservedWords2()
-    def click1(self,event):
-        # list1 = ['"', ",", "{", "}", "=", "--", "(", ")", "[", "]"]
-        # self.textMain.SetStyle(0,1,wx.TextAttr(wx.GREEN))
-        # print(self.textMain.GetLineText(0)[0] in list1)
-        # line = len(self.textMain.GetRange(0, self.textMain.GetInsertionPoint()).split("\n"))
-        self.setErrorBackground(1)
-        pixelpos = self.textMain.PositionToXY(self.textMain.GetInsertionPoint())
-        print("pixelpos: ",pixelpos)
-        text = ""
-        for i in range(1,self.textMain.GetInsertionPoint()):
-            text += str(i) + "\n"
-        print(text)
+           # self.changeReservedWords2()
+
     def openQuickCube(self,event):
         quickCube = QuickCube.matrizFrame("QuickCube")
     def insertList(self,event):
-        self.textMain.AppendText("list" + str(self.contList) +"= [];\n")
+    #    self.textMain.AppendText("list" + str(self.contList) +"= [];\n")
         self.contList += 1
         self.changeTextColorWithoutClear()
     def insertMatriz2D(self,number,event):
@@ -521,7 +530,7 @@ class MyApp(wx.Frame):
         # text += "False]"
         # text+="];\n"
 
-        self.textMain.AppendText("matriz2D" + str(self.contMatriz2) +"= "+ text)
+        #self.textMain.AppendText("matriz2D" + str(self.contMatriz2) +"= "+ text)
         self.contMatriz2 += 1
         self.changeTextColorWithoutClear()
     def insertMatriz3D(self,number,event):
@@ -545,7 +554,7 @@ class MyApp(wx.Frame):
         textFinal += text+"];\n"
 
 
-        self.textMain.AppendText("matriz3D" + str(self.contMatriz3) +"= "+ textFinal)
+        #self.textMain.AppendText("matriz3D" + str(self.contMatriz3) +"= "+ textFinal)
         self.contMatriz3 += 1
         self.changeTextColorWithoutClear()
     def subExitWindow(self,event):
@@ -554,7 +563,7 @@ class MyApp(wx.Frame):
         f = open(self.mainFile, "r")
         txt = f.read()
         f.close()
-        self.textMain.SetValue(txt)
+        #self.textMain.SetValue(txt)
     def openFileTXT(self,event):
         self.onOpenFile()
     def onOpenFile(self):
@@ -582,29 +591,29 @@ class MyApp(wx.Frame):
             # threadOther.start()
 
             self.lblLoading.SetLabel("Loading . . .")
-            self.lblLineNumber.SetLabel(" " * (4 - len(str(1))) + str(1))
+            #self.lblLineNumber.SetLabel(" " * (4 - len(str(1))) + str(1))
             self.flagNeedLoading = True
 
         dlg.Destroy()
     def loading(self):
 
-        self.textMain.SetValue("")
+        #self.textMain.SetValue("")
 
         self.currentFile = self.loadingPath[0]
         f = open(self.loadingPath[0], "r")
         txt = f.read()
         f.close()
 
-        self.textMain.Freeze()
+        #self.textMain.Freeze()
         # self.textConsole.write("Loading . . .")
-        self.textMain.SetValue(txt)
+        #self.textMain.SetValue(txt)
         self.Disable()
         self.changeTextColor()
-        self.textMain.Thaw()
+        #self.textMain.Thaw()
         self.Enable()
 
-        self.textMain.SetInsertionPoint(0)
-        self.initLineNumbers()
+        #self.textMain.SetInsertionPoint(0)
+        #self.initLineNumbers()
 
         self.currentLabelFileName = self.loadingPath[0].split("\\")[-1]
         self.resetLabel(self.pastLabelFileName, self.currentLabelFileName)
@@ -614,6 +623,7 @@ class MyApp(wx.Frame):
         self.lblLoading.SetLabel("")
         self.flagNeedLoading = False
         self.loadingPath = None
+
 
 
 
@@ -650,7 +660,7 @@ class MyApp(wx.Frame):
         if  self.currentLabelFileName in self.filesList and self.currentLabelFileName != "":
 
             f = open(self.currentDirectory +"/" + self.currentLabelFileName,"w")
-            f.write(self.textMain.GetValue())
+            #f.write(self.textMain.GetValue())
             f.close()
 
         else:
@@ -667,7 +677,7 @@ class MyApp(wx.Frame):
         if dlg.ShowModal() == wx.ID_OK:
             path = dlg.GetPath()
             f = open(path,"w")
-            f.write(self.textMain.GetValue())
+            #f.write(self.textMain.GetValue())
             f.close()
 
 
@@ -687,10 +697,10 @@ class MyApp(wx.Frame):
 
         if self.currentFile != "":
             f = open(self.currentFile, "w")
-            f.write(self.textMain.GetValue())
+            #f.write(self.textMain.GetValue())
             f.close()
 
-        self.textMain.Clear()
+        #self.textMain.Clear()
         # self.currentDirectory = os.getcwd() + "/Files/New" + str(self.contNewFiles) +".cbc"
         # print("Current Directory -> " + self.currentDirectory)
 
@@ -703,9 +713,9 @@ class MyApp(wx.Frame):
         # TODO aqui se inserta la logica del compilador
         print("Running")
     def setFontSize(self,size):
-        font = self.textMain.GetFont()
-        font.SetPointSize(size)
-        self.textMain.SetFont(font)
+        #font = self.textMain.GetFont()
+        #font.SetPointSize(size)
+        #self.textMain.SetFont(font)
 
         self.actualFontSize = size
     def onSlider(self,event):
@@ -714,36 +724,13 @@ class MyApp(wx.Frame):
         self.flagSlider = False
     def focusOnSlider(self,event):
         self.flagSlider = True
-    def writeColor(self,text,t):
-        self.textMain.SetDefaultStyle(wx.TextAttr(t))
-        self.textMain.WriteText(str(text))
 
-        self.textMain.SetDefaultStyle(wx.TextAttr(wx.WHITE))
-    def setStyleText(self,start,end,color):
-        self.textMain.SetStyle(start, end, wx.TextAttr(color))
-        self.textMain.SetDefaultStyle(wx.TextAttr(self.colorWhite))
-    def setErrorBackground(self,line):
-        text = self.textMain.GetValue()
 
-        lista = text.split("\n")
-
-        start = 1
-        for i in range(0,line):
-            start += len(lista[i])
-        end = len(lista[line])
-        
-        self.startEnd = [start,end]
-        self.flagBgError = not self.flagBgError
-
-        self.textRestauration = lista[line]
-
-        self.textMain.SetStyle(start,start + end,wx.TextAttr(self.colorWhite,self.colorErrorBg))
-        self.textMain.SetDefaultStyle(wx.TextAttr(self.colorWhite,self.colorBG))
     def resetErrorBackground(self):
 
-        self.textMain.SetStyle(self.startEnd[0],self.startEnd[1]+self.startEnd[0]+1,wx.TextAttr(self.colorWhite,self.colorBG))
+        #self.textMain.SetStyle(self.startEnd[0],self.startEnd[1]+self.startEnd[0]+1,wx.TextAttr(self.colorWhite,self.colorBG))
         self.changeReservedWords(self.startEnd[0],self.textRestauration)
-        self.textMain.SetDefaultStyle(wx.TextAttr(self.colorWhite,self.colorBG))
+        #self.textMain.SetDefaultStyle(wx.TextAttr(self.colorWhite,self.colorBG))
     def loadingEffect(self):
         text = "Loading"
         while self.flagTemp:
@@ -787,180 +774,6 @@ class MyApp(wx.Frame):
                         self.setStyleText(tok.lexpos + posInit, tok.lexpos + len(str(tok.value)) + posInit, self.colorWhite)
 
 
-    def changeReservedWords2(self):
-
-        flagBorrando = False
-        flagcase = True
-        scrollPos = self.textMain.GetScrollPos(1)//21
-        if self.flagO:
-            self.pasScrollPosition = scrollPos
-            self.flagO = False
-
-
-
-        if self.flagNeedLoading:
-            self.flagTemp = True
-            threading.Thread(target=self.loading).start()
-            self.loadingEffect()
-        curpos = self.textMain.GetInsertionPoint()
-        lxy = self.textMain.PositionToXY(curpos)
-        if lxy[1] != self.pasPosxyList[1] or lxy[2] != self.pasPosxyList[2]:
-            self.pasPosxyList = lxy
-            self.lblPosY.SetLabel(str(lxy[2]+1))
-            self.lblPosX.SetLabel(str(lxy[1]))
-        if self.flagSlider:
-            self.changeTextColorWithoutClear()
-        if self.textMain.GetValue() != self.currenttext or len(self.textMain.GetValue()) != len(self.currenttext):
-            if self.flagBgError:
-                self.flagBgError = not self.flagBgError
-                self.resetErrorBackground()
-            if self.textMain.GetValue() != "":
-                curPos = self.textMain.GetInsertionPoint()
-                linenumber = self.textMain.PositionToXY(curPos)
-                lineText = self.textMain.GetLineText(linenumber[2])
-                text = self.textMain.GetValue()
-                lexer = lex.lex()
-                lexer.input(lineText)
-                self.currenttext = text
-                posInit = curPos - linenumber[1]
-                if "-" in lineText:
-                    self.changeReservedWords(posInit,lineText)
-                else:
-                    list1 = ['"',",","{","}","=","--","(",")","[","]"," "]
-                    listNum = "1234567890"
-                    list2 = "abcdefghijklmnñopqrstuvwxyzCALL"
-                    pack = []
-                    if len(lineText) != 0:
-                        if lineText[linenumber[1]-1] in list1 or lineText[linenumber[1]-1] in listNum:
-                            pack = (linenumber[1]-1,linenumber[1],lineText[linenumber[1]-1:linenumber[1]],posInit)
-                        else:
-                            s = linenumber[1] -1
-                            e = linenumber[1]
-                            if s <= 0:
-                                s = 0
-                            if e >= len(lineText):
-                                e = len(lineText)
-                            if s-1 >= 0:
-                                while s != 0 and lineText[s] in list2 and lineText[s-1] not in list1:
-                                    s-=1
-                            while e != len(lineText) and lineText[e] in list2:
-                                e+=1
-                            pack = (s,e,lineText[s:e],posInit)
-                        self.changeWordColor(pack)
-
-        # Logica para los numeros de linea
-        pos = self.textMain.PositionToXY(curpos)[2] +1
-        newRowLen = self.textMain.GetNumberOfLines()
-        if self.pastRowLen != newRowLen:
-            print("CASE 1")
-            self.flagO = True
-            if scrollPos != self.pasScrollPosition:
-                self.pasScrollPosition = scrollPos
-
-            flagcase = False
-            text = ""
-            if newRowLen > self.pastRowLen:
-                if pos == self.maxNumberLine and self.maxNumberLine > 20:
-                    self.minNumberLine += 1
-                    self.maxNumberLine += 1
-                elif pos < self.maxNumberLine and self.maxNumberLine > 20:
-                    self.maxNumberLine += 0
-                elif pos >= 20 and self.maxNumberLine > 20:
-                    self.minNumberLine += 1
-                    self.maxNumberLine += 1
-                elif pos <= self.maxNumberLine:
-                    self.maxNumberLine = self.textMain.GetNumberOfLines() + 1
-                else:
-                    self.maxNumberLine += 1
-            elif newRowLen < self.pastRowLen:
-                flagBorrando = True
-                self.maxNumberLine = newRowLen + 1
-                if (self.maxNumberLine-1)%20 == 0:
-                    self.minNumberLine = self.maxNumberLine//20
-                    if self.minNumberLine == 1:
-                        self.minNumberLine = 1
-                    else:
-                        self.maxNumberLine = pos +1
-                        self.minNumberLine = self.maxNumberLine-20
-                    self.textMain.SetInsertionPointEnd()
-            cont = 0
-            liner = self.textMain.GetNumberOfLines()
-            i = self.minNumberLine
-            if pos == self.minNumberLine and flagBorrando:
-                if self.minNumberLine != 1:
-                    self.minNumberLine = self.minNumberLine-1
-            if (liner - self.minNumberLine) < 20:
-                if liner -self.minNumberLine == 0:
-                    cont = 0
-                else:
-                    cont = liner - self.minNumberLine
-            else:
-                cont = 19
-            if liner == 20:
-                i = 1
-                cont = 19
-                self.minNumberLine = 1
-            while cont >= 0:
-                if text == "":
-                    text += " " * (4 - len(str(i))) + str(i)
-                else:
-                    text += "\n" + " " * (4 - len(str(i))) + str(i)
-                cont -= 1
-                i += 1
-            if liner%20 == 0:
-                self.textMain.ShowPosition(self.textMain.LastPosition)
-
-            self.lblLineNumber.SetLabel("" + text)
-            self.pastLabelNumberPosition = pos
-            self.pastRowLen = newRowLen
-
-        elif newRowLen == self.pastRowLen and scrollPos != self.pasScrollPosition:
-            print("CASE 2")
-            print("scrollPos",scrollPos)
-            print("pastScrollPos",self.pasScrollPosition)
-            #print(self.textMain.GetNumberOfLines())
-            text = ""
-            if scrollPos > self.pasScrollPosition:
-                print(" scroling down")
-                dif = scrollPos - self.pasScrollPosition
-                self.minNumberLine += dif
-                self.maxNumberLine += 1
-            elif scrollPos < self.pasScrollPosition:
-                print(" scroling up")
-                dif = self.pasScrollPosition - scrollPos
-                self.minNumberLine -= dif
-                self.maxNumberLine -= 1
-                if scrollPos == 0:
-                    self.minNumberLine = 1
-
-            cont = 0
-            for i in range(self.minNumberLine, self.maxNumberLine+1):
-                cont += 1
-                if text == "":
-                        text += " " * (4 - len(str(i))) + str(i)
-                else:
-                    text += "\n" + " " * (4 - len(str(i))) + str(i)
-                if cont == 20:
-                    break
-
-            self.pasScrollPosition = scrollPos
-            self.lblLineNumber.SetLabel("" + text)
-
-
-
-        # Test when an enter has inserted
-            #curPos = self.textMain.GetInsertionPoint()
-            #linenumber = self.textMain.PositionToXY(curPos)
-            #lineText = self.textMain.GetLineText(linenumber[2]-1)
-            #print("LENLINTEXTPrevious" + str(len(lineText)))
-            #if lineText.endswith("{") and self.textMain.PositionToXY(self.textMain.GetInsertionPoint())[2] > self.currentLineNumber :
-                    #self.textMain.AppendText("\t")
-                    #self.textMain.AppendText("\n}")
-                    #self.currentLineNumber = self.textMain.PositionToXY(self.textMain.GetInsertionPoint())[2]
-                    #self.textMain.SetInsertionPoint(len(lineText)+4 + (4*lineText.count("\t")))
-                    #self.textMain.Refresh()
-                    #self.changeTextColorWithoutClear()
-
     def changeWordColor(self,tuple):
 
         lexer = lex.lex()
@@ -995,41 +808,119 @@ class MyApp(wx.Frame):
                     elif tok.type == "INT":
                         self.setStyleText(tuple[0] + tuple[3], tuple[1] + tuple[3],self.colorWhite)
 # Creando funcion que reconoce solo el texto nuevo para colorearlo
-    def changeTextColor(self):
+    def changeTextColorThread(self,event):
+        t = threading.Thread(target=self.changeTextColor,args=())
+        t.start()
+    def changeTextColor(self,event):
+        global currenttext
 
-        text = self.textMain.GetValue()
-        self.textMain.Clear()
-        lexer = lex.lex()
-        lexer.input(text)
+        if self.textNumberLine.GetValue() != currenttext or len(self.textNumberLine.GetValue()) != len(currenttext):
 
-        while 1:
+            #self.textNumberLine.SetKeyWords(1, "True T")
+            #self.textNumberLine.SetKeyWords(2, "False F")
+            #self.textNumberLine.SetKeyWords(3, ',{ } = ( ) " ')
+            #self.textNumberLine.SetKeyWords(4, '[ ] Mil Seg Min Begin End -- ')
+            #self.textNumberLine.SetKeyWords(5, 'insert Neg del delete shapef shapec shapea range type Blink Delay len')
+            #self.textNumberLine.SetKeyWords(6, "global Call")
+            #self.textNumberLine.SetKeyWords(7, 'Procedure Main TIMER DIMFILAS DIMCOLUMNAS RANGOTIMER CUBO')
+            #self.textNumberLine.SetKeyWords(8,"for if else step in")
+
+            text = self.textNumberLine.GetText()
+            # rTrue = ["True","T"]
+            # rFalse = ["False","F"]
+            # symbols = [',', '{', '}', '"', '=', "(", ")"]
+            # coment = ["[", "]", "Mil", "Seg", "Min", "Begin", "End", "-"]
+            # functions = ["insert","Neg","del","delete","shapef","shapec","shapea","range","type","Blink","Delay","len"]
+            # reservedWords1 = ["global", "Call"]
+            # reservedWords2 = ["Procedure", "Main", "Timer", "Dim_Filas", "Dim_Columnas", "Rango_Timer", "Cubo"]
+            # reservedWords3 = ["for","if","else","Step","in"]
+
+            self.rTrue = ["TRUE", "T"]
+            self.rFalse = ["FALSE", "F"]
+            self.symbols = ['COMMA', 'LCORCH', 'RCORCH', 'QUOTES', 'ASSIGN', "RPARENT", "LPARENT"]
+            self.coment = ["PARENTCL", "PARENTCR", "MIL", "SEG", "MIN", "BEGIN", "END", "COMMENT"]
+            self.functions = ["INSERT", "NEG", "DEL", "DELETE", "SHAPEF", "SHAPEC", "SHAPEA", "RANGE", "TYPE",
+                              "BLINK", "DELAY", "LEN"]
+            self.reservedWords1 = ["GLOBAL", "CALL"]
+            self.reservedWords2 = ["PROCEDURE", "MAIN", "TIMER", "DIMFILAS", "DIMCOLUMNAS", "RANGOTIMER", "CUBO"]
+            self.reservedWords3 = ["FOR", "IF", "ELSE", "STEP", "IN"]
+
+            colorTrue = (51,255,255)
+            colorFalse = (255,87,20)
+            colorsymbols = (244,140,6) #165,190,0 #244,140,6
+            colorcomment = (2,255,194) # 151, 157, 172
+            colorfunctions = (240,246,0)
+            colorReserverd1 = (192,76,253)
+            colorReserved2 = (175,43,191)
+            colorReserved3 = (100,223,223)
+
+            self.textNumberLine.StyleSetSpec(1,'fore:#33ffff,back:#141212')
+            self.textNumberLine.StyleSetSpec(20, 'fore:#323232,back:#141212')
+            self.textNumberLine.StyleSetSpec(10, 'fore:#ffffff,back:#141212')
+
+            lexer = lex.lex()
+            lexer.input(text)
+
+            #while 1:
             tok = lexer.token()
-            if not tok:
-                break
-            else:
-                if tok != None:
-                    if tok.type in self.rTrue:
-                        self.writeColor(tok.value,self.colorTrue)
-                    elif tok.type in self.rFalse:
-                        self.writeColor(tok.value, self.colorFalse)
-                    elif tok.type in self.symbols:
-                        self.writeColor(tok.value, self.colorsymbols)
-                    elif tok.type in self.coment:
-                        self.writeColor(tok.value, self.colorcomment)
-                    elif tok.type in self.functions:
-                        self.writeColor(tok.value, self.colorfunctions)
-                    elif tok.type in self.reservedWords1:
-                        self.writeColor(tok.value, self.colorReserverd1)
-                    elif tok.type in self.reservedWords2:
-                        self.writeColor(tok.value, self.colorReserved2)
-                    elif tok.type in self.reservedWords3:
-                        self.writeColor(tok.value, self.colorReserved3)
-                    else:
-                        self.writeColor(tok.value, self.colorWhite)
+            while 1:
+                if not tok:
+                    break
+                else:
+                    if tok != None:
+                        style = 0
+                        print(tok.value)
+
+                        if tok.type in self.rTrue:
+                            #self.writeColor(tok.value,self.colorTrue)
+                            style = 1
+
+                        elif tok.type == "BLANK":
+                            style = 20
+
+                        elif tok.type in self.rFalse:
+                            style = 2
+                         #   self.writeColor(tok.value, self.colorFalse)
+                        elif tok.type in self.symbols:
+                            style = 3
+                         #   self.writeColor(tok.value, self.colorsymbols)
+                        elif tok.type in self.coment:
+                            style = 4
+                         #   self.writeColor(tok.value, self.colorcomment)
+                        elif tok.type in self.functions:
+                            style = 5
+                          #  self.writeColor(tok.value, self.colorfunctions)
+                        elif tok.type in self.reservedWords1:
+                            style = 6
+                         #   self.writeColor(tok.value, self.colorReserverd1)
+                        elif tok.type in self.reservedWords2:
+                            style = 7
+                         #   self.writeColor(tok.value, self.colorReserved2)
+                        elif tok.type in self.reservedWords3:
+                            style = 8
+                         #   self.writeColor(tok.value, self.colorReserved3)
+                        else:
+                            style = 10
+                         #   self.writeColor(tok.value, self.colorWhite)
+                        # pos = tok.lexpos
+                        fulltext = self.textNumberLine.GetText()
+                        pos = tok.lexpos -2
+                        for i in range(len(tok.value)):
+                            self.textNumberLine.StartStyling(pos,style)
+                            self.textNumberLine.SetStyling(len(tok.value),style)
+                            pos = pos + i
+
+                        #self.textNumberLine.StartStyling(pos, style)
+                        #self.textNumberLine.SetStyling(len(tok.value), style)
+                        #pos = text.find(tok.value, pos + 1)
+                tok = lexer.token()
+
+            currenttext = self.textNumberLine.GetValue()
+
     def changeTextColorWithoutClear(self):
 
-        text = self.textMain.GetValue()
-
+        #text = self.textMain.GetValue()
+        text= ""
         lexer = lex.lex()
         lexer.input(text)
 
