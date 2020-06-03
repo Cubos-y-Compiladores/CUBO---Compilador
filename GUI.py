@@ -459,7 +459,8 @@ class MyApp(wx.Frame):
         randomPaste = wx.NewId()
 
         self.textMain.Bind(wx.EVT_MENU, self.test , id = randomPaste)
-        accel_tbl = wx.AcceleratorTable([(wx.ACCEL_CTRL, ord('Q'), randomPaste)])
+
+        accel_tbl = wx.AcceleratorTable([(wx.ACCEL_CTRL, ord('V'), randomPaste)])
         self.textMain.SetAcceleratorTable(accel_tbl)
 
         # Show Frame

@@ -6,17 +6,12 @@ class matrizFrame(wx.Frame):
     def __init__(self, title,col,row,height,mainWindow,mainDirectory, parent=None):
         wx.Frame.__init__(self, parent=parent, title=title, size=(337, 300))
 
-
-
         icon = wx.Icon()
         self.mainDirectory = mainDirectory
         icon.CopyFromBitmap(wx.Bitmap(self.mainDirectory + "/Resources/icon.ico", wx.BITMAP_TYPE_ANY))
         self.SetIcon(icon)
         self.Bind(wx.EVT_CLOSE, self.closeWindow)
         self.mainWindow = mainWindow
-        screenSize = wx.DisplaySize()
-        screenWidth = screenSize[0]
-        screenHeight = screenSize[1]
         self.colorTrue = (2,195,154)
         self.colorFalse = (231,29,54)
         self.colorBG = (20,18,18)
@@ -62,13 +57,17 @@ class matrizFrame(wx.Frame):
         self.lblentryVar = wx.StaticText(self.panel4, -1, "VarName:", (30, 20))
         self.lblentryVar.SetForegroundColour(self.colorLabel)
 
-        gridSizer1 = wx.GridSizer(height,1,0,0)
+        if height <= 7:
+
+            gridSizer1 = wx.GridSizer(7,1,0,0)
+        else:
+            gridSizer1 = wx.GridSizer(height, 1, 0, 0)
         self.Show()
         self.Move(wx.Point(530, 255))
 
 
         for i in range(height):
-            btn = wx.Button(self.panel1,label = "Matriz" + str(i),size = (103,29),style = wx.NO_BORDER)
+            btn = wx.Button(self.panel1,label = "Matriz" + str(i+1),size = (103,29),style = wx.NO_BORDER)
             btn.SetForegroundColour(self.colorLabel)
             if i%2 == 0:
                 btn.SetBackgroundColour(self.colorLineNumberBorder)
@@ -85,6 +84,15 @@ class matrizFrame(wx.Frame):
                     lista.append(False)
                 matriz.append(lista)
             self.matrices.append(matriz)
+        if height <= 7:
+
+            for i in range(height,7):
+                p = wx.Panel(self.panel1, size = (103,29), style=wx.NO_BORDER)
+                if i % 2 == 0:
+                    p.SetBackgroundColour(self.colorLineNumberBorder)
+                else:
+                    p.SetBackgroundColour(self.colorBorder)
+                gridSizer1.Add(p)
 
         posy = 0
         for i in range(8):
