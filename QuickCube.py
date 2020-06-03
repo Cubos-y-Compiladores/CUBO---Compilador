@@ -3,14 +3,17 @@ import wx.lib.scrolledpanel
 import os
 
 class matrizFrame(wx.Frame):
-    def __init__(self, title, parent=None):
+    def __init__(self, title,col,row,height,mainWindow,mainDirectory, parent=None):
         wx.Frame.__init__(self, parent=parent, title=title, size=(337, 300))
 
 
-        icon = wx.Icon()
-        icon.CopyFromBitmap(wx.Bitmap(os.getcwd() + "/Resources/icon.ico", wx.BITMAP_TYPE_ANY))
-        self.SetIcon(icon)
 
+        icon = wx.Icon()
+        self.mainDirectory = mainDirectory
+        icon.CopyFromBitmap(wx.Bitmap(self.mainDirectory + "/Resources/icon.ico", wx.BITMAP_TYPE_ANY))
+        self.SetIcon(icon)
+        self.Bind(wx.EVT_CLOSE, self.closeWindow)
+        self.mainWindow = mainWindow
         screenSize = wx.DisplaySize()
         screenWidth = screenSize[0]
         screenHeight = screenSize[1]
@@ -19,6 +22,8 @@ class matrizFrame(wx.Frame):
         self.colorBG = (20,18,18)
         self.colorLabel = (93,253,203)
         self.colorBorder = (40,40,40)
+        self.colorWhite = (255, 255, 255)
+        self.colorLime = (222, 255, 79)
         self.colorLineNumberBorder = (32, 32, 32)
         self.SetMaxSize((337,300))
         self.SetMinSize((337,300))
@@ -27,36 +32,43 @@ class matrizFrame(wx.Frame):
         self.currentMatrix = None
         self.btnMatrix = []
 
-        panel3 = wx.Panel(self, size=(120, 60), pos=(0, 201), style=wx.NO_BORDER)
-        panel3.SetBackgroundColour(self.colorBorder)
-        # self.bmpRun = wx.Bitmap(os.getcwd() + "/Resources/icon.png", wx.BITMAP_TYPE_ANY)
-        # self.stcbmp = wx.StaticBitmap(parent = panel3 , bitmap = self.bmpRun, pos = (0,0), size = (60,30))
+        self.panel3 = wx.Panel(self, size=(120, 60), pos=(0, 201), style=wx.NO_BORDER)
+        self.panel3.SetBackgroundColour(self.colorBorder)
+
+        self.panel1 = wx.lib.scrolledpanel.ScrolledPanel(self, -1, size=(120, 200), pos=(0, 0),style=wx.NO_BORDER)
+        self.panel1.SetupScrolling(scroll_y=True)
+        self.panel1.SetBackgroundColour(self.colorBorder)
+
+        self.panel2 = wx.Panel(self, size=(200, 200), pos=(122, 2), style=wx.NO_BORDER)
+        self.panel2.SetBackgroundColour(self.colorBG)
 
 
-        panel1 = wx.lib.scrolledpanel.ScrolledPanel(self, -1, size=(120, 200), pos=(0, 0),style=wx.NO_BORDER)
-        panel1.SetupScrolling(scroll_y=True)
-        panel1.SetBackgroundColour(self.colorBorder)
-
-        panel2 = wx.Panel(self, size=(200, 200), pos=(122, 2), style=wx.NO_BORDER)
-        panel2.SetBackgroundColour(self.colorBG)
+        self.panel4 = wx.Panel(self, size=(200, 60), pos=(121, 202), style=wx.NO_BORDER)
+        self.panel4.SetBackgroundColour(self.colorLineNumberBorder)
 
 
-        panel4 = wx.Panel(self, size=(200, 60), pos=(121, 202), style=wx.NO_BORDER)
-        panel4.SetBackgroundColour(self.colorLineNumberBorder)
+        self.entryVar = wx.TextCtrl(self.panel4, style = wx.TE_RICH | wx.BORDER_NONE ,pos=(85, 20), size=(95, 20))
+        self.entryVar.SetBackgroundColour(self.colorBG)
+        self.entryVar.SetForegroundColour(self.colorWhite)
+
+        self.btnAcept = wx.Button(self.panel3,-1,"Done", pos = (17,10), size = (80,40), style = wx.NO_BORDER)
+        self.btnAcept.SetBackgroundColour(self.colorBG)
+        self.btnAcept.SetForegroundColour(self.colorLime)
+        self.btnAcept.Bind(wx.EVT_BUTTON,self.acept)
+        self.btnAcept.Bind(wx.EVT_ENTER_WINDOW,self.buttonAceptLightOn)
+        self.btnAcept.Bind(wx.EVT_LEAVE_WINDOW, self.buttonAcepLightOff)
 
 
+        self.lblentryVar = wx.StaticText(self.panel4, -1, "VarName:", (30, 20))
+        self.lblentryVar.SetForegroundColour(self.colorLabel)
 
-        gridSizer1 = wx.GridSizer(8,1,0,0)
-
-       # for i in self.cube.getMatrices():
-        #    gridSizer1.Add(i[1])
+        gridSizer1 = wx.GridSizer(height,1,0,0)
         self.Show()
+        self.Move(wx.Point(530, 255))
 
 
-
-
-        for i in range(8):
-            btn = wx.Button(panel1,label = "Matriz" + str(i),size = (103,29),style = wx.NO_BORDER)
+        for i in range(height):
+            btn = wx.Button(self.panel1,label = "Matriz" + str(i),size = (103,29),style = wx.NO_BORDER)
             btn.SetForegroundColour(self.colorLabel)
             if i%2 == 0:
                 btn.SetBackgroundColour(self.colorLineNumberBorder)
@@ -67,9 +79,9 @@ class matrizFrame(wx.Frame):
             btn.Bind(wx.EVT_BUTTON,self.click)
             gridSizer1.Add(btn)
             matriz = []
-            for i in range(8):
+            for i in range(row):
                 lista = []
-                for j in range(8):
+                for j in range(col):
                     lista.append(False)
                 matriz.append(lista)
             self.matrices.append(matriz)
@@ -79,48 +91,81 @@ class matrizFrame(wx.Frame):
             posx = 0
             lista = []
             for j in range(8):
-                btn = wx.Button(panel2, label="", size=(23, 23), style=wx.NO_BORDER, pos=(posx, posy))
+                btn = wx.Button(self.panel2, label="", size=(23, 23), style=wx.NO_BORDER, pos=(posx, posy))
                 btn.mypos = (i,j)
                 btn.Bind(wx.EVT_BUTTON, self.clickOnbutton)
                 lista.append(btn)
                 posx += 25
+                btn.Disable()
             self.btnMatrix.append(lista)
             posy += 25
+
+        for i in range(row):
+            for j in range(col):
+                self.btnMatrix[i][j].Enable()
+
 
         self.currentMatrix = "Matriz0"
         self.matrixUpdater(0)
 
-        panel1.SetSizer(gridSizer1)
+        self.panel1.SetSizer(gridSizer1)
 
+    def buttonAceptLightOn(self,event):
+        self.btnAcept.SetBackgroundColour(self.colorLabel)
+        self.btnAcept.SetForegroundColour(self.colorBG)
+    def buttonAcepLightOff(self,event):
+        self.btnAcept.SetBackgroundColour(self.colorBG)
+        self.btnAcept.SetForegroundColour(self.colorLime)
+
+    def closeWindow(self,event):
+        self.mainWindow.Enable()
+        self.Destroy()
 
     def click(self, event):
-        print(event.GetEventObject().GetLabel())
+
         ind = int(event.GetEventObject().GetLabel().replace("Matriz",""))
         self.currentMatrix = event.GetEventObject().GetLabel()
         self.matrixUpdater(ind)
 
+    def acept(self,event):
+        abc = "abcdefghijklmnopqrstuvwxyzñ"
+
+        if self.entryVar.GetValue() == "":
+            wx.MessageBox("The variable name cannot be empty", 'Warning', wx.OK | wx.ICON_WARNING)
+        elif self.entryVar.GetValue()[0].isdigit():
+            wx.MessageBox("The variable name cannot start with a number", 'Warning', wx.OK | wx.ICON_WARNING)
+        elif self.entryVar.GetValue()[0] in abc.upper() :
+            wx.MessageBox("Variable name cannot be capitalized", 'Warning', wx.OK | wx.ICON_WARNING)
+        else:
+            # TODO logica para escribir variable en el textmain
+            self.mainWindow.Enable()
+            self.mainWindow.textMain.AppendText(self.entryVar.GetValue() + " = " + str(self.matrices) + "\n")
+            self.mainWindow.changeTextColor()
+            self.Destroy()
+            print("acepted")
 
     def clickOnbutton(self,event):
-        print(event.GetEventObject().GetLabel())
+
         pos = event.GetEventObject().mypos
-        print(pos)
+
         l = pos[0]
         c = pos[1]
 
         self.matrices[int(self.currentMatrix.replace("Matriz",""))][l][c] = not self.matrices[int(self.currentMatrix.replace("Matriz",""))][l][c]
-        print(self.matrices[l])
+
         self.matrixUpdater(int(self.currentMatrix.replace("Matriz","")))
 
     def matrixUpdater(self,ind):
         matriz = self.matrices[ind]
         l = 0
-        print(matriz)
+
         for line in matriz:
             c = 0
             for col in line:
                 if col:
                     self.btnMatrix[l][c].SetBackgroundColour(self.colorTrue)
                 else:
+
                     self.btnMatrix[l][c].SetBackgroundColour(self.colorFalse)
 
                 c += 1
