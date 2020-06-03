@@ -139,10 +139,17 @@ class matrizFrame(wx.Frame):
         else:
             # TODO logica para escribir variable en el textmain
             self.mainWindow.Enable()
-            self.mainWindow.textMain.AppendText(self.entryVar.GetValue() + " = " + str(self.matrices) + "\n")
+            self.mainWindow.textMain.AppendText(self.entryVar.GetValue() + " = " + self.splitCube(self.matrices) + "\n")
+
             self.mainWindow.changeTextColor()
             self.Destroy()
             print("acepted")
+    def splitCube(self,cube):
+        text = "["+str(cube[0])+",\n"
+        for i in range(1,len(cube)-1):
+            text += "\t"+str(cube[i])+",\n"
+        text += "\t"+str(cube[-1])+"];"
+        return text
 
     def clickOnbutton(self,event):
 
