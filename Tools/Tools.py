@@ -1,7 +1,9 @@
 import sys
 from pip._vendor import colorama
+from os import mkdir,listdir,getcwd,path,remove
 from CompilerDependencies.TreeGen import *
-
+global directory
+directory=""
 def tokenTranslator(token):
     if (token == "TRUE"):
         return True
@@ -118,6 +120,18 @@ def arithmeticTranslator(operacion,dictionary):
                 result+=str(token)+" "
 
 
+    return result
+
+def realArithmeticTranslator(operacion):
+    result = ""
+    for valor in operacion:
+        if (not valor.isToken()):
+            result += realArithmeticTranslator(valor.getChilds())
+        else:
+            if(valor.getName()=="Id"):
+                result += str(valor.getToken())
+            else:
+                result += str(tokenTranslator(valor.getToken()))
     return result
 
 def consultTranslator(consult,dictionary,expr):
@@ -469,6 +483,51 @@ def expresionTranslator(consult):
             output=varName+"["+ind1+"]"
             output +=expresionTranslator(NonTerminalNode("MatConsult", [TerminalNode("Id", "Temp"), consult.getChilds()[1].getChilds()[3]]))
             return output
+
+def realExpresionTranslator(consult):
+    if (consult.getName() == "ListConsult"):
+        if (consult.getChilds()[1].getName() == "ListConsultT0"):
+            ind = consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()
+            return ("[" + ind + "]",None)
+
+        elif (consult.getChilds()[1].getName() == "ListConsultT1"):
+            inf = consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()
+            sup = consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken()
+            return ("[" + inf + ":" + sup + "]",None)
+
+    elif (consult.getName() == "MatConsult"):
+        if (consult.getChilds()[1].getName() == "MatConsultT0"):
+            ind1=consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()
+            ind2=consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken()
+            return ("[" + ind1 + "][" + ind2 + "]",None)
+
+        elif (consult.getChilds()[1].getName() == "MatConsultT1"):
+            ind=consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken()
+            return ("[:,"+ind+"]","["+str(-(int(ind)+1))+"]")
+
+        elif (consult.getChilds()[1].getName() == "MatConsultT2"):
+            ind=consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken()
+            rest=realExpresionTranslator(NonTerminalNode("ListConsult", [TerminalNode("Id", "Temp"), consult.getChilds()[1].getChilds()[5]]))
+            return ("[:,"+str(ind)+"]"+rest[0],"["+str(-(int(ind)+1))+"]"+rest[0])
+
+        elif(consult.getChilds()[1].getName()=="MatConsultT3"):
+            ind1= consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()
+            return ("["+ind1+"]"+realExpresionTranslator(NonTerminalNode("ListConsult", [TerminalNode("Id", "Temp"), consult.getChilds()[1].getChilds()[3]]))[0],None)
+
+    elif (consult.getName() == "ThreeDMatConsult"):
+        if(consult.getChilds()[1].getName()=="ThreeDMatConsultT0"):
+            ind1=consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()
+            ind2=consult.getChilds()[1].getChilds()[3].getChilds()[0].getToken()
+            ind3=consult.getChilds()[1].getChilds()[5].getChilds()[0].getToken()
+
+            return("["+ind1+"]["+ind2+"]["+ind3+"]",None)
+
+        elif(consult.getChilds()[1].getName()=="ThreeDMatConsultT1"):
+            ind1= consult.getChilds()[1].getChilds()[1].getChilds()[0].getToken()
+            rest=realExpresionTranslator(NonTerminalNode("MatConsult", [TerminalNode("Id", "Temp"), consult.getChilds()[1].getChilds()[3]]))
+            if(rest[1]!=None):
+                return ("["+ind1+"]"+rest[0],"["+ind1+"]"+rest[1])
+            return ("[" + ind1 + "]" + rest[0], "[" + ind1 + "]" + rest[0])
 
 
 
@@ -931,8 +990,12 @@ def mainBlockSplitter(p):
             return output
         elif(line.getName()=="MainBlock"):
             output.extend(mainBlockSplitter(line.getChilds()))
-        elif("Instruction" in line.getName()):
-            output.append(line)
+        elif(line.getName()=="MainContent0"):
+            output.append(line.getChilds()[0])
+        elif(line.getName()=="MainContent1"):
+            output.append(line.getChilds()[0])
+
+
 
     return output
 
@@ -944,6 +1007,132 @@ class CodeGenerator():
 
     def initializer(self):
         print("test")
+
+def dirInitializer():
+    global directory
+    directory=getcwd()+"\CodeGeneration"
+    if (not path.exists(directory)):
+        mkdir(directory)
+        print("CodeGeneration folder created successfully!")
+    directory=directory+"\CodeFile.txt"
+    open(directory,"w")
+    file=open(directory,"r+")
+    file.truncate(0)
+    file.close()
+
+def globalWriter(scope):
+    global directory
+    globalVars=list(scope.keys())
+    globalVals=list(scope.values())
+    globalString="global "
+    for valor in globalVars:
+        globalString+=str(valor)+","
+    globalString=globalString[0:len(globalString)-1]
+    with open (directory,"a") as file:
+        file.write(globalString+"\n")
+        ind=0
+        for valor in globalVars:
+            file.write(valor +"="+str(globalVals[ind])+"\n")
+            ind+=1
+        file.close()
+def procWriter(proc):
+    global directory
+    paramString="("
+    for param in proc[1]:
+        paramString+=param[0]+","
+    paramString=paramString[0:len(paramString)-1]+"):"
+    globals=None
+    glb=""
+    if(not proc[2].getChilds()[3].getChilds()[0].isNull()):
+        globals=globalSplitter(proc[2].getChilds()[3].getChilds()[0].getChilds()[1].getChilds())
+        for valor in globals:
+            glb+=valor+","
+        glb=glb[0:len(glb)-1]
+    tabs=1
+    with open(directory, "a") as file:
+        file.write("\ndef "+proc[0]+paramString+"\n")
+        if(globals!=None):
+            file.write(tabs*"\t"+"global "+glb+"\n")
+        queue=processBodyTranslator(proc[2].getChilds()[3].getChilds()[2].getChilds())
+        file.close()
+        for line in queue:
+            if("Assignment" in line.getName()):
+                assignmentWriter(line,tabs)
+
+def assignmentWriter(line,tabs):
+    global directory
+    with open(directory,"a") as file:
+        if(line.getName()=="SimpleAssignment"):
+            simpleLine=tabs*"\t"
+            cont = None
+            if (line.getChilds()[2].getName()=="Acont0"):
+                cont = line.getChilds()[2].getChilds()[0].getChilds()[0].getName().replace("V", "")
+
+            elif (line.getChilds()[2].getName()=="Acont1"):
+                cont = realArithmeticTranslator(line.getChilds()[2].getChilds()[0].getChilds())
+
+            elif (line.getChilds()[2].getName()=="Acont2"):
+                cont = str(listTranslator(line.getChilds()[2].getChilds()[0].getChilds()))
+
+            elif (line.getChilds()[2].getName()=="Acont3"):
+                cont=str(matTranslator(line.getChilds()[2].getChilds()[0].getChilds()))
+
+            elif (line.getChilds()[2].getName()=="Acont4"):
+                cont = str(threeDmatTranslator(line.getChilds()[2].getChilds()[0].getChilds()))
+
+
+            if(line.getChilds()[0].getName()=="Identifier0"):
+                simpleLine+=line.getChilds()[0].getChilds()[0].getToken()+"="
+                if(cont==None):
+                    expr=realExpresionTranslator(line.getChilds()[2].getChilds()[0].getChilds()[0])
+                    if(":," in expr):
+                        file.write(tabs*"\t"+"Temp=matrixFlipper("+line.getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
+                        file.write(tabs*"\t"+"Temp=Temp"+expr[1]+"\n")
+                        file.write(simpleLine+"Temp\n")
+                        file.write(tabs*"\t"+"del Temp\n")
+                    else:
+                        file.write(simpleLine+expr[0]+"\n")
+                else:
+                    file.write(simpleLine+cont+"\n")
+
+            elif(line.getChilds()[0].getName()=="Identifier1"):
+                expr=realExpresionTranslator(line.getChilds()[0].getChilds()[0].getChilds()[0])
+                if(":," in expr[0]):
+                    if(cont!=None):
+                        file.write(tabs*"\t"+"Temp=matrixFlipper("+line.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
+                        file.write(tabs*"\t"+"Temp"+expr[1]+"="+cont+"\n")
+                        file.write(tabs*"\t"+line.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+"=matrixFlipper(Temp,"+'''"R")'''+"\n")
+                        file.write(tabs*"\t"+"del Temp\n")
+                    else:
+                        exprCont=realExpresionTranslator(line.getChilds()[2].getChilds()[0].getChilds()[0])
+                        if(":," in exprCont[0]):
+                            file.write(tabs*"\t"+"TempCont=matrixFlipper("+line.getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
+                            file.write(tabs*"\t"+"TempCont=TempCont"+exprCont[1]+"\n")
+                            file.write(tabs*"\t"+"TempVar=matrixFlipper("+line.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
+                            file.write(tabs*"\t"+"TempVar"+expr[1]+"=TempCont\n")
+                            file.write(tabs*"\t"+line.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+'''=matrixFlipper(TempVar,"R")'''+"\n")
+                            file.write(tabs*"\t"+"del TempVar \n")
+                            file.write(tabs*"\t"+"del TempCont\n")
+                        else:
+                            file.write(tabs * "\t" + "TempVar=matrixFlipper(" +line.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken() + ''',"L")'''+"\n")
+                            file.write(tabs * "\t" + "TempVar="+line.getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+exprCont[1]+"\n")
+                            file.write(tabs * "\t" + line.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken() + '''=matrixFlipper(TempVar,"R")'''+"\n")
+                            file.write(tabs * "\t" + "del TempVar \n")
+                else:
+                    if(cont!=None):
+                        file.write(tabs*"\t"+line.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+expr[0]+"="+cont+"\n")
+                    else:
+                        exprCont = realExpresionTranslator(line.getChilds()[2].getChilds()[0].getChilds()[0])
+                        if(":," in exprCont[0]):
+                            file.write(tabs * "\t" + "TempCont=matrixFlipper(" +line.getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getToken() + ''',"L")'''+"\n")
+                            file.write(tabs * "\t" + line.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+expr[0]+"=TempCont"+exprCont[1]+"\n")
+                            file.write(tabs*"\t"+"del TempCont\n")
+                        else:
+                            file.write(tabs * "\t" + line.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken() + expr[0] + "=" + line.getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+exprCont[0] + "\n")
+
+
+
+
 
 
 
@@ -1130,4 +1319,16 @@ def notIterableObjectOnFor(varName):
 
 def declaringVariablesOnMainError():
     print(colorama.Fore.RED + "SEMANTIC ERROR: Declaring any kind of variable inside the main scope is forbidden")
+    sys.exit()
+
+def notDefinedCubeError(varName):
+    print(colorama.Fore.RED + "SEMANTIC ERROR: The variable "+varName+" hasn't been defined in the global scope, therefore it can't be used as a compiling cube")
+    sys.exit()
+
+def notaCubeError(varName):
+    print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in " + varName + " is not a cube, therefore it can't be used as a compiling cube")
+    sys.exit()
+
+def notaCubeError1(cube):
+    print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored " +cube+ " is not a cube, therefore it can't be used as a compiling cube")
     sys.exit()

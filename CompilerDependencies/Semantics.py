@@ -1,15 +1,15 @@
 import sys
 from Tools.Tools import *
 from pip._vendor import colorama
-global global_var,global_temp,regular_var,procedures
+global global_var,global_temp,regular_var,procedures,tabs
 #TODO: Hacer que el proceso principal pueda ser creado en cualquier parte del programa
 global_var={}
 global_temp=[]
 consts={}
 procedures=[]
-def mainProcSem(p):
-    print("Test")
+tabs=0
 def semantics(p):
+    dirInitializer()
     mainScope=global_var
     temp1=procedures
     statementQueue=blockSplitter(p.getChilds()[0].getChilds()[5])
@@ -23,7 +23,7 @@ def semantics(p):
             procedures.append((procName,procParams,valor))
         elif("Assignment" in valor .getName()):
             assignmentSem(valor.getChilds()[0],"global",{},[])
-    temp=global_var
+    globalWriter(global_var)
     for proc in procedures:
         params=[]
         for param in proc[1]:
@@ -31,10 +31,29 @@ def semantics(p):
                 params.append(param[0])
             else:
                 paramWithSameNameError(proc[0],param[0])
+        procWriter(proc)
     if(not p.getChilds()[1].getChilds()[4].getChilds()[1].isNull()):
         statementQueue=mainBlockSplitter(p.getChilds()[1].getChilds()[4].getChilds()[1].getChilds())
         for line in statementQueue:
-            instructionSem(line, mainScope, [],True)
+            if("Instruction" in line.getName()):
+                instructionSem(line, mainScope, [],True)
+
+            elif(line.getName()=="Compile"):
+                compileSem(line,mainScope)
+def compileSem(p,scope):
+    if(p.getChilds()[2].getName()=="CompileCube0"):
+        if(not p.getChilds()[2].getChilds()[0].getToken() in scope):
+            notDefinedCubeError(p.getChilds()[2].getChilds()[0].getToken())
+        if(not threeDMatrixVerifier(scope[ p.getChilds()[2].getChilds()[0].getToken()])):
+            notaCubeError( p.getChilds()[2].getChilds()[0].getToken())
+
+    elif(p.getChilds()[2].getName()=="CompileCube1"):
+        cube=threeDmatTranslator(p.getChilds()[2].getChilds()[0].getChilds())
+        if(not threeDMatrixVerifier(cube)):
+            notaCubeError1(cube)
+
+        if(not matBoundVerifier(cube)):
+            differentDimensionsThreeDMatError(cube)
 
 def assignmentSem(p,scope,local_var,local_only):
     global global_var,consts
@@ -1102,7 +1121,7 @@ def functionSem(p,local_var,local_only):
                 outOfScopeError(varName)
             if(not noneVerifier(varName, local_var)):
                 consult =consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0]))
-                if(consult!=None or consult["Aux"]==None):
+                if(consult["Aux"]==None):
                     return None
 
         if(consult!=None):

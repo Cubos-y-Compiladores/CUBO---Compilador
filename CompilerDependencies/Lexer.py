@@ -44,7 +44,8 @@ reserved = {'if': 'IF',
             'Min': 'MIN',
             "delete":"DELETE",
             "begin":"BEGIN",
-            "end":"END"
+            "end":"END",
+            "Compile":"COMPILE"
             }
 
 

@@ -409,10 +409,28 @@ def p_mainBody(p):
     
 
 def p_mainBlock(p):
-    '''main_block : instruction main_block'''
+    '''main_block : main_content main_block'''
     p[0]=NonTerminalNode("MainBlock",[p[1],p[2]])
-    
 
+def p_mainContent0(p):
+    '''main_content : instruction'''
+    p[0]=NonTerminalNode("MainContent0",[p[1]])
+
+def p_mainContent1(p):
+    '''main_content : compile'''
+    p[0]=NonTerminalNode("MainContent1",[p[1]])
+
+def p_compile(p):
+    '''compile : COMPILE LPARENT compile_cube RPARENT SEMICOLON'''
+    p[0]=NonTerminalNode("Compile",[TerminalNode("Compile","COMPILE"),TerminalNode("Lparent","LPARENT"),p[3],TerminalNode("Rparent","RPARENT")])
+
+def p_compileCube0(p):
+    '''compile_cube : ID'''
+    p[0]=NonTerminalNode("CompileCube0",[TerminalNode("Id",p[1])])
+
+def p_compileCube1(p):
+    '''compile_cube : 3dmat'''
+    p[0]=NonTerminalNode("CompileCube1",[p[1]])
 
 def p_EmptyMainblok(p):
     '''main_block : empty'''
