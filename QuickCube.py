@@ -147,7 +147,7 @@ class matrizFrame(wx.Frame):
         else:
             # TODO logica para escribir variable en el textmain
             self.mainWindow.Enable()
-            self.mainWindow.textMain.AppendText(self.entryVar.GetValue() + " = " + self.splitCube(self.matrices) + "\n")
+            self.mainWindow.textMain.AppendText("\n"+self.entryVar.GetValue() + " = " + self.splitCube(self.matrices) + "\n")
 
             self.mainWindow.changeTextColor()
             self.Destroy()

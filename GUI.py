@@ -226,6 +226,7 @@ class MyApp(wx.Frame):
 
         self.textMain.StyleSetSpec(12, 'fore:#ffffffff,back:#ffffffff')
 
+        self.textMain.StyleSetSpec(13, 'fore:#ffffff,back:#de38ce')
 
         self.textMain.StyleSetSpec(wx.stc.STC_STYLE_LINENUMBER, 'fore:#323232,back:#141212')
 
@@ -455,13 +456,7 @@ class MyApp(wx.Frame):
         self.textConsole.SetBackgroundColour(self.colorBG)
         self.textMain.SetForegroundColour(self.colorWhite)
         self.textConsole.SetForegroundColour(self.colorLabel)
-        # AceleratorTable
-        randomPaste = wx.NewId()
-
-        self.textMain.Bind(wx.EVT_MENU, self.test , id = randomPaste)
-
-        accel_tbl = wx.AcceleratorTable([(wx.ACCEL_CTRL, ord('V'), randomPaste)])
-        self.textMain.SetAcceleratorTable(accel_tbl)
+        self.textMain.Bind(wx.EVT_KEY_UP , self.keyUp)
 
         # Show Frame
         self.Centre(1)
@@ -485,9 +480,12 @@ class MyApp(wx.Frame):
     def buttonCubeLightOff(self,event):
         self.buttonCube.SetBackgroundColour(self.colorBorder)
 
-    def test(self,text):
-        print("ctrl-v pressed")
-        print("text: " + str(text))
+    def keyUp(self,event):
+        keycode = event.GetKeyCode()
+        if keycode == 308:
+            # self.changeTextColor()
+            self.setLineErrorColor(3)
+
 
     def readFilesList(self):
         listFilesFile = open(os.getcwd() + "/Files/Root/Files.txt", "r")
@@ -511,8 +509,6 @@ class MyApp(wx.Frame):
     def openQuickCube(self,event):
         self.Disable()
         Frame.Frame("Quick Cube",self,self.mainDirectory)
-
-        # quickCube = QuickCube.matrizFrame("QuickCube")
 
     def insertList(self,event):
         self.textMain.AppendText("list" + str(self.contList) +"= [];\n")
@@ -727,7 +723,7 @@ class MyApp(wx.Frame):
             if self.textMain.GetValue() != "":
                 curPos = self.textMain.GetInsertionPoint()
                 linenumber = self.textMain.PositionToXY(curPos)
-                print(linenumber)
+                # print(linenumber)
                 lineText = self.textMain.GetLineText(linenumber[2])
                 posInit = curPos - linenumber[1]
                 if "-" in lineText:
@@ -742,7 +738,7 @@ class MyApp(wx.Frame):
                     if len(lineText) != 0:
                         word = self.getWordText(linenumber, lineText)
 
-                        print(lineText[linenumber[1] - 1])
+                        # print(lineText[linenumber[1] - 1])
 
                         if (lineText[linenumber[1] - 1] in list1 or lineText[linenumber[1] - 1] in listNum or word[
                             0] in list3) and lineText[linenumber[1] - 1] != "_":
@@ -763,9 +759,9 @@ class MyApp(wx.Frame):
                                         s -= 1
                                 while e != len(lineText) and lineText[e] in list2:
                                     e += 1
-                                print("word", lineText[s:e])
-                                print("start", s)
-                                print("end", e)
+                                # print("word", lineText[s:e])
+                                # print("start", s)
+                                # print("end", e)
                                 pack = (s, e, lineText[s:e], posInit)
 
                         self.getWordColor(pack[2], pack[0] + posInit)
@@ -825,6 +821,71 @@ class MyApp(wx.Frame):
         text = self.textMain.GetValue()
         lexer = lex.lex()
         lexer.input(text)
+
+        style = 0
+        while 1:
+            tok = lexer.token()
+            if not tok:
+                break
+            else:
+                if tok != None:
+                    if tok.type in self.rTrue:
+                        style = 1
+                    elif tok.type in self.rFalse:
+                        style = 2
+                    elif tok.type in self.symbols:
+                        style = 3
+                    elif tok.type in self.coment:
+                        style = 4
+                    elif tok.type in self.functions:
+                        style = 5
+                    elif tok.type in self.reservedWords1:
+                        style = 6
+                    elif tok.type in self.reservedWords2:
+                        style = 7
+                    elif tok.type in self.reservedWords3:
+                        style = 8
+                    else:
+                        style = 10
+
+                    pos = tok.lexpos
+                    self.textMain.StartStyling(pos, style)
+                    self.textMain.SetStyling(len(str(tok.value)), style)
+
+    def setLineErrorColor(self,lineNumber):
+        lineNumber -= 1
+        text = ""
+        for i in range(lineNumber):
+            text += self.textMain.GetLineText(i)
+        print("LEN",len(text))
+        print(len(self.textMain.GetLineText(lineNumber)))
+        self.textMain.StartStyling(len(text)+4, 13)
+        self.textMain.SetStyling(len(self.textMain.GetLineText(lineNumber)), 13)
+
+
+    def changeTextLineColor(self,lineNumber):
+
+        text = ""
+        for i in range(lineNumber-1):
+            text += self.textMain.GetLineText(i)
+        print("LEN",len(text))
+
+        self.textMain.StyleSetSpec(1, 'fore:#33ffff,back:#141212')
+        self.textMain.StyleSetSpec(2, 'fore:#ff5714,back:#141212')
+        self.textMain.StyleSetSpec(3, 'fore:#f49006,back:#141212')
+        self.textMain.StyleSetSpec(4, 'fore:#02ffc2,back:#141212')
+        self.textMain.StyleSetSpec(5, 'fore:#f0f600,back:#141212')
+        self.textMain.StyleSetSpec(6, 'fore:#c04cfd,back:#141212')
+        self.textMain.StyleSetSpec(7, 'fore:#af2bbf,back:#141212')
+        self.textMain.StyleSetSpec(8, 'fore:#64dfdf,back:#141212')
+        self.textMain.StyleSetSpec(9, 'fore:#141212,back:#141212')
+
+
+        self.textMain.StyleSetSpec(wx.stc.STC_STYLE_LINENUMBER, 'fore:#323232,back:#141212')
+        self.textMain.StyleSetSpec(10, 'fore:#ffffff,back:#141212')
+
+        lexer = lex.lex()
+        lexer.input(self.textMain.GetLineText(lineNumber))
 
         style = 0
         while 1:
