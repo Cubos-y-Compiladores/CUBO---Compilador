@@ -67,7 +67,7 @@ class matrizFrame(wx.Frame):
 
 
         for i in range(height):
-            btn = wx.Button(self.panel1,label = "Matriz" + str(i+1),size = (103,29),style = wx.NO_BORDER)
+            btn = wx.Button(self.panel1,label = "Matriz" + str(i),size = (103,29),style = wx.NO_BORDER)
             btn.SetForegroundColour(self.colorLabel)
             if i%2 == 0:
                 btn.SetBackgroundColour(self.colorLineNumberBorder)
