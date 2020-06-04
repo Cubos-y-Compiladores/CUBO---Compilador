@@ -13,9 +13,7 @@ x=[True, True, True, True, True, True, True, True, True, True]
 def test(param1,param2,param3):
 	global t,l,r,var
 
-	Temp=matFlipper(l,"L")
-	l[1]=inserter(l[1],Temp[0][-3],1,t)
-	del Temp
+	l=delete(l,t,0)
 
 	Temp=matrixFlipper(r,"L")
 	Temp[0][-2][5]=True

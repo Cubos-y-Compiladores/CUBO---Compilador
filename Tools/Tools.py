@@ -1224,6 +1224,128 @@ def functionWriter(func,tabs):
                 file.write(tabs*"\t"+func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+'''=matrixFlipper(TempVar,"R")'''+"\n")
                 file.write(tabs*"\t"+"del TempVar\n")
 
+        elif (func.getName() == "Function2"):
+            output=tabs*"\t"
+            if(func.getChilds()[0].getChilds()[0].getName()=="Identifier0"):
+                output+=func.getChilds()[0].getChilds()[0].getChilds()[0].getToken()+".pop("
+            elif(func.getChilds()[0].getChilds()[0].getName()=="Identifier1"):
+                expr=realExpresionTranslator(func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])
+                if(not ":," in expr[0]):
+                    output+=func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+expr[0]+".pop("
+                else:
+                    file.write(tabs*"\t"+"Temp=matrixFlipper("+func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
+                    output+="Temp"+expr[1]+".pop("
+
+
+            if(func.getChilds()[0].getChilds()[4].getName()=="Iterable0"):
+                output+=func.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getToken()+")\n"
+
+            elif(func.getChilds()[0].getChilds()[4].getName()=="Iterable1"):
+                output+=func.getChilds()[0].getChilds()[4].getChilds()[0].getToken()+")\n"
+            file.write(output)
+            if("Temp" in output):
+                file.write(tabs*"\t"+func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+'''=matrixFlipper(Temp,"R")'''+"\n")
+                file.write(tabs*"\t"+"del Temp\n")
+
+        elif (func.getName() == "Function3"):
+            if(func.getChilds()[0].getChilds()[2].getName()=="Identifier0"):
+                file.write(tabs*"\t"+"length("+func.getChilds()[0].getChilds()[2].getChilds()[0].getToken()+")\n")
+            elif(func.getChilds()[0].getChilds()[2].getName()=="Identifier1"):
+                expr=realExpresionTranslator(func.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0])
+                if(not ":," in expr[0]):
+                    file.write(tabs*"\t"+"length("+func.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+expr[0]+")\n")
+                else:
+                    file.write(tabs*"\t"+"Temp=matrixFlipper("+func.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
+                    file.write(tabs*"\t"+"length(Temp"+expr[1]+")\n")
+                    file.write(tabs*"\t"+"del Temp\n")
+
+        elif (func.getName() == "Function4"):
+            if (func.getChilds()[0].getChilds()[0].getName() == "Identifier0"):
+                file.write(tabs * "\t"+func.getChilds()[0].getChilds()[0].getChilds()[0].getToken()+"=neg("+func.getChilds()[0].getChilds()[0].getChilds()[0].getToken()+")\n")
+
+            elif (func.getChilds()[0].getChilds()[0].getName() == "Identifier1"):
+                expr = realExpresionTranslator(func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])
+                if (not ":," in expr[0]):
+                    file.write(tabs * "\t"+func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+expr[0]+"=neg("+func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+expr[0]+")\n")
+                else:
+                    file.write(tabs * "\t" + "Temp=matrixFlipper(" +func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken() + ''',"L")''' + "\n")
+                    file.write(tabs * "\t" + "Temp"+expr[1]+"=neg(Temp"+expr[1]+")\n")
+                    file.write(tabs*"\t"+func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+'''=matrixFlipper(Temp,"R")'''+"\n")
+                    file.write(tabs * "\t" + "del Temp\n")
+
+        elif (func.getName() == "Function5"):
+            output=tabs*"\t"
+            if(func.getChilds()[0].getChilds()[0].getName()=="Identifier0"):
+                output+=func.getChilds()[0].getChilds()[0].getChilds()[0].getToken()+"="+func.getChilds()[0].getChilds()[2].getChilds()[0].getToken()+"("+func.getChilds()[0].getChilds()[0].getChilds()[0].getToken()+")\n"
+                file.write(output)
+            elif(func.getChilds()[0].getChilds()[0].getName()=="Identifier1"):
+                expr=realExpresionTranslator(func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])
+                if(not ":," in expr[0]):
+                    output+=func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+expr[0]+"="+func.getChilds()[0].getChilds()[2].getChilds()[0].getToken()+"("+func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+expr[0]+")\n"
+                    file.write(output)
+                else:
+                    file.write(tabs*"\t"+"Temp=matrixFlipper("+func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
+                    file.write(tabs*"\t"+"Temp"+expr[1]+"="+func.getChilds()[0].getChilds()[2].getChilds()[0].getToken()+"(Temp"+expr[1]+")\n")
+                    file.write(tabs*"\t"+func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+'''=matrixFlipper(Temp,"R")'''+"\n")
+                    file.write(tabs*"\t"+"del Temp\n")
+
+        elif (func.getName() == "Function6"):
+            output=tabs*"\t"
+            if(func.getChilds()[0].getChilds()[2].getChilds()[0].getName()=="Identifier0"):
+                if(func.getChilds()[0].getChilds()[2].getName()=="Fcont1"):
+                    output+="blink("+func.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getToken()+","+func.getChilds()[0].getChilds()[2].getChilds()[2].getChilds()[0].getName().replace("V","")+")\n"
+                    file.write(output)
+
+                elif(func.getChilds()[0].getChilds()[2].getName()=="Fcont0"):
+                   output+="blink("+func.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getToken()+","+func.getChilds()[0].getChilds()[2].getChilds()[2].getToken()+''',"'''+func.getChilds()[0].getChilds()[2].getChilds()[4].getChilds()[0].getName()+'''",'''+func.getChilds()[0].getChilds()[2].getChilds()[6].getChilds()[0].getName().replace("V","")+")\n"
+                   file.write(output)
+
+            elif(func.getChilds()[0].getChilds()[2].getChilds()[0].getName()=="Identifier1"):
+                expr=realExpresionTranslator(func.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0])
+                if(not ":," in expr[0]):
+                    if (func.getChilds()[0].getChilds()[2].getName() == "Fcont1"):
+                        output += "blink(" + func.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+expr[0]+ "," + func.getChilds()[0].getChilds()[2].getChilds()[2].getChilds()[0].getName().replace("V", "") + ")\n"
+                        file.write(output)
+
+                    elif (func.getChilds()[0].getChilds()[2].getName() == "Fcont0"):
+                        output += "blink(" + func.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+expr[0]+ "," + func.getChilds()[0].getChilds()[2].getChilds()[2].getToken() + ''',"''' + func.getChilds()[0].getChilds()[2].getChilds()[4].getChilds()[0].getName() + '''",''' + func.getChilds()[0].getChilds()[2].getChilds()[6].getChilds()[0].getName().replace("V", "") + ")\n"
+                        file.write(output)
+                else:
+                    file.write(tabs*"\t"+"Temp=matrixFlipper("+func.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
+                    if (func.getChilds()[0].getChilds()[2].getName() == "Fcont0"):
+                        output += "blink(Temp" +expr[1] + "," + func.getChilds()[0].getChilds()[2].getChilds()[2].getToken() + ''',"''' + func.getChilds()[0].getChilds()[2].getChilds()[4].getChilds()[0].getName() + '''",''' + func.getChilds()[0].getChilds()[2].getChilds()[6].getChilds()[0].getName().replace("V","") + ")\n"
+                        file.write(output)
+
+                    elif (func.getChilds()[0].getChilds()[2].getName() == "Fcont1"):
+                        output += "blink(Temp" +expr[1]+"," + func.getChilds()[0].getChilds()[2].getChilds()[2].getChilds()[0].getName().replace("V", "") + ")\n"
+                        file.write(output)
+                    file.write(tabs*"\t"+"del Temp \n")
+
+        elif (func.getName() == "Function7"):
+            if(func.getChilds()[0].getChilds()[2].isNull()):
+                file.write(tabs*"\t"+"delay()\n")
+            else:
+                if(func.getChilds()[0].getChilds()[2].getChilds()[0].getName()=="Iterable0"):
+                    file.write(tabs * "\t" + "delay("+func.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"'''+func.getChilds()[0].getChilds()[2].getChilds()[2].getChilds()[0].getName()+''''")'''+"\n")
+
+                elif(func.getChilds()[0].getChilds()[2].getChilds()[0].getName()=="Iterable1"):
+                    file.write(tabs * "\t" + "delay(" + func.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getToken() + ''',"''' +func.getChilds()[0].getChilds()[2].getChilds()[2].getChilds()[0].getName() + ''''")''' + "\n")
+
+        elif (func.getName() == "Function8"):
+            if(func.getChilds()[0].getChilds()[0].getName()=="Identifier0"):
+                file.write(tabs*"\t"+func.getChilds()[0].getChilds()[2].getChilds()[0].getName().replace("S","s")+"("+func.getChilds()[0].getChilds()[0].getChilds()[0].getToken()+")\n")
+
+            elif(func.getChilds()[0].getChilds()[0].getName()=="Identifier1"):
+                expr=realExpresionTranslator(func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])
+                if(not ":," in expr[0]):
+                    file.write(tabs * "\t" + func.getChilds()[0].getChilds()[2].getChilds()[0].getName().replace("S","s")+"(" +func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+expr[0]+ ")\n")
+                else:
+                    file.write(tabs*"\t"+"Temp=matrixFlipper("+func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
+                    file.write(tabs*"\t"+func.getChilds()[0].getChilds()[2].getChilds()[0].getName().replace("S","s")+"(Temp"+expr[1]+")\n")
+
+        elif (func.getName() == "Function9"):
+            if(func.getChilds()[0].getChilds()[0].getName()=="Identifier0"):
+                file.write(tabs*"\t"+func.getChilds()[0].getChilds()[0].getChilds()[0].getToken()+"=delete("+func.getChilds()[0].getChilds()[0].getChilds()[0].getToken()+","+(func.getChilds()[0].getChilds()[4].getChilds()[0].getToken())+","+func.getChilds()[0].getChilds()[6].getToken()+")\n")
 
         file.write("\n")
         file.close()
