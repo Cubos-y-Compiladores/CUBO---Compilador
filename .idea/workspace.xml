@@ -172,12 +172,12 @@
       <method v="2" />
     </configuration>
     <list>
-      <item itemvalue="Python.FunctionsTests" />
-      <item itemvalue="Python.Matriz" />
-      <item itemvalue="Python.QuickCube" />
       <item itemvalue="Python.FunctionsTests (1)" />
+      <item itemvalue="Python.FunctionsTests" />
       <item itemvalue="Python.GUI" />
       <item itemvalue="Python.Lexer" />
+      <item itemvalue="Python.Matriz" />
+      <item itemvalue="Python.QuickCube" />
     </list>
     <recent_temporary>
       <list>
