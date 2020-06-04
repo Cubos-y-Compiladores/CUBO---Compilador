@@ -76,10 +76,6 @@ class TerminalNode(Node):
         id = counterIncreaser()
         output += id + "[label= " + self.token + "]" + "\n\t"
         return id
-
-    def getChilds(self):
-        return self.childs
-
     def getToken(self):
         return self.token
 

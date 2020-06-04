@@ -380,16 +380,12 @@ def p_assginParam0(p):
     p[0]=NonTerminalNode("AssignableParam0",[p[1]])
 
 def p_assginParam1(p):
-    '''ass_param : mat'''
+    '''ass_param : 3dmat'''
     p[0]=NonTerminalNode("AssignableParam1",[p[1]])
 
 def p_assginParam2(p):
-    '''ass_param : 3dmat'''
-    p[0]=NonTerminalNode("AssignableParam2",[p[1]])
-
-def p_assginParam3(p):
     '''ass_param : value'''
-    p[0]=NonTerminalNode("AssignableParam3",[p[1]])
+    p[0]=NonTerminalNode("AssignableParam2",[p[1]])
 
 
 def p_body(p):
@@ -919,6 +915,12 @@ def p_iterable1(p):
 def p_iterable2(p):
     '''iterable : list'''
     p[0]=NonTerminalNode("Iterable2",[p[1]])
+
+def p_iterable3(p):
+    '''iterable : mat'''
+    p[0]=NonTerminalNode("Iterable3",[p[1]])
+
+
 
 
 ##########---INSERTABLES---#########
