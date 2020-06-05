@@ -134,8 +134,9 @@ def t_DIVENT(t):
     r'[/][/]'
     return t
 
-
+# Clase de la ventana principal, sobre la que se situa la entrada de texto y el analisis de cambio de color de texto
 class MyApp(wx.Frame):
+    # Constructor de la clase, recibe un titulo como atributo
     def __init__(self,parent,title):
         wx.Frame.__init__(self,parent = parent, title = title, size = (1350,750))
 
@@ -470,31 +471,37 @@ class MyApp(wx.Frame):
         self.initThread()
 
     # FUNCTIONS
+
+    # Cierra la ventana y frena el thread principal
     def closeWindow(self,event):
         self.flagLoop = False
         self.Destroy()
+    # Efecto de encendido de boton
     def buttonRunLightOn(self,event):
         self.buttonRun.SetBackgroundColour(self.colorLightOn)
+    # Efecto de apagado de boton
     def buttonRunLightOff(self,event):
         self.buttonRun.SetBackgroundColour(self.colorBorder)
+    # Efecto de encendido de boton
     def buttonCubeLightOn(self,event):
         self.buttonCube.SetBackgroundColour(self.colorLightOn)
+    # Efecto de apagado de boton
     def buttonCubeLightOff(self,event):
         self.buttonCube.SetBackgroundColour(self.colorBorder)
-
+    # Detecta si la tecla ctrl fue presionada
     def keyUp(self,event):
         keycode = event.GetKeyCode()
         if keycode == 308:
-            # self.changeTextColor()
-            self.setLineErrorColor(3)
+            self.changeTextColor()
+            # self.setLineErrorColor(3) # cambio de color para una lines especifica se usa para los errores en las lineas
 
-
+    # Lee los nombres de todos los archivos cbc que existen
     def readFilesList(self):
         listFilesFile = open(os.getcwd() + "/Files/Root/Files.txt", "r")
         txt = listFilesFile.read()
         listFilesFile.close()
         return txt
-
+    # Guarda los nombres de los archivos cbc que existen
     def writeFilesList(self):
         self.filesList[0] = self.contNewFiles
         f = open(self.currentDirectory+"/Root/Files.txt","w")
@@ -504,19 +511,20 @@ class MyApp(wx.Frame):
     # Funcion para boton1, imprime lo que esté escrito en las entradas de texto
     def initThread(self):
         self.t.start()
+    # Funcion que ejecuta el Thread principal
     def loop(self):
         while self.flagLoop:
             self.changeReservedWords2()
-
+    # Abre la ventana de creacion de cubos
     def openQuickCube(self,event):
         self.Disable()
         Frame.Frame("Quick Cube",self,self.mainDirectory)
-
+    # Inserta una lista como texto
     def insertList(self,event):
         self.textMain.AppendText("list" + str(self.contList) +"= [];\n")
         self.contList += 1
         self.changeTextColor()
-
+    # Inserta una matriz como texto
     def insertMatriz2D(self,number,event):
         text = " ["
         for i in range(number-1):
@@ -525,7 +533,7 @@ class MyApp(wx.Frame):
         self.textMain.AppendText("matriz2D" + str(self.contMatriz2) +"= "+ text)
         self.contMatriz2 += 1
         self.changeTextColor()
-
+    # Inserta un cubo como texto
     def insertMatriz3D(self,number,event):
         number = number%10
         textFinal = " ["
@@ -549,16 +557,19 @@ class MyApp(wx.Frame):
         self.textMain.AppendText("matriz3D" + str(self.contMatriz3) +"= "+ textFinal)
         self.contMatriz3 += 1
         self.changeTextColor()
-
+    # Cierra la ventana principal
     def subExitWindow(self,event):
         self.Close(1)
+    # Inicializa el texto de la entrada de texto
     def initFILE(self):
         f = open(self.mainFile, "r")
         txt = f.read()
         f.close()
         self.textMain.SetValue(txt)
+    # Evento de boton que activa la funcion para abrir archivos
     def openFileTXT(self,event):
         self.onOpenFile()
+    # Abre un archivo especifico
     def onOpenFile(self):
 
         dlg = wx.FileDialog(
@@ -577,7 +588,7 @@ class MyApp(wx.Frame):
             self.flagNeedLoading = True
 
         dlg.Destroy()
-
+    # Crea un efecto de carga para un label
     def loading(self):
 
         self.textMain.SetValue("")
@@ -601,7 +612,7 @@ class MyApp(wx.Frame):
         self.flagNeedLoading = False
         self.loadingPath = None
 
-
+    # Efecto de carga de un label
     def loadingPoints(self,loadingText):
         if loadingText.count(".") == 0:
             return "Loading ."
@@ -611,6 +622,7 @@ class MyApp(wx.Frame):
             return "Loading . . ."
         if loadingText.count(".") == 3:
             return "Loading"
+    # Actualiza el texto de un label
     def resetLabel(self, number, newLabel):
 
         lbls = [widget for widget in self.GetChildren() if isinstance(widget, wx.StaticText)]
@@ -625,6 +637,7 @@ class MyApp(wx.Frame):
                 lbl.SetBackgroundColour(self.colorBorder)
 
                 break
+    # Guarda un archivo ya abierto
     def saveFile(self,event):
         if self.currentLabelFileName in self.filesList and self.currentLabelFileName != "":
 
@@ -634,8 +647,11 @@ class MyApp(wx.Frame):
 
         else:
             self.onSaveFile()
+
+    # Evento de boton
     def saveFileAs(self,event):
         self.onSaveFile()
+    # Guarda un archivo con un nombre especifico
     def onSaveFile(self):
 
         dlg = wx.FileDialog(
@@ -656,6 +672,7 @@ class MyApp(wx.Frame):
             self.writeFilesList()
 
         dlg.Destroy()
+    # Crea un nuevo archivo vacio
     def newFile(self,event):
 
         if self.currentFile != "":
@@ -668,6 +685,7 @@ class MyApp(wx.Frame):
         self.resetLabel(self.pastLabelFileName,self.currentLabelFileName)
         self.pastLabelFileName = self.currentLabelFileName
 
+    # Ejecuta las funciones de analisis de texto
     def runFile(self,event):
         # TODO aqui se inserta la logica del compilador
         temp = self.textMain.GetValue()
@@ -676,12 +694,13 @@ class MyApp(wx.Frame):
             myParser.runCompile(self.textMain.GetValue())
         except:
             print("except")
+    # Actualiza el tamaño de la letra
     def setFontSize(self,size):
         font = self.textMain.GetFont()
         font.SetPointSize(size)
         self.textMain.SetFont(font)
         self.actualFontSize = size
-
+    # Activa el efecto de carga del label
     def loadingEffect(self):
         text = "Loading"
         while self.flagTemp:
@@ -689,7 +708,7 @@ class MyApp(wx.Frame):
             text = self.loadingPoints(text)
             self.lblLoading.SetLabel(text)
         self.lblLoading.SetLabel("")
-
+    # Cambia el color de texto de una palabra especifica
     def getWordText(self,linenumber,lineText):
         list1 = ['"', ",", "{", "}", "=", "--", "(", ")", "[", "]", " "]
         list2 = "abcdefghijklmnñopqrstuvwxyzCALLTF_"
@@ -709,7 +728,7 @@ class MyApp(wx.Frame):
             s = 0
         p = (lineText[s:e],s,e)
         return p
-
+    # Ejecuta las funciones de cambio de color para palabras especificas y actualiza los labels
     def changeReservedWords2(self):
 
         if self.flagNeedLoading:
@@ -730,7 +749,7 @@ class MyApp(wx.Frame):
             if self.textMain.GetValue() != "":
                 curPos = self.textMain.GetInsertionPoint()
                 linenumber = self.textMain.PositionToXY(curPos)
-                # print(linenumber)
+
                 lineText = self.textMain.GetLineText(linenumber[2])
                 posInit = curPos - linenumber[1]
                 if "-" in lineText:
@@ -744,8 +763,6 @@ class MyApp(wx.Frame):
 
                     if len(lineText) != 0:
                         word = self.getWordText(linenumber, lineText)
-
-                        # print(lineText[linenumber[1] - 1])
 
                         if (lineText[linenumber[1] - 1] in list1 or lineText[linenumber[1] - 1] in listNum or word[
                             0] in list3) and lineText[linenumber[1] - 1] != "_":
@@ -766,16 +783,16 @@ class MyApp(wx.Frame):
                                         s -= 1
                                 while e != len(lineText) and lineText[e] in list2:
                                     e += 1
-                                # print("word", lineText[s:e])
-                                # print("start", s)
-                                # print("end", e)
+
                                 pack = (s, e, lineText[s:e], posInit)
 
                         self.getWordColor(pack[2], pack[0] + posInit)
-
+            if self.textMain.GetNumberOfLines() != self.pastRowLen:
+                print("TRUE")
+                self.pastRowLen = self.textMain.GetNumberOfLines()
             self.currenttext = self.textMain.GetValue()
 
-# Creando funcion que reconoce solo el texto nuevo para colorearlo
+    # Cambia el color de una palabra en una posicion especifica
     def getWordColor(self,word,posInit):
 
         lexer = lex.lex()
@@ -808,7 +825,7 @@ class MyApp(wx.Frame):
                     if style != 10:
                         self.textMain.StartStyling(posInit, style)
                         self.textMain.SetStyling(len(str(tok.value)), style)
-
+    # Camnbia el color de todas las palabras en el texto
     def changeTextColor(self):
 
         self.textMain.StyleSetSpec(1, 'fore:#33ffff,back:#141212')
@@ -858,7 +875,7 @@ class MyApp(wx.Frame):
                     pos = tok.lexpos
                     self.textMain.StartStyling(pos, style)
                     self.textMain.SetStyling(len(str(tok.value)), style)
-
+    # Obtiene las posiciones de una linea para cambiar color
     def setLineErrorColor(self,lineNumber):
         lineNumber -= 1
         text = ""
@@ -869,7 +886,7 @@ class MyApp(wx.Frame):
         self.textMain.StartStyling(len(text)+4, 13)
         self.textMain.SetStyling(len(self.textMain.GetLineText(lineNumber)), 13)
 
-
+    # Cambia el color de una linea especifica
     def changeTextLineColor(self,lineNumber):
 
         text = ""
