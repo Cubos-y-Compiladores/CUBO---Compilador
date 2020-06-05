@@ -10,7 +10,6 @@ import sys
 import threading
 import wx.lib.agw.multidirdialog as MDD
 import time
-import QuickCube
 import wx.stc
 import Frame
 import CompilerDependencies.Parser as myparser
@@ -689,9 +688,11 @@ class MyApp(wx.Frame):
     # Toma el texto del control y lo envia al analizador o interprete
     def runFile(self,event):
         # TODO aqui se inserta la logica del compilador
-
-        myparser.runCompile(self.textMain.GetValue())
-        print("Running")
+        try:
+            myparser.runCompile(self.textMain.GetValue())
+            print("Running")
+        except:
+            print("error")
     # Sete un tamaño para la letra
     def setFontSize(self,size):
         font = self.textMain.GetFont()
