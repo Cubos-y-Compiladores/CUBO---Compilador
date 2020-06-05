@@ -2,7 +2,7 @@ import wx
 import wx.lib.scrolledpanel
 import os
 import wx.stc
-import GUI.QuickCube
+import QuickCube
 
 class Frame(wx.Frame):
     def __init__(self, title,mainWindow,mainDirectory,parent=None):
@@ -95,7 +95,7 @@ class Frame(wx.Frame):
             if int(self.entryCol.GetValue()) > 8 or int(self.entryRow.GetValue()) > 8:
                 wx.MessageBox("Col and Row can't be greater than 8", 'Warning', wx.OK | wx.ICON_WARNING)
             else:
-                quickCube = GUI.QuickCube.matrizFrame("Quick Cube",int(self.entryCol.GetValue()),int(self.entryRow.GetValue()),
+                quickCube = QuickCube.matrizFrame("Quick Cube",int(self.entryCol.GetValue()),int(self.entryRow.GetValue()),
                                                   int(self.entryHeight.GetValue()),self.mainWindow,self.mainDirectory)
 
                 self.Destroy()

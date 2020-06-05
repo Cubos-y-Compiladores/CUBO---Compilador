@@ -1,0 +1,11 @@
+Rango_Timer = "Seg";
+Dim_Filas=6;
+Dim_Columnas = 5;
+Timer=15;
+Cubo = 6;
+
+
+Main (){
+	begin
+	end;
+};
