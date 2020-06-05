@@ -1,0 +1,35 @@
+global t,var,l,b,z,k,y,r,w,x
+t=0
+var=False
+l=[True, True, True, True, True, True, True]
+b=True
+z=[[False, True, True], [True, False, True], [True, True, True]]
+k=[]
+y=[True, True]
+r=[[[False, False, False], [False, False, False], [False, False, False]], [[False, False, False], [False, False, False], [False, False, False]], [[False, False, False], [False, False, False], [False, False, False]]]
+w=True
+x=[True, True, True, True, True, True, True, True, True, True]
+
+def test(param1,param2,param3):
+	global t,l,r,var
+
+	l=delete(l,t,0)
+
+	Temp=matrixFlipper(r,"L")
+	Temp[0][-2][5]=True
+	r=matrixFlipper(Temp,"R")
+	del Temp
+
+	Temp=matrixFlipper(r,"L")
+	Temp=Temp[1][-3][0]
+	l=Temp
+	del Temp
+
+
+	t=0
+
+
+def test(param1,param2):
+	global l
+
+

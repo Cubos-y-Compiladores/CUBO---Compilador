@@ -10,9 +10,10 @@ import sys
 import threading
 import wx.lib.agw.multidirdialog as MDD
 import time
-import QuickCube
+import GUI.QuickCube
 import wx.stc
-import Frame
+import GUI.Frame
+import CompilerDependencies.Parser as myparser
 
 
 wildcard = "*.cbc"
@@ -508,7 +509,7 @@ class MyApp(wx.Frame):
 
     def openQuickCube(self,event):
         self.Disable()
-        Frame.Frame("Quick Cube",self,self.mainDirectory)
+        GUI.Frame.Frame("Quick Cube",self,self.mainDirectory)
 
     def insertList(self,event):
         self.textMain.AppendText("list" + str(self.contList) +"= [];\n")
@@ -668,6 +669,9 @@ class MyApp(wx.Frame):
 
     def runFile(self,event):
         # TODO aqui se inserta la logica del compilador
+        self.textMain.Disable()
+        myparser.runCompile(self.textMain.GetValue())
+        self.textMain.Enable()
         print("Running")
     def setFontSize(self,size):
         font = self.textMain.GetFont()

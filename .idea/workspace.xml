@@ -3,7 +3,27 @@
   <component name="ChangeListManager">
     <list default="true" id="28e1d7ee-b5f4-4b12-832a-3d26432cc0d8" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/QuickCube.py" beforeDir="false" afterPath="$PROJECT_DIR$/QuickCube.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Files/New1.cbc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Files/New4.cbc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Files/PUTO.cbc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Files/Root/Files.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Files/Test.cbc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Files/hola.cbc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Files/hola1.cbc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Files/nuevoarchivo.cbc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Files/prueba.cbc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Frame.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/FunctionsTests.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Lexer.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Parser.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/QuickCube.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/bg.jpeg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/buttonPlay.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/cube.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/cube1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/icon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Resources/icon.png" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +56,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="ToolWindowRun.ShowToolbar" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/GUI/GUI.py" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
@@ -88,7 +108,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="GUI" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+    <configuration name="GUI" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="Proyect" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -96,11 +116,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="C:\Users\Usuario\AppData\Local\Programs\Python\Python36-32\python.exe" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/GUI" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/GUI.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/GUI/GUI.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -176,8 +196,8 @@
       <item itemvalue="Python.FunctionsTests" />
       <item itemvalue="Python.Matriz" />
       <item itemvalue="Python.QuickCube" />
-      <item itemvalue="Python.FunctionsTests (1)" />
       <item itemvalue="Python.GUI" />
+      <item itemvalue="Python.FunctionsTests (1)" />
       <item itemvalue="Python.Lexer" />
     </list>
     <recent_temporary>
@@ -211,11 +231,12 @@
     </state>
     <state x="451" y="92" key="#Lexer/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1584226768237" />
     <state x="634" y="158" width="642" height="797" key="#Lexer/0.27.1920.1053@0.27.1920.1053" timestamp="1584222520794" />
-    <state x="-1727" y="-136" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1590642408015">
-      <screen x="-1920" y="-170" width="1920" height="1050" />
+    <state x="137" y="24" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1591323420935">
+      <screen x="0" y="0" width="1366" height="738" />
     </state>
     <state x="-1727" y="-136" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.738/-1920.-170.1920.1050@-1920.-170.1920.1050" timestamp="1590642408015" />
     <state x="137" y="24" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1585107329350" />
+    <state x="137" y="24" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.738@0.0.1366.738" timestamp="1591323420935" />
     <state x="454" y="172" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1585088702442">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
@@ -224,47 +245,48 @@
       <screen x="-1920" y="-170" width="1920" height="1050" />
     </state>
     <state x="-1230" y="102" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.738/-1920.-170.1920.1050@-1920.-170.1920.1050" timestamp="1590652385773" />
-    <state x="-1139" y="28" key="FileChooserDialogImpl" timestamp="1590642403118">
-      <screen x="-1920" y="-170" width="1920" height="1050" />
+    <state x="556" y="139" key="FileChooserDialogImpl" timestamp="1591323415845">
+      <screen x="0" y="0" width="1366" height="738" />
     </state>
     <state x="-1139" y="28" key="FileChooserDialogImpl/0.0.1366.738/-1920.-170.1920.1050@-1920.-170.1920.1050" timestamp="1590642403118" />
     <state x="383" y="116" key="FileChooserDialogImpl/0.0.1366.738/-1920.-170.1920.1050@0.0.1366.738" timestamp="1589700507013" />
     <state x="556" y="139" key="FileChooserDialogImpl/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1585107328224" />
-    <state width="1345" height="217" key="GridCell.Tab.0.bottom" timestamp="1591310639826">
+    <state x="556" y="139" key="FileChooserDialogImpl/0.0.1366.738@0.0.1366.738" timestamp="1591323415845" />
+    <state width="1345" height="217" key="GridCell.Tab.0.bottom" timestamp="1591323491017">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
     <state width="1899" height="311" key="GridCell.Tab.0.bottom/0.0.1366.738/-1920.-170.1920.1050@-1920.-170.1920.1050" timestamp="1591060784922" />
     <state width="1345" height="217" key="GridCell.Tab.0.bottom/0.0.1366.738/-1920.-170.1920.1050@0.0.1366.738" timestamp="1591310371821" />
     <state width="1899" height="272" key="GridCell.Tab.0.bottom/0.0.1366.738/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1585099284300" />
     <state width="1345" height="227" key="GridCell.Tab.0.bottom/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1585380109108" />
-    <state width="1345" height="217" key="GridCell.Tab.0.bottom/0.0.1366.738@0.0.1366.738" timestamp="1591310639826" />
+    <state width="1345" height="217" key="GridCell.Tab.0.bottom/0.0.1366.738@0.0.1366.738" timestamp="1591323491017" />
     <state width="1897" height="275" key="GridCell.Tab.0.bottom/0.27.1920.1053@0.27.1920.1053" timestamp="1584225031056" />
-    <state width="1345" height="217" key="GridCell.Tab.0.center" timestamp="1591310639826">
+    <state width="1345" height="217" key="GridCell.Tab.0.center" timestamp="1591323491016">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
     <state width="1899" height="311" key="GridCell.Tab.0.center/0.0.1366.738/-1920.-170.1920.1050@-1920.-170.1920.1050" timestamp="1591060784922" />
     <state width="1345" height="217" key="GridCell.Tab.0.center/0.0.1366.738/-1920.-170.1920.1050@0.0.1366.738" timestamp="1591310371821" />
     <state width="1899" height="272" key="GridCell.Tab.0.center/0.0.1366.738/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1585099284300" />
     <state width="1345" height="227" key="GridCell.Tab.0.center/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1585380109108" />
-    <state width="1345" height="217" key="GridCell.Tab.0.center/0.0.1366.738@0.0.1366.738" timestamp="1591310639826" />
+    <state width="1345" height="217" key="GridCell.Tab.0.center/0.0.1366.738@0.0.1366.738" timestamp="1591323491016" />
     <state width="1897" height="275" key="GridCell.Tab.0.center/0.27.1920.1053@0.27.1920.1053" timestamp="1584225031055" />
-    <state width="1345" height="217" key="GridCell.Tab.0.left" timestamp="1591310639826">
+    <state width="1345" height="217" key="GridCell.Tab.0.left" timestamp="1591323491016">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
     <state width="1899" height="311" key="GridCell.Tab.0.left/0.0.1366.738/-1920.-170.1920.1050@-1920.-170.1920.1050" timestamp="1591060784922" />
     <state width="1345" height="217" key="GridCell.Tab.0.left/0.0.1366.738/-1920.-170.1920.1050@0.0.1366.738" timestamp="1591310371821" />
     <state width="1899" height="272" key="GridCell.Tab.0.left/0.0.1366.738/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1585099284296" />
     <state width="1345" height="227" key="GridCell.Tab.0.left/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1585380109108" />
-    <state width="1345" height="217" key="GridCell.Tab.0.left/0.0.1366.738@0.0.1366.738" timestamp="1591310639826" />
+    <state width="1345" height="217" key="GridCell.Tab.0.left/0.0.1366.738@0.0.1366.738" timestamp="1591323491016" />
     <state width="1897" height="275" key="GridCell.Tab.0.left/0.27.1920.1053@0.27.1920.1053" timestamp="1584225031054" />
-    <state width="1345" height="217" key="GridCell.Tab.0.right" timestamp="1591310639826">
+    <state width="1345" height="217" key="GridCell.Tab.0.right" timestamp="1591323491016">
       <screen x="0" y="0" width="1366" height="738" />
     </state>
     <state width="1899" height="311" key="GridCell.Tab.0.right/0.0.1366.738/-1920.-170.1920.1050@-1920.-170.1920.1050" timestamp="1591060784922" />
     <state width="1345" height="217" key="GridCell.Tab.0.right/0.0.1366.738/-1920.-170.1920.1050@0.0.1366.738" timestamp="1591310371821" />
     <state width="1899" height="272" key="GridCell.Tab.0.right/0.0.1366.738/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1585099284300" />
     <state width="1345" height="227" key="GridCell.Tab.0.right/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1585380109108" />
-    <state width="1345" height="217" key="GridCell.Tab.0.right/0.0.1366.738@0.0.1366.738" timestamp="1591310639826" />
+    <state width="1345" height="217" key="GridCell.Tab.0.right/0.0.1366.738@0.0.1366.738" timestamp="1591323491016" />
     <state width="1897" height="275" key="GridCell.Tab.0.right/0.27.1920.1053@0.27.1920.1053" timestamp="1584225031055" />
     <state width="1345" height="249" key="GridCell.Tab.1.bottom" timestamp="1591131071884">
       <screen x="0" y="0" width="1366" height="738" />
