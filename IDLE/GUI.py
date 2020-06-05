@@ -11,7 +11,7 @@ import threading
 import wx.lib.agw.multidirdialog as MDD
 import time
 import wx.stc
-import Frame
+from IDLE import Frame
 import CompilerDependencies.Parser as myparser
 
 

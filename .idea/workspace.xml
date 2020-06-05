@@ -2,8 +2,30 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="28e1d7ee-b5f4-4b12-832a-3d26432cc0d8" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/GUI.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI/GUI.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Compilador/Lib/site-packages/pip-19.0.3-py3.6.egg/pip/_internal/pep425tags.py" beforeDir="false" afterPath="$PROJECT_DIR$/Compilador/Lib/site-packages/pip-19.0.3-py3.6.egg/pip/_internal/pep425tags.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Compilador/Lib/site-packages/pip-19.0.3-py3.6.egg/pip/_internal/wheel.py" beforeDir="false" afterPath="$PROJECT_DIR$/Compilador/Lib/site-packages/pip-19.0.3-py3.6.egg/pip/_internal/wheel.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/Files/New1.cbc" beforeDir="false" afterPath="$PROJECT_DIR$/IDLE/Files/New1.cbc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/Files/New4.cbc" beforeDir="false" afterPath="$PROJECT_DIR$/IDLE/Files/New4.cbc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/Files/PUTO.cbc" beforeDir="false" afterPath="$PROJECT_DIR$/IDLE/Files/PUTO.cbc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/Files/Prueba1compilador.cbc" beforeDir="false" afterPath="$PROJECT_DIR$/IDLE/Files/Prueba1compilador.cbc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/Files/Root/Files.txt" beforeDir="false" afterPath="$PROJECT_DIR$/IDLE/Files/Root/Files.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/Files/Test.cbc" beforeDir="false" afterPath="$PROJECT_DIR$/IDLE/Files/Test.cbc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/Files/hola.cbc" beforeDir="false" afterPath="$PROJECT_DIR$/IDLE/Files/hola.cbc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/Files/hola1.cbc" beforeDir="false" afterPath="$PROJECT_DIR$/IDLE/Files/hola1.cbc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/Files/nuevoarchivo.cbc" beforeDir="false" afterPath="$PROJECT_DIR$/IDLE/Files/nuevoarchivo.cbc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/Files/prueba.cbc" beforeDir="false" afterPath="$PROJECT_DIR$/IDLE/Files/prueba.cbc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/Frame.py" beforeDir="false" afterPath="$PROJECT_DIR$/IDLE/Frame.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/FunctionsTests.py" beforeDir="false" afterPath="$PROJECT_DIR$/IDLE/FunctionsTests.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/GUI.py" beforeDir="false" afterPath="$PROJECT_DIR$/IDLE/GUI.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/Lexer.py" beforeDir="false" afterPath="$PROJECT_DIR$/IDLE/Lexer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/Parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/IDLE/Parser.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/QuickCube.py" beforeDir="false" afterPath="$PROJECT_DIR$/IDLE/QuickCube.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/Resources/bg.jpeg" beforeDir="false" afterPath="$PROJECT_DIR$/IDLE/Resources/bg.jpeg" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/Resources/buttonPlay.png" beforeDir="false" afterPath="$PROJECT_DIR$/IDLE/Resources/buttonPlay.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/Resources/cube.png" beforeDir="false" afterPath="$PROJECT_DIR$/IDLE/Resources/cube.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/Resources/cube1.png" beforeDir="false" afterPath="$PROJECT_DIR$/IDLE/Resources/cube1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/Resources/icon.ico" beforeDir="false" afterPath="$PROJECT_DIR$/IDLE/Resources/icon.ico" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI/Resources/icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/IDLE/Resources/icon.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,7 +58,7 @@
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="ToolWindowRun.ShowToolbar" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/GUI/GUI.py" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/IDLE/GUI.py" />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
@@ -96,11 +118,11 @@
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
       <option name="SDK_HOME" value="C:\Users\Usuario\AppData\Local\Programs\Python\Python36-32\python.exe" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/GUI" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/IDLE" />
       <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/GUI/GUI.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/IDLE/GUI.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -211,10 +233,10 @@
     </state>
     <state x="451" y="92" key="#Lexer/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1584226768237" />
     <state x="634" y="158" width="642" height="797" key="#Lexer/0.27.1920.1053@0.27.1920.1053" timestamp="1584222520794" />
-    <state x="137" y="24" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1591323420935">
-      <screen x="0" y="0" width="1366" height="738" />
+    <state x="-1727" y="-136" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1591345432089">
+      <screen x="-1920" y="-170" width="1920" height="1050" />
     </state>
-    <state x="-1727" y="-136" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.738/-1920.-170.1920.1050@-1920.-170.1920.1050" timestamp="1590642408015" />
+    <state x="-1727" y="-136" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.738/-1920.-170.1920.1050@-1920.-170.1920.1050" timestamp="1591345432089" />
     <state x="137" y="24" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1585107329350" />
     <state x="137" y="24" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.738@0.0.1366.738" timestamp="1591323420935" />
     <state x="454" y="172" key="#com.intellij.fileTypes.FileTypeChooser" timestamp="1585088702442">
@@ -225,44 +247,44 @@
       <screen x="-1920" y="-170" width="1920" height="1050" />
     </state>
     <state x="-1230" y="102" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.0.1366.738/-1920.-170.1920.1050@-1920.-170.1920.1050" timestamp="1590652385773" />
-    <state x="556" y="139" key="FileChooserDialogImpl" timestamp="1591323415845">
-      <screen x="0" y="0" width="1366" height="738" />
+    <state x="-1139" y="28" key="FileChooserDialogImpl" timestamp="1591345430045">
+      <screen x="-1920" y="-170" width="1920" height="1050" />
     </state>
-    <state x="-1139" y="28" key="FileChooserDialogImpl/0.0.1366.738/-1920.-170.1920.1050@-1920.-170.1920.1050" timestamp="1590642403118" />
+    <state x="-1139" y="28" key="FileChooserDialogImpl/0.0.1366.738/-1920.-170.1920.1050@-1920.-170.1920.1050" timestamp="1591345430045" />
     <state x="383" y="116" key="FileChooserDialogImpl/0.0.1366.738/-1920.-170.1920.1050@0.0.1366.738" timestamp="1589700507013" />
     <state x="556" y="139" key="FileChooserDialogImpl/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1585107328224" />
     <state x="556" y="139" key="FileChooserDialogImpl/0.0.1366.738@0.0.1366.738" timestamp="1591323415845" />
-    <state width="1899" height="216" key="GridCell.Tab.0.bottom" timestamp="1591345095354">
+    <state width="1899" height="216" key="GridCell.Tab.0.bottom" timestamp="1591345433006">
       <screen x="-1920" y="-170" width="1920" height="1050" />
     </state>
-    <state width="1899" height="216" key="GridCell.Tab.0.bottom/0.0.1366.738/-1920.-170.1920.1050@-1920.-170.1920.1050" timestamp="1591345095354" />
+    <state width="1899" height="216" key="GridCell.Tab.0.bottom/0.0.1366.738/-1920.-170.1920.1050@-1920.-170.1920.1050" timestamp="1591345433006" />
     <state width="1345" height="217" key="GridCell.Tab.0.bottom/0.0.1366.738/-1920.-170.1920.1050@0.0.1366.738" timestamp="1591341014885" />
     <state width="1899" height="272" key="GridCell.Tab.0.bottom/0.0.1366.738/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1585099284300" />
     <state width="1345" height="227" key="GridCell.Tab.0.bottom/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1585380109108" />
     <state width="1345" height="217" key="GridCell.Tab.0.bottom/0.0.1366.738@0.0.1366.738" timestamp="1591324340839" />
     <state width="1897" height="275" key="GridCell.Tab.0.bottom/0.27.1920.1053@0.27.1920.1053" timestamp="1584225031056" />
-    <state width="1899" height="216" key="GridCell.Tab.0.center" timestamp="1591345095353">
+    <state width="1899" height="216" key="GridCell.Tab.0.center" timestamp="1591345433006">
       <screen x="-1920" y="-170" width="1920" height="1050" />
     </state>
-    <state width="1899" height="216" key="GridCell.Tab.0.center/0.0.1366.738/-1920.-170.1920.1050@-1920.-170.1920.1050" timestamp="1591345095353" />
+    <state width="1899" height="216" key="GridCell.Tab.0.center/0.0.1366.738/-1920.-170.1920.1050@-1920.-170.1920.1050" timestamp="1591345433006" />
     <state width="1345" height="217" key="GridCell.Tab.0.center/0.0.1366.738/-1920.-170.1920.1050@0.0.1366.738" timestamp="1591341014885" />
     <state width="1899" height="272" key="GridCell.Tab.0.center/0.0.1366.738/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1585099284300" />
     <state width="1345" height="227" key="GridCell.Tab.0.center/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1585380109108" />
     <state width="1345" height="217" key="GridCell.Tab.0.center/0.0.1366.738@0.0.1366.738" timestamp="1591324340838" />
     <state width="1897" height="275" key="GridCell.Tab.0.center/0.27.1920.1053@0.27.1920.1053" timestamp="1584225031055" />
-    <state width="1899" height="216" key="GridCell.Tab.0.left" timestamp="1591345095353">
+    <state width="1899" height="216" key="GridCell.Tab.0.left" timestamp="1591345433005">
       <screen x="-1920" y="-170" width="1920" height="1050" />
     </state>
-    <state width="1899" height="216" key="GridCell.Tab.0.left/0.0.1366.738/-1920.-170.1920.1050@-1920.-170.1920.1050" timestamp="1591345095353" />
+    <state width="1899" height="216" key="GridCell.Tab.0.left/0.0.1366.738/-1920.-170.1920.1050@-1920.-170.1920.1050" timestamp="1591345433005" />
     <state width="1345" height="217" key="GridCell.Tab.0.left/0.0.1366.738/-1920.-170.1920.1050@0.0.1366.738" timestamp="1591341014884" />
     <state width="1899" height="272" key="GridCell.Tab.0.left/0.0.1366.738/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1585099284296" />
     <state width="1345" height="227" key="GridCell.Tab.0.left/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1585380109108" />
     <state width="1345" height="217" key="GridCell.Tab.0.left/0.0.1366.738@0.0.1366.738" timestamp="1591324340838" />
     <state width="1897" height="275" key="GridCell.Tab.0.left/0.27.1920.1053@0.27.1920.1053" timestamp="1584225031054" />
-    <state width="1899" height="216" key="GridCell.Tab.0.right" timestamp="1591345095353">
+    <state width="1899" height="216" key="GridCell.Tab.0.right" timestamp="1591345433006">
       <screen x="-1920" y="-170" width="1920" height="1050" />
     </state>
-    <state width="1899" height="216" key="GridCell.Tab.0.right/0.0.1366.738/-1920.-170.1920.1050@-1920.-170.1920.1050" timestamp="1591345095353" />
+    <state width="1899" height="216" key="GridCell.Tab.0.right/0.0.1366.738/-1920.-170.1920.1050@-1920.-170.1920.1050" timestamp="1591345433006" />
     <state width="1345" height="217" key="GridCell.Tab.0.right/0.0.1366.738/-1920.-170.1920.1050@0.0.1366.738" timestamp="1591341014885" />
     <state width="1899" height="272" key="GridCell.Tab.0.right/0.0.1366.738/-1920.0.1920.1050@-1920.0.1920.1050" timestamp="1585099284300" />
     <state width="1345" height="227" key="GridCell.Tab.0.right/0.0.1366.738/-1920.0.1920.1050@0.0.1366.738" timestamp="1585380109108" />

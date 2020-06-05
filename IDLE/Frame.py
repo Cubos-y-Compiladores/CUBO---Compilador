@@ -2,7 +2,7 @@ import wx
 import wx.lib.scrolledpanel
 import os
 import wx.stc
-import QuickCube
+from IDLE import QuickCube
 
 class Frame(wx.Frame):
     def __init__(self, title,mainWindow,mainDirectory,parent=None):
