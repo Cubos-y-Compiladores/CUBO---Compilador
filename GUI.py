@@ -10,9 +10,9 @@ import sys
 import threading
 import wx.lib.agw.multidirdialog as MDD
 import time
-import QuickCube
 import wx.stc
 import Frame
+import CompilerDependencies.Parser as myParser
 
 
 wildcard = "*.cbc"
@@ -356,11 +356,11 @@ class MyApp(wx.Frame):
         self.sub8x8x8 = self.subMenuMat3D.Append(88, "8x8x8")
 
         self.subInsertM3 = self.subMenuInsert.AppendSubMenu(self.subMenuMat3D,"Matriz3D")
-        self.subRun = self.subMenuRun.Append(-1,"Run This\tCtrl-F5")
+        # self.subRun = self.subMenuRun.Append(-1,"Run This\tCtrl-F5")
         # Agregando al menu principal
         self.mainMenu.Append(self.subMenuFile,"File")
         self.mainMenu.Append(self.subMenuInsert,"Insert")
-        self.mainMenu.Append(self.subMenuRun,"Run")
+        # self.mainMenu.Append(self.subMenuRun,"Run")
         # Agregando barra al frame
         self.mainMenu.SetBackgroundColour(self.colorLime)
         self.SetMenuBar(self.mainMenu)
@@ -371,7 +371,7 @@ class MyApp(wx.Frame):
         self.Bind(wx.EVT_MENU, self.saveFile, self.subSave)
         self.Bind(wx.EVT_MENU, self.saveFileAs, self.subSaveAs)
         self.Bind(wx.EVT_MENU, self.newFile, self.subNew)
-        self.Bind(wx.EVT_MENU, self.runFile, self.subRun)
+        # self.Bind(wx.EVT_MENU, self.runFile, self.subRun)
         # Eventos Submenus de matrices 2D
         self.Bind(wx.EVT_MENU, partial(self.insertMatriz2D,1), self.sub1x1)
         self.Bind(wx.EVT_MENU, partial(self.insertMatriz2D,2), self.sub2x2)
@@ -442,6 +442,8 @@ class MyApp(wx.Frame):
         self.buttonRun.SetBackgroundColour(self.colorBorder)
         self.buttonRun.Bind(wx.EVT_ENTER_WINDOW,self.buttonRunLightOn)
         self.buttonRun.Bind(wx.EVT_LEAVE_WINDOW, self.buttonRunLightOff)
+        self.buttonRun.Bind(wx.EVT_BUTTON, self.runFile)
+
         self.bmpCube = wx.Bitmap(os.getcwd() + "/Resources/cube1.png", wx.BITMAP_TYPE_ANY)
         self.buttonCube = wx.BitmapButton(self.lblpanel, id=wx.ID_ANY, bitmap=self.bmpCube,
                                  size=(self.bmpCube.GetWidth() + 8, self.bmpCube.GetHeight() + 8), style = wx.NO_BORDER, pos = (0,40))
@@ -668,7 +670,10 @@ class MyApp(wx.Frame):
 
     def runFile(self,event):
         # TODO aqui se inserta la logica del compilador
-        print("Running")
+        try:
+            myParser.runCompile(self.textMain.GetValue())
+        except:
+            print("except")
     def setFontSize(self,size):
         font = self.textMain.GetFont()
         font.SetPointSize(size)
