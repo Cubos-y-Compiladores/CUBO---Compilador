@@ -276,7 +276,7 @@ def consultTranslator(consult,dictionary,expr):
 
             if(ind1!=None):
                 if (ind1 >= len(dictionary[var][0])):
-                    outOfBoundsError(indExpr, expr,ind)
+                    outOfBoundsError(indExpr, expr,ind1)
                 dictionary["Temp"] =colFetcher(dictionary[var],ind1)
                 tempConsult = consultTranslator(NonTerminalNode("ListConsult", [TerminalNode("Id", "Temp"), consult.getChilds()[1].getChilds()[5]]),dictionary,expr)
                 del dictionary["Temp"]
@@ -587,7 +587,40 @@ def parameterTranslator(parameters):
         elif(param.getName()=="Parameter1"):
             output.extend(parameterTranslator(param.getChilds()))
     return output
+def realParameterCallTranslator(parameters):
+    output = []
+    for param in parameters:
+        if (param.getName() == "CallParam"):
+            if (param.getChilds()[0].getChilds()[0].getName() == "Iterable0"):
+                if (param.getChilds()[0].getChilds()[0].getChilds()[0].getName() == "Identifier0"):
+                    output.append(param.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken())
 
+                elif (param.getChilds()[0].getChilds()[0].getChilds()[0].getName() == "Identifier1"):
+                    output.append((realExpresionTranslator(param.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0]),param.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()))
+            elif (param.getChilds()[0].getChilds()[0].getName() == "Iterable1"):
+                output.append(int(param.getChilds()[0].getChilds()[0].getChilds()[0].getToken()))
+
+            elif (param.getChilds()[0].getChilds()[0].getName() == "Iterable2"):
+                if (param.getChilds()[0].getChilds()[0].getChilds()[0].getName() == "EmptyList"):
+                    output.append([])
+                else:
+                    output.append(listTranslator(param.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()))
+
+            elif (param.getChilds()[0].getChilds()[0].getName() == "Iterable3"):
+                output.append(matTranslator(param.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()))
+
+            elif (param.getChilds()[0].getName() == "AssignableParam1"):
+                output.append(threeDmatTranslator(param.getChilds()[0].getChilds()[0].getChilds()))
+
+            elif (param.getChilds()[0].getName() == "AssignableParam2"):
+                output.append(tokenTranslator(param.getChilds()[0].getChilds()[0].getChilds()[0].getToken()))
+
+        elif (param.getName() == "Param0"):
+            output.extend(realParameterCallTranslator(param.getChilds()))
+
+        elif (param.getName() == "Param1"):
+            output.extend(realParameterCallTranslator(param.getChilds()))
+    return output
 def parameterCallTranslator(parameters,scope):
     output = []
     for param in parameters:
@@ -610,14 +643,13 @@ def parameterCallTranslator(parameters,scope):
                     output.append([])
                 else:
                     output.append(listTranslator(param.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()))
+            elif (param.getChilds()[0].getChilds()[0].getName() == "Iterable3"):
+                output.append(matTranslator(param.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()))
 
             elif (param.getChilds()[0].getName() == "AssignableParam1"):
-               output.append(matTranslator(param.getChilds()[0].getChilds()[0].getChilds()))
-
-            elif (param.getChilds()[0].getName() == "AssignableParam2"):
                output.append(threeDmatTranslator(param.getChilds()[0].getChilds()[0].getChilds()))
 
-            elif (param.getChilds()[0].getName() == "AssignableParam3"):
+            elif (param.getChilds()[0].getName() == "AssignableParam2"):
                 output.append(tokenTranslator(param.getChilds()[0].getChilds()[0].getChilds()[0].getToken()))
 
         elif (param.getName() == "Param0"):
@@ -1345,7 +1377,39 @@ def functionWriter(func,tabs):
 
         elif (func.getName() == "Function9"):
             if(func.getChilds()[0].getChilds()[0].getName()=="Identifier0"):
-                file.write(tabs*"\t"+func.getChilds()[0].getChilds()[0].getChilds()[0].getToken()+"=delete("+func.getChilds()[0].getChilds()[0].getChilds()[0].getToken()+","+(func.getChilds()[0].getChilds()[4].getChilds()[0].getToken())+","+func.getChilds()[0].getChilds()[6].getToken()+")\n")
+                file.write(tabs*"\t"+func.getChilds()[0].getChilds()[0].getChilds()[0].getToken()+"=delete("+func.getChilds()[0].getChilds()[0].getChilds()[0].getToken()+","+func.getChilds()[0].getChilds()[4].getChilds()[0].getToken()+","+func.getChilds()[0].getChilds()[6].getToken()+")\n")
+            else:
+                expr=realExpresionTranslator(func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])
+                if(not ":," in expr[0]):
+                    file.write(tabs * "\t" + func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+expr[0] + "=delete(" +func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+expr[0] + "," + func.getChilds()[0].getChilds()[4].getChilds()[0].getToken() + "," +func.getChilds()[0].getChilds()[6].getToken() + ")\n")
+
+                else:
+                    file.write(tabs*"\t"+"Temp=matrixFlipper("+ func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
+                    file.write(tabs*"\t"+"Temp"+expr[1]+"=delete(Temp"+expr[1]+","+func.getChilds()[0].getChilds()[4].getChilds()[0].getToken()+","+func.getChilds()[0].getChilds()[6].getToken() + ")\n")
+                    file.write(tabs*"\t"+func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+'''=matrixFlipper(Temp,"R")'''+"\n")
+                    file.write(tabs*"\t"+"del Temp \n")
+
+        elif(func.getName()=="Function10"):
+            output=tabs*"\t"+func.getChilds()[0].getChilds()[1].getChilds()[0].getChilds()[0].getToken()+"("
+            params=realParameterCallTranslator([func.getChilds()[0].getChilds()[1].getChilds()[2]])
+            ind=0
+            special=[]
+            for param in params:
+                if(isinstance(param,tuple)):
+                    if(not ":," in param[0][0]):
+                        output+=param[1]+param[0][0]+","
+                    else:
+                        file.write(tabs*"\t"+"Temp"+str(ind)+"=matrixFlipper("+param[1]+''',"L")'''+"\n")
+                        output+="Temp"+str(ind)+param[0][1]+","
+                        special.append("Temp"+str(ind))
+                        ind+=1
+
+                else:
+                    output+=str(param)+","
+            output=output[0:len(output)-1]+")\n"
+            file.write(output)
+            for valor in special:
+                file.write(tabs*"\t"+"del "+valor+"\n")
 
         file.write("\n")
         file.close()

@@ -13,7 +13,11 @@ x=[True, True, True, True, True, True, True, True, True, True]
 def test(param1,param2,param3):
 	global t,l,r,var
 
-	l=delete(l,t,0)
+	Temp0=matrixFlipper(r,"L")
+	Temp1=matrixFlipper(r,"L")
+	test(1,Temp0[0][-2],Temp1[0][-3])
+	del Temp0
+	del Temp1
 
 	Temp=matrixFlipper(r,"L")
 	Temp[0][-2][5]=True
@@ -32,4 +36,5 @@ def test(param1,param2,param3):
 def test(param1,param2):
 	global l
 
+	test(1,2,3)
 
