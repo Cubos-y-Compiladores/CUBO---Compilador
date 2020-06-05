@@ -13,11 +13,25 @@ x=[True, True, True, True, True, True, True, True, True, True]
 def test(param1,param2,param3):
 	global t,l,r,var
 
-	Temp0=matrixFlipper(r,"L")
-	Temp1=matrixFlipper(r,"L")
-	test(1,Temp0[0][-2],Temp1[0][-3])
-	del Temp0
-	del Temp1
+	valor=0
+	while valor<len([[True, False, False], [True]]):
+
+		l[valor]=F(l[valor])
+
+		x=25
+
+		Temp=matrixFlipper(l,"L")
+		printer(Temp[1][-2][0])
+		del Temp
+
+		elemento=0
+		while elemento<len(r):
+
+			l[elemento].insert(elemento,True)
+
+			elemento+=1
+
+		valor+=2
 
 	Temp=matrixFlipper(r,"L")
 	Temp[0][-2][5]=True

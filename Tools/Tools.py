@@ -1110,6 +1110,70 @@ def procWriter(proc):
 def instructionWriter(line,tabs):
     if(line.getName()=="Instruction0"):
         functionWriter(line.getChilds()[0],tabs)
+
+    elif(line.getName()=="Instruction1"):
+        with open(directory,"a") as file:
+            expr=realExpresionTranslator(line.getChilds()[0].getChilds()[0])
+            if(not ":," in expr[0]):
+                file.write(tabs*"\t"+"printer("+line.getChilds()[0].getChilds()[0].getChilds()[0].getToken()+expr[0]+")\n")
+            else:
+                file.write(tabs*"\t"+"Temp=matrixFlipper("+line.getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
+                file.write(tabs*"\t"+"printer(Temp"+expr[1]+")\n")
+                file.write(tabs*"\t"+"del Temp\n")
+            file.write("\n")
+            file.close()
+
+    elif(line.getName()=="Instruction2"):
+        cycleWriter(line.getChilds()[0].getChilds()[0],tabs)
+
+
+def cycleWriter(cycle,tabs):
+    global directory
+    with open(directory,"a") as file:
+        flag=False
+        output=tabs*"\t"+cycle.getChilds()[1].getToken()+"=0\n"
+        output+=tabs*"\t"+"while "+cycle.getChilds()[1].getToken()+"<"
+        if(cycle.getChilds()[3].getName()=="Iterable0"):
+            if(cycle.getChilds()[3].getChilds()[0].getName()=="Identifier0"):
+                output+="len("+cycle.getChilds()[3].getChilds()[0].getChilds()[0].getToken()+"):\n\n"
+
+            elif(cycle.getChilds()[3].getChilds()[0].getName()=="Identifier1"):
+                expr=realExpresionTranslator(cycle.getChilds()[3].getChilds()[0].getChilds()[0].getChilds()[0])
+                if(not ":," in expr[0]):
+                    output+="len("+cycle.getChilds()[3].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+expr[0]+"):\n\n"
+                else:
+                    file.write(tabs*"\t"+"TempCycle=matrixFlipper("+cycle.getChilds()[3].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
+                    flag=True
+                    output+="len(TempCycle"+expr[1]+"):"+"\n\n"
+
+        elif(cycle.getChilds()[3].getName()=="Iterable1"):
+            output+=cycle.getChilds()[3].getChilds()[0].getToken()+":\n\n"
+
+        elif(cycle.getChilds()[3].getName()=="Iterable2"):
+            output+="len("+str(listTranslator(cycle.getChilds()[3].getChilds()[0].getChilds()))+"):\n\n"
+
+        elif (cycle.getChilds()[3].getName() == "Iterable3"):
+            output += "len(" + str(matTranslator(cycle.getChilds()[3].getChilds()[0].getChilds())) + "):\n\n"
+        file.write(output)
+        file.close()
+
+    queue=processBodyTranslator(cycle.getChilds()[6].getChilds())
+    for valor in queue:
+        if("Instruction" in valor.getName()):
+            instructionWriter(valor,tabs+1)
+
+        if ("Assignment" in valor.getName()):
+            assignmentWriter(valor,tabs+1)
+
+    with open(directory, "a") as file:
+        if(cycle.getChilds()[4].isNull()):
+            file.write((tabs+1)*"\t"+cycle.getChilds()[1].getToken()+"+=1\n")
+        else:
+            file.write((tabs + 1) * "\t" + cycle.getChilds()[1].getToken() + "+="+cycle.getChilds()[4].getChilds()[1].getToken()+"\n")
+        file.write("\n")
+        file.close()
+
+
 def functionWriter(func,tabs):
     global directory
     varname=""

@@ -956,7 +956,7 @@ def p_error(p):
         print(colorama.Fore.RED + "SYNTACTIC ERROR: Unknown syntax error" + colorama.Fore.RESET)
     sys.exit()
 
-test = 'C:/Users/dcama/Desktop/Compilador/Test'
+test = 'C:/Users/dcama/Desktop/Compilador/Test.cbc'
 fp = codecs.open(test, "r", "utf-8")
 chain = fp.read()
 parser = yacc.yacc()

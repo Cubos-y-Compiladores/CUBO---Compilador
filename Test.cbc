@@ -1,4 +1,4 @@
-Rango_Timer = "Seg";
+Rango_Timer="Seg";
 Dim_Filas=10;
 Dim_Columnas=10;
 Timer=15;
@@ -18,8 +18,19 @@ w,x=True,range(10,True);
 	{
 	global t,l,r,var;
 		begin
-		Call test(1,r[0][:,1],r[0][:,2]);
+		for valor in [[True,False,False],[True]] Step 2
+			{
 
+				l[valor].F;
+				x=25;
+				l[1][:,1][0];
+
+				for elemento in r
+				{
+					l[elemento].insert(elemento,True);
+				};
+
+			};
 		r[0][:,1][5],l=True,r[1][:,2][0];
 		if(t==0)
 		{
