@@ -14,12 +14,15 @@ precedence = (
     ('left', 'EXP'),
     ('left','LPARENT', 'RPARENT'),
 )
+global console,parser
+console=None
+parser=None
 ##########---BLOQUES BASICOS---#########
 def p_program(p):
     '''program : const_block main_proc'''
     p[0]=ProgramNode([p[1],p[2]])
     constBSem(p[0].getChilds()[0].getChilds())
-    semantics(p[0])
+    semantics(p[0],console)
     print(colorama.Fore.GREEN + "Successful compilation! Generating code...")
 
 
@@ -798,7 +801,6 @@ def p_addingOp0(p):
 def p_addingOp1(p):
     '''adding_operator : MINUS'''
     p[0]=NonTerminalNode("AddingOp1",[TerminalNode("Minus","MINUS")])
-    
 
 def p_multiplyingOp0(p):
     '''multiplying_operator : TIMES'''
@@ -938,26 +940,29 @@ def p_empty(p):
     'empty : '
     pass
 
-def translate(result):
-	graphFile = open('graphviztree.vz', 'w')
-	graphFile.write(result.translate())
-	graphFile.close()
+#def translate(result):
+#	graphFile = open('graphviztree.vz', 'w')
+#	graphFile.write(result.translate())
+#	graphFile.close()
 
 
 
 
 ##########---ERRORES---##########
 def p_error(p):
+    global parser
     if (p):
         print(colorama.Fore.RED + "SYNTACTIC ERROR: line:", p.lexer.lineno, "position:", p.lexpos, "Syntax error:", p.value, colorama.Fore.RESET)
     else:
         print(colorama.Fore.RED + "SYNTACTIC ERROR: Unknown syntax error" + colorama.Fore.RESET)
-    sys.exit()
+    parser.restart()
 
-test = 'C:/Users/dcama/Desktop/Compilador/Test.cbc'
-fp = codecs.open(test, "r", "utf-8")
-chain = fp.read()
-parser = yacc.yacc()
-#tv(chain)
-result = parser.parse(chain)
-translate(result)
+
+def runCompile(input,lexer,gui):
+    global console,parser
+    parser = yacc.yacc()
+    # tv(chain)
+    console=gui
+    console.textConsole.AppendText("Compilando...\n")
+    result = parser.parse(input,lexer)
+    #translate(result)

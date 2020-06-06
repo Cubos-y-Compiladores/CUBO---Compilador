@@ -60,7 +60,8 @@ w,x=True,range(10,True);
 
 	Main ()
 	{
-	 begin
+	 begin			
+		l[0];
 		Compile([[[True]]]);
 		if(x==10)
 		{

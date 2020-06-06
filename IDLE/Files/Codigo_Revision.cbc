@@ -1,0 +1,239 @@
+Timer = 15; 		
+Rango_Timer = "Mil"; 		
+Dim_Filas = 8; 		
+Dim_Columnas = 8;
+Cubo  =10;		
+
+--C3  Más de 10 posiciones	
+--aBCDEFGHT = 1;
+-- Inicia con letra minuscula	
+--ABCDEFGHT = 1
+-- Simbolos especiales permitidos	
+--a@_&b = 1;
+-- Simbolos especiales No permitidos	
+a@_&b$ = 1;
+
+--C10
+--x, y = 20, 15; 
+
+
+--C11
+--Timer = 5;   Genera un error
+
+			
+			
+-- Variables globales  C1			
+--Variable1 = 5			
+--x, y = 1, 1; mi_variable = False 			
+--mi_variable = []			
+	
+
+
+
+
+-- Procedimiento	
+--A4	
+--Procedure Apaga () { 			
+--C4
+--x = []			
+--x = [True, True, False, False, False, False, True, True, True, True]			
+
+--C7, C8  Asignación implica de numero
+--   X = 5
+--   type(X)
+-- debe retornar numerico
+
+
+--C9
+--X = 5; 
+--X = True; -- debe generar un error
+--Y = True;
+--Y = 5;   -- debe generar un error
+
+
+	
+
+-- Validación de los FOR B1
+--for var1 in x Step 2 
+--   {
+--x[var1].Neg
+--}
+
+-- B2
+--for var1 in milista[1:3] 
+--   {
+--x[var1].Neg
+--}
+
+-- B3
+--FOR var1 IN 10
+-- {
+--x[var1].Neg
+--}
+
+--C6
+--otraVar =1
+
+-- Iteracion
+
+--B4
+--If MiVariable == 5  
+-- {
+--x[var1].Neg
+--}
+
+
+--B5
+--If ListaX[2]== True 
+-- {
+--x[var1].Neg
+--}
+
+
+--B6
+--If M[:, 1] == True 
+-- {
+--x[var1].Neg
+--}
+
+
+-- C2
+--mi_variable = true 
+--type(mi_variable) 
+-- Debe retornar bool 
+
+--Variable1 = 5 
+--type(mi_variable) 
+-- Debe retornar int 
+
+
+-- D1		Operación suma	
+--			x=5+6 --xes11 
+-- D2		Operación resta	
+--			x = 5 - 6 -- x es -1
+-- D3		Operación negación	
+--			x = 5 y = -x -- x es -5 
+-- D4		Operación multiplicación	
+--			x = 5 * 5 -- x es 25
+-- D5		Operación exponente	
+--			x = 2 ** 3 -- x es 8
+-- D6		Operación división	
+--			x = 77 / 8 -- x es 9.625 
+-- D7		Operación división entera	
+--			x = 77 // 8 -- x es 9 
+-- D8		Operación modulo	
+--			x = 5 % 2 -- x es 1 
+-- D9		Orden aritmetico	
+--			x + y * 10 / 4 
+--			x + ((y * 10) / 4) 
+-- D10		Operación NEG 	
+--			[1]=true –- Es True
+-- D11		Operación T	
+--			milista[1].T 
+-- D12		Operación F	
+--			milista[1].F 
+-- D13		Operación Blink	
+--			Blink(x[1],5, “Seg”, True) 
+-- D14		Error Operación Blink	
+--			Blink(x[1],5, “Seg”) 
+-- D15		Operación Delay default	
+--			Delay( ) 
+-- D16		Operación Delay default	
+--			Delay( 5, “Mil” ) 
+-- D17		Alteración orden aritmetico	
+--			((x + y) * 10) / 4 
+
+
+
+
+-- E1		Crear una lista	
+--			mi_variable = []
+-- E2		Inicializa una lista	
+--			x = [True, True, False, False, False, False, True, True, True, True] 
+--E3		Retorna un valor de una lista	
+--			x[0] 
+--E4		Retorna un conjunto de valores de la lista	
+--			x[1:4]
+--E5		Crear lista con Range	
+--			x = list(range(5, True)) 
+--E6		Modificar una lista  	
+--			milista[0] = True
+--E7		Modficación multiple	
+--			milista[1:3] = [True, False]
+--E8		Acceder a un valor de una lista fuera de rango	
+--			x[10000] 
+--E9		Inserta un valor a una lista	
+--			MiLista.insert(2,False)
+--E10		Borra valores a una lista	
+--			MiLista.del(2)
+--E11		Longitud de una lista	
+--			len(MiLista) 
+
+
+
+-- F1		Definición de una matriz	
+--			mi_variable=[[True, False, True],[True, True, True],[False, False, Tru e] ] 
+-- F2		Accediendo al valor de una matriz	
+--			mi_variable[1][1]
+--F3		Accede al índice 1	
+--			M[1]
+--F4		Accede a fila y columna	
+--			M[1,1] 
+--F5		Accede a columna 1	
+--			M[:,1] 
+--F6		Consulta numero de filas	
+--			 Matriz1.shapeF
+--F7		Consulta numero de columna	
+--			Matriz1.shapeC
+--F8		Agrega fila en matriz	
+--			MiNuevaMatriz.insert([[True, False, True]], 0) 
+--F9		Eliminar fila en matriz	
+--			MiMatriz.delete(0,0) 
+--F10		Modifica una matriz con constante	
+--			mi_variable[1][1] = TRUE 
+--F11		Modifica matriz 	
+--			mi_variable2[1][1] = mi_variable[1][1]; 
+--F12		Accediendo a una matriz 3D	
+--			mi_variable[1][1][1]
+--F13		Modificar matriz 3D Constante	
+--			matriz3D[1][1][1] = TRUE; 
+--F14		Modificar matriz 3D con otra 3D	
+--			matriz3D[1][1][1]] = mi_variable[1][1][1]; 
+
+
+
+
+--for var1 in  len(x)  { 			
+			
+--IF X[x,y] ==TRUE			
+--{			
+--X[x,y].Neg;			
+--x= x+1;	y=y+1;		
+--} 			
+--} 			
+--Cubo[1] = X			
+--} 			
+			
+			
+--Procedure Enciende () { 			
+--x = []			
+--x = [True, True, False, False, False, False, True, True, True, True]			
+			
+--for var1 in  len(x)  { 			
+			
+--IF X[x,y] ==False			
+--{			
+--X[x,y].Neg;			
+			
+--} 			
+--} 			
+--Cubo[1] = X			
+--} 			
+
+Main()
+{
+	begin
+
+	end;
+};
+--A5 SIN MAIN

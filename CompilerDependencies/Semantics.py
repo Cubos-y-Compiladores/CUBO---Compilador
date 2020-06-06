@@ -1,14 +1,17 @@
 import sys
 from Tools.Tools import *
 from pip._vendor import colorama
-global global_var,global_temp,regular_var,procedures,tabs
+global global_var,global_temp,regular_var,procedures,tabs,console
 #TODO: Hacer que el proceso principal pueda ser creado en cualquier parte del programa
 global_var={}
 global_temp=[]
 consts={}
 procedures=[]
 tabs=0
-def semantics(p):
+console=None
+def semantics(p,cons):
+    global console
+    console=cons
     dirInitializer()
     mainScope=global_var
     temp1=procedures
@@ -19,7 +22,7 @@ def semantics(p):
             procParams =parameterTranslator(valor.getChilds()[1].getChilds())
             for procedure in procedures:
                 if(procedure[0]==procName and len(procedure[1])==len(procParams)):
-                    sameFirmProcedureError(procName, str(len(procParams)))
+                    return sameFirmProcedureError(procName, str(len(procParams)))
             procedures.append((procName,procParams,valor))
         elif("Assignment" in valor .getName()):
             assignmentSem(valor.getChilds()[0],"global",{},[])
@@ -31,7 +34,7 @@ def semantics(p):
             if(not param[0] in params):
                 params.append(param[0])
             else:
-                paramWithSameNameError(proc[0],param[0])
+                return paramWithSameNameError(proc[0],param[0])
         procWriter(proc)
     if(not p.getChilds()[1].getChilds()[4].getChilds()[1].isNull()):
         statementQueue=mainBlockSplitter(p.getChilds()[1].getChilds()[4].getChilds()[1].getChilds())
@@ -43,22 +46,24 @@ def semantics(p):
 
             elif(line.getName()=="Compile"):
                 compileSem(line,mainScope)
-                compileWriter(line,1)
+                compileWriter(line,1,consts)
                 break
+        finalLineWriter()
+    reset()
 def compileSem(p,scope):
     if(p.getChilds()[2].getName()=="CompileCube0"):
         if(not p.getChilds()[2].getChilds()[0].getToken() in scope):
-            notDefinedCubeError(p.getChilds()[2].getChilds()[0].getToken())
+            return notDefinedCubeError(p.getChilds()[2].getChilds()[0].getToken())
         if(not threeDMatrixVerifier(scope[ p.getChilds()[2].getChilds()[0].getToken()])):
-            notaCubeError( p.getChilds()[2].getChilds()[0].getToken())
+            return notaCubeError( p.getChilds()[2].getChilds()[0].getToken())
 
     elif(p.getChilds()[2].getName()=="CompileCube1"):
         cube=threeDmatTranslator(p.getChilds()[2].getChilds()[0].getChilds())
         if(not threeDMatrixVerifier(cube)):
-            notaCubeError1(cube)
+            return notaCubeError1(cube)
 
         if(not matBoundVerifier(cube)):
-            differentDimensionsThreeDMatError(cube)
+           return differentDimensionsThreeDMatError(cube)
 
 def assignmentSem(p,scope,local_var,local_only):
     global global_var,consts
@@ -78,7 +83,7 @@ def assignmentSem(p,scope,local_var,local_only):
         elif(p.getChilds()[0].getName()=="Identifier1"):
             varName=p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
             if(not existenceVerifier(varName,scope)):
-                outOfScopeError(varName)
+                return outOfScopeError(varName)
             if(noneVerifier(varName,scope)):
                 return None
             consult=consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0],scope,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0]))
@@ -99,9 +104,9 @@ def assignmentSem(p,scope,local_var,local_only):
                            scope[varName]=structureUpdater(value,scope[varName],consult["Aux"],consult["Flipped"],varName,list(consult.keys())[0])
                else:
                    if(consult==None):
-                       alreadyDefinedVarError(varName,scope[varName])
+                       return alreadyDefinedVarError(varName,scope[varName])
                    if (consult["Aux"] != None):
-                       alreadyDefinedVarError(list(consult.keys())[0],list(consult.values())[0])
+                       return alreadyDefinedVarError(list(consult.keys())[0],list(consult.values())[0])
 
             elif (p.getChilds()[2].getName() == "Acont1"):
                 value=None
@@ -115,10 +120,10 @@ def assignmentSem(p,scope,local_var,local_only):
                             if(matVerifier(value)):
                                 if(not matBoundVerifier(value)):
                                     if(matrixVerifier(value)):
-                                        differentDimensionsMatError(var)
-                                    differentMatOnThreeDMatError(var)
+                                        return differentDimensionsMatError(var)
+                                    return differentMatOnThreeDMatError(var)
                         else:
-                            outOfScopeError(var)
+                            return outOfScopeError(var)
                 else:
                     if(valueValidator(p.getChilds()[2].getChilds()[0],scope)):
                         value=tokenTranslator(arithmeticTranslator(p.getChilds()[2].getChilds()[0],scope))
@@ -131,9 +136,9 @@ def assignmentSem(p,scope,local_var,local_only):
                                 scope[varName] = structureUpdater(value, scope[varName],consult["Aux"],consult["Flipped"],varName,list(consult.keys())[0])
                     else:
                         if (consult == None):
-                            alreadyDefinedVarError(varName, scope[varName])
+                            return alreadyDefinedVarError(varName, scope[varName])
                         if (consult["Aux"] != None):
-                            alreadyDefinedVarError(list(consult.keys())[0], list(consult.values())[0])
+                            return alreadyDefinedVarError(list(consult.keys())[0], list(consult.values())[0])
 
 
             elif (p.getChilds()[2].getName() == "Acont2"):
@@ -150,18 +155,18 @@ def assignmentSem(p,scope,local_var,local_only):
                        if (consult["Aux"] != None):
                            val=structureUpdater(value,scope[varName],consult["Aux"],consult["Flipped"],varName,list(consult.keys())[0])
                            if( not matBoundVerifier(val)):
-                               modifyingMatrixWithDifferentSizeLineError(str(list(consult.keys())[0]),value,varName)
+                               return modifyingMatrixWithDifferentSizeLineError(str(list(consult.keys())[0]),value,varName)
                            scope[varName]=val
                else:
                    if (consult == None):
-                       alreadyDefinedVarError(varName, scope[varName])
+                       return alreadyDefinedVarError(varName, scope[varName])
                    if (consult["Aux"] != None):
-                       alreadyDefinedVarError(list(consult.keys())[0], list(consult.values())[0])
+                       return alreadyDefinedVarError(list(consult.keys())[0], list(consult.values())[0])
 
             elif (p.getChilds()[2].getName() == "Acont3"):
                value=matTranslator(p.getChilds()[2].getChilds()[0].getChilds()[1].getChilds())
                if(not matBoundVerifier(value)):
-                   differentDimensionsMatError(value)
+                   return differentDimensionsMatError(value)
                dimensionConstVerifier(value,consts)
                if (typeVerifier(varType, value)):
                    if (consult == None):
@@ -172,17 +177,17 @@ def assignmentSem(p,scope,local_var,local_only):
                                if(len(list(consult.values())[0])==len(value)):
                                     scope[varName] = structureUpdater(value, scope[varName],consult["Aux"],consult["Flipped"],varName,list(consult.keys())[0])
                                else:
-                                   differentMatOnThreeDMatError(list(consult.keys())[0], value)
+                                   return differentMatOnThreeDMatError(list(consult.keys())[0], value)
                else:
                    if (consult == None):
-                       alreadyDefinedVarError(varName, scope[varName])
+                       return alreadyDefinedVarError(varName, scope[varName])
                    if (consult["Aux"] != None):
-                       alreadyDefinedVarError(list(consult.keys())[0], list(consult.values())[0])
+                       return alreadyDefinedVarError(list(consult.keys())[0], list(consult.values())[0])
 
             elif (p.getChilds()[2].getName() == "Acont4"):
                value=threeDmatTranslator(p.getChilds()[2].getChilds()[0].getChilds()[1].getChilds())
                if (not matBoundVerifier(value)):
-                   differentDimensionsMatError(value)
+                   return differentDimensionsMatError(value)
                dimensionConstVerifier(value,consts)
                if (typeVerifier(varType, value)):
                    if (consult == None):
@@ -192,10 +197,10 @@ def assignmentSem(p,scope,local_var,local_only):
                            scope[varName] = structureUpdater(value, scope[varName], consult["Aux"],consult["Flipped"],varName,list(consult.keys())[0])
                else:
                    if (consult == None):
-                       alreadyDefinedVarError(varName, scope[varName])
+                       return alreadyDefinedVarError(varName, scope[varName])
 
                    if (consult["Aux"] != None):
-                       alreadyDefinedVarError(list(consult.keys())[0], list(consult.values())[0])
+                       return alreadyDefinedVarError(list(consult.keys())[0], list(consult.values())[0])
 
 
             elif (p.getChilds()[2].getName() == "Acont5"):
@@ -213,10 +218,10 @@ def assignmentSem(p,scope,local_var,local_only):
                                scope[varName] = structureUpdater(value, scope[varName], consult["Aux"],consult["Flipped"],varName,list(consult.keys())[0])
                    else:
                        if (consult == None):
-                           alreadyDefinedVarError(varName, scope[varName])
+                          return alreadyDefinedVarError(varName, scope[varName])
 
                        if (consult["Aux"] != None):
-                           alreadyDefinedVarError(list(consult.keys())[0], list(consult.values())[0])
+                           return alreadyDefinedVarError(list(consult.keys())[0], list(consult.values())[0])
 
             elif(p.getChilds()[2].getName() == "RangeF"):
                 value = functionTranslator(p.getChilds()[2],scope)
@@ -229,9 +234,9 @@ def assignmentSem(p,scope,local_var,local_only):
 
                 else:
                     if (consult == None):
-                        alreadyDefinedVarError(varName, scope[varName])
+                       return alreadyDefinedVarError(varName, scope[varName])
                     if (consult["Aux"] != None):
-                        alreadyDefinedVarError(list(consult.keys())[0], list(consult.values())[0])
+                        return alreadyDefinedVarError(list(consult.keys())[0], list(consult.values())[0])
 
     elif (p.getName() == "DoubleAssignment"):
         varList=[]
@@ -248,7 +253,7 @@ def assignmentSem(p,scope,local_var,local_only):
 
             elif(child.getName()=="Identifier1"):
                 if(scopeType=="global"):
-                    globalConsultError()
+                    return globalConsultError()
                 expr = consultTranslator(child.getChilds()[0].getChilds()[0],scope,expresionTranslator(child.getChilds()[0].getChilds()[0]))
                 if(expr==None):
                     return None
@@ -273,7 +278,7 @@ def assignmentSem(p,scope,local_var,local_only):
                     if (var in scope):
                         value = scope[var]
                     else:
-                        outOfScopeError(var)
+                        return outOfScopeError(var)
                 else:
                     value = tokenTranslator(arithmeticTranslator(child.getChilds()[0],scope))
                 valueList.append(value)
@@ -286,14 +291,14 @@ def assignmentSem(p,scope,local_var,local_only):
             elif (child.getName()=="Acont3"):
                 value=matTranslator(child.getChilds()[0].getChilds()[1].getChilds())
                 if(not matBoundVerifier(value)):
-                    differentDimensionsMatError(value)
+                    return differentDimensionsMatError(value)
                 dimensionConstVerifier(value,consts)
                 valueList.append(value)
 
             elif (child.getName()=="Acont4"):
                 value=threeDmatTranslator(child.getChilds()[0].getChilds()[1].getChilds())
                 if (not matBoundVerifier(value)):
-                    differentDimensionsMatError(value)
+                    return differentDimensionsMatError(value)
                 dimensionConstVerifier(value, consts)
                 valueList.append(value)
 
@@ -324,13 +329,13 @@ def assignmentSem(p,scope,local_var,local_only):
                     if(typeVerifier(typeList[ind],valueList[ind])):
                         scope[varName]=structureUpdater(valueList[ind],scope[varName],expr,flipped,varName,varList[ind])
                     else:
-                        alreadyDefinedVarError(varList[ind],typeList[ind])
+                        return alreadyDefinedVarError(varList[ind],typeList[ind])
 
                 elif(scopeType=="global" or not noneVerifier(varList[ind],scope)):
                     if(typeVerifier(typeList[ind],valueList[ind])):
                         scope[varList[ind]]=valueList[ind]
                     else:
-                        alreadyDefinedVarError(varList[ind],scope[varList[ind]])
+                        return alreadyDefinedVarError(varList[ind],scope[varList[ind]])
             ind+=1
     globalUpdater(global_var,local_var,local_only)
     return(local_var,local_only)
@@ -338,40 +343,41 @@ def assignmentSem(p,scope,local_var,local_only):
 
 def constBSem(p):
     global consts
+    reset()
     const_list=[p[0],p[1],p[2],p[3],p[4]]
 
     for const in const_list:
         if(const.getChilds()[0].getName()=="Timer"):
             if("Timer" in consts):
-                alreadyDefinedConstError("Timer_Const")
+                return alreadyDefinedConstError("Timer_Const")
 
             else:
                 consts["Timer"]=int(const.getChilds()[2].getToken())
 
         elif (const.getChilds()[0].getName() == "RangoTimer"):
             if ("RangoTimer" in consts):
-                alreadyDefinedConstError("RangoTimer_Const")
+                return alreadyDefinedConstError("RangoTimer_Const")
 
             else:
                 consts["RangoTimer"] = '''"'''+const.getChilds()[2].getChilds()[0].getName()+'''"'''
 
         elif (const.getChilds()[0].getName()== "Dim0"):
             if ("Dim0" in consts):
-                alreadyDefinedConstError("DimFilas_Const")
+                return alreadyDefinedConstError("DimFilas_Const")
 
             else:
                 consts["Dim0"] = int(const.getChilds()[2].getToken())
 
         elif (const.getChilds()[0].getName() == "Dim1"):
             if ("Dim1" in consts):
-                alreadyDefinedConstError("DimColumnas_Const")
+               return alreadyDefinedConstError("DimColumnas_Const")
 
             else:
                 consts["Dim1"] = int(const.getChilds()[2].getToken())
 
         elif (const.getChilds()[0].getName()== "Cubo"):
             if ("Cubo" in consts):
-                alreadyDefinedConstError("Cubo_Const")
+                return alreadyDefinedConstError("Cubo_Const")
 
             else:
                 consts["Cubo"] = int(const.getChilds()[2].getToken())
@@ -402,7 +408,7 @@ def procedureSem(p):
     temp=local_var
     for param in params:
         if(param[0] in local_var):
-            paramInGlobalsError(p[0],param[0])
+           return paramInGlobalsError(p[0],param[0])
         if(not call and param[1]!=None):
             call=True
 
@@ -426,10 +432,11 @@ def procedureSem(p):
                 local_only = backup[1]
     globalUpdater(local_var, global_var, local_only)
     if(call):
-        varViewer(local_var,"Procedure Call: "+str(p[0])+" "+str(tempParams))
+      varViewer(local_var,"Procedure Call: "+str(p[0])+" "+str(tempParams))
     else:
         varViewer(local_var,"Procedure Revision: "+str(p[0])+" "+str(tempParams))
 def instructionSem(p,local_var,local_only,main):
+    global console
     dicts=None
     if(p.getName()=="Instruction0"):
         return functionSem(p.getChilds()[0],local_var,local_only)
@@ -437,8 +444,9 @@ def instructionSem(p,local_var,local_only,main):
     elif (p.getName()=="Instruction1"):
        varName=p.getChilds()[0].getChilds()[0].getChilds()[0].getToken()
        if(not existenceVerifier(varName,local_var)):
-           outOfScopeError(varName)
-       consultTranslator(p.getChilds()[0].getChilds()[0],local_var,expresionTranslator(p.getChilds()[0].getChilds()[0]))
+           return outOfScopeError(varName)
+       temp=consultTranslator(p.getChilds()[0].getChilds()[0],local_var,expresionTranslator(p.getChilds()[0].getChilds()[0]))
+       console.textConsole.AppendText("Valor en la variable "+str(list(temp.keys())[0])+" : "+str(list(consultTranslator(p.getChilds()[0].getChilds()[0],local_var,expresionTranslator(p.getChilds()[0].getChilds()[0])).values())[0])+"\n")
 
     elif (p.getName() == "Instruction2"):
         cycleSem(p.getChilds()[0].getChilds()[0],local_var,local_only,main)
@@ -452,7 +460,7 @@ def cycleSem(p,local_var,local_only,main):
         if(p.getChilds()[3].getChilds()[0].getName()=="Identifier0"):
             varName=p.getChilds()[3].getChilds()[0].getChilds()[0].getToken()
             if(not existenceVerifier(varName,local_var)):
-                outOfScopeError(varName)
+                return outOfScopeError(varName)
             elif(not (listVerifier(local_var[varName]) or isinstance(local_var[varName],int))):
                 notIterableObjectOnFor(varName)
             iterable=(varName,local_var[varName])
@@ -460,7 +468,7 @@ def cycleSem(p,local_var,local_only,main):
         elif(p.getChilds()[3].getChilds()[0].getName()=="Identifier1"):
             varName=p.getChilds()[3].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
             if(not existenceVerifier(varName,local_var)):
-                outOfScopeError(varName)
+                return outOfScopeError(varName)
             consult=consultTranslator(p.getChilds()[3].getChilds()[0].getChilds()[0].getChilds()[0],local_var,expresionTranslator(p.getChilds()[3].getChilds()[0].getChilds()[0].getChilds()[0]))
             if(consult==None):
                 return None
@@ -479,8 +487,8 @@ def cycleSem(p,local_var,local_only,main):
         step=int(p.getChilds()[4].getChilds()[1].getToken())
     if(p.getChilds()[6].isNull()):
         if(iterable[0]=="INT" or iterable[0]=="LIST"):
-            nullCycleBodyError("for "+p.getChilds()[1].getToken()+" in "+str(iterable[1])+" Step "+str(eval(p.getChilds()[1].getToken())))
-        nullCycleBodyError("for "+p.getChilds()[1].getToken()+" in "+str(iterable[0])+" Step "+str(eval(p.getChilds()[1].getToken())))
+            return nullCycleBodyError("for "+p.getChilds()[1].getToken()+" in "+str(iterable[1])+" Step "+str(eval(p.getChilds()[1].getToken())))
+        return nullCycleBodyError("for "+p.getChilds()[1].getToken()+" in "+str(iterable[0])+" Step "+str(eval(p.getChilds()[1].getToken())))
     if(iterable[1]!=None):
         if(isinstance(iterable[1],int)):
             for Valor in range(iterable[1]):
@@ -488,7 +496,7 @@ def cycleSem(p,local_var,local_only,main):
                 for line in lineQueue:
                     if ("SimpleAssignment" in line.getName() or "DoubleAssignment" in line.getName()):
                         if(main):
-                            declaringVariablesOnMainError()
+                          return  declaringVariablesOnMainError()
                         assignmentSem(line, "local", local_var, local_only)
                     elif (line.getName() == "Instruction3"):
                         backup = (local_var.copy(), local_only.copy())
@@ -506,7 +514,7 @@ def cycleSem(p,local_var,local_only,main):
                 for line in lineQueue:
                     if ("SimpleAssignment" in line.getName() or "DoubleAssignment" in line.getName()):
                         if (main):
-                            declaringVariablesOnMainError()
+                           return declaringVariablesOnMainError()
                         assignmentSem(line, "local", local_var, local_only)
                     elif (line.getName() == "Instruction3"):
                         backup = (local_var.copy(), local_only.copy())
@@ -526,13 +534,13 @@ def statementSem(p,local_var,local_only,main):
         if(p.getChilds()[2].getChilds()[0].getName()=="Identifier0"):
             varName=p.getChilds()[2].getChilds()[0].getChilds()[0].getToken()
             if(not existenceVerifier(varName,local_var)):
-                outOfScopeError(varName)
+               return outOfScopeError(varName)
             iterable=(varName,local_var[varName])
 
         elif(p.getChilds()[2].getChilds()[0].getName()=="Identifier1"):
             varName=p.getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
             if(not existenceVerifier(varName,local_var)):
-                outOfScopeError(varName)
+               return outOfScopeError(varName)
             expr=expresionTranslator(p.getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0])
             if(not noneVerifier(varName,local_var)):
                 consult=consultTranslator(p.getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0],local_var,expr)
@@ -561,7 +569,7 @@ def statementSem(p,local_var,local_only,main):
                 if(p.getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getName()=="Factor1"):
                     varName=p.getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
                     if(not existenceVerifier(varName,local_var)):
-                        outOfScopeError(varName)
+                        return outOfScopeError(varName)
                     bifValue=(varName,local_var[varName])
                 elif(valueValidator(p.getChilds()[4].getChilds()[0],local_var)):
                     arithmetic=arithmeticTranslator(p.getChilds()[4].getChilds()[0],local_var)
@@ -592,7 +600,7 @@ def statementSem(p,local_var,local_only,main):
                 for line in lineQueue:
                     if ("SimpleAssignment" in line.getName() or "DoubleAssignment" in line.getName()):
                         if (main):
-                            declaringVariablesOnMainError()
+                           return declaringVariablesOnMainError()
                         assignmentSem(line, "local", local_var, local_only)
                     elif (line.getName() == "Instruction3"):
                         backup = (local_var.copy(), local_only.copy())
@@ -639,7 +647,7 @@ def statementSem(p,local_var,local_only,main):
                         for line in lineQueue:
                             if ("SimpleAssignment" in line.getName() or "DoubleAssignment" in line.getName()):
                                 if (main):
-                                    declaringVariablesOnMainError()
+                                   return declaringVariablesOnMainError()
                                 assignmentSem(line, "local", local_var, local_only)
                             elif (line.getName() == "Instruction3"):
                                 backup = (local_var.copy(), local_only.copy())
@@ -686,7 +694,7 @@ def statementSem(p,local_var,local_only,main):
                             for line in lineQueue:
                                 if ("SimpleAssignment" in line.getName() or "DoubleAssignment" in line.getName()):
                                     if (main):
-                                        declaringVariablesOnMainError()
+                                       return declaringVariablesOnMainError()
                                     assignmentSem(line, "local", local_var, local_only)
                                 elif (line.getName() == "Instruction3"):
                                     backup = (local_var.copy(), local_only.copy())
@@ -737,7 +745,7 @@ def statementSem(p,local_var,local_only,main):
                                 for line in lineQueue:
                                     if ("SimpleAssignment" in line.getName() or "DoubleAssignment" in line.getName()):
                                         if (main):
-                                            declaringVariablesOnMainError()
+                                            return declaringVariablesOnMainError()
                                         assignmentSem(line, "local", local_var, local_only)
                                     elif (line.getName() == "Instruction3"):
                                         backup = (local_var.copy(), local_only.copy())
@@ -773,7 +781,7 @@ def statementSem(p,local_var,local_only,main):
 
 
 def functionSem(p,local_var,local_only):
-    global global_var,procedures
+    global global_var,procedures,console
     temp1=global_var
     temp2=local_var
     scope =local_var
@@ -784,14 +792,18 @@ def functionSem(p,local_var,local_only):
         if(p.getChilds()[0].getChilds()[2].getName()=="Identifier0"):
             varName=p.getChilds()[0].getChilds()[2].getChilds()[0].getToken()
             if (not existenceVerifier(varName, local_var)):
-                outOfScopeError(varName)
+                return outOfScopeError(varName)
+            console.textConsole.AppendText(varName+"-->"+Typer(local_var[varName])+"\n")
 
         elif(p.getChilds()[0].getChilds()[2].getName()=="Identifier1"):
             varName=p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
             if (not existenceVerifier(varName, local_var)):
-                outOfScopeError(varName)
+                return outOfScopeError(varName)
             if(not noneVerifier(varName,scope)):
-                consultTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0],local_var,expresionTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0]))
+                expr=list(consultTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0],local_var,expresionTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0])).keys())[0]
+                value=list(consultTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0],local_var,expresionTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0])).values())[0]
+
+                console.textConsole.AppendText(expr + "-->" + Typer(value)+"\n")
 
     elif(p.getName()=="Function1"):
         varName = ""
@@ -800,11 +812,11 @@ def functionSem(p,local_var,local_only):
         if (p.getChilds()[0].getChilds()[0].getName() == "Identifier0"):
             varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getToken()
             if (not existenceVerifier(varName, local_var)):
-                outOfScopeError(varName)
+                return outOfScopeError(varName)
         elif (p.getChilds()[0].getChilds()[0].getName() == "Identifier1"):
             varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
             if (not existenceVerifier(varName, local_var)):
-                outOfScopeError(varName)
+                return outOfScopeError(varName)
             if (not noneVerifier(varName, scope)):
                 consult=consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0]))
                 if(consult==None or consult["Aux"]==None):
@@ -815,43 +827,43 @@ def functionSem(p,local_var,local_only):
         if(consult!="" and not noneVerifier(varName,scope)):
 
             if (not isinstance(consult,list)):
-                insertOnNotIterableObjectError(expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0]))
+                return insertOnNotIterableObjectError(expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0]))
             if (p.getChilds()[0].getChilds()[4].getName() == "Fcont6"):
                 if(matVerifier(consult)):
                     consult =expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])
-                    insertingBoolOnMatObjectError(consult)
-                modifyingOnListInsideMatrixError(varName,"inserting")
+                    return insertingBoolOnMatObjectError(consult)
+                return modifyingOnListInsideMatrixError(varName,"inserting")
 
             elif (p.getChilds()[0].getChilds()[4].getName() == "Fcont7"):
                 structure=consult
                 if (threeDMatrixVerifier(local_var[varName])):
-                    insertingListOnMatInside3DMatError(varName,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0]))
+                    return insertingListOnMatInside3DMatError(varName,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0]))
                 varName=expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])
 
         elif(not noneVerifier(varName,scope)):
             structure = scope[varName]
             if (not isinstance(scope[varName],list)):
-                insertOnNotIterableObjectError(varName)
+                return insertOnNotIterableObjectError(varName)
             if (p.getChilds()[0].getChilds()[4].getName() == "Fcont6"):
                 if (matVerifier(structure)):
-                    insertingBoolOnMatObjectError(varName)
+                    return insertingBoolOnMatObjectError(varName)
                 ind=None
                 if(p.getChilds()[0].getChilds()[4].getChilds()[0].getName()=="Iterable0"):
                     if(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getName()=="Identifier1"):
-                        consultOnIndError("Insert")
+                        return consultOnIndError("Insert")
                     if(not noneVerifier(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getToken(),scope)):
                         if(indVerifier(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0],local_var)):
                             ind=local_var[p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getToken()]
                         else:
-                            nonIterableObjectError(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getToken())
+                            return nonIterableObjectError(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getToken())
 
                 elif (p.getChilds()[0].getChilds()[4].getChilds()[0].getName() == "Iterable1"):
                     ind=int(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getToken())
 
                 elif (p.getChilds()[0].getChilds()[4].getChilds()[0].getName() == "Iterable2"):
-                    consultOnIndError("Insert")
+                    return consultOnIndError("Insert")
                 elif (p.getChilds()[0].getChilds()[4].getChilds()[0].getName() == "Iterable3"):
-                    consultOnIndError("Insert")
+                    return consultOnIndError("Insert")
 
                 if(ind!=None):
                     value=None
@@ -864,9 +876,9 @@ def functionSem(p,local_var,local_only):
                                 if(not noneVerifier(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getChilds()[0].getToken(),local_var)):
                                     value=local_var[p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getChilds()[0].getToken()]
                                     if(not isinstance(value,bool)):
-                                        insertingNotBoolOnListError(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getChilds()[0].getToken())
+                                        return insertingNotBoolOnListError(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getChilds()[0].getToken())
                             else:
-                                outOfScopeError(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getChilds()[0].getToken())
+                                return outOfScopeError(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getChilds()[0].getToken())
 
                         elif(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getName()=="Identifier1"):
                             con=consultTranslator(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0],local_var,expresionTranslator(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0]))
@@ -874,10 +886,10 @@ def functionSem(p,local_var,local_only):
                                 return None
                             value=list(con.values())[0]
                             if(not isinstance(value,bool)):
-                                insertingNotListError(expresionTranslator(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0]))
+                                return insertingNotListError(expresionTranslator(p.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0]))
 
                     if (ind > len(structure)):
-                        outOfBoundsError(ind, varName + ".insert(" + str(ind) + "," + str(value) + ")",ind)
+                        return outOfBoundsError(ind, varName + ".insert(" + str(ind) + "," + str(value) + ")",ind)
                     elif(value!=None):
                         structure.insert(ind, value)
                         scope[varName] = structure
@@ -892,16 +904,16 @@ def functionSem(p,local_var,local_only):
                     if(p.getChilds()[0].getChilds()[4].getChilds()[0].getName()=="Iterable0"):
                         if(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getName()=="Identifier0"):
                             if (not existenceVerifier(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getToken(), local_var)):
-                                outOfScopeError(varName)
+                                return outOfScopeError(varName)
                             elif(not noneVerifier(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getToken(), local_var)):
                                 struct=local_var[p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getToken()]
                                 if(threeDMatrixVerifier(struct) or not isinstance(struct,list)):
-                                    insertingNotListError(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getToken())
+                                    return insertingNotListError(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getToken())
 
                         elif(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getName()=="Identifier1"):
                             var=p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
                             if (not existenceVerifier(var, local_var)):
-                                outOfScopeError(var)
+                                return outOfScopeError(var)
                             elif (not noneVerifier(var,local_var)):
                                 con=consultTranslator(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var,expresionTranslator(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0]))
                                 if(con==None):
@@ -909,28 +921,28 @@ def functionSem(p,local_var,local_only):
                                 structure_consult = list(con.values())[0]
                                 expr=expresionTranslator(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])
                                 if(threeDMatrixVerifier(structure_consult)or not isinstance(structure_consult,list)):
-                                    insertingNotListError(expr)
+                                    return insertingNotListError(expr)
                                 struct=structure_consult
 
                     elif(p.getChilds()[0].getChilds()[4].getChilds()[0].getName()=="Iterable1"):
-                        insertingNotListError((p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getToken()))
+                        return insertingNotListError((p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getToken()))
 
                     elif (p.getChilds()[0].getChilds()[4].getChilds()[0].getName() == "Iterable2"):
                         if(consult!=""):
                             if(not matrixVerifier(consult)):
-                                insertingNotListError(list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])).keys())[0])
+                                return insertingNotListError(list(consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])).keys())[0])
                         else:
                             if(not matrixVerifier(scope[varName])):
-                                insertingNotListError(varName)
+                                return insertingNotListError(varName)
                         struct = listTranslator(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds())
 
                     elif (p.getChilds()[0].getChilds()[4].getChilds()[0].getName() == "Iterable3"):
                         if (consult != ""):
                             if (not threeDMatrixVerifier(consult)):
-                                insertingNotMatrixError(expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0]))
+                                return insertingNotMatrixError(expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0]))
                         else:
                             if (not threeDMatrixVerifier(scope[varName])):
-                                insertingNotMatrixError(varName)
+                                return insertingNotMatrixError(varName)
                         struct = matTranslator(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds())
 
 
@@ -943,27 +955,27 @@ def functionSem(p,local_var,local_only):
                                         if (indVerifier(p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getChilds()[0], local_var)):
                                                 ind = local_var[p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getChilds()[0].getChilds()[0].getToken()]
                                         else:
-                                            nonIterableObjectError(p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getChilds()[0].getChilds()[0].getToken())
+                                            return nonIterableObjectError(p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getChilds()[0].getChilds()[0].getToken())
 
                                 elif (p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getChilds()[0].getName() == "Identifier1"):
                                     var = p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
                                     if (not existenceVerifier(var, local_var)):
-                                        outOfScopeError(var)
+                                        return outOfScopeError(var)
                                     elif (not noneVerifier(var, local_var)):
                                         con=consultTranslator(p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getChilds()[0].getChilds()[0], local_var,expresionTranslator(p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getChilds()[0].getChilds()[0]))
                                         if(con==None):
                                             return None
                                         expr = list(con.keys())[0]
-                                        nonIterableObjectError(expr)
+                                        return nonIterableObjectError(expr)
 
 
                             elif (p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getName()=="Iterable1"):
                                 ind = int(p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getChilds()[0].getToken())
 
                             elif(p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getName()=="Iterable2"):
-                                consultOnIndError("Insert")
+                                return consultOnIndError("Insert")
                             elif (p.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getName() == "Iterable3 "):
-                                consultOnIndError("Insert")
+                                return consultOnIndError("Insert")
 
                             if(ind!=None):
                                 if (int(p.getChilds()[0].getChilds()[4].getChilds()[2].getToken()) == 0):
@@ -971,7 +983,7 @@ def functionSem(p,local_var,local_only):
                                         if (len(struct) != lineSize):
                                             differentSizeInsertion(str(struct), varName + ".insert(" + str(struct) + ",0,"+str(ind)+")")
                                         elif (ind > colSize):
-                                            outOfBoundsError(ind, varName + ".insert(" + str(struct) + ",0," + str(ind) + ")",ind)
+                                            return outOfBoundsError(ind, varName + ".insert(" + str(struct) + ",0," + str(ind) + ")",ind)
                                         matrixInserter(0,struct,structure,ind)
 
                                     elif(matrixVerifier(struct)):
@@ -981,7 +993,7 @@ def functionSem(p,local_var,local_only):
                                         if (len(struct) != colSize or len(struct[0])!=lineSize):
                                             differentSizeInsertion(str(struct),varName + ".insert(" + str(struct) + ",0," + str(ind) + ")")
                                         elif (ind > heightSize):
-                                            outOfBoundsError(ind, varName + ".insert(" + str(struct) + ",0," + str(ind) + ")",ind)
+                                            return outOfBoundsError(ind, varName + ".insert(" + str(struct) + ",0," + str(ind) + ")",ind)
                                         matrixInserter(0, struct, structure, ind)
 
                                 elif (int(p.getChilds()[0].getChilds()[4].getChilds()[2].getToken()) == 1):
@@ -989,7 +1001,7 @@ def functionSem(p,local_var,local_only):
                                         if (len(struct) != colSize):
                                             differentSizeInsertion(str(struct), varName + ".insert(" + str(struct) + ",1,"+str(ind)+")")
                                         elif (ind > lineSize):
-                                            outOfBoundsError(ind, varName + ".insert(" + str(struct) + ",1," + str(ind) + ")",ind)
+                                            return outOfBoundsError(ind, varName + ".insert(" + str(struct) + ",1," + str(ind) + ")",ind)
 
                                         matrixInserter(1,struct,structure,ind)
                                     elif (matrixVerifier(struct)):
@@ -999,10 +1011,10 @@ def functionSem(p,local_var,local_only):
                                         if (len(struct[0]) != lineSize or len(struct) != heightSize):
                                             differentSizeInsertion(str(struct),varName + ".insert(" + str(struct) + ",1," + str(ind) + ")")
                                         elif (ind > colSize):
-                                            outOfBoundsError(ind, varName + ".insert(" + str(struct) + ",0," + str(ind) + ")",ind)
+                                            return outOfBoundsError(ind, varName + ".insert(" + str(struct) + ",0," + str(ind) + ")",ind)
                                         matrixInserter(1, struct, structure, ind)
                                 else:
-                                    wrongOperationNumberError("Insertion")
+                                    return wrongOperationNumberError("Insertion")
 
                         elif (int(p.getChilds()[0].getChilds()[4].getChilds()[2].getToken()) == 0):
                             if (len(struct) != lineSize):
@@ -1016,7 +1028,7 @@ def functionSem(p,local_var,local_only):
                             else:
                                 matrixInserter(1, struct,structure,lineSize)
                         else:
-                            wrongOperationNumberError("Insertion")
+                            return wrongOperationNumberError("Insertion")
                 else:
                     insertingListOnNoMatObjectError(varName)
 
@@ -1028,12 +1040,12 @@ def functionSem(p,local_var,local_only):
         if (p.getChilds()[0].getChilds()[0].getName() == "Identifier0"):
             varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getToken()
             if (not existenceVerifier(varName, local_var)):
-                outOfScopeError(varName)
+                return outOfScopeError(varName)
             structure=local_var[varName]
         elif (p.getChilds()[0].getChilds()[0].getName() == "Identifier1"):
             varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
             if (not existenceVerifier(varName, local_var)):
-                outOfScopeError(varName)
+                return outOfScopeError(varName)
             if(not noneVerifier(varName,local_var)):
                 consult=consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0]))
                 if(consult==None or consult["Aux"]==None):
@@ -1042,12 +1054,12 @@ def functionSem(p,local_var,local_only):
 
         if (consult!=None):
             if (not isinstance(consult,list)):
-                delOnNotIterableObjectError(varName)
-            modifyingOnListInsideMatrixError(varName,"deleting")
+                return delOnNotIterableObjectError(varName)
+            return modifyingOnListInsideMatrixError(varName,"deleting")
 
         elif(not noneVerifier(varName,local_var)):
             if(not isinstance(scope[varName],list)):
-                delOnNotIterableObjectError(varName)
+                return delOnNotIterableObjectError(varName)
 
             ind=None
             indrep=None
@@ -1058,17 +1070,17 @@ def functionSem(p,local_var,local_only):
                             ind = int(local_var[p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getToken()])
                             indrep=p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getToken()
                         else:
-                            nonIterableObjectError(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getToken())
+                            return nonIterableObjectError(p.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getToken())
                 elif(p.getChilds()[0].getChilds()[4].getChilds()[0].getName()=="Identifier1"):
-                    consultOnIndError("del")
+                    return consultOnIndError("del")
             elif((p.getChilds()[0].getChilds()[4].getName()=="Iterable1")):
                 ind=int(p.getChilds()[0].getChilds()[4].getChilds()[0].getToken())
                 indrep=ind
             else:
-                consultOnIndError("del")
+                return consultOnIndError("del")
             if(ind!=None):
                 if(ind>=len(structure)):
-                    outOfBoundsError(ind,varName+".del("+str(indrep)+")",ind)
+                    return outOfBoundsError(ind,varName+".del("+str(indrep)+")",ind)
                 structure.pop(ind)
 
 
@@ -1079,14 +1091,16 @@ def functionSem(p,local_var,local_only):
         if (p.getChilds()[0].getChilds()[2].getName() == "Identifier0"):
             varName = p.getChilds()[0].getChilds()[2].getChilds()[0].getToken()
             if (not existenceVerifier(varName, local_var)):
-                outOfScopeError(varName)
+                return outOfScopeError(varName)
+            console.textConsole.AppendText(varName+"-->"+Lenght(local_var[varName])+"\n")
         elif (p.getChilds()[0].getChilds()[2].getName() == "Identifier1"):
             varName = p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
             if (not existenceVerifier(varName, local_var)):
-                outOfScopeError(varName)
+                return outOfScopeError(varName)
             if(not noneVerifier(varName,local_var)):
-                consultTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0], local_var,expresionTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0]))
-
+                expr=list(consultTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0], local_var,expresionTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0])).keys())[0]
+                value=list(consultTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0], local_var,expresionTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0])).values())[0]
+                console.textConsole.AppendText(expr + "-->" + Lenght(value)+"\n")
 
 
     elif (p.getName() == "Function4"):
@@ -1095,11 +1109,11 @@ def functionSem(p,local_var,local_only):
         if (p.getChilds()[0].getChilds()[0].getName() == "Identifier0"):
             varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getToken()
             if (not existenceVerifier(varName, local_var)):
-                outOfScopeError(varName)
+                return outOfScopeError(varName)
         elif (p.getChilds()[0].getChilds()[0].getName() == "Identifier1"):
             varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
             if (not existenceVerifier(varName, local_var)):
-                outOfScopeError(varName)
+                return outOfScopeError(varName)
             if (not noneVerifier(varName, local_var)):
                 consult =consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0]))
                 if(consult==None or consult["Aux"]==None):
@@ -1110,7 +1124,7 @@ def functionSem(p,local_var,local_only):
 
         elif(not noneVerifier(varName, local_var)):
             if(not(isinstance(local_var[varName],list) or isinstance(local_var[varName],bool))):
-                negOnNotBooleanError(varName)
+                return negOnNotBooleanError(varName)
             local_var[varName]=nope(local_var[varName])
 
     elif (p.getName() == "Function5"):
@@ -1120,11 +1134,11 @@ def functionSem(p,local_var,local_only):
         if (p.getChilds()[0].getChilds()[0].getName() == "Identifier0"):
             varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getToken()
             if (not existenceVerifier(varName, local_var)):
-                outOfScopeError(varName)
+                return outOfScopeError(varName)
         elif (p.getChilds()[0].getChilds()[0].getName() == "Identifier1"):
             varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
             if (not existenceVerifier(varName, local_var)):
-                outOfScopeError(varName)
+                return outOfScopeError(varName)
             if(not noneVerifier(varName, local_var)):
                 consult =consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0], local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0]))
                 if(consult["Aux"]==None):
@@ -1135,7 +1149,7 @@ def functionSem(p,local_var,local_only):
 
         elif(not noneVerifier(varName, local_var)):
             if(not(isinstance(local_var[varName],list) or isinstance(local_var[varName],bool))):
-                tfOnNotBooleanError(varName)
+                return tfOnNotBooleanError(varName)
             local_var[varName] = tF(local_var[varName],typeTF)
 
     elif (p.getName() == "Function6"):
@@ -1144,11 +1158,11 @@ def functionSem(p,local_var,local_only):
         if (p.getChilds()[0].getChilds()[2].getChilds()[0].getName() == "Identifier0"):
             varName = p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getToken()
             if (not existenceVerifier(varName, local_var)):
-                outOfScopeError(varName)
+                return outOfScopeError(varName)
         elif (p.getChilds()[0].getChilds()[2].getChilds()[0].getName() == "Identifier1"):
             varName = p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
             if (not existenceVerifier(varName, local_var)):
-                outOfScopeError(varName)
+                return outOfScopeError(varName)
             if(not noneVerifier(varName, local_var)):
                 consult=consultTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0], local_var,expresionTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0]))
                 if(consult==None or consult["Aux"]==None):
@@ -1159,7 +1173,7 @@ def functionSem(p,local_var,local_only):
             print("Test")
         elif(not noneVerifier(varName, local_var)):
             if(not(isinstance(local_var[varName],list) or isinstance(local_var[varName],bool))):
-                BlinkOnNotBooleanError(varName)
+                return BlinkOnNotBooleanError(varName)
 
     elif (p.getName() == "Function7"):
         varName = None
@@ -1170,22 +1184,22 @@ def functionSem(p,local_var,local_only):
                 if(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getName()=="Identifier0"):
                     varName = p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
                     if (not existenceVerifier(varName, local_var)):
-                        outOfScopeError(varName)
+                        return outOfScopeError(varName)
                     if(not noneVerifier(varName, local_var)):
                         ind=local_var[varName]
                     if (not ind==None and not isinstance(ind, int)):
-                        boolOnTempError(varName)
+                        return boolOnTempError(varName)
                 elif (p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getName()=="Identifier1"):
                     consult=consultTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var,expresionTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0]))
                     if(consult==None or consult["Aux"]==None):
                         return None
                     consult =expresionTranslator(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])
-                    boolOnTempError(consult)
+                    return boolOnTempError(consult)
 
             elif (p.getChilds()[0].getChilds()[2].getChilds()[0].getName() == "Iterable1"):
                 ind= int(p.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getToken())
             else:
-                consultOnIndError("delay")
+                return consultOnIndError("delay")
 
 
     elif (p.getName() == "Function8"):
@@ -1194,11 +1208,11 @@ def functionSem(p,local_var,local_only):
         if (p.getChilds()[0].getChilds()[0].getName() == "Identifier0"):
             varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getToken()
             if (not existenceVerifier(varName, local_var)):
-                outOfScopeError(varName)
+                return outOfScopeError(varName)
         elif (p.getChilds()[0].getChilds()[0].getName() == "Identifier1"):
             varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
             if (not existenceVerifier(varName, local_var)):
-                outOfScopeError(varName)
+                return outOfScopeError(varName)
             if(not noneVerifier(varName, local_var)):
                 consult=consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0]))
                 if(consult!=None or consult["Aux"]==None):
@@ -1208,10 +1222,10 @@ def functionSem(p,local_var,local_only):
 
         if (consult!=None):
             if (not matVerifier(consult)):
-                shapeOnNotMatrixError(expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0]))
+                return shapeOnNotMatrixError(expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0]))
         elif(not noneVerifier(varName, local_var)):
             if (not matVerifier(local_var[varName])):
-                shapeOnNotMatrixError(varName)
+                return shapeOnNotMatrixError(varName)
 
     elif (p.getName() == "Function9"):
         varName = None
@@ -1219,11 +1233,11 @@ def functionSem(p,local_var,local_only):
         if (p.getChilds()[0].getChilds()[0].getName() == "Identifier0"):
             varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getToken()
             if (not existenceVerifier(varName, local_var)):
-                outOfScopeError(varName)
+                return outOfScopeError(varName)
         elif (p.getChilds()[0].getChilds()[0].getName() == "Identifier1"):
             varName = p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()
             if (not existenceVerifier(varName, local_var)):
-                outOfScopeError(varName)
+                return outOfScopeError(varName)
             if(not noneVerifier(varName, local_var)):
                 consult =consultTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0],local_var,expresionTranslator(p.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0]))
                 if(consult==None or consult["Aux"]==None):
@@ -1231,12 +1245,12 @@ def functionSem(p,local_var,local_only):
 
         if (consult != None):
             if (not matrixVerifier(list(consult.values())[0])):
-                deleteOnNotMatrixError(list(consult.keys())[0])
-            deleteOnMatrixInside3DMatError(list(consult.keys())[0])
+                return deleteOnNotMatrixError(list(consult.keys())[0])
+            return deleteOnMatrixInside3DMatError(list(consult.keys())[0])
 
         elif(not noneVerifier(varName, local_var)):
             if(not matVerifier(local_var[varName])):
-                deleteOnNotMatrixError(varName)
+                return deleteOnNotMatrixError(varName)
             mat=local_var[varName]
             bounds = matBoundsFetcher(mat)
             ind=None
@@ -1244,20 +1258,20 @@ def functionSem(p,local_var,local_only):
                 ind=int(p.getChilds()[0].getChilds()[4].getChilds()[0].getToken())
             elif(p.getChilds()[0].getChilds()[4].getName()=="Indice1"):
                 if (not existenceVerifier(p.getChilds()[0].getChilds()[4].getChilds()[0].getToken(), local_var)):
-                    outOfScopeError(varName)
+                    return outOfScopeError(varName)
                 if(not noneVerifier(p.getChilds()[0].getChilds()[4].getChilds()[0].getToken(), local_var)):
                     ind=int(local_var[p.getChilds()[0].getChilds()[4].getChilds()[0].getToken()])
             if(ind!=None):
                 if (int(p.getChilds()[0].getChilds()[6].getToken()) == 0):
                     if (bounds[0] <= ind):
-                        outOfBoundsError(ind, varName + ".delete(" + str(ind) + ",0)",ind)
+                        return outOfBoundsError(ind, varName + ".delete(" + str(ind) + ",0)",ind)
                     local_var[varName]=matrixDeleter(0,ind,mat)
                 elif (int(p.getChilds()[0].getChilds()[6].getToken()) == 1):
                     if (bounds[1] <= ind):
-                        outOfBoundsError(ind, varName + ".delete(" + str(ind) + ",1)",ind)
+                        return outOfBoundsError(ind, varName + ".delete(" + str(ind) + ",1)",ind)
                     local_var[varName] = matrixDeleter(1, ind, mat)
                 else:
-                    wrongOperationNumberError("Delete")
+                    return wrongOperationNumberError("Delete")
     elif (p.getName() == "Function10"):
         temp=procedures
         procName=p.getChilds()[0].getChilds()[1].getChilds()[0].getChilds()[0].getToken()
@@ -1282,7 +1296,7 @@ def functionSem(p,local_var,local_only):
             local_var=globalUpdater(local_var,global_var,local_only)
             called=True
         else:
-            notDefinedProcedureCallError(procName)
+            return notDefinedProcedureCallError(procName)
 
 
     if(not called):
@@ -1307,7 +1321,7 @@ def globalUsageSem(globalCall):
             output.extend(globalUsageSem(valor))
     for valor in output:
         if(valor not in global_var):
-            outOfGlobalScopeError(valor)
+            return outOfGlobalScopeError(valor)
     return output
 
 def varViewer(local_var,title):
@@ -1322,3 +1336,12 @@ def varViewer(local_var,title):
     for test in keys:
         print(str(test) + ": " + str(local_var[test]))
     print("\n\n")
+
+def reset():
+    global global_var,global_temp,consts,procedures,tabs,console
+    global_var={}
+    global_temp=[]
+    consts={}
+    procedures=[]
+    tabs=0
+    console=None

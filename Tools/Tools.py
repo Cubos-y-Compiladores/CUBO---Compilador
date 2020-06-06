@@ -1062,7 +1062,7 @@ def dirInitializer():
     if (not path.exists(directory)):
         mkdir(directory)
         print("CodeGeneration folder created successfully!")
-    directory=directory+"\CodeFile.txt"
+    directory=directory+"\CodeFile.py"
     open(directory,"w")
     file=open(directory,"r+")
     file.truncate(0)
@@ -1079,12 +1079,36 @@ def dirWriter(text):
 def constWriter(consts):
     global directory
     with open(directory,"a") as file:
+        file.write("from IDLE.Files.basicFunctions import *\n")
         for valor in list(consts.keys()):
             file.write(valor+"="+str(consts[valor])+"\n")
         file.write("\n")
         file.close()
+def Lenght(value):
+    l = ""
+    if str(value) == "True" or str(value) == "False":
+        l = "1"
+    elif isinstance(value,int):
+        l = str(len(str(value)))
+    elif isinstance(value,list):
+        return "Variable length : " +str(len(value))
+    return "Variable length : " + l
+def Typer(value):
+    t = ""
+    if isinstance(value,list):
+        if isinstance(value[0],list):
+            if isinstance(value[0][0],list):
+                t = "Cube"
+            else:
+                t = "Matriz"
+        else:
+            t = "List"
 
-
+    elif str(value) == "True" or str(value) == "False":
+        t = "Bool"
+    elif isinstance(value,int):
+        t = "Int"
+    return ("Variable type : " + t)
 def globalWriter(scope):
     global directory
     globalVars=list(scope.keys())
@@ -1099,6 +1123,11 @@ def globalWriter(scope):
         for valor in globalVars:
             file.write(valor +"="+str(globalVals[ind])+"\n")
             ind+=1
+        file.close()
+def finalLineWriter():
+    global directory
+    with open(directory,"a") as file:
+        file.write("Main()")
         file.close()
 def procWriter(proc):
     global directory
@@ -1118,7 +1147,9 @@ def procWriter(proc):
         file.write("\ndef "+proc[0]+paramString+"\n")
         if(globals!=None):
             file.write(tabs*"\t"+"global "+glb+"\n\n")
-        queue=processBodyTranslator(proc[2].getChilds()[3].getChilds()[2].getChilds())
+        queue=[]
+        if(not proc[2].getChilds()[3].getChilds()[2].isNull()):
+            queue=processBodyTranslator(proc[2].getChilds()[3].getChilds()[2].getChilds())
         file.close()
         for line in queue:
             if("Assignment" in line.getName()):
@@ -1134,40 +1165,13 @@ def  mainWriter(scope):
         file.write("def Main():\n")
         file.write(globals[0:(len(globals)-1)]+"\n")
         file.close()
-def compileWriter(line,tabs):
+def compileWriter(line,tabs,consts):
     global directory
     with open(directory,"a") as file:
         if(line.getChilds()[2].getName()=="CompileCube0"):
-            file.write(tabs*"\t"+"Compile("+line.getChilds()[2].getChilds()[0].getToken()+")\n")
+            file.write(tabs*"\t"+"Compile("+line.getChilds()[2].getChilds()[0].getToken()+","+consts["RangoTimer"]+","+str(consts["Timer"])+")\n")
         elif(line.getChilds()[2].getName()=="CompileCube1"):
-            file.write(tabs*"\t"+"Compile("+str(threeDmatTranslator(line.getChilds()[2].getChilds()[0].getChilds()))+")\n")
-def Compile(cube,timeM,time):
-    output=""
-    mat=0
-    for matrix in cube:
-        lin=len(matrix)-1
-        for line in matrix:
-            col=0
-            for column in line:
-                if(line[col]):
-                    output+="point("+str(mat)+","+str(col)+","+str(lin)+",1);\n"
-                col+=1
-            lin-=1
-
-        if((mat+1)%8==0):
-            measure=0
-            if(timeM=="Seg"):
-                measure+=time*10000
-            elif(timeM=="Mil"):
-                measure=time*10
-            elif(timeM=="Min"):
-                measure=time*600000
-            output+="delay("+str(measure)+");\n"
-            output+="clear1();\n"
-            mat=-1
-        mat+=1
-    dirWriter(output)
-
+            file.write(tabs*"\t"+"Compile("+str(threeDmatTranslator(line.getChilds()[2].getChilds()[0].getChilds()))+","+consts["RangoTimer"]+","+str(consts["Timer"])+")\n")
 
 def instructionWriter(line,tabs):
     global directory,varN
@@ -1375,7 +1379,7 @@ def functionWriter(func,tabs):
                 else:
                     file.write(tabs*"\t"+"Temp"+str(varN)+"=MatrixFlipper("+func.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
                     file.write(tabs*"\t"+"Typer(Temp"+str(varN)+expr[1]+")\n")
-                    file.write(tabs*"\t"+"del Temp"+varN+"\n")
+                    file.write(tabs*"\t"+"del Temp"+str(varN)+"\n")
                     varN += 1
 
         elif(func.getName()=="Function1"):
@@ -1548,7 +1552,7 @@ def functionWriter(func,tabs):
 
         elif (func.getName() == "Function4"):
             if (func.getChilds()[0].getChilds()[0].getName() == "Identifier0"):
-                file.write(tabs * "\t"+func.getChilds()[0].getChilds()[0].getChilds()[0].getToken()+"=neg("+func.getChilds()[0].getChilds()[0].getChilds()[0].getToken()+")\n")
+                file.write(tabs * "\t"+func.getChilds()[0].getChilds()[0].getChilds()[0].getToken()+"=Neg("+func.getChilds()[0].getChilds()[0].getChilds()[0].getToken()+")\n")
 
             elif (func.getChilds()[0].getChilds()[0].getName() == "Identifier1"):
                 expr = realExpresionTranslator(func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0])
@@ -1761,26 +1765,26 @@ def assignmentWriter(line,tabs):
 
 def constDifferentDimensionError(value):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The structure "+str(value)+" was defined without following the dimension constants specs, therefore it's forbidden")
-    sys.exit()
+    return None
 
 def outOfBoundsError(index,iterable,value):
     if(not index.isdigit()):
         print(colorama.Fore.RED + "SEMANTIC ERROR: Index "+str(index)+" in "+ str(iterable)+", where "+str(index)+"="+str(value)+",out of bounds ")
     else:
         print(colorama.Fore.RED + "SEMANTIC ERROR: Index " + str(index) + " in " + str(iterable) + " out of bounds ")
-    sys.exit()
+    return None
 
 def outOfGlobalScopeError(var):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The variable " + str(var) + " hasn't been defined in the global scope")
-    sys.exit()
+    return None
 
 def outOfScopeError(var):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The variable " + str(var) + " hasn't been defined in this scope")
-    sys.exit()
+    return None
 
 def nonIterableObjectError(var):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in " + str(var) + " is not an iterable object")
-    sys.exit()
+    return None
 
 def alreadyDefinedVarError(var,varContent):
     if(isinstance(varContent,bool)):
@@ -1795,165 +1799,165 @@ def alreadyDefinedVarError(var,varContent):
         else:
             varType="LIST"
     print(colorama.Fore.RED + "SEMANTIC ERROR: The variable " + str(var) + " already exists in this scope as a "+varType+ " variable")
-    sys.exit()
+    return None
 def alreadyDefinedConstError(var):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The configuration constant " + var + " has already been defined ")
-    sys.exit()
+    return None
 
 def globalConsultError():
     print(colorama.Fore.RED + "SEMANTIC ERROR: List and Matrix positions can't be defined as global variables")
-    sys.exit()
+    return None
 
 def nonArithmeticVariableError(var):
     print(colorama.Fore.RED + "SEMANTIC ERROR: variable "+str(var)+" is not a variable arithmetical operations can be done with")
-    sys.exit()
+    return None
 
 def sameFirmProcedureError(procName,parLen):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The procedure " + procName + " has already been defined with "+ parLen +" parameters")
-    sys.exit()
+    return None
 
 def outOfAnyScopeError(var):
     print( colorama.Fore.RED + "SEMANTIC ERROR: The variable "+var+" hasn't been defined in the local or global scope")
-    sys.exit()
+    return None
 
 def insertOnNotIterableObjectError(var):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in " + var + " is not an iterable object, therefore insertion operations can't be performed on it")
-    sys.exit()
+    return None
 
 def insertingBoolOnMatObjectError(var):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in " + var + " is a matrix or 3Dmatrix object, therefore the insertion of boolean values is forbidden")
-    sys.exit()
+    return None
 
 def insertingListOnNoMatObjectError(var):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in " + var + " is a not matrix object, therefore the insertion of list values is forbidden")
-    sys.exit()
+    return None
 
 def delOnNotIterableObjectError(var):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The variable " + var + " is not an iterable object, therefore del operations can't be performed on it")
-    sys.exit()
+    return None
 
 def incompatibleConsultError(var,consultType,type):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The variable " + var + " is a "+type+ " and "+consultType+"s can't be made on it ")
-    sys.exit()
+    return None
 
 def negOnNotBooleanError(var):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in " + var + " is not a boolean or list object, therefore it can't be denied with Neg")
-    sys.exit()
+    return None
 
 def tfOnNotBooleanError(var):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in  " + var + " is not a boolean or list object, therefore the function T or F can't be used on it ")
-    sys.exit()
+    return None
 
 def BlinkOnNotBooleanError(var):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The variable " + var + " is not a boolean or list object, therefore the function Blink can't be used on it ")
-    sys.exit()
+    return None
 
 def shapeOnNotMatrixError(var):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The value in " + var + " is not a Matrix object, therefore the function Shape can't be used on it ")
-    sys.exit()
+    return None
 
 def deleteOnNotMatrixError(var):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The value in " + var + " is not a Matrix object, therefore the function Delete can't be used on it ")
-    sys.exit()
+    return None
 
 def wrongOperationNumberError(operation):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The "+ operation +" operation only accepts 1 or 0 in the operation type index")
-    sys.exit()
+    return None
 
 def differentSizeInsertion(list,functionStat):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The list" + list + " in "+functionStat+" is not the same size as the others in the stucture it is being tried to insert")
-    sys.exit()
+    return None
 
 def modifyingOnListInsideMatrixError(var,operation):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in "+var+" is a Matrix or a 3DMatrix object and "+operation+" an element in one of it's Lists would alter it's integrity ")
-    sys.exit()
+    return None
 
 def boolOnTempError(consult):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in " + consult + " is either a list or a boolean and both of this data types are forbiden in the delay time index")
-    sys.exit()
+    return None
 
 def deleteOnMatrixInside3DMatError(consult):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in " + consult + " is a matrix inside a 3Dmatrix object, therefore the deletion of one of it's lists would alter it's integrity")
-    sys.exit()
+    return None
 
 def notDefinedProcedureCallError(procName):
     print(colorama.Fore.RED + "SEMANTIC ERROR: Procedure "+procName+" hasn't been defined with the used firm")
-    sys.exit()
+    return None
 def paramWithSameNameError(name,param):
     print(colorama.Fore.RED + "SEMANTIC ERROR: Procedure "+name+" has 2 or more parameters labeled as "+param+" .All parameters must be labelled with different names")
-    sys.exit()
+    return None
 def paramInGlobalsError(proc,param):
     print(colorama.Fore.RED + "SEMANTIC ERROR: Parameter "+param+" in procedure "+proc+" has already been defined as a global variable")
-    sys.exit()
+    return None
 
 def consultOnIndError(operation):
     print(colorama.Fore.RED + "SEMANTIC ERROR: Non integer values are forbidden on the index value of "+operation+" operations")
-    sys.exit()
+    return None
 
 def insertingNotListError(var):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in "+var+" is not a List object and insertion operations on a Matrix only support list objects " )
-    sys.exit()
+    return None
 
 def insertingNotMatrixError(var):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in "+var+" is not a Matrix object and insertion operations on a 3DMatrix only support list objects " )
-    sys.exit()
+    return None
 
 def insertingNotBoolOnListError(var):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in " + var + " is not a Bool object, therefore it can't be inserted on a List object")
-    sys.exit()
+    return None
 
 def insertingNotBoolOnListError1():
     print(colorama.Fore.RED + "SEMANTIC ERROR: Inserting non-Boolean values on lists is forbidden")
-    sys.exit()
+    return None
 
 def differentDimensionsMatError(value):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The matrix "+str(value)+" has lines with different sizes, therefore it's not a valid matrix")
-    sys.exit()
+    return None
 
 def differentDimensionsThreeDMatError(value):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The 3Dmatrix "+str(value)+" has invalid matrixes within, therefore it's not a valid matrix")
-    sys.exit()
+    return None
 
 def differentMatOnThreeDMatError(value,value1):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The matrix stored in "+value+" has a different size than "+str(value1)+", so it can't be replaced since it is inside a 3DMatrix")
-    sys.exit()
+    return None
 
 def modifyingMatrixWithDifferentSizeLineError(expr,value,varName):
     print(colorama.Fore.RED + "SEMANTIC ERROR: Modifying "+str(varName)+" by changing "+str(expr)+" with "+str(value)+" would alter it's integrity")
-    sys.exit()
+    return None
 
 def insertingListOnMatInside3DMatError(varName,expr):
     print(colorama.Fore.RED + "SEMANTIC ERROR: "+expr+" is a Matrix object and inserting a list on it would alter "+varName+"'s integrity")
-    sys.exit()
+    return None
 
 def nullStatementBody(statement):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The body in statement "+statement+" can't be Null")
-    sys.exit()
+    return None
 
 def nullCycleBodyError(statement):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The body in cycle "+statement+" can't be Null")
-    sys.exit()
+    return None
 
 def notIterableObjectOnFor(varName):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in "+varName+" is not an iterable object, therefore it can't be used for iterations in FOR cycles")
-    sys.exit()
+    return None
 
 def declaringVariablesOnMainError():
     print(colorama.Fore.RED + "SEMANTIC ERROR: Declaring any kind of variable inside the main scope is forbidden")
-    sys.exit()
+    return None
 
 def notDefinedCubeError(varName):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The variable "+varName+" hasn't been defined in the global scope, therefore it can't be used as a compiling cube")
-    sys.exit()
+    return None
 
 def notaCubeError(varName):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored in " + varName + " is not a cube, therefore it can't be used as a compiling cube")
-    sys.exit()
+    return None
 
 def notaCubeError1(cube):
     print(colorama.Fore.RED + "SEMANTIC ERROR: The value stored " +cube+ " is not a cube, therefore it can't be used as a compiling cube")
-    sys.exit()
+    return None
 
 def invalidIterableValue():
     print(colorama.Fore.RED + "SEMANTIC ERROR: Statements can only receive Bool,int or List objects as iterable objects ")
-    sys.exit()
+    return None

@@ -1,0 +1,27 @@
+Rango_Timer="Seg";
+Dim_Filas=10;
+Dim_Columnas=10;
+Timer=15;
+Cubo=10;
+
+	Procedure test (param1,param2,param3)
+	{
+	global t,l,r,var;
+		begin
+		
+		
+		end;	
+	};
+	
+	Main ()
+	{
+	 begin			
+		
+	 end;
+	};
+
+
+	--Procedure test ()
+	--{
+		
+	--};
