@@ -23,6 +23,7 @@ def semantics(p):
             procedures.append((procName,procParams,valor))
         elif("Assignment" in valor .getName()):
             assignmentSem(valor.getChilds()[0],"global",{},[])
+    constWriter(consts)
     globalWriter(global_var)
     for proc in procedures:
         params=[]
@@ -34,12 +35,16 @@ def semantics(p):
         procWriter(proc)
     if(not p.getChilds()[1].getChilds()[4].getChilds()[1].isNull()):
         statementQueue=mainBlockSplitter(p.getChilds()[1].getChilds()[4].getChilds()[1].getChilds())
+        mainWriter(global_var)
         for line in statementQueue:
             if("Instruction" in line.getName()):
                 instructionSem(line, mainScope, [],True)
+                instructionWriter(line,1)
 
             elif(line.getName()=="Compile"):
                 compileSem(line,mainScope)
+                compileWriter(line,1)
+                break
 def compileSem(p,scope):
     if(p.getChilds()[2].getName()=="CompileCube0"):
         if(not p.getChilds()[2].getChilds()[0].getToken() in scope):
@@ -333,7 +338,7 @@ def assignmentSem(p,scope,local_var,local_only):
 
 def constBSem(p):
     global consts
-    const_list=[p[1],p[2],p[3],p[4],p[5]]
+    const_list=[p[0],p[1],p[2],p[3],p[4]]
 
     for const in const_list:
         if(const.getChilds()[0].getName()=="Timer"):
@@ -348,7 +353,7 @@ def constBSem(p):
                 alreadyDefinedConstError("RangoTimer_Const")
 
             else:
-                consts["RangoTimer"] = str(const.getChilds()[2].getChilds()[0].getName())
+                consts["RangoTimer"] = '''"'''+const.getChilds()[2].getChilds()[0].getName()+'''"'''
 
         elif (const.getChilds()[0].getName()== "Dim0"):
             if ("Dim0" in consts):

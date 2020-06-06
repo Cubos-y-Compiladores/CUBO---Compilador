@@ -61,7 +61,14 @@ w,x=True,range(10,True);
 	Main ()
 	{
 	 begin
-		Compile([[[True],[]]]);
+		Compile([[[True]]]);
+		if(x==10)
+		{
+			if(y>=t)
+			{
+				x.Neg;
+			};
+		};
 	 end;
 	};
 

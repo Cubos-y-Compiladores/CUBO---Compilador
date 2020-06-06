@@ -1067,6 +1067,23 @@ def dirInitializer():
     file=open(directory,"r+")
     file.truncate(0)
     file.close()
+def dirWriter(text):
+    dir=getcwd()+"\CodeGeneration\Output.txt"
+    open(dir, "w")
+    file = open(directory, "r+")
+    file.truncate(0)
+    file.close()
+    with open(dir,"a") as file:
+        file.write(text)
+        file.close()
+def constWriter(consts):
+    global directory
+    with open(directory,"a") as file:
+        for valor in list(consts.keys()):
+            file.write(valor+"="+str(consts[valor])+"\n")
+        file.write("\n")
+        file.close()
+
 
 def globalWriter(scope):
     global directory
@@ -1108,6 +1125,49 @@ def procWriter(proc):
                 assignmentWriter(line,tabs)
             elif("Instruction" in line.getName()):
                 instructionWriter(line,tabs)
+def  mainWriter(scope):
+    global directory
+    globals="\tglobal "
+    for valor in list(scope.keys()):
+        globals+=valor+","
+    with open(directory,"a") as file:
+        file.write("def Main():\n")
+        file.write(globals[0:(len(globals)-1)]+"\n")
+        file.close()
+def compileWriter(line,tabs):
+    global directory
+    with open(directory,"a") as file:
+        if(line.getChilds()[2].getName()=="CompileCube0"):
+            file.write(tabs*"\t"+"Compile("+line.getChilds()[2].getChilds()[0].getToken()+")\n")
+        elif(line.getChilds()[2].getName()=="CompileCube1"):
+            file.write(tabs*"\t"+"Compile("+str(threeDmatTranslator(line.getChilds()[2].getChilds()[0].getChilds()))+")\n")
+def Compile(cube,timeM,time):
+    output=""
+    mat=0
+    for matrix in cube:
+        lin=len(matrix)-1
+        for line in matrix:
+            col=0
+            for column in line:
+                if(line[col]):
+                    output+="point("+str(mat)+","+str(col)+","+str(lin)+",1);\n"
+                col+=1
+            lin-=1
+
+        if((mat+1)%8==0):
+            measure=0
+            if(timeM=="Seg"):
+                measure+=time*10000
+            elif(timeM=="Mil"):
+                measure=time*10
+            elif(timeM=="Min"):
+                measure=time*600000
+            output+="delay("+str(measure)+");\n"
+            output+="clear1();\n"
+            mat=-1
+        mat+=1
+    dirWriter(output)
+
 
 def instructionWriter(line,tabs):
     global directory,varN
@@ -1118,10 +1178,10 @@ def instructionWriter(line,tabs):
         with open(directory,"a") as file:
             expr=realExpresionTranslator(line.getChilds()[0].getChilds()[0])
             if(not ":," in expr[0]):
-                file.write(tabs*"\t"+"printer("+line.getChilds()[0].getChilds()[0].getChilds()[0].getToken()+expr[0]+")\n")
+                file.write(tabs*"\t"+"Printer("+line.getChilds()[0].getChilds()[0].getChilds()[0].getToken()+expr[0]+")\n")
             else:
-                file.write(tabs*"\t"+"Temp"+str(varN)+"=matrixFlipper("+line.getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
-                file.write(tabs*"\t"+"printer(Temp"+str(varN)+expr[1]+")\n")
+                file.write(tabs*"\t"+"Temp"+str(varN)+"=MatrixFlipper("+line.getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
+                file.write(tabs*"\t"+"Printer(Temp"+str(varN)+expr[1]+")\n")
                 file.write(tabs*"\t"+"del Temp"+str(varN)+"\n")
                 varN+=1
             file.write("\n")
@@ -1152,7 +1212,7 @@ def statementWriter(statement,tabs):
                 if (not ":," in expr[0]):
                     iterable = statement.getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken() + expr[0]
                 else:
-                    file.write(tabs*"\t"+"Temp"+str(varN)+"=matrixFlipper("+statement.getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
+                    file.write(tabs*"\t"+"Temp"+str(varN)+"=MatrixFlipper("+statement.getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
                     flag=True
                     check="Temp"+str(varN)
                     varN+=1
@@ -1265,7 +1325,7 @@ def cycleWriter(cycle,tabs):
                 if(not ":," in expr[0]):
                     output+="len("+cycle.getChilds()[3].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+expr[0]+"):\n\n"
                 else:
-                    file.write(tabs*"\t"+"TempCycle"+str(varN)+"=matrixFlipper("+cycle.getChilds()[3].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
+                    file.write(tabs*"\t"+"TempCycle"+str(varN)+"=MatrixFlipper("+cycle.getChilds()[3].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
                     flag=True
                     output+="len(TempCycle"+str(varN)+expr[1]+"):"+"\n\n"
 
@@ -1313,7 +1373,7 @@ def functionWriter(func,tabs):
                 if(not ":," in expr[0]):
                     file.write(tabs*"\t"+"Typer("+func.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+expr[0]+")\n")
                 else:
-                    file.write(tabs*"\t"+"Temp"+str(varN)+"=matrixFlipper("+func.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
+                    file.write(tabs*"\t"+"Temp"+str(varN)+"=MatrixFlipper("+func.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
                     file.write(tabs*"\t"+"Typer(Temp"+str(varN)+expr[1]+")\n")
                     file.write(tabs*"\t"+"del Temp"+varN+"\n")
                     varN += 1
@@ -1331,7 +1391,7 @@ def functionWriter(func,tabs):
                     output+=func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+expr[0]
                     varname=func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+expr[0]
                 else:
-                    file.write(tabs*"\t"+"TempVar"+"=matrixFlipper("+func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
+                    file.write(tabs*"\t"+"TempVar"+"=MatrixFlipper("+func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
                     output+="TempVar"+expr[1]
                     varname="TempVar"+expr[1]
 
@@ -1362,7 +1422,7 @@ def functionWriter(func,tabs):
                                 0].getChilds()[0].getToken() + expr[0] + ")\n"
                             file.write(output)
                         else:
-                            file.write(tabs * "\t" + "Temp"+str(varN)+"=matrixFlipper(" +
+                            file.write(tabs * "\t" + "Temp"+str(varN)+"=MatrixFlipper(" +
                                        func.getChilds()[0].getChilds()[4].getChilds()[2].getChilds()[0].getChilds()[
                                            0].getChilds()[0].getChilds()[0].getToken() + ''',"L")''' + "\n")
                             output += "Temp"+str(varN) + expr[1] + ")\n"
@@ -1384,7 +1444,7 @@ def functionWriter(func,tabs):
                                 file.write(output)
 
                             else:
-                                file.write(tabs*"\t"+"Temp"+str(varN)+"=matFlipper("+func.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
+                                file.write(tabs*"\t"+"Temp"+str(varN)+"=MatrixFlipper("+func.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
                                 output+="Temp"+str(varN)+expr[1]+","+ func.getChilds()[0].getChilds()[4].getChilds()[2].getToken() + ",None)\n"
                                 file.write(output)
                                 file.write(tabs*"\t"+"del Temp"+str(varN)+"\n")
@@ -1417,7 +1477,7 @@ def functionWriter(func,tabs):
                                     output += func.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+expr[0] + "," + func.getChilds()[0].getChilds()[4].getChilds()[2].getToken() + "," +func.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getChilds()[0].getToken() + ")\n"
                                 file.write(output)
                             else:
-                                file.write(tabs*"\t"+"Temp"+str(varN)+"=matFlipper("+func.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
+                                file.write(tabs*"\t"+"Temp"+str(varN)+"=MatrixFlipper("+func.getChilds()[0].getChilds()[4].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
                                 if (func.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getName() == "Iterable0"):
                                     output+="Temp"+str(varN)+expr[1]+","+ func.getChilds()[0].getChilds()[4].getChilds()[2].getToken() + ","+func.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getChilds()[0].getChilds()[0].getToken()+")\n"
                                 elif (func.getChilds()[0].getChilds()[4].getChilds()[3].getChilds()[1].getName() == "Iterable1"):
@@ -1447,7 +1507,7 @@ def functionWriter(func,tabs):
 
 
             if("TempVar" in output):
-                file.write(tabs*"\t"+func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+'''=matrixFlipper(TempVar,"R")'''+"\n")
+                file.write(tabs*"\t"+func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+'''=MatrixFlipper(TempVar,"R")'''+"\n")
                 file.write(tabs*"\t"+"del TempVar\n")
 
         elif (func.getName() == "Function2"):
@@ -1459,7 +1519,7 @@ def functionWriter(func,tabs):
                 if(not ":," in expr[0]):
                     output+=func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+expr[0]+".pop("
                 else:
-                    file.write(tabs*"\t"+"Temp"+str(varN)+"=matrixFlipper("+func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
+                    file.write(tabs*"\t"+"Temp"+str(varN)+"=MatrixFlipper("+func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
                     output+="Temp"+str(varN)+expr[1]+".pop("
 
 
@@ -1470,7 +1530,7 @@ def functionWriter(func,tabs):
                 output+=func.getChilds()[0].getChilds()[4].getChilds()[0].getToken()+")\n"
             file.write(output)
             if("Temp" in output):
-                file.write(tabs*"\t"+func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+'''=matrixFlipper(Temp'''+str(varN)+''',"R")'''+"\n")
+                file.write(tabs*"\t"+func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+'''=MatrixFlipper(Temp'''+str(varN)+''',"R")'''+"\n")
                 file.write(tabs*"\t"+"del Temp"+str(varN)+"\n")
                 varN+=1
 
@@ -1482,7 +1542,7 @@ def functionWriter(func,tabs):
                 if(not ":," in expr[0]):
                     file.write(tabs*"\t"+"Length("+func.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+expr[0]+")\n")
                 else:
-                    file.write(tabs*"\t"+"Temp"+str(varN)+"=matrixFlipper("+func.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
+                    file.write(tabs*"\t"+"Temp"+str(varN)+"=MatrixFlipper("+func.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
                     file.write(tabs*"\t"+"Length(Temp"+str(varN)+expr[1]+")\n")
                     file.write(tabs*"\t"+"del Temp"+str(varN)+"\n")
 
@@ -1495,9 +1555,9 @@ def functionWriter(func,tabs):
                 if (not ":," in expr[0]):
                     file.write(tabs * "\t"+func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+expr[0]+"=Neg("+func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+expr[0]+")\n")
                 else:
-                    file.write(tabs * "\t" + "Temp=matrixFlipper(" +func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken() + ''',"L")''' + "\n")
+                    file.write(tabs * "\t" + "Temp=MatrixFlipper(" +func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken() + ''',"L")''' + "\n")
                     file.write(tabs * "\t" + "Temp"+expr[1]+"=Neg(Temp"+expr[1]+")\n")
-                    file.write(tabs*"\t"+func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+'''=matrixFlipper(Temp,"R")'''+"\n")
+                    file.write(tabs*"\t"+func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+'''=MatrixFlipper(Temp,"R")'''+"\n")
                     file.write(tabs * "\t" + "del Temp\n")
 
         elif (func.getName() == "Function5"):
@@ -1511,9 +1571,9 @@ def functionWriter(func,tabs):
                     output+=func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+expr[0]+"="+func.getChilds()[0].getChilds()[2].getChilds()[0].getToken()+"("+func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+expr[0]+")\n"
                     file.write(output)
                 else:
-                    file.write(tabs*"\t"+"Temp=matrixFlipper("+func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
+                    file.write(tabs*"\t"+"Temp=MatrixFlipper("+func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
                     file.write(tabs*"\t"+"Temp"+expr[1]+"="+func.getChilds()[0].getChilds()[2].getChilds()[0].getToken()+"(Temp"+expr[1]+")\n")
-                    file.write(tabs*"\t"+func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+'''=matrixFlipper(Temp,"R")'''+"\n")
+                    file.write(tabs*"\t"+func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+'''=MatrixFlipper(Temp,"R")'''+"\n")
                     file.write(tabs*"\t"+"del Temp\n")
 
         elif (func.getName() == "Function6"):
@@ -1538,7 +1598,7 @@ def functionWriter(func,tabs):
                         output += "Blink(" + func.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+expr[0]+ "," + func.getChilds()[0].getChilds()[2].getChilds()[2].getToken() + ''',"''' + func.getChilds()[0].getChilds()[2].getChilds()[4].getChilds()[0].getName() + '''",''' + func.getChilds()[0].getChilds()[2].getChilds()[6].getChilds()[0].getName().replace("V", "") + ")\n"
                         file.write(output)
                 else:
-                    file.write(tabs*"\t"+"Temp=matrixFlipper("+func.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
+                    file.write(tabs*"\t"+"Temp=MatrixFlipper("+func.getChilds()[0].getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
                     if (func.getChilds()[0].getChilds()[2].getName() == "Fcont0"):
                         output += "Blink(Temp" +expr[1] + "," + func.getChilds()[0].getChilds()[2].getChilds()[2].getToken() + ''',"''' + func.getChilds()[0].getChilds()[2].getChilds()[4].getChilds()[0].getName() + '''",''' + func.getChilds()[0].getChilds()[2].getChilds()[6].getChilds()[0].getName().replace("V","") + ")\n"
                         file.write(output)
@@ -1567,7 +1627,7 @@ def functionWriter(func,tabs):
                 if(not ":," in expr[0]):
                     file.write(tabs * "\t" + func.getChilds()[0].getChilds()[2].getChilds()[0].getName()+"(" +func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+expr[0]+ ")\n")
                 else:
-                    file.write(tabs*"\t"+"Temp=matrixFlipper("+func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
+                    file.write(tabs*"\t"+"Temp=MatrixFlipper("+func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
                     file.write(tabs*"\t"+func.getChilds()[0].getChilds()[2].getChilds()[0].getName()+"(Temp"+expr[1]+")\n")
                     file.write(tabs*"\t"+"del Temp\n")
 
@@ -1580,9 +1640,9 @@ def functionWriter(func,tabs):
                     file.write(tabs * "\t" + func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+expr[0] + "=Delete(" +func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+expr[0] + "," + func.getChilds()[0].getChilds()[4].getChilds()[0].getToken() + "," +func.getChilds()[0].getChilds()[6].getToken() + ")\n")
 
                 else:
-                    file.write(tabs*"\t"+"Temp=matrixFlipper("+ func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
+                    file.write(tabs*"\t"+"Temp=MatrixFlipper("+ func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
                     file.write(tabs*"\t"+"Temp"+expr[1]+"=Delete(Temp"+expr[1]+","+func.getChilds()[0].getChilds()[4].getChilds()[0].getToken()+","+func.getChilds()[0].getChilds()[6].getToken() + ")\n")
-                    file.write(tabs*"\t"+func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+'''=matrixFlipper(Temp,"R")'''+"\n")
+                    file.write(tabs*"\t"+func.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+'''=MatrixFlipper(Temp,"R")'''+"\n")
                     file.write(tabs*"\t"+"del Temp \n")
 
         elif(func.getName()=="Function10"):
@@ -1595,7 +1655,7 @@ def functionWriter(func,tabs):
                     if(not ":," in param[0][0]):
                         output+=param[1]+param[0][0]+","
                     else:
-                        file.write(tabs*"\t"+"Temp"+str(varN)+"=matrixFlipper("+param[1]+''',"L")'''+"\n")
+                        file.write(tabs*"\t"+"Temp"+str(varN)+"=MatrixFlipper("+param[1]+''',"L")'''+"\n")
                         output+="Temp"+str(varN)+param[0][1]+","
                         special.append("Temp"+str(varN))
                         varN+=1
@@ -1641,7 +1701,7 @@ def assignmentWriter(line,tabs):
                 if(cont==None):
                     expr=realExpresionTranslator(line.getChilds()[2].getChilds()[0].getChilds()[0])
                     if(":," in expr[0]):
-                        file.write(tabs*"\t"+"Temp=matrixFlipper("+line.getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
+                        file.write(tabs*"\t"+"Temp=MatrixFlipper("+line.getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
                         file.write(tabs*"\t"+"Temp=Temp"+expr[1]+"\n")
                         file.write(simpleLine+"Temp\n")
                         file.write(tabs*"\t"+"del Temp\n")
@@ -1654,24 +1714,24 @@ def assignmentWriter(line,tabs):
                 expr=realExpresionTranslator(line.getChilds()[0].getChilds()[0].getChilds()[0])
                 if(":," in expr[0]):
                     if(cont!=None):
-                        file.write(tabs*"\t"+"Temp=matrixFlipper("+line.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
+                        file.write(tabs*"\t"+"Temp=MatrixFlipper("+line.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
                         file.write(tabs*"\t"+"Temp"+expr[1]+"="+cont+"\n")
-                        file.write(tabs*"\t"+line.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+"=matrixFlipper(Temp,"+'''"R")'''+"\n")
+                        file.write(tabs*"\t"+line.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+"=MatrixFlipper(Temp,"+'''"R")'''+"\n")
                         file.write(tabs*"\t"+"del Temp\n")
                     else:
                         exprCont=realExpresionTranslator(line.getChilds()[2].getChilds()[0].getChilds()[0])
                         if(":," in exprCont[0]):
-                            file.write(tabs*"\t"+"TempCont=matrixFlipper("+line.getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
+                            file.write(tabs*"\t"+"TempCont=MatrixFlipper("+line.getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
                             file.write(tabs*"\t"+"TempCont=TempCont"+exprCont[1]+"\n")
-                            file.write(tabs*"\t"+"TempVar=matrixFlipper("+line.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
+                            file.write(tabs*"\t"+"TempVar=MatrixFlipper("+line.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+''',"L")'''+"\n")
                             file.write(tabs*"\t"+"TempVar"+expr[1   ]+"=TempCont\n")
-                            file.write(tabs*"\t"+line.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+'''=matrixFlipper(TempVar,"R")'''+"\n")
+                            file.write(tabs*"\t"+line.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+'''=MatrixFlipper(TempVar,"R")'''+"\n")
                             file.write(tabs*"\t"+"del TempVar \n")
                             file.write(tabs*"\t"+"del TempCont\n")
                         else:
-                            file.write(tabs * "\t" + "TempVar=matrixFlipper(" +line.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken() + ''',"L")'''+"\n")
+                            file.write(tabs * "\t" + "TempVar=MatrixFlipper(" +line.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken() + ''',"L")'''+"\n")
                             file.write(tabs * "\t" + "TempVar="+line.getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+exprCont[1]+"\n")
-                            file.write(tabs * "\t" + line.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken() + '''=matrixFlipper(TempVar,"R")'''+"\n")
+                            file.write(tabs * "\t" + line.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken() + '''=MatrixFlipper(TempVar,"R")'''+"\n")
                             file.write(tabs * "\t" + "del TempVar \n")
                 else:
                     if(cont!=None):
@@ -1679,7 +1739,7 @@ def assignmentWriter(line,tabs):
                     else:
                         exprCont = realExpresionTranslator(line.getChilds()[2].getChilds()[0].getChilds()[0])
                         if(":," in exprCont[0]):
-                            file.write(tabs * "\t" + "TempCont=matrixFlipper(" +line.getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getToken() + ''',"L")'''+"\n")
+                            file.write(tabs * "\t" + "TempCont=MatrixFlipper(" +line.getChilds()[2].getChilds()[0].getChilds()[0].getChilds()[0].getToken() + ''',"L")'''+"\n")
                             file.write(tabs * "\t" + line.getChilds()[0].getChilds()[0].getChilds()[0].getChilds()[0].getToken()+expr[0]+"=TempCont"+exprCont[1]+"\n")
                             file.write(tabs*"\t"+"del TempCont\n")
                         else:
