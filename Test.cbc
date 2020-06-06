@@ -18,19 +18,23 @@ w,x=True,range(10,True);
 	{
 	global t,l,r,var;
 		begin
-		for valor in [[True,False,False],[True]] Step 2
-			{
-
-				l[valor].F;
-				x=25;
-				l[1][:,1][0];
-
-				for elemento in r
-				{
-					l[elemento].insert(elemento,True);
-				};
-
+		if([True,False,False]==4*10/t)
+		{
+			x=True;
+			y=10;
+			if(x==True){
+				x.Neg;
 			};
+			else
+			{
+				x.T;
+			};
+			l[10];
+		};
+		else{
+			x=False;	
+		};
+
 		r[0][:,1][5],l=True,r[1][:,2][0];
 		if(t==0)
 		{

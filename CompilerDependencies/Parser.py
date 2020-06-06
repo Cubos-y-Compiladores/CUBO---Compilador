@@ -100,12 +100,10 @@ def p_instruction3(p):
 def p_globalAssignment(p):
     '''global : assignment '''
     p[0]=NonTerminalNode("GlobalAssignment",[p[1]])
-    
 
 def p_globalCall(p):
     '''global_call : GLOBAL global_term SEMICOLON global_call'''
     p[0]=NonTerminalNode("GlobalCall",[TerminalNode("Global","GLOBAL"),p[2],p[4]])
-    
 
 def p_EmptyGlobalCall(p):
     '''global_call : empty'''

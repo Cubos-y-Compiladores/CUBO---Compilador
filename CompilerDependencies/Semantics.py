@@ -542,7 +542,8 @@ def statementSem(p,local_var,local_only,main):
 
     elif(p.getChilds()[2].getName()=="Iterable2"):
         iterable=("List",listTranslator(p.getChilds()[2].getChilds()[0].getChilds()))
-
+    else:
+        invalidIterableValue()
     operator=tokenTranslator(p.getChilds()[3].getChilds()[0].getToken())
 
     if(p.getChilds()[4].getName()=="BifValue0"):
