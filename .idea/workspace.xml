@@ -2,25 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5ee94bc5-d758-44b1-9152-4690932221a1" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/IDLE/Frame.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/IDLE/GUI.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/IDLE/MyCompiler.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/IDLE/QuickCube.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Compilador/Lib/site-packages/pip-19.0.3-py3.6.egg/pip/_internal/pep425tags.py" beforeDir="false" afterPath="$PROJECT_DIR$/Compilador/Lib/site-packages/pip-19.0.3-py3.6.egg/pip/_internal/pep425tags.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Compilador/Lib/site-packages/pip-19.0.3-py3.6.egg/pip/_internal/wheel.py" beforeDir="false" afterPath="$PROJECT_DIR$/Compilador/Lib/site-packages/pip-19.0.3-py3.6.egg/pip/_internal/wheel.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/CompilerDependencies/CodeGeneration/CodeFile.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/CompilerDependencies/CodeGeneration/Output.txt" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/CompilerDependencies/Lexer.py" beforeDir="false" afterPath="$PROJECT_DIR$/CompilerDependencies/Lexer.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CompilerDependencies/Parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/CompilerDependencies/Parser.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/CompilerDependencies/Semantics.py" beforeDir="false" afterPath="$PROJECT_DIR$/CompilerDependencies/Semantics.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Files/PruebaChangeColor.cbc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Files/nuevo.cbc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Files/otro.cbc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Files/pruebamatriz.cbc" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/GUI.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/GUI/changecolor.py" beforeDir="false" afterPath="$PROJECT_DIR$/IDLE/changecolor.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Test.cbc" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/IDLE/Files/BaseProject.cbc" beforeDir="false" afterPath="$PROJECT_DIR$/IDLE/Files/BaseProject.cbc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IDLE/Files/CodeGeneration/CodeFile.py" beforeDir="false" afterPath="$PROJECT_DIR$/IDLE/Files/CodeGeneration/CodeFile.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IDLE/Files/CodeGeneration/Output.txt" beforeDir="false" afterPath="$PROJECT_DIR$/IDLE/Files/CodeGeneration/Output.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IDLE/Files/Codigo_Revision.cbc" beforeDir="false" afterPath="$PROJECT_DIR$/IDLE/Files/Codigo_Revision.cbc" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IDLE/Files/Root/Files.txt" beforeDir="false" afterPath="$PROJECT_DIR$/IDLE/Files/Root/Files.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IDLE/GUI.py" beforeDir="false" afterPath="$PROJECT_DIR$/IDLE/GUI.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/IDLE/QuickCube.py" beforeDir="false" afterPath="$PROJECT_DIR$/IDLE/QuickCube.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Tools/Tools.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tools/Tools.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -51,7 +43,7 @@
       <recent name="C:\Users\dcama\Desktop\Compilador\GUI" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.GUI">
+  <component name="RunManager" selected="Python.CodeFile">
     <configuration name="CodeFile" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="Compilador" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -180,7 +172,7 @@
       <workItem from="1591388644982" duration="14802000" />
       <workItem from="1591408671478" duration="16686000" />
       <workItem from="1591438366974" duration="2175000" />
-      <workItem from="1591443360762" duration="20809000" />
+      <workItem from="1591443360762" duration="32281000" />
     </task>
     <servers />
   </component>
@@ -196,42 +188,42 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state width="1535" height="466" key="DebuggerActiveHint/0.0.1920.1040@0.0.1920.1040" timestamp="1591220997960" />
-    <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1591461107785">
+    <state x="740" y="274" key="FileChooserDialogImpl" timestamp="1591470110956">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1591461107785" />
-    <state width="1877" height="283" key="GridCell.Tab.0.bottom" timestamp="1591466312731">
+    <state x="740" y="274" key="FileChooserDialogImpl/0.0.1920.1040@0.0.1920.1040" timestamp="1591470110956" />
+    <state width="1860" height="229" key="GridCell.Tab.0.bottom" timestamp="1591491663145">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="283" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1591466312731" />
-    <state width="1877" height="283" key="GridCell.Tab.0.center" timestamp="1591466312731">
+    <state width="1860" height="229" key="GridCell.Tab.0.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1591491663145" />
+    <state width="1860" height="229" key="GridCell.Tab.0.center" timestamp="1591491663145">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="283" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1591466312731" />
-    <state width="1877" height="283" key="GridCell.Tab.0.left" timestamp="1591466312731">
+    <state width="1860" height="229" key="GridCell.Tab.0.center/0.0.1920.1040@0.0.1920.1040" timestamp="1591491663145" />
+    <state width="1860" height="229" key="GridCell.Tab.0.left" timestamp="1591491663145">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="283" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1591466312731" />
-    <state width="1877" height="283" key="GridCell.Tab.0.right" timestamp="1591466312731">
+    <state width="1860" height="229" key="GridCell.Tab.0.left/0.0.1920.1040@0.0.1920.1040" timestamp="1591491663145" />
+    <state width="1860" height="229" key="GridCell.Tab.0.right" timestamp="1591491663145">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1877" height="283" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1591466312731" />
-    <state width="938" height="232" key="GridCell.Tab.1.bottom" timestamp="1591462477680">
+    <state width="1860" height="229" key="GridCell.Tab.0.right/0.0.1920.1040@0.0.1920.1040" timestamp="1591491663145" />
+    <state width="1860" height="229" key="GridCell.Tab.1.bottom" timestamp="1591491663146">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="938" height="232" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1591462477680" />
-    <state width="938" height="232" key="GridCell.Tab.1.center" timestamp="1591462477680">
+    <state width="1860" height="229" key="GridCell.Tab.1.bottom/0.0.1920.1040@0.0.1920.1040" timestamp="1591491663146" />
+    <state width="1860" height="229" key="GridCell.Tab.1.center" timestamp="1591491663146">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="938" height="232" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1591462477680" />
-    <state width="938" height="232" key="GridCell.Tab.1.left" timestamp="1591462477680">
+    <state width="1860" height="229" key="GridCell.Tab.1.center/0.0.1920.1040@0.0.1920.1040" timestamp="1591491663146" />
+    <state width="1860" height="229" key="GridCell.Tab.1.left" timestamp="1591491663146">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="938" height="232" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1591462477680" />
-    <state width="938" height="232" key="GridCell.Tab.1.right" timestamp="1591462477680">
+    <state width="1860" height="229" key="GridCell.Tab.1.left/0.0.1920.1040@0.0.1920.1040" timestamp="1591491663146" />
+    <state width="1860" height="229" key="GridCell.Tab.1.right" timestamp="1591491663146">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="938" height="232" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1591462477680" />
+    <state width="1860" height="229" key="GridCell.Tab.1.right/0.0.1920.1040@0.0.1920.1040" timestamp="1591491663146" />
     <state x="461" y="162" key="SettingsEditor" timestamp="1588204837766">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
@@ -254,7 +246,7 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/CompilerDependencies/Semantics.py</url>
-          <line>898</line>
+          <line>899</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
@@ -264,78 +256,58 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/CompilerDependencies/Semantics.py</url>
-          <line>950</line>
+          <line>951</line>
           <option name="timeStamp" value="82" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/CompilerDependencies/Semantics.py</url>
-          <line>1106</line>
+          <line>1107</line>
           <option name="timeStamp" value="84" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/CompilerDependencies/Semantics.py</url>
-          <line>502</line>
+          <line>503</line>
           <option name="timeStamp" value="170" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Tools/Tools.py</url>
-          <line>1483</line>
+          <line>1494</line>
           <option name="timeStamp" value="241" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Tools/Tools.py</url>
-          <line>1474</line>
+          <line>1485</line>
           <option name="timeStamp" value="242" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Tools/Tools.py</url>
-          <line>1488</line>
+          <line>1499</line>
           <option name="timeStamp" value="243" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Tools/Tools.py</url>
-          <line>1546</line>
+          <line>1557</line>
           <option name="timeStamp" value="252" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Tools/Tools.py</url>
-          <line>1596</line>
+          <line>1607</line>
           <option name="timeStamp" value="258" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Tools/Tools.py</url>
-          <line>648</line>
+          <line>653</line>
           <option name="timeStamp" value="267" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Tools/Tools.py</url>
-          <line>1070</line>
+          <line>1075</line>
           <option name="timeStamp" value="328" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Tools/Tools.py</url>
-          <line>1774</line>
-          <option name="timeStamp" value="329" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Tools/Tools.py</url>
-          <line>1096</line>
-          <option name="timeStamp" value="331" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Tools/Tools.py</url>
-          <line>1169</line>
-          <option name="timeStamp" value="333" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/IDLE/Files/basicFunctions.py</url>
           <line>98</line>
           <option name="timeStamp" value="335" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/Tools/Tools.py</url>
-          <line>1151</line>
-          <option name="timeStamp" value="340" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/IDLE/Files/basicFunctions.py</url>
@@ -346,8 +318,8 @@
     </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/Compilador$GUI.coverage" NAME="GUI Coverage Results" MODIFIED="1591465926552" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/IDLE" />
+    <SUITE FILE_PATH="coverage/Compilador$GUI.coverage" NAME="GUI Coverage Results" MODIFIED="1591484163817" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/IDLE" />
     <SUITE FILE_PATH="coverage/Compilador$Parser.coverage" NAME="Parser Coverage Results" MODIFIED="1591449454757" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/CompilerDependencies" />
-    <SUITE FILE_PATH="coverage/Compilador$CodeFile.coverage" NAME="CodeFile Coverage Results" MODIFIED="1591463022025" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/IDLE/Files/CodeGeneration" />
+    <SUITE FILE_PATH="coverage/Compilador$CodeFile.coverage" NAME="CodeFile Coverage Results" MODIFIED="1591484178812" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/IDLE/Files/CodeGeneration" />
   </component>
 </project>

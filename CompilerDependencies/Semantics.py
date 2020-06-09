@@ -36,19 +36,20 @@ def semantics(p,cons):
             else:
                 return paramWithSameNameError(proc[0],param[0])
         procWriter(proc)
+    statementQueue=[]
     if(not p.getChilds()[1].getChilds()[4].getChilds()[1].isNull()):
         statementQueue=mainBlockSplitter(p.getChilds()[1].getChilds()[4].getChilds()[1].getChilds())
-        mainWriter(global_var)
-        for line in statementQueue:
-            if("Instruction" in line.getName()):
-                instructionSem(line, mainScope, [],True)
-                instructionWriter(line,1)
+    mainWriter(global_var)
+    for line in statementQueue:
+        if("Instruction" in line.getName()):
+            instructionSem(line, mainScope, [],True)
+            instructionWriter(line,1)
 
-            elif(line.getName()=="Compile"):
-                compileSem(line,mainScope)
-                compileWriter(line,1,consts)
-                break
-        finalLineWriter()
+        elif(line.getName()=="Compile"):
+            compileSem(line,mainScope)
+            compileWriter(line,1,consts)
+            break
+    finalLineWriter()
     reset()
 def compileSem(p,scope):
     if(p.getChilds()[2].getName()=="CompileCube0"):
@@ -1280,7 +1281,7 @@ def functionSem(p,local_var,local_only):
         callParams=None
         for proc in procedures:
             if(procName==proc[0]):
-                callParams=parameterCallTranslator(p.getChilds()[0].getChilds()[1].getChilds()[2].getChilds(),local_var)
+                callParams=parameterCallTranslator(p.getChilds()[0].getChilds()[1].getChilds()[2],local_var)
                 if(len(proc[1])==len(callParams)):
                     exists=True
                     usedProc=proc

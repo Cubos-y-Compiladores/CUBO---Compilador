@@ -148,7 +148,7 @@ class matrizFrame(wx.Frame):
             self.mainWindow.Enable()
             self.mainWindow.textMain.WriteText("\n"+self.entryVar.GetValue() + " = " + self.splitCube(self.matrices) + "\n")
 
-            self.mainWindow.changeTextColor()
+            #self.mainWindow.changeTextColor()
             self.Destroy()
             print("acepted")
     def splitCube(self,cube):

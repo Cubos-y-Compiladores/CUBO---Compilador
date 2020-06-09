@@ -19,122 +19,7 @@ import IDLE.Files.basicFunctions as basicFunctions
 global basicFunctionsObject
 import IDLE.MyCompiler as compiler
 wildcard = "*.cbc"
-tokens = ['ID', 'PLUS', 'MINUS', 'TIMES', 'DIVIDE','DIVENT','MOD','EXP', 'ASSIGN', 'COMMA', 'SEMICOLON',
-          'LT', 'GT', 'LTE', 'GTE', 'NE', 'LPARENT', 'RPARENT', 'DOT', 'INT', 'LENGHTERROR','VARERROR', 'BOOKED',
-          'PARENTCL', 'PARENTCR', 'LCORCH', 'RCORCH', 'TP','QUOTES',"newline","SPACE","TAB","COMMENT"]
-reserved = {'if': 'IF',
-            'else': 'ELSE',
-            'while': 'WHILE',
-            'for': 'FOR',
-            'const': 'CONST',
-            'Procedure': 'PROCEDURE',
-            'type': 'TYPE',
-            'True': 'TRUE',
-            'False': 'FALSE',
-            'global': 'GLOBAL',
-            'range': 'RANGE',
-            'insert':'INSERT',
-            'del':'DEL',
-            'len':'LEN',
-            'Neg':'NEG',
-            'T':'T',
-            'F':'F',
-            'Blink':'BLINK',
-            'Delay':'DELAY',
-            'in':'IN',
-            'Step':'STEP',
-            'shapeC':'SHAPEC',
-            'shapeF':'SHAPEF',
-            'shapeA':'SHAPEA',
-            'Main':'MAIN',
-            'Call':'CALL',
-            'Timer':'TIMER',
-            'Rango_Timer':'RANGOTIMER',
-            'Dim_Filas':'DIMFILAS',
-            'Dim_Columnas':'DIMCOLUMNAS',
-            'Cubo':'CUBO',
-            'Mil': 'MIL',
-            'Seg': 'SEG',
-            'Min': 'MIN',
-            'begin':'BEGIN',
-            'end':'END',
-            'delete':'DELETE',
-            }
 
-tokens = tokens + list(reserved.values())
-
-t_ignore = '\r' # t_ignore es usado para ignorar todos los caracteres dentro de esta lista
-t_PLUS = r'\+'
-t_MINUS = r'\-'
-t_TIMES = r'\*'
-t_DIVIDE = r'/'
-t_ASSIGN = r'='
-t_LT = r'<'
-t_GT = r'>'
-t_LTE = r'<='
-t_GTE = r'>='
-t_LPARENT = r'\('
-t_RPARENT = r'\)'
-t_COMMA = r','
-t_SEMICOLON = r';'
-t_DOT = r'\.'
-t_PARENTCL = '\['
-t_PARENTCR = '\]'
-t_NE = '!='
-t_LCORCH = '\{'
-t_RCORCH = '\}'
-t_TP = '\:'
-t_MOD = '%'
-t_QUOTES = '"'
-t_SPACE = r'\s'
-t_TAB = r"\t"
-
-# Reglas para cambios de color
-
-# Reconoce variables y palabras reservadas
-def t_ID(t):
-    r"""[a-zA-Z][a-zA-Z0-9_@&]*"""
-
-    if t.value in reserved:
-        t.type = reserved[t.value]
-        # t.value = (t.value,symbol_lookup(t.value)) Para devolver el valor a la tabla de signo
-    else:
-        t.type = "ID"
-    return t
-# Reconoce booleanos
-def t_BOOKED(t):
-    r"""[a-zA-Z][a-zA-Z0-9_]*"""
-    if t.value in reserved:
-        t.type = reserved[t.value]
-    else:
-        t.type = "VARERROR"
-    return t
-# Reconoce numeros
-def t_INT(t):
-    r"""\d+"""
-    t.value = int(t.value)
-    return t
-# Reconoce saltos de linea
-def t_newline(t):
-    r"""\n+"""
-    return t
-    #t.lexer.lineno += len(t.value)
-# Reconoce que un string no está en el alfabeto
-def t_error(t):
-    print("Illegal character '%s'" % t.value[0])
-    t.lexer.skip(1)
-# Reconoce comentarios
-def t_COMMENT(t):
-    r"""\--.*"""
-    return t
-# Reconoce exponentes
-def t_EXP(t):
-    r'[*][*]'
-    return t
-# Reconoce eivisiones enteras
-def t_DIVENT(t):
-    r'[/][/]'
-    return t
 
 # Clase de la ventana principal, sobre la que se situa la entrada de texto y el analisis de cambio de color de texto
 class MyApp(wx.Frame):
@@ -206,7 +91,7 @@ class MyApp(wx.Frame):
         self.textMain.StyleSetSpec(11,'fore:#ffffff,back:#323232')
         self.textMain.StyleSetBackground(wx.stc.STC_STYLE_DEFAULT,self.colorBG)
         self.textMain.SetIndent(8)
-        self.textMain.SetLexer(wx.stc.STC_LEX_CONTAINER)
+        #self.textMain.SetLexer(wx.stc.STC_LEX_CONTAINER)
         self.textMain.SetStyleBits(5)
 
         self.textMain.SetIndentationGuides(1)
@@ -507,11 +392,12 @@ class MyApp(wx.Frame):
     def keyUp(self,event):
         keycode = event.GetKeyCode()
         if keycode == 308:
+            pass
             # TODO recordad desdocumentar el change color para el ctrl v
             # self.changeTextColor()
             # self.setLineErrorColor(3) # cambio de color para una lines especifica se usa para los errores en las lineas
-            global basicFunctionsObject
-            basicFunctionsObject.Neg([False,True])
+            #global basicFunctionsObject
+            #basicFunctionsObject.Neg([False,True])
             # self.basic.Neg([False,True])
 
 
@@ -544,7 +430,7 @@ class MyApp(wx.Frame):
     def insertList(self,event):
         self.textMain.WriteText("list" + str(self.contList) +"= [];\n")
         self.contList += 1
-        self.changeTextColor()
+        # self.changeTextColor()
     # Inserta una matriz como texto
     def insertMatriz2D(self,number,event):
         text = " ["
@@ -553,7 +439,7 @@ class MyApp(wx.Frame):
         text += "[]];\n"
         self.textMain.WriteText("matriz2D" + str(self.contMatriz2) +"= "+ text)
         self.contMatriz2 += 1
-        self.changeTextColor()
+        # self.changeTextColor()
     # Inserta un cubo como texto
     def insertMatriz3D(self,number,event):
         number = number%10
@@ -577,7 +463,7 @@ class MyApp(wx.Frame):
 
         self.textMain.WriteText("matriz3D" + str(self.contMatriz3) +"= "+ textFinal)
         self.contMatriz3 += 1
-        self.changeTextColor()
+        # self.changeTextColor()
     # Cierra la ventana principal
     def subExitWindow(self,event):
         self.Close(1)
@@ -621,7 +507,7 @@ class MyApp(wx.Frame):
         self.textMain.Freeze()
         self.textMain.SetValue(txt)
         self.Disable()
-        self.changeTextColor()
+        # self.changeTextColor()
         self.textMain.Thaw()
         self.Enable()
         self.textMain.SetInsertionPoint(0)
@@ -736,26 +622,7 @@ class MyApp(wx.Frame):
             text = self.loadingPoints(text)
             self.lblLoading.SetLabel(text)
         self.lblLoading.SetLabel("")
-    # Cambia el color de texto de una palabra especifica
-    def getWordText(self,linenumber,lineText):
-        list1 = ['"', ",", "{", "}", "=", "--", "(", ")", "[", "]", " "]
-        list2 = "abcdefghijklmnñopqrstuvwxyzCALLTF_"
-        s = linenumber[1] - 1
-        e = linenumber[1]
-        if s <= 0:
-            s = 0
-        if e >= len(lineText):
-            e = len(lineText)
-        if s - 1 >= 0:
-            while s != 0 and lineText[s] in list2 and lineText[s - 1] not in list1:
-                s -= 1
-        while e != len(lineText) and lineText[e] in list2:
-            e += 1
-        s = s-1
-        if s < 0 :
-            s = 0
-        p = (lineText[s:e],s,e)
-        return p
+
     # Ejecuta las funciones de cambio de color para palabras especificas y actualiza los labels
     def changeReservedWords2(self):
 
@@ -775,206 +642,6 @@ class MyApp(wx.Frame):
 
 
 
-
-        if( self.textMain.GetValue() != self.currenttext or len(self.textMain.GetValue()) != len(self.currenttext)) and self.textMain.GetValue() != "":
-
-            if self.textMain.GetValue() != "":
-                curPos = self.textMain.GetInsertionPoint()
-                linenumber = self.textMain.PositionToXY(curPos)
-                lineText = self.textMain.GetLineText(linenumber[2])
-                posInit = curPos - linenumber[1]
-
-                print("curPos",curPos)
-                print("linenumber", linenumber)
-                print("linetext", lineText)
-                print("posInit", posInit)
-
-                if "-" in lineText:
-                    self.getWordColor(lineText, posInit)
-                else:
-
-                    list1 = ['"', ",", "{", "}", "=", "--", "(", ")", "[", "]", " "]
-                    listNum = "1234567890"
-                    list2 = "abcdefghijklmnñopqrstuvwxyzCALL_"
-                    list3 = ["F", "T"]
-
-                    if len(lineText) != 0:
-                        word = self.getWordText(linenumber, lineText)
-
-                        if (lineText[linenumber[1] - 1] in list1 or lineText[linenumber[1] - 1] in listNum or word[
-                            0] in list3) and lineText[linenumber[1] - 1] != "_":
-                            pack = (linenumber[1], linenumber[1] + 1, lineText[linenumber[1]:linenumber[1] + 1], posInit + 1)
-                        else:
-                            if "_" in word[0]:
-                                pack = (word[1], word[2], word[0], posInit)
-                            else:
-                                s = linenumber[1] - 1
-                                e = linenumber[1]
-                                if s <= 0:
-                                    s = 0
-                                if e >= len(lineText):
-                                    e = len(lineText)
-                                if s - 1 >= 0:
-                                    while s != 0 and lineText[s] in list2 and lineText[s - 1] not in list1:
-                                        s -= 1
-                                while e != len(lineText) and lineText[e] in list2:
-                                    e += 1
-
-                                pack = (s, e, lineText[s:e], posInit)
-
-                        self.getWordColor(pack[2], pack[0] + posInit)
-
-
-            self.currenttext = self.textMain.GetValue()
-
-    # Cambia el color de una palabra en una posicion especifica
-    def getWordColor(self,word,posInit):
-
-        lexer = lex.lex()
-        lexer.input(word)
-        while 1:
-            tok = lexer.token()
-            if not tok:
-                break
-            else:
-                if tok != None:
-                    if tok.type in self.rTrue:
-                        style = 1
-                    elif tok.type in self.rFalse:
-                        style = 2
-                    elif tok.type in self.symbols:
-                        style = 3
-                    elif tok.type in self.coment:
-                        style = 4
-                    elif tok.type in self.functions:
-                        style = 5
-                    elif tok.type in self.reservedWords1:
-                        style = 6
-                    elif tok.type in self.reservedWords2:
-                        style = 7
-                    elif tok.type in self.reservedWords3:
-                        style = 8
-                    else:
-                        style = 10
-
-                    if style != 10:
-                        self.textMain.StartStyling(posInit, style)
-                        self.textMain.SetStyling(len(str(tok.value)), style)
-    # Camnbia el color de todas las palabras en el texto
-    def changeTextColor(self):
-
-        self.textMain.StyleSetSpec(1, 'fore:#33ffff,back:#141212')
-        self.textMain.StyleSetSpec(2, 'fore:#ff5714,back:#141212')
-        self.textMain.StyleSetSpec(3, 'fore:#f49006,back:#141212')
-        self.textMain.StyleSetSpec(4, 'fore:#02ffc2,back:#141212')
-        self.textMain.StyleSetSpec(5, 'fore:#f0f600,back:#141212')
-        self.textMain.StyleSetSpec(6, 'fore:#c04cfd,back:#141212')
-        self.textMain.StyleSetSpec(7, 'fore:#af2bbf,back:#141212')
-        self.textMain.StyleSetSpec(8, 'fore:#64dfdf,back:#141212')
-        self.textMain.StyleSetSpec(9, 'fore:#141212,back:#141212')
-
-
-        self.textMain.StyleSetSpec(wx.stc.STC_STYLE_LINENUMBER, 'fore:#323232,back:#141212')
-        self.textMain.StyleSetSpec(10, 'fore:#ffffff,back:#141212')
-
-        text = self.textMain.GetValue()
-        lexer = lex.lex()
-        lexer.input(text)
-
-        style = 0
-        while 1:
-            tok = lexer.token()
-            if not tok:
-                break
-            else:
-                if tok != None:
-                    if tok.type in self.rTrue:
-                        style = 1
-                    elif tok.type in self.rFalse:
-                        style = 2
-                    elif tok.type in self.symbols:
-                        style = 3
-                    elif tok.type in self.coment:
-                        style = 4
-                    elif tok.type in self.functions:
-                        style = 5
-                    elif tok.type in self.reservedWords1:
-                        style = 6
-                    elif tok.type in self.reservedWords2:
-                        style = 7
-                    elif tok.type in self.reservedWords3:
-                        style = 8
-                    else:
-                        style = 10
-
-                    pos = tok.lexpos
-                    self.textMain.StartStyling(pos,style)
-                    self.textMain.SetStyling(len(str(tok.value)), style)
-    # Obtiene las posiciones de una linea para cambiar color
-    def setLineErrorColor(self,lineNumber):
-        lineNumber -= 1
-        text = ""
-        for i in range(lineNumber):
-            text += self.textMain.GetLineText(i)
-        print("LEN",len(text))
-        print(len(self.textMain.GetLineText(lineNumber)))
-        self.textMain.StartStyling(len(text)+4, 13)
-        self.textMain.SetStyling(len(self.textMain.GetLineText(lineNumber)), 13)
-
-    # Cambia el color de una linea especifica
-    def changeTextLineColor(self,lineNumber):
-
-        text = ""
-        for i in range(lineNumber-1):
-            text += self.textMain.GetLineText(i)
-        print("LEN",len(text))
-
-        self.textMain.StyleSetSpec(1, 'fore:#33ffff,back:#141212')
-        self.textMain.StyleSetSpec(2, 'fore:#ff5714,back:#141212')
-        self.textMain.StyleSetSpec(3, 'fore:#f49006,back:#141212')
-        self.textMain.StyleSetSpec(4, 'fore:#02ffc2,back:#141212')
-        self.textMain.StyleSetSpec(5, 'fore:#f0f600,back:#141212')
-        self.textMain.StyleSetSpec(6, 'fore:#c04cfd,back:#141212')
-        self.textMain.StyleSetSpec(7, 'fore:#af2bbf,back:#141212')
-        self.textMain.StyleSetSpec(8, 'fore:#64dfdf,back:#141212')
-        self.textMain.StyleSetSpec(9, 'fore:#141212,back:#141212')
-
-
-        self.textMain.StyleSetSpec(wx.stc.STC_STYLE_LINENUMBER, 'fore:#323232,back:#141212')
-        self.textMain.StyleSetSpec(10, 'fore:#ffffff,back:#141212')
-
-        lexer = lex.lex()
-        lexer.input(self.textMain.GetLineText(lineNumber))
-
-        style = 0
-        while 1:
-            tok = lexer.token()
-            if not tok:
-                break
-            else:
-                if tok != None:
-                    if tok.type in self.rTrue:
-                        style = 1
-                    elif tok.type in self.rFalse:
-                        style = 2
-                    elif tok.type in self.symbols:
-                        style = 3
-                    elif tok.type in self.coment:
-                        style = 4
-                    elif tok.type in self.functions:
-                        style = 5
-                    elif tok.type in self.reservedWords1:
-                        style = 6
-                    elif tok.type in self.reservedWords2:
-                        style = 7
-                    elif tok.type in self.reservedWords3:
-                        style = 8
-                    else:
-                        style = 10
-
-                    pos = tok.lexpos
-                    self.textMain.StartStyling(pos,style)
-                    self.textMain.SetStyling(len(str(tok.value)), style)
 
 
 if __name__ == '__main__':

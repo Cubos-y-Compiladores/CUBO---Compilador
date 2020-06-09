@@ -964,5 +964,5 @@ def runCompile(input,lexer,gui):
     # tv(chain)
     console=gui
     console.textConsole.AppendText("Compilando...\n")
-    result = parser.parse(input,lexer)
+    result = parser.parse(input)
     #translate(result)
